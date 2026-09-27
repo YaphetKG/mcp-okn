@@ -77,11 +77,24 @@ async def test_find_context_sources_surfaces_suppliers_by_size():
 
 
 async def test_find_context_sources_payload_only_bucket():
-    # pankgraph supplies GO but keys genes on Ensembl, not Entrez -> not hidden,
+    # ncipidkg supplies gene context but keys on UniProt, not Entrez -> not hidden,
     # surfaced under payload_only so the agent knows to convert the id.
+    out = await find_context_sources(want=["gene"], join_key="Entrez")
+    assert "ncipidkg" not in [s["kg"] for s in out["sources"]["gene"]]
+    assert "ncipidkg" in out["payload_only"].get("gene", [])
+
+
+async def test_find_context_sources_surfaces_babel_bridged_join():
+    """A bridged crosswalk makes its KG a real source on the endpoint scheme.
+
+    pankgraph keys genes on Ensembl and was payload_only for ``Entrez`` until the
+    babel-bridged crosswalks (C22-C26) landed on 2026-09-26. It is now reachable
+    from an Entrez-keyed KG, so it belongs in ``sources`` -- and the recipe must
+    name the bridge, or the caller would join on a key pankgraph does not carry.
+    """
     out = await find_context_sources(want=["GO"], join_key="Entrez")
-    assert "pankgraph" not in [s["kg"] for s in out["sources"]["GO"]]
-    assert "pankgraph" in out["payload_only"].get("GO", [])
+    pank = next(s for s in out["sources"]["GO"] if s["kg"] == "pankgraph")
+    assert any(j.get("bridge_kg") == "babel" for j in pank["joins"])
 
 
 async def test_find_context_sources_empty_list_is_evidence_of_absence():

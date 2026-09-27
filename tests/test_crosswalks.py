@@ -407,6 +407,7 @@ def test_skeleton_queries_are_well_formed():
         # The endpoints it joins must each appear as a scoped named graph.
         for kg in cw._entry_kgs(e):
             if kg in (
+                "babel",
                 "ubergraph",
                 "wikidata",
             ):  # bridges aren't always GRAPH-scoped by id

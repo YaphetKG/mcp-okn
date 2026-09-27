@@ -43,6 +43,9 @@
     "general": "Broad, general-purpose knowledge base spanning many domains"
   },
   "payloads": {
+    "babel": [
+      "identifier_mapping"
+    ],
     "biobricks-aopwiki": [
       "adverse_event",
       "chemical",

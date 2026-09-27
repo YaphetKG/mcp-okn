@@ -181,11 +181,89 @@ GROUP BY ?symbol ?protein
 # (crosswalk G2's skeleton_query).\
 """
 
+BABEL_GUIDANCE = """\
+IDENTIFIER-MAPPING BRIDGE (verified live 2026-09-26). babel is the Translator
+Babel equivalence dataset: it groups identifiers from different vocabularies
+that name the same concept into a CLIQUE, and picks one member as the clique's
+preferred id. It has no domain data of its own - use it only as the middle hop
+of a join between two other KGs that key the same concept on different schemes.
+
+SHAPE. Every member points at its clique's preferred id with skos:exactMatch
+(the preferred id points at itself). Only the preferred id carries rdfs:label
+and biolink:category. So mapping an id ?a to scheme B is two hops through the
+shared preferred id: ?a skos:exactMatch ?pref . ?b skos:exactMatch ?pref .
+Gene cliques (NCBIGene, Ensembl, HGNC) and protein cliques (UniProt, PR) are
+SEPARATE - babel does not map a gene to its protein.
+
+IRI FORMS babel uses (rewrite your KG's ids to these, and back):
+  NCBIGene   http://identifiers.org/ncbigene/{n}
+  Ensembl    http://identifiers.org/ensembl/{ENSG...}
+  HGNC       http://identifiers.org/hgnc/{n}            (numeric, no "HGNC:")
+  UniProt    http://purl.uniprot.org/uniprot/{acc}
+  OBO terms  http://purl.obolibrary.org/obo/{MONDO|DOID|HP|NCIT|CHEBI}_{n}
+  OMIM       http://purl.obolibrary.org/obo/OMIM_{n}    (NOT omim.org/entry/)
+  MeSH       http://id.nlm.nih.gov/mesh/{D...}
+  UMLS       http://identifiers.org/umls/{C...}
+  MedGen     https://www.ncbi.nlm.nih.gov/medgen/{n}
+  SNOMED CT  http://snomed.info/id/{n}
+  chemicals  http://identifiers.org/{drugbank|chembl.compound|pubchem.compound|
+             cas|inchikey|unii|hmdb|kegg.compound}/{id}
+Probe one known id before relying on a scheme not listed here.
+
+QUERY SHAPE - OR IT TIMES OUT. babel is far too large for a flat two-hop
+join. Nest the hops (see the snippet): resolve ?pref for YOUR KG's ids in a
+SELECT DISTINCT subquery, wrap the second hop (?target skos:exactMatch ?pref)
+in its own SELECT DISTINCT subquery around that, and only then test the target
+scheme with a FILTER outside both. Left in the same group as the second hop,
+the FILTER can be planned first and scans the whole relation; that already
+fails at ~9k input ids. A flat join, an OPTIONAL on ?pref, or any COUNT over
+the whole graph returns HTTP 429, and so does an input set in the hundreds of
+thousands (biobricks-ice's ~200k CAS numbers) however the query is shaped.
+
+AN ID CAN SIT IN TWO CLIQUES. babel stores more than one grouping side by
+side - e.g. DrugBank DB00002 belongs to a UMLS-preferred clique AND a
+UNII-preferred one - so one input id can fan out to several preferred ids and
+several target ids. Your KG's node is the answer's identity and the babel id is
+only the join key: COUNT DISTINCT the endpoint entities, never the cliques.
+
+babel also holds PubMed nodes whose rdfs:label is a lone byte-order mark;
+patterns scoped to skos:exactMatch never see them. Verified example: crosswalk
+DB2 (rdkg DrugBank -> ChEMBL -> prokn, 1,816 drugs).\
+"""
+
+#: Companion snippet: the staged two-hop lookup. The inner subquery binds the
+#: preferred id from the small side; the outer one keeps the second
+#: skos:exactMatch hop apart from the scheme FILTER, so the planner cannot run
+#: the FILTER against the whole relation first.
+BABEL_SNIPPET = """\
+# Map YOUR KG's ids to another scheme through babel (here DrugBank -> ChEMBL).
+SELECT (COUNT(DISTINCT ?mine) AS ?n) WHERE {
+  { SELECT DISTINCT ?mine ?target WHERE {
+    { SELECT DISTINCT ?mine ?pref WHERE {
+        GRAPH <https://purl.org/okn/frink/kg/YOUR_KG> { ?mine a <YOUR_CLASS> }
+        # rewrite ?mine to babel's IRI form here if it differs
+        GRAPH <https://purl.org/okn/frink/kg/babel> {
+          ?mine <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+    GRAPH <https://purl.org/okn/frink/kg/babel> {
+      ?target <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+  FILTER(STRSTARTS(STR(?target), 'http://identifiers.org/chembl.compound/'))
+  # rewrite ?target to the other KG's IRI form, then join it:
+  BIND(IRI(CONCAT('https://www.ebi.ac.uk/chembl/explore/compound/',
+                  STRAFTER(STR(?target), 'chembl.compound/'))) AS ?theirs)
+  GRAPH <https://purl.org/okn/frink/kg/OTHER_KG> { ?theirs ?p ?o }
+}\
+"""
+
 #: Per-KG usage notes surfaced on ``get_schema`` (attached by the tool wrapper in
 #: :mod:`mcp_okn.tools.schema_tools`), delivered exactly when a client is about to
 #: write SPARQL for that KG. Only KGs with domain rules that the schema alone does
 #: not convey are listed.
 _KG_USAGE_NOTES: dict[str, dict[str, str]] = {
+    "babel": {
+        "title": "Identifier-mapping notes",
+        "guidance": BABEL_GUIDANCE,
+        "query_snippet": BABEL_SNIPPET,
+    },
     "spoke-genelab": {
         "guidance": SPOKE_GENELAB_CONTRAST_GUIDANCE,
         "query_snippet": SPOKE_GENELAB_CONTRAST_SNIPPET,
@@ -236,7 +314,9 @@ _SCHEMA_NS = "https://purl.org/okn/frink/kg/{shortname}/schema/"
 #: KGs too large to enumerate a schema for via brute-force SPARQL probing. `wikidata`
 #: was measured: its probe spends ~62s hitting the endpoint's operation timeout twice
 #: and learns nothing, so the caller is better served by the message below immediately.
-_TOO_LARGE = {"ubergraph", "wikidata"}
+#: `babel` is the same size class (even a COUNT(*) over it exceeds the endpoint's
+#: operation limit), and its one-predicate shape is fully described by its usage notes.
+_TOO_LARGE = {"babel", "ubergraph", "wikidata"}
 
 #: Mermaid `style` declarations distinguishing the two kinds of class box. Node
 #: (entity) classes are light blue; edge (relationship) classes are orange. The

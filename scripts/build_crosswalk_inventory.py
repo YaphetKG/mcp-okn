@@ -180,6 +180,7 @@ CATALOG_KG_ALIAS = {
     "ToxCast": "biobricks-toxcast",
     "UFOKN": "ufokn",
     "Wikidata": "wikidata",
+    "Babel": "babel",
     "Wildlife-KN": "wildlifekn",
     "digcfdekg": "digcfdekg",
     "geoconnex": "geoconnex",
@@ -190,7 +191,7 @@ CATALOG_KG_ALIAS = {
 }
 
 # Bridge hubs: dropped from both sides before comparing KG sets (see above).
-BRIDGE_KGS = {"ubergraph", "wikidata"}
+BRIDGE_KGS = {"babel", "ubergraph", "wikidata"}
 
 # Catalog stem-id prefix -> crosswalk domain.
 CATALOG_DOMAIN = {
@@ -227,6 +228,7 @@ CATALOG_OVERRIDE: dict[str, tuple[tuple[str, ...], str] | None] = {
 _KEY_STOPWORDS = {
     "a",
     "and",
+    "babel",
     "assembled",
     "bridge",
     "bridged",

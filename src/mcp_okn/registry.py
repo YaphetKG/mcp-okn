@@ -28,22 +28,22 @@ _RAW_BASE = (
 
 # KGs listed in the registry but excluded from results — e.g. not loaded in the
 # federation under their expected named graph (queries return no rows).
-# `babel` joined the registry in the 2026-09-01 refresh but is NOT loaded: every
-# candidate graph IRI (…/kg/babel, …/kg/babel/, frink.renci.org/kg/babel) counts
-# 0 triples on the federation endpoint, so serving it would advertise a graph that
-# answers nothing.
-# `bio101` (KB Bio 101) is the same case, and has been since at least 2026-06-18
+# `babel` (Translator Babel identifier cliques) joined the registry in the
+# 2026-09-01 refresh while still empty and was excluded here; it was loaded by
+# 2026-09-26 and restored, now as an identifier-mapping bridge KG (see the
+# `babel` usage notes in schema.py).
+# `bio101` (KB Bio 101) is still empty, and has been since at least 2026-06-18
 # when it was first recorded in crosswalks.json `known_non_joins` as
 # "unmaterialized" — it stayed in the listing for months while answering nothing.
 # Re-verified empty 2026-09-02: COUNT(*) = 0, no row on LIMIT 1, and no distinct
-# predicate, under every candidate graph IRI; the other 42 registered KGs all
-# return data. Excluding it also retired the payload tag `biology_concept`
-# ("General biology concepts and causal mechanisms (textbook-derived)"), whose
-# only carrier it was — the payload vocabulary must contain no term without a
+# predicate, under every candidate graph IRI; the other 42 registered KGs
+# returned data at the time. Excluding it also retired the payload tag
+# `biology_concept` ("General biology concepts and causal mechanisms
+# (textbook-derived)"), whose only carrier it was — the payload vocabulary must contain no term without a
 # supplier, or find_context_sources would advertise a capability nothing answers.
 # Restore both together if bio101 is loaded.
 # Drop a name from this set once the federation loads it.
-EXCLUDED_KGS = {"semopenalex", "babel", "bio101"}
+EXCLUDED_KGS = {"semopenalex", "bio101"}
 
 # Process-lifetime caches (the registry changes rarely).
 _shortnames_cache: list[str] | None = None

@@ -48,7 +48,7 @@
 <body>
 <header>
   <h1>Proto-OKN cross-KG crosswalk network</h1>
-  <p>37 knowledge graphs, 181 verified crosswalks (verified 2026-09-02). One edge per crosswalk &mdash; parallel crosswalks between a pair fan out as arcs · color = data domain · width &#8733; log&#8321;&#8320;(verified count).</p>
+  <p>37 knowledge graphs, 194 verified crosswalks (verified 2026-09-26). One edge per crosswalk &mdash; parallel crosswalks between a pair fan out as arcs · color = data domain · width &#8733; log&#8321;&#8320;(verified count).</p>
   <p class="tip">&#9654; <b>Hover</b> a node or edge for detail · <b>drag</b> to rearrange · <b>scroll</b> to zoom · <b>double-click</b> a node to unpin it.<br>&#9654; <b>Click a legend item</b> &mdash; a domain (e.g. <b>Chemicals</b>) or a line style (e.g. <b>via ubergraph</b>) &mdash; to toggle those edges.</p>
 </header>
 <div class="bar" id="legend"></div>
@@ -58,6 +58,7 @@
     <span class="chip lstyle" data-b="direct"><svg width="24" height="10" style="vertical-align:middle"><line x1="1" y1="5" x2="23" y2="5" stroke="var(--muted)" stroke-width="2"/></svg> direct join</span>
     <span class="chip lstyle" data-b="ubergraph"><svg width="24" height="10" style="vertical-align:middle"><line x1="1" y1="5" x2="23" y2="5" stroke="var(--muted)" stroke-width="2" stroke-dasharray="7,4"/></svg> via <code>ubergraph</code></span>
     <span class="chip lstyle" data-b="wikidata"><svg width="24" height="10" style="vertical-align:middle"><line x1="1" y1="5" x2="23" y2="5" stroke="var(--muted)" stroke-width="2" stroke-dasharray="1.5,3.5" stroke-linecap="round"/></svg> via <code>wikidata</code></span>
+    <span class="chip lstyle" data-b="babel"><svg width="24" height="10" style="vertical-align:middle"><line x1="1" y1="5" x2="23" y2="5" stroke="var(--muted)" stroke-width="2" stroke-dasharray="7,3,1,3" stroke-linecap="round"/></svg> via <code>babel</code></span>
     <button id="reset">&#8635; reset layout</button>
   </div>
 </div>
@@ -97,6 +98,10 @@ const R=[
 ["C",["biobricks-mesh","sockg"],5,"CAS"],
 ["C",["biobricks-tox21","biobricks-ice"],8916,"CAS"],
 ["C",["biobricks-tox21","biobricks-toxcast"],8909,"CAS"],
+["C",["biobricks-tox21","prokn"],2462,"CAS→ChEMBL (babel)"],
+["C",["biobricks-toxcast","prokn"],2504,"CAS→ChEMBL (babel)"],
+["C",["biobricks-tox21","rdkg"],920,"CAS→DrugBank (babel)"],
+["C",["biobricks-toxcast","rdkg"],928,"CAS→DrugBank (babel)"],
 ["C",["spoke-okn","biobricks-ice"],712,"CHEBI↔CAS (ubergraph)"],
 ["C",["spoke-okn","biobricks-tox21"],480,"CHEBI↔CAS (ubergraph)"],
 ["C",["spoke-okn","biobricks-toxcast"],496,"CHEBI↔CAS (ubergraph)"],
@@ -104,6 +109,8 @@ const R=[
 ["C",["biobricks-aopwiki","spoke-okn"],27,"DrugBank"],
 ["C",["rdkg","spoke-okn"],43,"DrugBank"],
 ["C",["ruralkg","rdkg"],2,"DrugBank"],
+["C",["rdkg","prokn"],1816,"DrugBank→ChEMBL (babel)"],
+["C",["ruralkg","prokn"],6,"DrugBank→ChEMBL (babel)"],
 ["C",["spoke-okn","prokn"],143,"InChIKey"],
 ["C",["biobricks-aopwiki","biobricks-pubchem-annotations"],401,"PubChem CID"],
 ["C",["biobricks-aopwiki","spoke-okn"],87,"PubChem CID"],
@@ -141,6 +148,8 @@ const R=[
 ["D",["biohealth","gene-expression-atlas-okn"],13,"UMLS↔HP (ubergraph)"],
 ["D",["biohealth","oard-kg"],4549,"UMLS↔HP (ubergraph)"],
 ["D",["biohealth","prokn"],4340,"UMLS↔HP (ubergraph)"],
+["D",["biohealth","digcfdekg"],208,"UMLS↔MONDO (babel)"],
+["D",["biohealth","nestkg"],12,"UMLS↔MONDO (babel)"],
 ["D",["biohealth","biomarkerkg"],835,"UMLS↔MONDO (ubergraph)"],
 ["D",["biohealth","nde"],2760,"UMLS↔MONDO (ubergraph)"],
 ["D",["biohealth","oard-kg"],1796,"UMLS↔MONDO (ubergraph)"],
@@ -178,7 +187,12 @@ const R=[
 ["G",["rdkg","spoke-genelab"],9034,"Entrez"],
 ["G",["rdkg","spoke-okn"],8475,"Entrez"],
 ["G",["spoke-genelab","spoke-okn"],16326,"Entrez"],
+["G",["biobricks-ice","pankgraph"],395,"Entrez→Ensembl (babel)"],
+["G",["biomarkerkg","pankgraph"],200,"Entrez→Ensembl (babel)"],
+["G",["digcfdekg","pankgraph"],34013,"Entrez→Ensembl (babel)"],
 ["G",["digcfdekg","prokn"],7965,"Entrez→Ensembl (wikidata)"],
+["G",["rdkg","pankgraph"],9159,"Entrez→Ensembl (babel)"],
+["G",["spoke-genelab","pankgraph"],28554,"Entrez→Ensembl (babel)"],
 ["G",["digcfdekg","prokn"],20783,"Entrez→HGNC (wikidata)"],
 ["G",["prokn","spoke-okn"],16298,"HGNC→Entrez (wikidata)"],
 
@@ -350,15 +364,15 @@ const labelG=g.append("g");
 const tip=document.getElementById("tip");
 const wrap=document.getElementById("wrap");
 const active=new Set(Object.keys(DOM));
-const bactive=new Set(["direct","ubergraph","wikidata"]);
-const bridgeOf=l=>{const k=l.key||"";return /ubergraph/i.test(k)?"ubergraph":(/wikidata/i.test(k)?"wikidata":"direct");};
+const bactive=new Set(["direct","ubergraph","wikidata","babel"]);
+const bridgeOf=l=>{const k=l.key||"";return /ubergraph/i.test(k)?"ubergraph":(/wikidata/i.test(k)?"wikidata":(/babel/i.test(k)?"babel":"direct"));};
 const vis=l=>active.has(l.dom)&&bactive.has(bridgeOf(l));
 const inkVar=()=>getComputedStyle(document.body).getPropertyValue('--ink').trim();
 const surfVar=()=>getComputedStyle(document.body).getPropertyValue('--surface').trim();
 const b2Var=()=>getComputedStyle(document.body).getPropertyValue('--border2').trim();
 const mutVar=()=>getComputedStyle(document.body).getPropertyValue('--muted').trim();
 
-const dashFor=d=>{const k=(d.key||"");return /ubergraph/i.test(k)?"7,4":(/wikidata/i.test(k)?"1.5,3.5":null);};
+const dashFor=d=>{const k=(d.key||"");return /ubergraph/i.test(k)?"7,4":(/wikidata/i.test(k)?"1.5,3.5":(/babel/i.test(k)?"7,3,1,3":null));};
 // Approximate (name-matched) taxon overlaps — e.g. biohealth, which has no
 // NCBITaxon ids — get a lighter shade of the Taxonomy colour to flag the weaker match.
 const colorFor=d=>(d.dom==="T"&&/name-match/i.test(d.key||""))?"#B4DE78":DOM[d.dom][1];

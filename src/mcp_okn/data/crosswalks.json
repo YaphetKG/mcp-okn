@@ -2,7 +2,7 @@
   "$schema_note": "Combined verified cross-KG joins for the Proto-OKN federation. Merges the A-I clusters with the spoke-okn geolocation crosswalks: cluster J (ZIP, on spoke-okn's full ~42,724-ZIP set) and cluster K (county/state FIPS, including spoke-okn's attachment to the SAWGraph spatial hub). Duplicates removed. Counts are exact COUNT(DISTINCT) over the named graphs on the verified_on date, EXCEPT cluster O (ufokn), whose verified_count is a SAMPLED lower bound (ufokn is too large for an exact full-graph count within the 120s endpoint limit) - see its verified_count_note. A consumer keyed by KG shortname should surface, for a given shortname, every entry where it appears as left_kg, right_kg, or bridge_kg. Clusters: (A) disease/phenotype - oard-kg is the MONDO/HP hub joining prokn, rdkg, nde and ubergraph; spoke-okn attaches via its 180 DOID Disease nodes (DIRECTLY to the DOID carriers prokn/biomarkerkg/nde, A7-A9, and through an ubergraph DOID->MONDO bridge to rdkg/oard-kg, A10-A11), (B) CAS chemical, (C) gene cluster - keyed across THREE id systems: Entrez/NCBI Gene (spoke-okn, spoke-genelab, rdkg, biobricks-aopwiki; in three IRI forms - see C_gene_cluster note - joined by bare-id rebuild; C4-C8), Ensembl (gene-expression-atlas-okn, pankgraph, spoke-okn's schema/ensembl crosswalk, AOP-Wiki, and prokn - whose up:Gene nodes ARE ensembl.org IRIs, so joins to it need an IRI rebuild; C1, C3, C14, C15, C16, C17, F1-F2), and HGNC (prokn, bridged to Entrez through wikidata P354->P351; C9 - a route that is now OPTIONAL, since prokn also carries native Ensembl and Entrez; C16 joins prokn<->spoke-okn directly and is COMPLEMENTARY to C9), (D) SAWGraph S2 spatial hub, (E) toxicology/AOP CAS, (F) AOP-Wiki gene bridge, (G) UniProt protein, (H) soil-carbon spatial leaf (sockg: H1 S2 + H2 county to the spatialkg hub, plus H3 a DIRECT leaf-to-leaf S2 co-location with sawgraph's national US-WQP samples in 2 cells), (I) manufacturing supply-chain, (J) spoke-okn ZIP geography, (K) spoke-okn county/state-FIPS geography. (L) county/state-FIPS attachments of geoconnex, scales and nikg to the SAWGraph spatial hub (spatialkg) and spoke-okn, each carrying the same KWG/FIPS county key under a different non-obvious encoding (geoconnex: geoconnex.us/ref/counties/{FIPS5} reference IRIs on the GNIS county predicate; scales: a NUMERIC hasIdbCounty literal with the leading zero dropped; nikg: a phila.gov-rewritten KWG sfWithin IRI). Cluster L SUPERSEDES three base-file verdicts: scales (was an island on the unpopulated fips:CountyCode field), nikg (was 'no geographic key at all'), and geoconnex (only non-joins were recorded - its S2-cell and SAWGraph PWS reference-IRI non-joins remain valid, but the county-FIPS key is a separate, working route to the hub). Four further KGs profiled for cluster L (medical-device-kg, phaseskg, nasa-gesdisc-kg, wildlifekn) share no materialized join key and are recorded as islands / thin threads. (M) biobricks-mesh: the NLM MeSH vocabulary attaches to ubergraph on MeSH descriptor ids (oboInOwl:hasDbXref 'MESH:{ID}'), 9,463 matches dominated by MONDO disease (8,202), making it a MeSH-keyed member of the disease cluster A; biobricks-pubchem-annotations was profiled in the same pass and is an island (keyed solely on PubChem CID, which no federation KG materializes). Additionally biobricks-mesh has a second, DIRECT MeSH route (M2): spoke-okn MeSH-tags ~165 of its Disease and SDoH nodes via mesh_ids/mesh_list (HTTPS mesh IRIs vs biobricks-mesh's HTTP), uniquely reaching spoke-okn's social-determinants layer that the MONDO route (M1) cannot. (N) fiokg (SAWGraph FRS KG): a full SAWGraph spatial leaf attaching to the spatialkg hub via owl:sameAs to native KWG IRIs - 681,045 S2 Level-13 cells (N1, the LARGEST S2 join in the federation) and 3,031 county-FIPS AdministrativeRegion_2 IRIs (N2; 3,032 to spoke-okn, N3) - and to the manufacturing cluster I on the bare 6-digit NAICS code (N4 sudokn 64/66, N5 securechainkg 301/301). fiokg and the sawgraph leaf OVERLAP directly in 4,712 Maine S2 cells (N6, leaf-to-leaf), useful because fiokg flags 188,057 EPA-PFAS-Facility instances against sawgraph's PFAS samples. fiokg attaches at the county + S2 levels only (no KWG state IRIs); 261 leading-zero-truncated admin IRIs are excluded (see known_non_joins). (O) ufokn (Urban Flooding OKN): a FIFTH SAWGraph S2-cell spatial leaf. ufokn encodes its S2 cells as BLANK NODES (typed schema:PropertyValue + its own kwg:S2Cell ontology class), not KWG resource IRIs, with the 64-bit S2 cell id held as a bare decimal string in schema:value - the IDENTICAL value spatialkg uses as the suffix of its s2.level13.{id} node IRI. Rebuilding that IRI joins ufokn DIRECTLY to spatialkg's S2Cell_Level13 nodes (O1, no value rewrite). Three type-bounded samples (1k/8k/20k cells) all show 100% containment of ufokn's level-13 cells in spatialkg, so this is a near-complete attachment whose exact cardinality is not enumerable within the endpoint limit (verified_count 7,670 is a sampled lower bound). Cluster O SUPERSEDES the base file's two ufokn non-join verdicts ('unprofiled-large' and 'S2 Level-13 = 0'): the 0 was a direct typed-NODE join against blank nodes (can never match) and the timeout was an unbounded scan of ufokn's ~11.7M S2 nodes. ufokn also carries finer S2 LEVEL-18 cells that nest inside the level-13 hub cells but do not attach to the (level-13) hub directly. (P) biobricks-pubchem-annotations PubChem CID -> spoke-okn: spoke-okn materializes the CID as oboInOwl:hasDbXref identifiers.org/pubchem.compound/{n} on its ChemicalEntity nodes (762, exact 100% join after bare-CID normalization), SUPERSEDING the base file's biobricks-pubchem-annotations island verdict - it never checked spoke-okn's hasDbXref. (BH) biohealth (Bio-Health KG, UVA): a UMLS-CUI-keyed health graph (biomedical + social determinants) whose entities ARE their own https://biohealthkg.proto-okn.net/kg/node/C{cui} IRIs and which carries no outbound xref. It attaches ONLY through ubergraph's inbound UMLS hasDbXref on MONDO (10,087 biohealth CUIs), HP (4,828) and UBERON (2,148) - no CHEBI/UniProt/NCBIGene/NCIT UMLS xref exists, so biohealth crosswalks on disease, phenotype and anatomy only (never chemicals/genes/proteins). Verified joins BH1-BH8: rdkg, prokn, spoke-okn (via MONDO->DOID), oard-kg (MONDO + HP), nde, biomarkerkg (via MONDO->DOID) and gene-expression-atlas-okn. The UBERON anatomy axis is VERIFIED (BH9 biohealth<->GXA 249, BH10 biohealth<->spoke-genelab 35); spoke-okn stores no raw obo/UBERON_ terms and chemicals/genes/proteins remain unreachable. CL is not a biohealth axis (UMLS->CL = 0). biohealth is additionally a fragile LABEL-BRIDGED organism member of the taxon_hub (no NCBITaxon ids). See cluster_notes.BH_biohealth_umls. (AN) Anatomy (UBERON): spoke-genelab (INVESTIGATED_ASiA, 42 terms; + 7 CL cell types) and gene-expression-atlas-okn (biolink:has_attribute, 362 terms) carry raw obo/UBERON_ anatomy and join directly (AN1, 27 shared); biohealth attaches via the ubergraph UMLS->UBERON bridge (BH9/BH10). See cluster_notes.AN_anatomy_uberon.",
   "$count_note": "INTERNAL maintainer note - NOT user-facing. The single user-facing crosswalk count is len(all_crosswalks()) in src/mcp_okn/crosswalks.py - exactly what the list_crosswalks tool returns and what the README, the inventory doc (docs/crosswalks/proto-okn-crosswalk-inventory.md) and the network diagram cite. Do NOT surface the raw length of this verified_crosswalks array to end users: it is an internal storage count that differs from the user-facing number because all_crosswalks() (a) drops the ubergraph hub-scaffolding rows where ubergraph is a bare endpoint (e.g. A6 MONDO-expansion, M1 MeSH<->ubergraph) plus the compressed NCBITaxon hub rows, and (b) re-expands taxon_hub.pairwise into one row per KG pair. That derivation - not any number hardcoded here - is the source of truth, so this note never needs a count update. tests/test_crosswalks.py pins the user-facing docs to len(all_crosswalks()).",
   "federation": "https://purl.org/okn/frink/kg",
-  "verified_on": "2026-09-02",
+  "verified_on": "2026-09-26",
   "taxon_hub": {
     "$note": "Materialized pairwise NCBITaxon overlaps between the hub member KGs (each maps organisms to ubergraph; crosswalks D3-D10). Each record is a non-zero pair {kg_a, kg_b, exact_id, clade_a_in_b, clade_b_in_a}: exact_id = same NCBITaxon id on both sides (symmetric); clade_a_in_b = kg_a taxa nested under kg_b's clades via ubergraph subClassOf* (directional), clade_b_in_a the reverse. Zero-overlap pairs are omitted. Regenerate with scripts/refresh_taxon_overlaps.py when a member KG is updated. UPDATE 2026-06-18: wildlifekn added as a LABEL-BRIDGED member - it has no NCBITaxon IRIs, so its bird/amphibian binomials (authority-stripped) are resolved to NCBITaxon via ubergraph rdfs:label (339 species resolve). Fragile vs the IRI-based members; exact-id pairwise overlaps verified 2026-06-18 (nde 17, sawgraph 2). UPDATE 2026-06-23: biohealth added as a LABEL-BRIDGED member - the Bio-Health KG keys every entity on a UMLS CUI (node IRI) and carries NO NCBITaxon ids, so its organism concepts are resolved to NCBITaxon by matching biohealth rdfs:label to ubergraph NCBITaxon rdfs:label (organism scientific name). Name-based and approximate (misses synonyms/spelling variants, so counts are conservative lower bounds) and CANNOT do subClassOf* clade expansion - even more fragile than wildlifekn (which at least uses cleaned binomials). Recorded as label_match counts (biohealth organisms found by name in each hub KG), NOT exact_id/clade, verified 2026-06-23: aopwiki 112/166, gene-expression-atlas-okn 6/8, sawgraph 377/538, spoke-genelab 7/9 (model organisms), nde 1052/1808, spoke-okn 1603/34570.",
     "hub_kg": "ubergraph",
@@ -3974,6 +3974,346 @@
       "domain": "Chemicals"
     },
     {
+      "id": "DB2-drugbank-rdkg-prokn-via-babel",
+      "left_kg": "rdkg",
+      "left_predicate": "node-iri (biolink:Drug, DrugBank IRI)",
+      "left_role": "subject",
+      "right_kg": "prokn",
+      "right_predicate": "node-iri (obo:NCIT_C43366 Compound, ChEMBL IRI)",
+      "right_role": "subject",
+      "shared_key": "DrugBank -> ChEMBL (bridged)",
+      "key_namespace": "http://identifiers.org/drugbank/DB{n} (rdkg; babel uses the same form) -> babel clique -> http://identifiers.org/chembl.compound/CHEMBL{n} -> https://www.ebi.ac.uk/chembl/explore/compound/CHEMBL{n} (prokn)",
+      "bridge_kg": "babel",
+      "iri_normalization": "rdkg's DrugBank drug IRIs are already in babel's identifiers.org form, so the left side needs no rewrite. Resolve each drug's babel clique (?drug skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members whose IRI starts with http://identifiers.org/chembl.compound/, and rebuild https://www.ebi.ac.uk/chembl/explore/compound/{CHEMBL id} to reach prokn. Staging the first hop in a subquery is required: the flat two-hop join times out.",
+      "verified_count": 1816,
+      "verified_on": "2026-09-26",
+      "verified_count_secondary": {
+        "prokn_compounds_reached": 1836,
+        "rdkg_drugs_with_prokn_protein_interactions": 698,
+        "rdkg_chebi_chemicals_via_babel": 12
+      },
+      "verified_count_note": "DISTINCT rdkg biolink:Drug nodes (DrugBank) that reach a prokn Compound (obo:NCIT_C43366) through babel: 1,816 of rdkg's 2,074 DrugBank drugs (87.6%), landing on 1,836 prokn compounds. rdkg's other ~14,800 biolink:Drug nodes are clinical-trial drug-name nodes (rdaccelerate.org/resource/CTDRUG_*) with no external id and do not map. The entity on each side is the node itself; the babel ids are only the join key. babel can place one DrugBank id in two cliques (e.g. a UMLS-preferred and a UNII-preferred one), so a drug may fan out to more than one ChEMBL id - count drugs, not cliques. Test prokn membership by the Compound type, not by skos:exactMatch: about 112 of these prokn compounds carry no PubChem cross-reference, and an exactMatch presence test undercounts to 1,704. 698 of the 1,816 drugs have biolink:directly_physically_interacts_with protein targets in prokn (331 distinct proteins). A second, much smaller leg maps rdkg's 21 CHEBI ChemicalEntity exposure chemicals (rdaccelerate.org/resource/CHEBI_{n} -> obo:CHEBI_{n}) the same way: 12 reach prokn. They are a different entity class (exposures, not drugs), so they are recorded here rather than unioned into the drug count. Supersedes the 2026-07-12 known_non_join on this pair's chemical axis.",
+      "example_question": "RDKG's rare-disease drugs mapped through Babel (DrugBank -> ChEMBL) to ProKN: which proteins does ProKN say each drug directly physically interacts with?",
+      "example_questions": [
+        "RDKG's rare-disease drugs mapped through Babel (DrugBank -> ChEMBL) to ProKN: which proteins does ProKN say each drug directly physically interacts with?",
+        "For an RDKG drug that treats a rare disease, which other indications (MeSH, with clinical phase) does ProKN's ChEMBL record list for the same compound - repurposing context beyond the rare disease?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?drug) AS ?n) WHERE {\n  { SELECT DISTINCT ?drug ?pref WHERE {\n      GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?drug a <https://w3id.org/biolink/vocab/Drug> }\n      GRAPH <https://purl.org/okn/frink/kg/babel> { ?drug <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  GRAPH <https://purl.org/okn/frink/kg/babel> { ?chembl <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref }\n  FILTER(STRSTARTS(STR(?chembl),'http://identifiers.org/chembl.compound/'))\n  BIND(IRI(CONCAT('https://www.ebi.ac.uk/chembl/explore/compound/',STRAFTER(STR(?chembl),'chembl.compound/'))) AS ?cpd)\n  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?cpd a <http://purl.obolibrary.org/obo/NCIT_C43366> }\n}",
+      "skeleton_verified": true
+    },
+    {
+      "id": "CB2-cas-tox21-prokn-via-babel",
+      "left_kg": "biobricks-tox21",
+      "left_predicate": "node-iri (Tox21 chemical = its CAS IRI)",
+      "left_role": "subject",
+      "right_kg": "prokn",
+      "right_predicate": "node-iri (obo:NCIT_C43366 Compound, ChEMBL IRI)",
+      "right_role": "subject",
+      "shared_key": "CAS -> ChEMBL (bridged)",
+      "key_namespace": "http://identifiers.org/cas/{cas} (same form in babel) -> babel clique -> http://identifiers.org/chembl.compound/CHEMBL{n} -> https://www.ebi.ac.uk/chembl/explore/compound/CHEMBL{n} (prokn)",
+      "bridge_kg": "babel",
+      "iri_normalization": "biobricks-tox21's CAS IRIs are already in babel's identifiers.org form, so the left side needs no rewrite; rebuild prokn's https://www.ebi.ac.uk/chembl/explore/compound/{CHEMBL id} from the chembl.compound clique member and test it against prokn's Compound type. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both - left in one group, the planner can run the FILTER over the whole exactMatch relation and time out.",
+      "verified_count": 2462,
+      "verified_on": "2026-09-26",
+      "verified_count_secondary": {
+        "prokn_compounds_reached": 2464
+      },
+      "verified_count_note": "DISTINCT biobricks-tox21 CAS-keyed chemicals that reach a prokn Compound (obo:NCIT_C43366) through babel: 2,462 chemicals onto 2,464 prokn compounds. The two graphs share no chemical identifier scheme (biobricks-tox21 is CAS-keyed; prokn is ChEMBL/InChIKey/PubChem-keyed with no CAS), so this pair had no crosswalk before babel. Test prokn membership by the Compound type, not skos:exactMatch (some prokn compounds carry no PubChem xref). babel can place one id in two cliques, so a source entity may fan out to more than one target id: count entities, never cliques.",
+      "example_question": "Which Tox21-screened chemicals are ChEMBL compounds in ProKN (CAS -> ChEMBL via Babel), and what protein targets does ProKN record for those that are active in Tox21 assays?",
+      "example_questions": [
+        "Which Tox21-screened chemicals are ChEMBL compounds in ProKN (CAS -> ChEMBL via Babel), and what protein targets does ProKN record for those that are active in Tox21 assays?",
+        "How much of the Tox21 chemical library reaches ProKN through Babel, and how many of the bridged chemicals are approved or clinical-stage drugs in ProKN's ChEMBL record?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/biobricks-tox21> { ?ent ?p ?o } FILTER(STRSTARTS(STR(?ent),'http://identifiers.org/cas/')) BIND(?ent AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/chembl.compound/'))\n  BIND(IRI(CONCAT('https://www.ebi.ac.uk/chembl/explore/compound/',STRAFTER(STR(?member),'chembl.compound/'))) AS ?cpd)\n  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?cpd a <http://purl.obolibrary.org/obo/NCIT_C43366> }\n}",
+      "skeleton_verified": true
+    },
+    {
+      "id": "CB3-cas-toxcast-prokn-via-babel",
+      "left_kg": "biobricks-toxcast",
+      "left_predicate": "http://edamontology.org/has_identifier (CAS IRI)",
+      "left_role": "object",
+      "right_kg": "prokn",
+      "right_predicate": "node-iri (obo:NCIT_C43366 Compound, ChEMBL IRI)",
+      "right_role": "subject",
+      "shared_key": "CAS -> ChEMBL (bridged)",
+      "key_namespace": "http://identifiers.org/cas/{cas} (same form in babel) -> babel clique -> http://identifiers.org/chembl.compound/CHEMBL{n} -> https://www.ebi.ac.uk/chembl/explore/compound/CHEMBL{n} (prokn)",
+      "bridge_kg": "babel",
+      "iri_normalization": "biobricks-toxcast's CAS IRIs are already in babel's identifiers.org form, so the left side needs no rewrite; rebuild prokn's https://www.ebi.ac.uk/chembl/explore/compound/{CHEMBL id} from the chembl.compound clique member and test it against prokn's Compound type. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both - left in one group, the planner can run the FILTER over the whole exactMatch relation and time out.",
+      "verified_count": 2504,
+      "verified_on": "2026-09-26",
+      "verified_count_secondary": {
+        "prokn_compounds_reached": 2507
+      },
+      "verified_count_note": "DISTINCT biobricks-toxcast CAS-keyed chemicals that reach a prokn Compound (obo:NCIT_C43366) through babel: 2,504 chemicals onto 2,507 prokn compounds. The two graphs share no chemical identifier scheme (biobricks-toxcast is CAS-keyed; prokn is ChEMBL/InChIKey/PubChem-keyed with no CAS), so this pair had no crosswalk before babel. Test prokn membership by the Compound type, not skos:exactMatch (some prokn compounds carry no PubChem xref). babel can place one id in two cliques, so a source entity may fan out to more than one target id: count entities, never cliques.",
+      "example_question": "Which ToxCast chemicals reach ProKN's ChEMBL compounds through Babel (CAS -> ChEMBL), and for an assay target family, do ToxCast activity calls line up with the protein targets ProKN records?",
+      "example_questions": [
+        "Which ToxCast chemicals reach ProKN's ChEMBL compounds through Babel (CAS -> ChEMBL), and for an assay target family, do ToxCast activity calls line up with the protein targets ProKN records?",
+        "For ToxCast chemicals that are also ProKN compounds, which clinical indications (MeSH, with phase) does ProKN list - i.e. which environmental test chemicals are also drugs?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/biobricks-toxcast> { ?t <http://edamontology.org/has_identifier> ?ent } FILTER(STRSTARTS(STR(?ent),'http://identifiers.org/cas/')) BIND(?ent AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/chembl.compound/'))\n  BIND(IRI(CONCAT('https://www.ebi.ac.uk/chembl/explore/compound/',STRAFTER(STR(?member),'chembl.compound/'))) AS ?cpd)\n  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?cpd a <http://purl.obolibrary.org/obo/NCIT_C43366> }\n}",
+      "skeleton_verified": true
+    },
+    {
+      "id": "DB3-cas-tox21-rdkg-via-babel",
+      "left_kg": "biobricks-tox21",
+      "left_predicate": "node-iri (Tox21 chemical = its CAS IRI)",
+      "left_role": "subject",
+      "right_kg": "rdkg",
+      "right_predicate": "node-iri (biolink:Drug, DrugBank IRI)",
+      "right_role": "subject",
+      "shared_key": "CAS -> DrugBank (bridged)",
+      "key_namespace": "http://identifiers.org/cas/{cas} (same form in babel) -> babel clique -> http://identifiers.org/drugbank/DB{n} (rdkg; same form, no rewrite)",
+      "bridge_kg": "babel",
+      "iri_normalization": "Neither side needs a rewrite: biobricks-tox21's CAS IRIs and rdkg's DrugBank drug IRIs are both in babel's identifiers.org form. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both - left in one group, the planner can run the FILTER over the whole exactMatch relation and time out.",
+      "verified_count": 920,
+      "verified_on": "2026-09-26",
+      "verified_count_secondary": {
+        "rdkg_drugs_reached": 921
+      },
+      "verified_count_note": "DISTINCT biobricks-tox21 CAS-keyed chemicals that reach an rdkg biolink:Drug (DrugBank) through babel: 920 chemicals onto 921 rdkg drugs. rdkg carries no CAS and biobricks-tox21 carries no DrugBank id, so the pair had no chemical crosswalk before babel. babel can place one id in two cliques, so a source entity may fan out to more than one target id: count entities, never cliques.",
+      "example_question": "Which RDKG rare-disease drugs were screened in Tox21 (DrugBank <- CAS via Babel), and in which Tox21 assays are they active?",
+      "example_questions": [
+        "Which RDKG rare-disease drugs were screened in Tox21 (DrugBank <- CAS via Babel), and in which Tox21 assays are they active?",
+        "Of RDKG's DrugBank drugs, how many were Tox21-screened, and which rare diseases do the Tox21-active ones treat?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/biobricks-tox21> { ?ent ?p ?o } FILTER(STRSTARTS(STR(?ent),'http://identifiers.org/cas/')) BIND(?ent AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/drugbank/'))\n  GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?member a <https://w3id.org/biolink/vocab/Drug> }\n}",
+      "skeleton_verified": true
+    },
+    {
+      "id": "DB4-cas-toxcast-rdkg-via-babel",
+      "left_kg": "biobricks-toxcast",
+      "left_predicate": "http://edamontology.org/has_identifier (CAS IRI)",
+      "left_role": "object",
+      "right_kg": "rdkg",
+      "right_predicate": "node-iri (biolink:Drug, DrugBank IRI)",
+      "right_role": "subject",
+      "shared_key": "CAS -> DrugBank (bridged)",
+      "key_namespace": "http://identifiers.org/cas/{cas} (same form in babel) -> babel clique -> http://identifiers.org/drugbank/DB{n} (rdkg; same form, no rewrite)",
+      "bridge_kg": "babel",
+      "iri_normalization": "Neither side needs a rewrite: biobricks-toxcast's CAS IRIs and rdkg's DrugBank drug IRIs are both in babel's identifiers.org form. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both - left in one group, the planner can run the FILTER over the whole exactMatch relation and time out.",
+      "verified_count": 928,
+      "verified_on": "2026-09-26",
+      "verified_count_secondary": {
+        "rdkg_drugs_reached": 929
+      },
+      "verified_count_note": "DISTINCT biobricks-toxcast CAS-keyed chemicals that reach an rdkg biolink:Drug (DrugBank) through babel: 928 chemicals onto 929 rdkg drugs. rdkg carries no CAS and biobricks-toxcast carries no DrugBank id, so the pair had no chemical crosswalk before babel. babel can place one id in two cliques, so a source entity may fan out to more than one target id: count entities, never cliques.",
+      "example_question": "Which RDKG rare-disease drugs have ToxCast high-throughput assay data (DrugBank <- CAS via Babel), and what do the assays flag?",
+      "example_questions": [
+        "Which RDKG rare-disease drugs have ToxCast high-throughput assay data (DrugBank <- CAS via Babel), and what do the assays flag?",
+        "For a given ToxCast assay endpoint, which active chemicals are RDKG drugs and which rare diseases do they treat?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/biobricks-toxcast> { ?t <http://edamontology.org/has_identifier> ?ent } FILTER(STRSTARTS(STR(?ent),'http://identifiers.org/cas/')) BIND(?ent AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/drugbank/'))\n  GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?member a <https://w3id.org/biolink/vocab/Drug> }\n}",
+      "skeleton_verified": true
+    },
+    {
+      "id": "DB5-drugbank-ruralkg-prokn-via-babel",
+      "left_kg": "ruralkg",
+      "left_predicate": "http://www.w3.org/2002/07/owl#sameAs (also skos:exactMatch)",
+      "left_role": "object",
+      "right_kg": "prokn",
+      "right_predicate": "node-iri (obo:NCIT_C43366 Compound, ChEMBL IRI)",
+      "right_role": "subject",
+      "shared_key": "DrugBank -> ChEMBL (bridged)",
+      "key_namespace": "https://go.drugbank.com/drugs/DB{n} (ruralkg) -> http://identifiers.org/drugbank/DB{n} -> babel clique -> http://identifiers.org/chembl.compound/CHEMBL{n} -> https://www.ebi.ac.uk/chembl/explore/compound/CHEMBL{n} (prokn)",
+      "bridge_kg": "babel",
+      "iri_normalization": "Rewrite ruralkg's go.drugbank.com/drugs/{DB id} to http://identifiers.org/drugbank/{DB id} before the first babel hop, then rebuild prokn's ChEMBL IRI from the chembl.compound member. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both - left in one group, the planner can run the FILTER over the whole exactMatch relation and time out.",
+      "verified_count": 6,
+      "verified_on": "2026-09-26",
+      "verified_count_secondary": {
+        "prokn_compounds_reached": 6
+      },
+      "verified_count_note": "DISTINCT ruralkg substances (DrugBank-linked) that reach a prokn Compound through babel: 6 - small because ruralkg's substance-abuse layer links only a handful of substances to DrugBank (its DrugBank join to rdkg, Q2, is 2). babel can place one id in two cliques, so a source entity may fan out to more than one target id: count entities, never cliques.",
+      "example_question": "Which substances in RuralKG's substance-abuse data resolve to ProKN compounds (DrugBank -> ChEMBL via Babel), and what protein targets does ProKN record for them?",
+      "example_questions": [
+        "Which substances in RuralKG's substance-abuse data resolve to ProKN compounds (DrugBank -> ChEMBL via Babel), and what protein targets does ProKN record for them?",
+        "For the RuralKG substances that bridge to ProKN, which indications (MeSH, with phase) does ChEMBL list - i.e. which abused substances also have medical uses?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/ruralkg> { ?ent <http://www.w3.org/2002/07/owl#sameAs> ?x } FILTER(STRSTARTS(STR(?x),'https://go.drugbank.com/drugs/')) BIND(IRI(CONCAT('http://identifiers.org/drugbank/', STRAFTER(STR(?x),'/drugs/'))) AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/chembl.compound/'))\n  BIND(IRI(CONCAT('https://www.ebi.ac.uk/chembl/explore/compound/',STRAFTER(STR(?member),'chembl.compound/'))) AS ?cpd)\n  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?cpd a <http://purl.obolibrary.org/obo/NCIT_C43366> }\n}",
+      "skeleton_verified": true
+    },
+    {
+      "id": "C22-entrez-rdkg-pankgraph-via-babel",
+      "left_kg": "rdkg",
+      "left_predicate": "node-iri (biolink:Gene, http://identifiers.org/ncbigene/{id})",
+      "left_role": "subject",
+      "right_kg": "pankgraph",
+      "right_predicate": "node-iri (biolink:Gene; the gene node IS the Ensembl IRI)",
+      "right_role": "subject",
+      "shared_key": "Entrez -> Ensembl (bridged)",
+      "key_namespace": "http://identifiers.org/ncbigene/{id} (rdkg) <-> babel gene clique <-> http://identifiers.org/ensembl/{ENSG} (pankgraph; same form in babel)",
+      "bridge_kg": "babel",
+      "iri_normalization": "No rewrite on either side: rdkg's gene IRIs and pankgraph's Ensembl gene IRIs are both in babel's identifiers.org form. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both - left in one group, the planner can run the FILTER over the whole exactMatch relation and time out.",
+      "verified_count": 9159,
+      "verified_on": "2026-09-26",
+      "verified_count_secondary": {
+        "pankgraph_genes": 9159
+      },
+      "verified_count_note": "DISTINCT genes linked between rdkg (Entrez) and pankgraph (Ensembl) through babel's gene cliques: 9,159. The pair shares no gene identifier scheme and had no gene crosswalk before babel (wikidata P351/P594 could bridge the same axis; babel does it without a property lookup). Gene cliques are separate from protein cliques in babel, so this is a gene-to-gene join only. babel can place one id in two cliques, so a source entity may fan out to more than one target id: count entities, never cliques.",
+      "example_question": "Which RDKG rare-disease genes are expressed or annotated in PanKGraph's pancreas data (Entrez <-> Ensembl via Babel), e.g. for monogenic diabetes?",
+      "example_questions": [
+        "Which RDKG rare-disease genes are expressed or annotated in PanKGraph's pancreas data (Entrez <-> Ensembl via Babel), e.g. for monogenic diabetes?",
+        "How many of RDKG's disease genes reach PanKGraph's Ensembl genes through Babel, and which rare diseases do the pancreas-relevant ones cause?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/pankgraph> { ?ent a <https://w3id.org/biolink/vocab/Gene> } FILTER(STRSTARTS(STR(?ent),'http://identifiers.org/ensembl/')) BIND(?ent AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/ncbigene/'))\n  GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?member a <https://w3id.org/biolink/vocab/Gene> }\n}",
+      "skeleton_verified": true
+    },
+    {
+      "id": "C23-entrez-spokegenelab-pankgraph-via-babel",
+      "left_kg": "spoke-genelab",
+      "left_predicate": "node-iri (http://www.ncbi.nlm.nih.gov/gene/{entrez})",
+      "left_role": "subject",
+      "right_kg": "pankgraph",
+      "right_predicate": "node-iri (biolink:Gene; the gene node IS the Ensembl IRI)",
+      "right_role": "subject",
+      "shared_key": "Entrez -> Ensembl (bridged)",
+      "key_namespace": "http://www.ncbi.nlm.nih.gov/gene/{entrez} (spoke-genelab) <-> babel gene clique <-> http://identifiers.org/ensembl/{ENSG} (pankgraph; same form in babel)",
+      "bridge_kg": "babel",
+      "iri_normalization": "Rewrite babel's http://identifiers.org/ncbigene/{id} member to spoke-genelab's http://www.ncbi.nlm.nih.gov/gene/{id}; pankgraph's Ensembl IRIs are already in babel form. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both - left in one group, the planner can run the FILTER over the whole exactMatch relation and time out.",
+      "verified_count": 28554,
+      "verified_on": "2026-09-26",
+      "verified_count_secondary": {
+        "pankgraph_genes": 28554
+      },
+      "verified_count_note": "DISTINCT genes linked between spoke-genelab (Entrez) and pankgraph (Ensembl) through babel's gene cliques: 28,554. The pair shares no gene identifier scheme and had no gene crosswalk before babel (wikidata P351/P594 could bridge the same axis; babel does it without a property lookup). Gene cliques are separate from protein cliques in babel, so this is a gene-to-gene join only. babel can place one id in two cliques, so a source entity may fan out to more than one target id: count entities, never cliques.",
+      "example_question": "Which genes differentially expressed in spaceflight (SPOKE-GeneLab) are PanKGraph pancreas / type 1 diabetes genes (Entrez <-> Ensembl via Babel)?",
+      "example_questions": [
+        "Which genes differentially expressed in spaceflight (SPOKE-GeneLab) are PanKGraph pancreas / type 1 diabetes genes (Entrez <-> Ensembl via Babel)?",
+        "How large is the gene overlap between SPOKE-GeneLab and PanKGraph through Babel, and which PanKGraph gene annotations do spaceflight-responsive genes carry?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/pankgraph> { ?ent a <https://w3id.org/biolink/vocab/Gene> } FILTER(STRSTARTS(STR(?ent),'http://identifiers.org/ensembl/')) BIND(?ent AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/ncbigene/'))\n  BIND(IRI(CONCAT('http://www.ncbi.nlm.nih.gov/gene/', STRAFTER(STR(?member),'ncbigene/'))) AS ?g)\n  GRAPH <https://purl.org/okn/frink/kg/spoke-genelab> { ?g ?p ?o }\n}",
+      "skeleton_verified": true
+    },
+    {
+      "id": "C24-entrez-digcfdekg-pankgraph-via-babel",
+      "left_kg": "digcfdekg",
+      "left_predicate": "node-iri (http://www.ncbi.nlm.nih.gov/gene/{entrez})",
+      "left_role": "subject",
+      "right_kg": "pankgraph",
+      "right_predicate": "node-iri (biolink:Gene; the gene node IS the Ensembl IRI)",
+      "right_role": "subject",
+      "shared_key": "Entrez -> Ensembl (bridged)",
+      "key_namespace": "http://www.ncbi.nlm.nih.gov/gene/{entrez} (digcfdekg) <-> babel gene clique <-> http://identifiers.org/ensembl/{ENSG} (pankgraph; same form in babel)",
+      "bridge_kg": "babel",
+      "iri_normalization": "Rewrite babel's http://identifiers.org/ncbigene/{id} member to digcfdekg's http://www.ncbi.nlm.nih.gov/gene/{id}; pankgraph's Ensembl IRIs are already in babel form. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both - left in one group, the planner can run the FILTER over the whole exactMatch relation and time out.",
+      "verified_count": 34013,
+      "verified_on": "2026-09-26",
+      "verified_count_secondary": {
+        "pankgraph_genes": 34013
+      },
+      "verified_count_note": "DISTINCT genes linked between digcfdekg (Entrez) and pankgraph (Ensembl) through babel's gene cliques: 34,013. The pair shares no gene identifier scheme and had no gene crosswalk before babel (wikidata P351/P594 could bridge the same axis; babel does it without a property lookup). Gene cliques are separate from protein cliques in babel, so this is a gene-to-gene join only. babel can place one id in two cliques, so a source entity may fan out to more than one target id: count entities, never cliques.",
+      "example_question": "Which CFDE gene-trait associations (digcfdekg) involve PanKGraph pancreas genes (Entrez <-> Ensembl via Babel), e.g. for diabetes-related traits?",
+      "example_questions": [
+        "Which CFDE gene-trait associations (digcfdekg) involve PanKGraph pancreas genes (Entrez <-> Ensembl via Babel), e.g. for diabetes-related traits?",
+        "For a PanKGraph type 1 diabetes gene, which traits and factors does the CFDE KG attach to it?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/pankgraph> { ?ent a <https://w3id.org/biolink/vocab/Gene> } FILTER(STRSTARTS(STR(?ent),'http://identifiers.org/ensembl/')) BIND(?ent AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/ncbigene/'))\n  BIND(IRI(CONCAT('http://www.ncbi.nlm.nih.gov/gene/', STRAFTER(STR(?member),'ncbigene/'))) AS ?g)\n  GRAPH <https://purl.org/okn/frink/kg/digcfdekg> { ?g ?p ?o }\n}",
+      "skeleton_verified": true
+    },
+    {
+      "id": "C25-entrez-biomarkerkg-pankgraph-via-babel",
+      "left_kg": "biomarkerkg",
+      "left_predicate": "assessed biomarker entity (PubChem gene IRI https://pubchem.ncbi.nlm.nih.gov/rest/rdf/gene/GID{entrez})",
+      "left_role": "object",
+      "right_kg": "pankgraph",
+      "right_predicate": "node-iri (biolink:Gene; the gene node IS the Ensembl IRI)",
+      "right_role": "subject",
+      "shared_key": "Entrez -> Ensembl (bridged)",
+      "key_namespace": "https://pubchem.ncbi.nlm.nih.gov/rest/rdf/gene/GID{entrez} (biomarkerkg) <-> babel gene clique <-> http://identifiers.org/ensembl/{ENSG} (pankgraph; same form in babel)",
+      "bridge_kg": "babel",
+      "iri_normalization": "Rewrite babel's http://identifiers.org/ncbigene/{id} member to BiomarkerKG's PubChem gene IRI .../rest/rdf/gene/GID{id} (the GID number is the Entrez id); pankgraph's Ensembl IRIs are already in babel form. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both - left in one group, the planner can run the FILTER over the whole exactMatch relation and time out.",
+      "verified_count": 200,
+      "verified_on": "2026-09-26",
+      "verified_count_secondary": {
+        "pankgraph_genes": 200
+      },
+      "verified_count_note": "DISTINCT genes linked between biomarkerkg (Entrez) and pankgraph (Ensembl) through babel's gene cliques: 200. The pair shares no gene identifier scheme and had no gene crosswalk before babel (wikidata P351/P594 could bridge the same axis; babel does it without a property lookup). Gene cliques are separate from protein cliques in babel, so this is a gene-to-gene join only. babel can place one id in two cliques, so a source entity may fan out to more than one target id: count entities, never cliques.",
+      "example_question": "Which BiomarkerKG gene biomarkers are PanKGraph pancreas genes (Entrez <-> Ensembl via Babel), and for which diseases are they biomarkers?",
+      "example_questions": [
+        "Which BiomarkerKG gene biomarkers are PanKGraph pancreas genes (Entrez <-> Ensembl via Babel), and for which diseases are they biomarkers?",
+        "Of BiomarkerKG's 201 gene biomarkers, how many reach PanKGraph through Babel, and which are associated with diabetes or pancreatic disease?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/pankgraph> { ?ent a <https://w3id.org/biolink/vocab/Gene> } FILTER(STRSTARTS(STR(?ent),'http://identifiers.org/ensembl/')) BIND(?ent AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/ncbigene/'))\n  BIND(IRI(CONCAT('https://pubchem.ncbi.nlm.nih.gov/rest/rdf/gene/GID', STRAFTER(STR(?member),'ncbigene/'))) AS ?g)\n  GRAPH <https://purl.org/okn/frink/kg/biomarkerkg> { ?b ?bp ?g }\n}",
+      "skeleton_verified": true
+    },
+    {
+      "id": "C26-entrez-ice-pankgraph-via-babel",
+      "left_kg": "biobricks-ice",
+      "left_predicate": "https://ice.ntp.niehs.nih.gov/property/assay_entrez_gene_id (assay's mechanistic gene target)",
+      "left_role": "object",
+      "right_kg": "pankgraph",
+      "right_predicate": "node-iri (biolink:Gene; the gene node IS the Ensembl IRI)",
+      "right_role": "subject",
+      "shared_key": "Entrez -> Ensembl (bridged)",
+      "key_namespace": "https://www.ncbi.nlm.nih.gov/gene/{entrez} (ICE) -> http://identifiers.org/ncbigene/{entrez} -> babel gene clique -> http://identifiers.org/ensembl/{ENSG} (pankgraph; same form in babel)",
+      "bridge_kg": "babel",
+      "iri_normalization": "Strip ICE's assay_entrez_gene_id to the bare Entrez id (skipping the literal 'None'), rebuild http://identifiers.org/ncbigene/{id} for the first babel hop, and match the Ensembl clique member directly against pankgraph's gene nodes. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both - left in one group, the planner can run the FILTER over the whole exactMatch relation and time out.",
+      "verified_count": 395,
+      "verified_on": "2026-09-26",
+      "verified_count_secondary": {
+        "pankgraph_genes_reached": 395
+      },
+      "verified_count_note": "DISTINCT ICE assay target genes (Entrez) that reach a pankgraph Ensembl gene through babel: 395. ICE's gene axis is small (its assay targets), unlike its ~200k-CAS chemical axis, which is too large to push through babel in one query. babel can place one id in two cliques, so a source entity may fan out to more than one target id: count entities, never cliques.",
+      "example_question": "Which ICE (Integrated Chemical Environment) assays target genes that PanKGraph annotates in the pancreas (Entrez -> Ensembl via Babel)?",
+      "example_questions": [
+        "Which ICE (Integrated Chemical Environment) assays target genes that PanKGraph annotates in the pancreas (Entrez -> Ensembl via Babel)?",
+        "How many of ICE's assay target genes reach PanKGraph through Babel, and which pancreas-relevant genes are the most-assayed targets?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/biobricks-ice> { ?a <https://ice.ntp.niehs.nih.gov/property/assay_entrez_gene_id> ?x } BIND(REPLACE(STR(?x),'.*/gene/','') AS ?bare) FILTER(?bare != 'None') BIND(IRI(CONCAT('http://identifiers.org/ncbigene/', ?bare)) AS ?ent) BIND(?ent AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/ensembl/'))\n  GRAPH <https://purl.org/okn/frink/kg/pankgraph> { ?member a <https://w3id.org/biolink/vocab/Gene> }\n}",
+      "skeleton_verified": true
+    },
+    {
+      "id": "BH20-umls-mondo-biohealth-digcfdekg-via-babel",
+      "left_kg": "biohealth",
+      "left_predicate": "node-iri (https://biohealthkg.proto-okn.net/kg/node/C{cui}; the node IS the UMLS CUI)",
+      "left_role": "subject",
+      "right_kg": "digcfdekg",
+      "right_predicate": "trait object of schema/geneToTrait (MONDO IRI)",
+      "right_role": "object",
+      "shared_key": "UMLS<->MONDO",
+      "key_namespace": "http://purl.obolibrary.org/obo/MONDO_{id} (digcfdekg; same form in babel) -> babel clique -> http://identifiers.org/umls/C{cui} -> https://biohealthkg.proto-okn.net/kg/node/C{cui} (biohealth)",
+      "bridge_kg": "babel",
+      "iri_normalization": "digcfdekg's MONDO traits are already in babel's OBO form; rebuild biohealth's node IRI from the identifiers.org/umls clique member. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both - left in one group, the planner can run the FILTER over the whole exactMatch relation and time out.",
+      "verified_count": 208,
+      "verified_on": "2026-09-26",
+      "verified_count_secondary": {
+        "biohealth_concepts_reached": 286
+      },
+      "verified_count_note": "DISTINCT digcfdekg MONDO traits (geneToTrait objects) that reach a biohealth UMLS concept through babel: 208, landing on 286 biohealth concepts. biohealth's other disease crosswalks (BH1-BH8) go through ubergraph's inbound UMLS hasDbXref; digcfdekg had no biohealth crosswalk at all. MONDO traits only - digcfdekg's EFO/Orphanet traits are not included. babel can place one id in two cliques, so a source entity may fan out to more than one target id: count entities, never cliques.",
+      "example_question": "Which CFDE gene-trait diseases (digcfdekg, MONDO) are also BioHealthKG concepts (MONDO <-> UMLS via Babel), and what does BioHealthKG add about them?",
+      "example_questions": [
+        "Which CFDE gene-trait diseases (digcfdekg, MONDO) are also BioHealthKG concepts (MONDO <-> UMLS via Babel), and what does BioHealthKG add about them?",
+        "For a digcfdekg disease trait, which genes does the CFDE KG associate with it and which clinical/social concepts does BioHealthKG link to the same disease?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/digcfdekg> { ?gene <https://purl.org/okn/frink/kg/digcfdekg/schema/geneToTrait> ?ent } FILTER(STRSTARTS(STR(?ent),'http://purl.obolibrary.org/obo/MONDO_')) BIND(?ent AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/umls/'))\n  BIND(IRI(CONCAT('https://biohealthkg.proto-okn.net/kg/node/', STRAFTER(STR(?member),'umls/'))) AS ?bh)\n  GRAPH <https://purl.org/okn/frink/kg/biohealth> { ?bh ?p ?o }\n}",
+      "skeleton_verified": true
+    },
+    {
+      "id": "BH21-umls-mondo-biohealth-nestkg-via-babel",
+      "left_kg": "biohealth",
+      "left_predicate": "node-iri (https://biohealthkg.proto-okn.net/kg/node/C{cui}; the node IS the UMLS CUI)",
+      "left_role": "subject",
+      "right_kg": "nestkg",
+      "right_predicate": "biolink:object (MONDO cancer type)",
+      "right_role": "object",
+      "shared_key": "UMLS<->MONDO",
+      "key_namespace": "http://purl.obolibrary.org/obo/MONDO_{id} (nestkg; same form in babel) -> babel clique -> http://identifiers.org/umls/C{cui} -> https://biohealthkg.proto-okn.net/kg/node/C{cui} (biohealth)",
+      "bridge_kg": "babel",
+      "iri_normalization": "nestkg's MONDO cancer types are already in babel's OBO form; rebuild biohealth's node IRI from the identifiers.org/umls clique member. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both - left in one group, the planner can run the FILTER over the whole exactMatch relation and time out.",
+      "verified_count": 12,
+      "verified_on": "2026-09-26",
+      "verified_count_secondary": {
+        "biohealth_concepts_reached": 18
+      },
+      "verified_count_note": "DISTINCT nestkg MONDO cancer types that reach a biohealth UMLS concept through babel: 12 of nestkg's 14, landing on 18 biohealth concepts. babel can place one id in two cliques, so a source entity may fan out to more than one target id: count entities, never cliques.",
+      "example_question": "Which NeST cancer types (MONDO) are BioHealthKG concepts (MONDO <-> UMLS via Babel), and which NeST protein systems are mutated in them?",
+      "example_questions": [
+        "Which NeST cancer types (MONDO) are BioHealthKG concepts (MONDO <-> UMLS via Babel), and which NeST protein systems are mutated in them?",
+        "For a NeST cancer type, what does BioHealthKG record about the disease alongside NeST's mutated protein systems?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/nestkg> { ?a <https://w3id.org/biolink/vocab/object> ?ent } FILTER(STRSTARTS(STR(?ent),'http://purl.obolibrary.org/obo/MONDO_')) BIND(?ent AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/umls/'))\n  BIND(IRI(CONCAT('https://biohealthkg.proto-okn.net/kg/node/', STRAFTER(STR(?member),'umls/'))) AS ?bh)\n  GRAPH <https://purl.org/okn/frink/kg/biohealth> { ?bh ?p ?o }\n}",
+      "skeleton_verified": true
+    },
+    {
       "id": "L7-countyfips-climatemodelskg-spatialkg",
       "left_kg": "climatemodelskg",
       "left_predicate": "climatepub4kg:admin1_code + climatepub4kg:admin2_code on a cm:City (a COMPOSITE key - the 5-digit county FIPS is latent and must be assembled)",
@@ -4602,7 +4942,8 @@
     "BH_sdoh": "Cluster BH-SDoH connects the Social-Determinants-of-Health layers of biohealth and spoke-okn - the first SDoH crosswalk between them (prior BH3/BH11 link only disease and taxonomy). spoke-okn has a dedicated SDoH class (1,426 concepts) keyed on SNOMED CT concept ids in the node IRI, with geographic prevalence (PREVALENCEIN_SpL, ~3M statements over 1,144 concepts) and a small SDoH->disease layer (ASSOCIATES_SaD, 39 MeSH-co-occurrence statements); only 10 SDoH carry spoke:mesh_ids (the County Health Rankings indicators). biohealth keys every node on a UMLS CUI (node IRI .../node/C{cui}, rdfs:label = concept name, SemMedDB predicates) and carries NO MeSH/SNOMED/MONDO/DOID xref, so the join must route through UMLS. Two complementary routes: BH17 MeSH->UMLS via wikidata P486->P2892 (3 of the 10 MeSH indicators reach a biohealth node - precise, hits the data-rich CHR indicators) and BH18 concept-label match (89 of 1,426 SDoH exact-match a biohealth concept by suffix-stripped label - broad, covers the SNOMED ontology backbone). The ideal key, SNOMED->UMLS, is UNAVAILABLE: the federation wikidata has no P5806 and no graph materializes a UMLS<->SNOMED map (it lives in the UMLS Metathesaurus, not loaded). Loading that map - or having biohealth emit SNOMED xrefs - would turn ~90 label matches into a full ~1,400-concept SDoH join. PERFORMANCE: a case-insensitive label join (LCASE over biohealth's ~250k labels) OOMs/times out; drive from the bounded spoke SDoH side with the bound label and probe biohealth (indexed).",
     "PB_publications": "PB - Publications / bibliographic (DOI). Scholarly DOI is the join key. nasa-gesdisc-kg is a large bibliometric graph (465,143 publications citing/using NASA Earth-science datasets; each with bibo:doi as an http://dx.doi.org/ IRI, plus author ORCID and institution ROR). climatemodelskg carries a DOI literal (https://doi.org/ form) on its 1,910 climate-modeling Paper nodes. Normalize both to the bare lowercase DOI (strip scheme+host, LCASE) and match. PB1 = climatemodelskg x nasa-gesdisc-kg = 651 shared papers (de-islands nasa-gesdisc-kg). The ORCID (author) and ROR (institution) axes on nasa-gesdisc-kg are unexplored bonus bridges to climatemodelskg's authors/affiliations.",
     "EO_earth_observation": "EO - Earth observation instruments & platforms (GCMD name). climatemodelskg NLP-extracts Instrument and Platform mentions from climate-modeling papers (free-text climatepub4kg:name); nasa-gesdisc-kg carries the same as GCMD controlled-vocabulary terms (rdfs:label) in NASA's Global Change Master Directory keyword tree. Lowercase-match the names; the join is self-cleaning (only standardized names match). EO1 = Instrument (115), EO2 = Platform (70). Both are climatemodelskg x nasa-gesdisc-kg and complement PB1 (DOI, 651) - a second, orthogonal edge connecting climate-modeling literature to NASA GES DISC's Earth-observation catalogue. Label bridge (fragile at the margins - a few generic terms like LIDAR/Aircraft slip in), comparable to the taxon/SDoH label bridges.",
-    "V_variant_dbsnp": "The variant cluster is dbSNP-only, and every member stores the rsID differently — this is the cluster where the identifier's SHAPE, not its presence, is the whole difficulty. biomarkerkg has real IRIs (https://www.ncbi.nlm.nih.gov/snp/rs{id}, 147,386); pankgraph has xsd:anyURI LITERALS (https://api.ncbi.nlm.nih.gov/variation/v0/refsnp/{id}, 19,448) — a constructed-IRI probe silently returns 0 against them, control-tested; and prokn has NO stored key at all, only 68,695 rsIDs written into the prose of schema:description on its 89,904 UniProt natural-variant annotations ('in AH2; activity abolished; dbSNP:rs80358219'). Reduce every side to the bare rsID string, then rebuild whichever form the partner stores. Three pairs are verified — V2 prokn x biomarkerkg 3,241 (the largest, and the only one that reaches a protein residue), V1 pankgraph x biomarkerkg 214, V3 prokn x pankgraph 214 (equal size to V1 by coincidence; the sets share only 13 members). Two variant surfaces do NOT join: rdkg's 7,367 ClinVar VariationIDs have no partner (see known_non_joins), and prokn's own UniProt VAR_ accessions are carried by no other graph. nestkg and ncipidkg carry no variants at all — exhaustively checked, not sampled: both are small enough to scan every object for rs/refsnp/VAR_/ClinVar/COSMIC/dbVar, and all return 0."
+    "V_variant_dbsnp": "The variant cluster is dbSNP-only, and every member stores the rsID differently — this is the cluster where the identifier's SHAPE, not its presence, is the whole difficulty. biomarkerkg has real IRIs (https://www.ncbi.nlm.nih.gov/snp/rs{id}, 147,386); pankgraph has xsd:anyURI LITERALS (https://api.ncbi.nlm.nih.gov/variation/v0/refsnp/{id}, 19,448) — a constructed-IRI probe silently returns 0 against them, control-tested; and prokn has NO stored key at all, only 68,695 rsIDs written into the prose of schema:description on its 89,904 UniProt natural-variant annotations ('in AH2; activity abolished; dbSNP:rs80358219'). Reduce every side to the bare rsID string, then rebuild whichever form the partner stores. Three pairs are verified — V2 prokn x biomarkerkg 3,241 (the largest, and the only one that reaches a protein residue), V1 pankgraph x biomarkerkg 214, V3 prokn x pankgraph 214 (equal size to V1 by coincidence; the sets share only 13 members). Two variant surfaces do NOT join: rdkg's 7,367 ClinVar VariationIDs have no partner (see known_non_joins), and prokn's own UniProt VAR_ accessions are carried by no other graph. nestkg and ncipidkg carry no variants at all — exhaustively checked, not sampled: both are small enough to scan every object for rs/refsnp/VAR_/ClinVar/COSMIC/dbVar, and all return 0.",
+    "DB_babel_identifier_bridge": "babel (Translator Babel identifier cliques) is the third bridge KG beside ubergraph and wikidata, restored from EXCLUDED_KGS on 2026-09-26 once the federation loaded it. Shape: every member id skos:exactMatch its clique's preferred id (the preferred id self-loops and alone carries rdfs:label + biolink:category), so a scheme-to-scheme mapping is two exactMatch hops through the shared preferred id. It covers genes (NCBIGene/Ensembl/HGNC), proteins (UniProt/PR, in separate cliques from genes), diseases (MONDO/DOID/HP/OMIM/NCIT/MeSH/UMLS/SNOMED/ICD-10/MedGen) and chemicals (CHEBI/DrugBank/ChEMBL/PubChem/CAS/InChIKey/UNII/HMDB/KEGG/RxCUI), mostly in http://identifiers.org/{prefix}/ and OBO-purl form. The first hop MUST be staged in a SELECT DISTINCT subquery or the join times out; one id can belong to two cliques, so count endpoint entities, never cliques. First crosswalk: DB2 (rdkg DrugBank -> ChEMBL -> prokn, 1,816 drugs), superseding the prokn x rdkg CHEBI-axis known_non_join. 2026-09-26 batch through babel (all skeletons verified): chemicals CB2/CB3 (tox21/toxcast CAS -> ChEMBL -> prokn, 2,462 / 2,504) and DB3/DB4 (tox21/toxcast CAS -> DrugBank -> rdkg, 920 / 928), DB5 (ruralkg DrugBank -> ChEMBL -> prokn, 6); genes C22-C26 (rdkg 9,159 / spoke-genelab 28,554 / digcfdekg 34,013 / biomarkerkg 200 / biobricks-ice 395 Entrez <-> pankgraph Ensembl); diseases BH20/BH21 (digcfdekg 208 / nestkg 12 MONDO -> UMLS -> biohealth). Not catalogued: biobricks-ice's chemical axis (~200k CAS) is too large to push through babel in one query, and sawgraph x prokn is a verified 0 (see known_non_joins). The skeletons use the nested two-subquery shape: a single subquery plus an in-group scheme FILTER times out at ~9k input ids."
   },
   "spatial_hub_note": {
     "hub_kg": "spatialkg",
@@ -4804,13 +5145,6 @@
       "diagnosis": "Deep dive 2026-06-27: spoke-okn carries environmental-monitoring content - FOUNDIN_CfL (a ChemicalEntity found in an AdministrativeArea, with media Air/Water/Soil, value, year; e.g. COAL TAR in Air) and FOUNDIN_EfL (EnvironmentalFeature in a location: PM2.5 'fine respirable suspended particulate matter', PM10). BUT the FOUNDIN_CfL chemicals are keyed on ChEMBL (identifiers.org/chembl.compound/CHEMBL...), which NO other federation KG uses (sawgraph/biobricks use CAS; spoke's own drug layer uses CHEBI/DrugBank/PubChem-CID), and the EnvironmentalFeature is only 2 label-based PM terms. So spoke-okn's environmental-exposure layer has no direct chemical crosswalk; it could reach the toxicology cluster only indirectly (ChEMBL -> CHEBI -> CAS via the existing B2 CHEBI<->CAS bridge). spoke-okn's environmental exposure and disease prevalence share the same AdministrativeArea (county FIPS), enabling an INTRA-KG exposure<->disease analysis and a spatial join to sawgraph/fiokg on county FIPS (K/N), but on geography, not a new chemical/environmental id."
     },
     {
-      "left_kg": "prokn",
-      "right_kg": "rdkg",
-      "attempted_key": "CHEBI (extend prokn's ChEMBL/InChIKey chemical hub to rdkg's CHEBI-keyed chemicals)",
-      "result": "no shared key (prokn carries no CHEBI)",
-      "diagnosis": "prokn integrates the full ChEMBL - 304,376 compounds keyed on the ChEMBL id (ebi.ac.uk/chembl/.../CHEMBL{n}) + an InChIKey literal (chemrof:inchi_key_string) - and cross-references each compound ONLY to PubChem (skos:exactMatch -> pubchem.ncbi.nlm.nih.gov/compound|substance/{id}), NOT to CHEBI. rdkg's chemicals are CHEBI node-IRIs (rdaccelerate.org/resource/CHEBI_{n}) plus DrugBank Drug IRIs (identifiers.org/drugbank/DB{n}). So the two share NO chemical identifier: prokn is ChEMBL / InChIKey / PubChem-keyed, rdkg is CHEBI / DrugBank-keyed, with no overlapping scheme. A prokn<->rdkg chemical join would need a ChEMBL/InChIKey<->CHEBI bridge (wikidata P592/P683 or ubergraph), not a direct key. NOTE: prokn DOES reach chemicals elsewhere - it joins spoke-okn on InChIKey (C11-inchikey-spokeokn-prokn, 143), and could attach near-totally to the PubChem annotation backdrop biobricks-pubchem-annotations on PubChem CID (both carry pubchem/compound/{CID}), but that 14.4M-compound backdrop join is trivial and does not verify within the endpoint limit. IMPORTANT: this non-join is the CHEMICAL / CHEBI axis ONLY - prokn and rdkg DO share direct join keys on MONDO (disease) and Entrez (gene) and are joinable there (they just have no materialized pairwise crosswalk, connecting through hubs like oard-kg/ubergraph); do NOT read this record as 'prokn and rdkg do not join'. Checked 2026-07-12."
-    },
-    {
       "left_kg": "nde",
       "right_kg": "nasa-gesdisc-kg",
       "attempted_key": "DOI (extend the publication-DOI join PB1 to nde's 17,416 DOIs)",
@@ -4850,6 +5184,13 @@
       "attempted_key": "ClinVar VariationID (sequence variant)",
       "result": "no partner for the variant axis",
       "diagnosis": "rdkg models variants as 7,367 biolink:SequenceVariant nodes keyed by ClinVar VariationID (https://rdaccelerate.org/resource/CLINVAR_{id}, with biolink:id 'CLINVAR:{id}'), carrying causes_condition -> MONDO and has_gene -> NCBI Gene. NO OTHER FEDERATION KG MATERIALIZES A CLINVAR ID, so the variant axis has no partner even though three other KGs carry variants: they are all on dbSNP (biomarkerkg 147,386 rsID IRIs, prokn 68,695 rsIDs embedded in annotation prose, pankgraph 19,448 rsID literals — cluster V1-V3), and rdkg's SequenceVariant nodes carry no rsID on any predicate (their full property set is type / category / causes_condition / has_gene / id). TRAP CHECKED AND REJECTED: biomarkerkg contains the string 'clinvar' 174,674 times, which looks like a ClinVar surface but is the literal 'clinvar' as a dcterms:source provenance value — the NAME of the source database, not an identifier. BRIDGE ROUTE ALSO DEAD: the federation's wikidata subset carries ClinVar Variation ID (P1929) on just 3 items and dbSNP ID (P6861) on 538, far too thin to route 7,367 ClinVar variants onto the dbSNP cluster. rdkg still reaches the other KGs on its gene (Entrez, C5/C6/C12/C21) and disease (MONDO) axes — it is only the VARIANT axis that is isolated. Verified 2026-09-01."
+    },
+    {
+      "left_kg": "sawgraph",
+      "right_kg": "prokn",
+      "attempted_key": "CAS -> ChEMBL (bridged via babel)",
+      "result": "0 shared compounds",
+      "diagnosis": "sawgraph's contaminant substances carry CAS numbers (coso:casNumber, mostly undashed; 114 distinct once dashes are rebuilt). 112 of the 114 resolve to a babel clique and 21 of those cliques contain a ChEMBL id, but none of the 21 ChEMBL ids is a prokn compound: prokn carries a bioactivity-focused subset of ChEMBL (~305k compounds), and the PFAS-heavy SAWGraph contaminant list falls outside it (e.g. CHEMBL1076850 is absent from prokn). Checked 2026-09-26. This is a chemical-axis non-join only; sawgraph reaches the chemical cluster through CAS (E-series, M6)."
     }
   ],
   "superseded_non_joins": [
@@ -4907,6 +5248,14 @@
       "base_file_result": "island",
       "base_file_diagnosis": "pankgraph carries 19,448 dbSNP rsIDs as string literals on rdfs:seeAlso (https://api.ncbi.nlm.nih.gov/variation/v0/refsnp/{rsid}). No other federation KG materializes dbSNP rsIDs: prokn carries sequence variants as UniProt VAR_ ids (a different namespace), and the federation wikidata subset has no rsID property. So the variant axis has no join partner. Verified 2026-06-27.",
       "correction": "SUPERSEDED 2026-09-01 — the claim that 'no other federation KG materializes dbSNP rsIDs' is wrong. BiomarkerKG carries 147,386 distinct dbSNP variants as https://www.ncbi.nlm.nih.gov/snp/rs{rsid} IRIs, on obo:OBCI_1000016 'indicated by presence of' (its assessed-entity axis). It was missed because BiomarkerKG's payload was tagged biomarker/disease/protein/cell_type with no variant tag, so the variant sweep never looked at it. 214 rsIDs are shared — see V1-dbsnp-pankgraph-biomarkerkg. prokn's UniProt VAR_ ids remain a different namespace, as diagnosed."
+    },
+    {
+      "left_kg": "prokn",
+      "right_kg": "rdkg",
+      "attempted_key": "CHEBI (extend prokn's ChEMBL/InChIKey chemical hub to rdkg's CHEBI-keyed chemicals)",
+      "result": "no shared key (prokn carries no CHEBI)",
+      "diagnosis": "prokn integrates the full ChEMBL - 304,376 compounds keyed on the ChEMBL id (ebi.ac.uk/chembl/.../CHEMBL{n}) + an InChIKey literal (chemrof:inchi_key_string) - and cross-references each compound ONLY to PubChem (skos:exactMatch -> pubchem.ncbi.nlm.nih.gov/compound|substance/{id}), NOT to CHEBI. rdkg's chemicals are CHEBI node-IRIs (rdaccelerate.org/resource/CHEBI_{n}) plus DrugBank Drug IRIs (identifiers.org/drugbank/DB{n}). So the two share NO chemical identifier: prokn is ChEMBL / InChIKey / PubChem-keyed, rdkg is CHEBI / DrugBank-keyed, with no overlapping scheme. A prokn<->rdkg chemical join would need a ChEMBL/InChIKey<->CHEBI bridge (wikidata P592/P683 or ubergraph), not a direct key. NOTE: prokn DOES reach chemicals elsewhere - it joins spoke-okn on InChIKey (C11-inchikey-spokeokn-prokn, 143), and could attach near-totally to the PubChem annotation backdrop biobricks-pubchem-annotations on PubChem CID (both carry pubchem/compound/{CID}), but that 14.4M-compound backdrop join is trivial and does not verify within the endpoint limit. IMPORTANT: this non-join is the CHEMICAL / CHEBI axis ONLY - prokn and rdkg DO share direct join keys on MONDO (disease) and Entrez (gene) and are joinable there (they just have no materialized pairwise crosswalk, connecting through hubs like oard-kg/ubergraph); do NOT read this record as 'prokn and rdkg do not join'. Checked 2026-07-12.",
+      "superseded_note": "SUPERSEDED 2026-09-26 by DB2-drugbank-rdkg-prokn-via-babel. The diagnosis was right that the two graphs share no chemical identifier scheme, but the babel identifier-clique KG (loaded into the federation by 2026-09-26) bridges them: rdkg's DrugBank drugs -> babel clique -> ChEMBL -> prokn Compound, 1,816 rdkg drugs. rdkg's 21 CHEBI chemicals also bridge the same way (12 reach prokn)."
     }
   ],
   "islands": {

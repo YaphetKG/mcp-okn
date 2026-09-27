@@ -37,10 +37,12 @@ async def get_schema(shortname: str, compact: bool = True) -> dict[str, Any]:
         reusable `query_snippet`.
     """
     result = await schema.get_schema(shortname, compact=compact)
+    notes = schema.usage_notes(shortname)
+    # Attach notes even when no schema is enumerated: for a too-large bridge KG
+    # (babel) the notes ARE the schema.
+    if isinstance(result, dict) and notes is not None:
+        result["usage_notes"] = notes
     if isinstance(result, dict) and "schema" in result:
-        notes = schema.usage_notes(shortname)
-        if notes is not None:
-            result["usage_notes"] = notes
         # Surface the value-space step at the point of decision: the model is
         # holding the schema and about to write SPARQL, which is exactly when it
         # tends to assume an ontology (DOID) instead of checking (MONDO).
