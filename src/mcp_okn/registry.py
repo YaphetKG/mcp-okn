@@ -42,8 +42,15 @@ _RAW_BASE = (
 # (textbook-derived)"), whose only carrier it was — the payload vocabulary must contain no term without a
 # supplier, or find_context_sources would advertise a capability nothing answers.
 # Restore both together if bio101 is loaded.
+# `glygenkg` (GlyGen: glycans, glycoproteins, glycosylation sites) joined the
+# registry by 2026-09-26 but is NOT loaded: LIMIT 1 returns no row under every
+# candidate graph IRI (.../kg/glygenkg, .../kg/glygenkg/, frink.renci.org/kg/
+# glygenkg), checked serially on 2026-09-26. Excluded so `refresh_snapshot.py`
+# does not abort on its missing payload entry while we wait for the upload;
+# integrating it (payload tags, schema, crosswalks — likely UniProt/Entrez into
+# the protein and gene clusters) is its own pass once it is served.
 # Drop a name from this set once the federation loads it.
-EXCLUDED_KGS = {"semopenalex", "bio101"}
+EXCLUDED_KGS = {"semopenalex", "bio101", "glygenkg"}
 
 # Process-lifetime caches (the registry changes rarely).
 _shortnames_cache: list[str] | None = None
