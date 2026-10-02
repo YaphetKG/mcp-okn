@@ -166,6 +166,8 @@ _DOMAIN_BY_SHARED_KEY: dict[str, str] = {
     # medical-device-kg <-> sudokn: the firms themselves, matched by normalized
     # company name (no NAICS on the FDA side) — see the entry's caveat.
     "company name": "Industry & supply chain",
+    # securechainkg HardwareVersion owl:sameAs -> sudokn product IRI (raw identity)
+    "SUDOKN_product_IRI": "Industry & supply chain",
     "DOI": "Publications",
     "author name (string; NOT an ORCID — see the entry's caveat)": "Publications",
     "GCMD instrument": "Earth observation",

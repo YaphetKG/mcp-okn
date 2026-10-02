@@ -99,7 +99,7 @@ geospatial and industrial joins against their authoritative shared standard):
   key, row count, and a one-line note on what each answers. Start here to see which
   graphs connect and on what identifier.
 - **[Cross-KG crosswalk catalog](docs/crosswalks/crosswalks_example.md)** —
-  **392 example questions** worked end-to-end, each with a full transcript (the live
+  **394 example questions** worked end-to-end, each with a full transcript (the live
   SPARQL and its results), across 16 domains (Anatomy & Cell Type, Chemicals, Disease &
   Phenotype, Earth Observation, Environmental Toxicology, Function & Pathways, Genes,
   Geospatial, Hydrology, Industry & Supply Chain, Justice & Public Safety, Proteins,
@@ -112,7 +112,7 @@ geospatial and industrial joins against their authoritative shared standard):
   worked: the five nestkg joins (P05–P08, D39), the five medical-device-kg ZIP joins
   (GEO35–GEO39), BiomarkerKG's four Entrez joins (G22–G25) and its UBERON join (AN09),
   the medical-device-kg×SUDOKN company-name join (I06), and the new **Variants** domain
-  (V01–V03).
+  (V01–V03). The contributed securechainkg×SUDOKN product-identity join (I07) is worked too.
 
 Every catalog row links to a standalone, replayable transcript — the prompt, the
 answer, and every verbatim SPARQL query with its result.
