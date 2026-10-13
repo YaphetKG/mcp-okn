@@ -90,30 +90,57 @@ def inject(records: list[dict[str, int | None]]) -> None:
     """Merge fully-measured pairs into ``metadata/crosswalks.json``
     ``taxon_hub.pairwise``.
 
-    Non-zero pairs are upserted; a pair that measured all-zero is dropped (so a KG
-    update that removes an overlap is reflected). A pair where any skeleton
-    errored/timed out is LEFT UNTOUCHED (the table never stores a null count) and a
-    warning is printed — re-run it with ``--pair``. Other pairs stay as they were,
-    so ``--pair`` refreshes incrementally. ``verified_on`` is stamped to today.
+    A non-zero pair has its three COUNTS updated in place: every other field on the
+    stored row — the curated ``science_question`` and ``note`` above all — is kept,
+    and so is the row's position, so a refresh diffs as a change of numbers and
+    nothing else. (This used to rebuild the row from the counts alone, which
+    silently deleted that prose and re-sorted the table.) A pair seen for the first
+    time is appended. A pair that measured all-zero is dropped, row and prose
+    together, so a KG update that removes an overlap is reflected. A pair where any
+    skeleton errored/timed out is LEFT UNTOUCHED (the table never stores a null
+    count) and a warning is printed — re-run it with ``--pair``. Rows for pairs not
+    measured in this run stay exactly as they were, so ``--pair`` refreshes
+    incrementally. ``verified_on`` is stamped to today.
+
+    Prose cannot be re-measured, so the run ends by naming the rows that need a
+    human read: those whose counts moved under an existing note or question, those
+    appended without a question, and those dropped.
     """
     data = json.loads(SRC.read_text(encoding="utf-8"))
     hub = data.setdefault("taxon_hub", {})
-    by_pair = {frozenset((r["kg_a"], r["kg_b"])): r for r in hub.get("pairwise", [])}
+    pairwise: list[dict] = list(hub.get("pairwise", []))
+    index = {frozenset((r["kg_a"], r["kg_b"])): i for i, r in enumerate(pairwise)}
     skipped: list[tuple[str, str]] = []
+    added: list[tuple[str, str]] = []
+    moved: list[tuple[str, str]] = []
+    dropped: list[tuple[str, str]] = []
+    drop_at: set[int] = set()
     for rec in records:
-        key = frozenset((rec["kg_a"], rec["kg_b"]))
+        pair = (rec["kg_a"], rec["kg_b"])
         if not _fully_measured(rec):
-            skipped.append((rec["kg_a"], rec["kg_b"]))
+            skipped.append(pair)
             continue
-        if _is_nonzero(rec):
-            by_pair[key] = {
-                "kg_a": rec["kg_a"],
-                "kg_b": rec["kg_b"],
-                **{k: rec[k] for k in _COUNTS},
-            }
-        else:
-            by_pair.pop(key, None)
-    hub["pairwise"] = sorted(by_pair.values(), key=lambda r: (r["kg_a"], r["kg_b"]))
+        counts = {k: rec[k] for k in _COUNTS}
+        at = index.get(frozenset(pair))
+        if not _is_nonzero(rec):
+            if at is not None:
+                drop_at.add(at)
+                dropped.append(pair)
+            continue
+        if at is None:
+            index[frozenset(pair)] = len(pairwise)
+            pairwise.append({"kg_a": pair[0], "kg_b": pair[1], **counts})
+            added.append(pair)
+            continue
+        old = pairwise[at]
+        if any(old.get(k) != counts[k] for k in _COUNTS) and (
+            old.get("note") or old.get("science_question")
+        ):
+            moved.append(pair)
+        # The counts are directional and oriented to rec's kg_a/kg_b, so restate
+        # the pair alongside them rather than trust the stored orientation.
+        pairwise[at] = {**old, "kg_a": pair[0], "kg_b": pair[1], **counts}
+    hub["pairwise"] = [r for i, r in enumerate(pairwise) if i not in drop_at]
     hub["verified_on"] = date.today().isoformat()
     SRC.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
     print(
@@ -123,6 +150,15 @@ def inject(records: list[dict[str, int | None]]) -> None:
     )
     if skipped:
         print(f"SKIPPED (a skeleton errored/timed out, left untouched): {skipped}")
+    if moved:
+        print(
+            "COUNTS MOVED under curated prose — re-read each row's note / "
+            f"science_question, which may quote the old figures: {moved}"
+        )
+    if added:
+        print(f"ADDED without a science_question — write one: {added}")
+    if dropped:
+        print(f"DROPPED (all-zero), note and science_question with them: {dropped}")
 
 
 async def main() -> None:
