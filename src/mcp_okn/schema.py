@@ -103,9 +103,17 @@ ASK {{ GRAPH <https://purl.org/okn/frink/kg/{shortname}> {{
 #: with no other change, and the substantive results were identical once repointed.
 #: A live census on 2026-09-02 counts 21 distinct deployed predicates against the
 #: CSV's 20 (the extra is ``rdf:type``), so the curated schema matches the graph.
+#:
+#: THE PATHWAY AXIS ARRIVED AFTERWARDS. On 2026-09-02 ``biolink:Pathway`` had 0
+#: instances and both ``obo:RO_0000056`` and ``inPathway`` were absent, and this
+#: note said so. The graph served on 2026-10-13 (v0.0.3) has all three — 207
+#: pathways, 8,055 participation edges, 169,104 statement-to-pathway links — and the
+#: CSV rebuilt for that release (upstream 36162dc) lists them; all 26 of its rows
+#: are populated. Chemicals are also typed properly now (``obo:CHEBI_23367``, 44
+#: nodes) instead of as ``sio:SIO_010043`` proteins.
 NCIPIDKG_GUIDANCE = """\
 IDENTIFIER AND JOIN NOTES (the curated schema matches the deployed graph as of
-2026-09-02; these are the things it still does not tell you).
+2026-10-13; these are the things it still does not tell you).
 
 TWO UNIPROT LEGS, AND THEY ARE NOT THE SAME KIND OF THING. ncipidkg's own
 sio:SIO_010043-typed <http://purl.uniprot.org/uniprot/{acc}> node IRIs (2,527)
@@ -144,12 +152,21 @@ unreviewed TrEMBL accessions instead, B5BU19 (321 statement roles) and B4E2N6
 (760), so a join on the reviewed Swiss-Prot accession silently misses two major
 signalling hubs the graph does contain.
 
-NO NAMED-PATHWAY AXIS. Despite the KG's name, nothing links an interaction to
-an NCI-PID pathway: biolink:Pathway has 0 instances and both obo:RO_0000056 and
-the ndexbio inPathway predicate are absent (the realigned CSV simply omits them,
-so their absence is easy to miss). Ask about the interaction topology - 83,704
-reified INDRA statements over obo:RO_0002436 / RO_0002578 / RO_0002629 /
-RO_0002630 / RO_0002211 - not about pathway names.\
+NAMED PATHWAYS ARE LIVE (new in v0.0.3; absent before, when this note said the
+graph had no pathway axis). 207 biolink:Pathway nodes
+<https://www.ndexbio.org/identifiers/pathway/{slug}> carry the NCI-PID pathway
+name on rdfs:label, version suffix included ("Direct p53 effectors (v2.0)").
+Two routes reach them, and they answer different questions:
+  * MEMBERSHIP - ?participant obo:RO_0000056 ?pathway (8,055 triples, 2,608
+    participants: proteins, gene families, chemicals, ncRNAs). "Which pathways
+    is TP53 in?" is this edge, from the node labelled "TP53".
+  * CONTEXT OF AN INTERACTION - ?statement ncipid:inPathway ?pathway (169,104
+    triples on 80,819 of the 83,704 reified INDRA statements, about two pathways
+    per statement). Use it to scope the interaction topology (obo:RO_0002436 /
+    RO_0002578 / RO_0002629 / RO_0002630 / RO_0002211) to one pathway.
+The pathway IRIs are ndexbio slugs with no Reactome, GO or WikiPathways
+cross-reference, so they join another graph only through their participants
+(UniProt, above), never pathway-to-pathway. Match a pathway by its label.\
 """
 
 #: Companion snippet: the entity-preserving UniProt join. The thing most callers
@@ -348,8 +365,8 @@ _KG_USAGE_NOTES: dict[str, dict[str, str]] = {
         "guidance": SCHEMA_AHEAD_OF_DEPLOY_GUIDANCE.format(
             shortname="medical-device-kg",
             absent=152,
-            total=296,
-            checked="2026-09-01",
+            total=315,
+            checked="2026-10-13",
             detail=(
                 "The curated schema describes a LATER release than the federation "
                 "serves. Live and queryable: 510(k) (mdo:k510Number, 175,299), PMA "
@@ -359,7 +376,11 @@ _KG_USAGE_NOTES: dict[str, dict[str, str]] = {
                 "mammography facilities, 522 postmarket studies, product codes, "
                 "regulation numbers and the address block (mdo:zip / mdo:postalCode / "
                 "city / state / country — the ZIP5 join surface behind crosswalks "
-                "J7-J11). NOT in the deployed graph, though the schema lists them: the "
+                "J7-J11). Live since v0.0.4: NAICS industry classification "
+                "(SUDOKN:hasNAICSClassifier on 10,432 manufacturers, 13 NAICS 2022 "
+                "codes on mdo:naicsCode, 1,589 product-code-to-NAICS mappings) and "
+                "9,120 geocoded mdo:Facility nodes with geo:asWKT and wgs84 lat/long. "
+                "NOT in the deployed graph, though the schema lists them: the "
                 "whole AccessGUDID / UDI block (device identifiers, brand names, "
                 "packaging, implant and sterility status), CLIA test systems and "
                 "waived analytes, GMDN terms, device materials and components, "

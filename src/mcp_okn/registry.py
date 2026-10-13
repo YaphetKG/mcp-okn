@@ -45,8 +45,24 @@ _RAW_BASE = (
 # does not abort on its missing payload entry while we wait for the upload;
 # integrating it (payload tags, schema, crosswalks — likely UniProt/Entrez into
 # the protein and gene clusters) is its own pass once it is served.
+# `kwg-environment`, `kwg-hazards`, `kwg-places` and `kwg-society` (the four
+# KnowWhereGraph thematic layers) joined the registry by 2026-10-13 and are in the
+# same state: COUNT(*) is 0 under .../kg/{name}, and LIMIT 1 returns no row under
+# .../kg/{name}/, frink.renci.org/kg/{name} or purl.org/okn/kg/{name}; okn-void
+# describes none of them and upstream has no entities.csv for them. Checked
+# serially on 2026-10-13. Excluded for the same reason as glygenkg. They matter
+# when they land: kwg-places advertises materialized ZIP-code areas, which
+# spatialkg declares but never instantiates (see the dreamkg/ruralkg x spatialkg
+# ZIP non-joins).
 # Drop a name from this set once the federation loads it.
-EXCLUDED_KGS = {"semopenalex", "glygenkg"}
+EXCLUDED_KGS = {
+    "semopenalex",
+    "glygenkg",
+    "kwg-environment",
+    "kwg-hazards",
+    "kwg-places",
+    "kwg-society",
+}
 
 # Process-lifetime caches (the registry changes rarely).
 _shortnames_cache: list[str] | None = None

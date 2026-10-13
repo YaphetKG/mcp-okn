@@ -164,7 +164,7 @@ async def test_biohealth_label_taxon_pairs_are_verified_joins():
     assert label, "no label-bridged taxon recipe surfaced"
     j = label[0]
     assert j["domain"] == "Taxonomy"
-    assert j["verified_count"] == 377
+    assert j["verified_count"] == 56
     assert "label" in j["key_namespace"].lower()
     assert "COUNT(" in j["skeleton_query"]
 

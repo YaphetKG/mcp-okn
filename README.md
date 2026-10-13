@@ -79,7 +79,7 @@ where a question one graph can't answer alone becomes answerable by combining tw
 This section catalogs the verified crosswalks and shows the queries that exercise
 them.
 
-A visual map of the whole network — all 202 crosswalks across 38 graphs, drawn as
+A visual map of the whole network — all 206 crosswalks across 38 graphs, drawn as
 direct KG-to-KG edges (edge width ∝ log of the verified join count). Each crosswalk is
 its own edge, so multiple crosswalks between the same pair of graphs fan out as parallel
 arcs. Identifier-bridged joins (e.g. `DOID↔MONDO` via `ubergraph`, `HGNC→Entrez` via
@@ -99,23 +99,30 @@ geospatial and industrial joins against their authoritative shared standard):
   key, row count, and a one-line note on what each answers. Start here to see which
   graphs connect and on what identifier.
 - **[Cross-KG crosswalk catalog](docs/crosswalks/crosswalks_example.md)** —
-  **408 example questions** worked end-to-end, each with a full transcript (the live
+  **420 example questions** worked end-to-end, each with a full transcript (the live
   SPARQL and its results), across 17 domains (Anatomy & Cell Type, Biology Concepts, Chemicals, Disease &
   Phenotype, Earth Observation, Environmental Toxicology, Function & Pathways, Genes,
   Geospatial, Hydrology, Industry & Supply Chain, Justice & Public Safety, Proteins,
-  Publications, Social Determinants & Services, Taxonomy, Variants). Every crosswalk is now worked
+  Publications, Social Determinants & Services, Taxonomy, Variants). Every crosswalk is worked
   twice — the inventory carries
-  **404 questions — two for every one of the 202 crosswalks** — and the catalog has a
-  transcript behind each one, plus four questions on two extra stems (a second example on
-  the spoke-genelab×spoke-okn Entrez axis, and the three-way gene dossier whose clique row
-  was retired). All 19 crosswalks added in the 2026-09-01 upstream-metadata pass are
+  **412 questions — two for every one of the 206 crosswalks** — and the catalog has a
+  transcript behind each one, plus eight questions on four extra stems (a second example on
+  the spoke-genelab×spoke-okn Entrez axis, the three-way gene dossier whose clique row
+  was retired, and two sawgraph lineage examples, T06 and T11, whose taxon-hub rows were
+  retired on 2026-10-13). All 19 crosswalks added in the 2026-09-01 upstream-metadata pass are
   worked: the five nestkg joins (P05–P08, D39), the five medical-device-kg ZIP joins
   (GEO35–GEO39), BiomarkerKG's four Entrez joins (G22–G25) and its UBERON join (AN09),
   the medical-device-kg×SUDOKN company-name join (I06), and the new **Variants** domain
   (V01–V03). The contributed securechainkg×SUDOKN product-identity join (I07) is worked too, and so are
   the seven KB Bio 101 name bridges added 2026-10-05 (MF02–MF03, AN10–AN11, D42, C27 and the
   new **Biology Concepts** domain, BIO01) — bio101 has no external identifiers, so each joins
-  by concept name.
+  by concept name. The six crosswalks the 2026-10-13 schema refresh exposed are
+  worked as well: wildlifekn's county joins (GEO40–GEO41), securechainkg's ZIP join (GEO42),
+  the medical-device-kg NAICS joins (I08–I09) and the scales×SUDOKN company bridge (I10).
+  That refresh also recorded four redeploys (scales, prokn, sawgraph, dreamkg). Every
+  transcript they affected — 51 in all — was re-run and regenerated against the current
+  releases the same day, and two taxon-hub pairs that no longer hold (sawgraph with
+  spoke-genelab and with the Expression Atlas) were retired.
 
 Every catalog row links to a standalone, replayable transcript — the prompt, the
 answer, and every verbatim SPARQL query with its result.
@@ -706,12 +713,24 @@ query against one returns an empty result that reads as "no data" rather than "n
 deployed yet". Where that gap is known and large, the KG carries a `usage_notes`
 entry (see `_KG_USAGE_NOTES` in `src/mcp_okn/schema.py`) naming the live surfaces,
 the absent ones, and an `ASK` to test any predicate before building on it. As of
-2026-09-01 that applies to two KGs: `medical-device-kg` (152 of 296 schema
-predicates absent — the whole AccessGUDID/UDI, CLIA, GMDN and materials block) and
-`ncipidkg` (9 of 20, including a whole vocabulary namespace: the deployed graph
-publishes edge metadata under `http://example.org/okn/`, not the
-`https://www.ndexbio.org/vocab/ncipid/` form the schema lists). Re-census after a
-redeploy and trim the note.
+2026-10-13 that applies to one KG: `medical-device-kg` (152 of 315 schema
+predicates absent — the whole AccessGUDID/UDI, CLIA, GMDN and materials block; the
+NAICS and geocoded-facility blocks added for v0.0.4 are live). `ncipidkg` carried
+the same warning until its schema and graph converged: it now serves the
+`https://www.ndexbio.org/vocab/ncipid/` namespace and the named-pathway axis its
+schema lists, and its note covers identifier and join semantics instead.
+Re-census after a redeploy and trim the note.
+
+**When the served graph moves and the schema follows.** The opposite drift is just
+as silent: a redeploy renames or re-models predicates, the curated CSV is updated
+to match, and every stored query written against the old shape returns zero rows.
+The 2026-10-13 refresh of 16 CSVs recorded four such redeploys — `scales` (the
+`has` prefix dropped from ~190 predicates), `prokn` (relation predicates moved
+from OBO RO to Biolink IRIs), `sawgraph` (S2 cells re-published with a reflexive
+`owl:sameAs`, so feature→cell links live on `kwg-ont:sfWithin`) and `dreamkg`
+(audiences re-modelled from literals to category IRIs). `check_payload_drift.py`
+flags the schema change; `scripts/verify_skeletons.py` and
+`scripts/verify_transcripts.py` are what show which stored recipes it broke.
 
 ---
 

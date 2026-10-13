@@ -168,10 +168,14 @@ _DOMAIN_BY_SHARED_KEY: dict[str, str] = {
     "NAICS": "Industry & supply chain",
     "SUDOKN_industry_sector": "Industry & supply chain",
     # medical-device-kg <-> sudokn: the firms themselves, matched by normalized
-    # company name (no NAICS on the FDA side) — see the entry's caveat.
+    # company name (the FDA side gained NAICS in v0.0.4 but shares only 1 code with
+    # sudokn) — see the entry's caveat.
     "company name": "Industry & supply chain",
     # securechainkg HardwareVersion owl:sameAs -> sudokn product IRI (raw identity)
     "SUDOKN_product_IRI": "Industry & supply chain",
+    # scales re-uses sudokn manufacturer IRIs as the subjects it annotates with an SEC
+    # CIK — the justice<->manufacturing bridge (I7).
+    "SUDOKN_company_IRI": "Industry & supply chain",
     "DOI": "Publications",
     "author name (string; NOT an ORCID — see the entry's caveat)": "Publications",
     "GCMD instrument": "Earth observation",

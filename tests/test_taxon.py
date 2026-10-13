@@ -59,12 +59,16 @@ def test_nde_extracts_taxid_from_uniprot_taxonomy_iri():
     assert "/taxonomy/([0-9]+)" in frag
 
 
-def test_sawgraph_uses_subclassof_subject_no_bind():
+def test_sawgraph_unions_name_bridge_with_embedded_leaves():
     frag = _taxon_source("sawgraph", "t")
-    assert "subClassOf" in frag
-    assert f"STRSTARTS(STR(?t),'{_NCBITAXON}')" in frag
-    # sawgraph's taxa already ARE NCBITaxon IRIs — no id reconstruction
-    assert "CONCAT" not in frag
+    # since sawgraph v0.0.16 no edge ties a sample material to its taxon. Leg 1:
+    # name-only us-wqp:Taxon nodes resolved through ubergraph's label.
+    assert "us-wqp#Taxon" in frag and "kg/ubergraph" in frag
+    # Leg 2: the embedded NCBITaxon classes, LEAVES only — the fragment is an
+    # inferred closure, so a class with another NCBITaxon subclass is an ancestor.
+    assert " UNION " in frag and "MINUS" in frag
+    assert "?_t4 != ?t" in frag
+    assert frag.count(f"STRSTARTS(STR(?t),'{_NCBITAXON}')") == 2
 
 
 def test_aopwiki_uses_dc_identifier():
@@ -98,13 +102,14 @@ def test_sub_wraps_source_in_distinct_subquery():
 
 
 def test_build_exact_skeleton_intersects_on_shared_var():
-    sk = build_exact_skeleton("nde", "sawgraph")
+    sk = build_exact_skeleton("nde", "biobricks-aopwiki")
     # both sides collapse to DISTINCT subqueries on the SAME var ?t, then count it
     assert sk.count("SELECT DISTINCT ?t") == 2
     assert "COUNT(DISTINCT ?t)" in sk
     assert "https://purl.org/okn/frink/kg/nde" in sk
-    assert "https://purl.org/okn/frink/kg/sawgraph" in sk
-    # exact-id is a strict intersection — no clade walk
+    assert "https://purl.org/okn/frink/kg/biobricks-aopwiki" in sk
+    # exact-id is a strict intersection — no clade walk, and two IRI-keyed members
+    # never touch ubergraph (a label-bridged member such as sawgraph does)
     assert "subClassOf>*" not in sk
     assert "kg/ubergraph" not in sk
 

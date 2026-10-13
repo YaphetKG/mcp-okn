@@ -135,8 +135,8 @@
   {
     "shortname": "medical-device-kg",
     "title": "Medical Device Knowledge Graph",
-    "description": "A unified medical-device knowledge graph integrating regulatory, clinical, research, safety, and other relevant data from multiple sources.",
-    "homepage": "https://github.com/medical-device-design",
+    "description": "Public FDA medical-device data in one linked graph, covering clearances and approvals, UDI device records, MAUDE adverse events, recalls, establishments, standards, and 21 CFR.",
+    "homepage": "https://bmedesign.org/knowledgegraph",
     "named_graph": "https://purl.org/okn/frink/kg/medical-device-kg"
   },
   {

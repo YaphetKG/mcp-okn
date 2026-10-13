@@ -24,7 +24,7 @@ from .sparql import named_graph
 #: NCBITaxon obo IRI prefix, the canonical key every hub spoke normalizes to.
 _NCBITAXON = "http://purl.obolibrary.org/obo/NCBITaxon_"
 
-#: rdfs:subClassOf, used both for sawgraph's normalization and the clade walk.
+#: rdfs:subClassOf, used for sawgraph's embedded-leaf leg and the clade walk.
 _SUBCLASSOF = "http://www.w3.org/2000/01/rdf-schema#subClassOf"
 
 #: KGs whose taxa reach the ubergraph NCBITaxon hub (have a `_taxon_source`).
@@ -50,9 +50,32 @@ def _taxon_source(kg: str, var: str) -> str | None:
     g = f"<{named_graph(kg)}>"
     v, h = f"?{var}", f"?_{var}"
     if kg == "sawgraph":
+        # TWO LEGS, UNIONED (since sawgraph v0.0.16, which dropped the
+        # `obo:RO_0002162` in-taxon edge that used to tie a sample material to
+        # its NCBITaxon class):
+        #  (1) LABEL BRIDGE — a Water Quality Portal organism is a us-wqp:Taxon
+        #      node carrying only a scientific-name rdfs:label; resolve it to an
+        #      NCBITaxon IRI via ubergraph rdfs:label (75 of 79 nodes resolve).
+        #  (2) EMBEDDED LEAVES — sawgraph also embeds NCBITaxon classes as
+        #      subjects of rdfs:subClassOf, which is where the Maine EGAD
+        #      livestock, game and crop organisms live (Bos taurus, Cervidae,
+        #      Zea mays subsp. mays, ...). That fragment is an INFERRED closure
+        #      reaching up to "cellular organisms", so only its leaves are taken
+        #      (MINUS any class that has another NCBITaxon subclass); reading
+        #      every subject, as this source did before, counts ancestors and
+        #      inflates each clade overlap toward the partner's whole taxon set.
+        # 86 organisms in all (75 + 11 leaves not already reached by name).
+        ub = f"<{named_graph('ubergraph')}>"
+        label = "http://www.w3.org/2000/01/rdf-schema#label"
+        ncbi = f"FILTER(STRSTARTS(STR({v}),'{_NCBITAXON}'))"
         return (
-            f"GRAPH {g} {{ {v} <{_SUBCLASSOF}> {h}1 . "
-            f"FILTER(STRSTARTS(STR({v}),'{_NCBITAXON}')) }}"
+            f"{{ GRAPH {g} {{ {h}1 a <http://w3id.org/sawgraph/v1/us-wqp#Taxon> ; "
+            f"<{label}> {h}2 . }} "
+            f"GRAPH {ub} {{ {v} <{label}> {h}2 . {ncbi} }} }} "
+            f"UNION "
+            f"{{ GRAPH {g} {{ {v} <{_SUBCLASSOF}> {h}3 . {ncbi} }} "
+            f"MINUS {{ GRAPH {g} {{ {h}4 <{_SUBCLASSOF}> {v} . "
+            f"FILTER({h}4 != {v} && STRSTARTS(STR({h}4),'{_NCBITAXON}')) }} }} }}"
         )
     if kg == "biobricks-aopwiki":
         return (
@@ -100,7 +123,10 @@ def _taxon_source(kg: str, var: str) -> str | None:
         # agreement and collapses subspecies to species rank.
         ub = f"<{named_graph('ubergraph')}>"
         label = "http://www.w3.org/2000/01/rdf-schema#label"
-        binom_re = "^(\\S+\\s+\\S+).*$"
+        # Backslash-free on purpose: `\S` / `\s` inside a SPARQL string literal is an
+        # illegal escape the endpoint rejects with HTTP 400 (the same defect repaired
+        # in the D11/D12 skeletons).
+        binom_re = "^([^ ]+ [^ ]+).*$"
         return (
             f"GRAPH {g} {{ VALUES {h}c "
             f"{{ <https://wildlife.proto-okn.net/kg/Bird_name> "

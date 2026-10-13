@@ -1,6 +1,6 @@
 # OKN / Proto-OKN Crosswalk Reference — Join Keys & SPARQL Skeletons
 
-- **Date:** 2026-10-05
+- **Date:** 2026-10-13
 - **Model:** claude-opus-4-8
 - **SPARQL endpoint:** https://apps.okn.us/federation/sparql
 
@@ -60,11 +60,11 @@ For each crosswalk, list the join key and the SPARQL skeleton
 
 🧠 **Assistant**
 
-The OKN federation has **202 crosswalks**, which collapse into **67 join-key families** (a domain + a shared identifier). They are grouped below by domain and key family — each entry lists every KG pair sharing that key (with its verified `COUNT(DISTINCT)`), the identifier scheme/namespace, and a runnable `COUNT(DISTINCT)` skeleton with the IRI normalization already applied (a naive join on the raw id usually returns 0 rows).
+The OKN federation has **206 crosswalks**, which collapse into **68 join-key families** (a domain + a shared identifier). They are grouped below by domain and key family — each entry lists every KG pair sharing that key (with its verified `COUNT(DISTINCT)`), the identifier scheme/namespace, and a runnable `COUNT(DISTINCT)` skeleton with the IRI normalization already applied (a naive join on the raw id usually returns 0 rows).
 
 **Pairs in one family often need different SPARQL**, so where a family's members diverge, every distinct skeleton is shown and labelled with the pairs it applies to. The CAS family is the clearest case: the biobricks graphs hang the id off `edam:has_identifier`, MeSH exposes it as `meshv:registryNumber`, and SAWGraph/SOCKG store it as a bare literal that must be rebuilt into an IRI. Copy the skeleton for YOUR pair, then extend it with your payload.
 
-Counts verified 2026-10-05. For any pair, `get_join_strategy(kg_a, kg_b)` returns the same skeleton plus the full recipe (predicates, roles, normalization); `taxon_overlap(kg_a, kg_b)` returns runnable skeletons for the NCBITaxon hub, whose overlaps are two-valued (exact id vs clade membership) and therefore not a single count.
+Counts verified 2026-10-13. For any pair, `get_join_strategy(kg_a, kg_b)` returns the same skeleton plus the full recipe (predicates, roles, normalization); `taxon_overlap(kg_a, kg_b)` returns runnable skeletons for the NCBITaxon hub, whose overlaps are two-valued (exact id vs clade membership) and therefore not a single count.
 
 ### ANATOMY & CELL TYPE
 
@@ -1154,7 +1154,7 @@ SELECT (COUNT(DISTINCT ?k) AS ?n) WHERE {
 
 ### ENVIRONMENTAL TOXICOLOGY
 
-**CAS** — `sawgraph coso:casNumber (undashed OR dashed literal; dashes must be reconstructed) -> http://identifiers.org/cas/{cas} (biobricks-toxcast edam:has_identifier IRI)`: sawgraph × biobricks-toxcast(32), sawgraph × biobricks-ice(39), sockg × biobricks-ice(68), sockg × biobricks-toxcast(59).
+**CAS** — `sawgraph coso:casNumber (undashed OR dashed literal; dashes must be reconstructed) -> http://identifiers.org/cas/{cas} (biobricks-toxcast edam:has_identifier IRI)`: sawgraph × biobricks-toxcast(34), sawgraph × biobricks-ice(44), sockg × biobricks-ice(68), sockg × biobricks-toxcast(59).
 
 _sawgraph × biobricks-toxcast_
 
@@ -1232,7 +1232,7 @@ SELECT (COUNT(DISTINCT ?proknReact) AS ?n) WHERE {
       GRAPH <https://purl.org/okn/frink/kg/gene-expression-atlas-okn> { ?s <http://purl.org/okn/wobd/enrichment_source> "GXA:Reactome" ; <https://w3id.org/biolink/vocab/object> ?gxaReact . FILTER(CONTAINS(STR(?gxaReact),'R-HSA-')) }
       BIND(IRI(CONCAT('https://identifiers.org/reactome/',REPLACE(STR(?gxaReact),'^.*/detail/',''))) AS ?proknReact)
   } }
-  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?prot <http://purl.obolibrary.org/obo/RO_0000056> ?proknReact . }
+  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?prot <https://w3id.org/biolink/vocab/participates_in> ?proknReact . }
 }
 ```
 
@@ -1633,15 +1633,15 @@ SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {
 
 ### GEOSPATIAL
 
-**S2_L13** — `http://stko-kwg.geog.ucsb.edu/lod/resource/s2.level13.`: fiokg × sawgraph(4,712), fiokg × spatialkg(681,045), hydrologykg × spatialkg(106,138), sawgraph × spatialkg(88,007), sockg × spatialkg(1,069), sockg × sawgraph(2), ufokn × spatialkg(97,087), ufokn × fiokg(19,252), sudokn × spatialkg(42,560).
+**S2_L13** — `http://stko-kwg.geog.ucsb.edu/lod/resource/s2.level13.`: fiokg × sawgraph(2,166), fiokg × spatialkg(681,045), hydrologykg × spatialkg(106,138), sawgraph × spatialkg(4,814), sockg × spatialkg(1,069), sockg × sawgraph(2), ufokn × spatialkg(97,087), ufokn × fiokg(19,252), sudokn × spatialkg(42,560).
 
 _fiokg × sawgraph_
 
 ```sparql
 SELECT (COUNT(DISTINCT ?cell) AS ?n) WHERE {
-  GRAPH <https://purl.org/okn/frink/kg/fiokg> { ?f <http://www.w3.org/2002/07/owl#sameAs> ?cell . }
-  GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?s <http://www.w3.org/2002/07/owl#sameAs> ?cell . }
-  FILTER(STRSTARTS(STR(?cell),'http://stko-kwg.geog.ucsb.edu/lod/resource/s2.level13.'))
+  { SELECT DISTINCT ?cell WHERE {
+      GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?s <http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin> ?cell . ?cell a <http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level13> . } } }
+  GRAPH <https://purl.org/okn/frink/kg/fiokg> { ?f <http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin> ?cell . }
 }
 ```
 
@@ -1667,7 +1667,7 @@ _sawgraph × spatialkg_
 
 ```sparql
 SELECT (COUNT(DISTINCT ?cell) AS ?n) WHERE {
-  GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?s <http://www.w3.org/2002/07/owl#sameAs> ?cell . FILTER(STRSTARTS(STR(?cell),'http://stko-kwg.geog.ucsb.edu/lod/resource/s2.level13.')) }
+  GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?f <http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin> ?cell . }
   GRAPH <https://purl.org/okn/frink/kg/spatialkg> { ?cell a <http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level13> . }
 }
 ```
@@ -1686,7 +1686,7 @@ _sockg × sawgraph_
 ```sparql
 SELECT (COUNT(DISTINCT ?cell) AS ?n) WHERE {
   GRAPH <https://purl.org/okn/frink/kg/sockg> { ?cell a <http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level13> . }
-  GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?s <http://www.w3.org/2002/07/owl#sameAs> ?cell . }
+  GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?s <http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin> ?cell . }
 }
 ```
 
@@ -1722,7 +1722,7 @@ SELECT (COUNT(DISTINCT ?cell) AS ?n) WHERE {
 
 _sudokn × spatialkg_ — no static skeleton: the key is COMPUTED at query time (call the `spatial_bridge` tool, which derives the S2 cell from the KG's lat/long).
 
-**county_FIPS** — `http://stko-kwg.geog.ucsb.edu/lod/resource/administrativeRegion.USA.{FIPS5}`: fiokg × spatialkg(3,031), fiokg × spoke-okn(3,032), geoconnex × spatialkg(3,114), geoconnex × spoke-okn(3,184), nikg × spatialkg(2), nikg × spoke-okn(2), wildlifekn × spatialkg(63), scales × spatialkg(3,029), scales × spoke-okn(3,096), spoke-okn × ruralkg(3,196), spoke-okn × sockg(31), spoke-okn × spatialkg(3,122), climatemodelskg → spoke-okn → spatialkg(947).
+**county_FIPS** — `http://stko-kwg.geog.ucsb.edu/lod/resource/administrativeRegion.USA.{FIPS5}`: fiokg × spatialkg(3,031), fiokg × spoke-okn(3,032), geoconnex × spatialkg(3,114), geoconnex × spoke-okn(3,184), nikg × spatialkg(2), nikg × spoke-okn(2), wildlifekn × spatialkg(63), wildlifekn × spoke-okn(2,810), scales × spatialkg(3,029), scales × spoke-okn(3,096), spoke-okn × ruralkg(3,196), spoke-okn × sockg(31), spoke-okn × spatialkg(3,122), climatemodelskg → spoke-okn → spatialkg(947).
 
 _fiokg × spatialkg_
 
@@ -1811,12 +1811,22 @@ SELECT (COUNT(DISTINCT ?fips5) AS ?n) WHERE {
 }
 ```
 
+_wildlifekn × spoke-okn_
+
+```sparql
+SELECT (COUNT(DISTINCT ?fips) AS ?n) WHERE {
+  { SELECT DISTINCT ?fips WHERE { GRAPH <https://purl.org/okn/frink/kg/wildlifekn> { ?county <https://kn-wildlife.crc.nd.edu/kg/county_fips> ?f . } BIND(STR(?f) AS ?fips) } }
+  BIND(IRI(CONCAT('https://purl.org/okn/frink/kg/spoke-okn/location/',?fips)) AS ?loc)
+  GRAPH <https://purl.org/okn/frink/kg/spoke-okn> { ?loc ?p ?o . }
+}
+```
+
 _scales × spatialkg_
 
 ```sparql
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 SELECT (COUNT(DISTINCT ?fips) AS ?n) WHERE {
-  GRAPH <https://purl.org/okn/frink/kg/scales> { ?x <http://schemas.scales-okn.org/rdf/scales#hasIdbCounty> ?c . FILTER(?c != 88888) }
+  GRAPH <https://purl.org/okn/frink/kg/scales> { ?x <http://schemas.scales-okn.org/rdf/scales#IdbCounty> ?c . FILTER(?c != 88888) }
   BIND(REPLACE(CONCAT('00000',STR(xsd:integer(?c))),'^.*(.{5})$','$1') AS ?fips)
   BIND(IRI(CONCAT('http://stko-kwg.geog.ucsb.edu/lod/resource/administrativeRegion.USA.',?fips)) AS ?reg)
   GRAPH <https://purl.org/okn/frink/kg/spatialkg> { ?reg a <http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_2> . }
@@ -1828,7 +1838,7 @@ _scales × spoke-okn_
 ```sparql
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 SELECT (COUNT(DISTINCT ?fips) AS ?n) WHERE {
-  GRAPH <https://purl.org/okn/frink/kg/scales> { ?x <http://schemas.scales-okn.org/rdf/scales#hasIdbCounty> ?c . FILTER(?c != 88888) }
+  GRAPH <https://purl.org/okn/frink/kg/scales> { ?x <http://schemas.scales-okn.org/rdf/scales#IdbCounty> ?c . FILTER(?c != 88888) }
   BIND(REPLACE(CONCAT('00000',STR(xsd:integer(?c))),'^.*(.{5})$','$1') AS ?fips)
   BIND(IRI(CONCAT('https://purl.org/okn/frink/kg/spoke-okn/location/',?fips)) AS ?loc)
   GRAPH <https://purl.org/okn/frink/kg/spoke-okn> { ?loc ?p ?o . }
@@ -1944,7 +1954,18 @@ SELECT (COUNT(DISTINCT ?fips) AS ?n) WHERE {
 }
 ```
 
-**KWG_county** — `http://stko-kwg.geog.ucsb.edu/lod/resource/administrativeRegion.USA.`: sockg × spatialkg(62).
+**KWG_county** — `http://stko-kwg.geog.ucsb.edu/lod/resource/administrativeRegion.USA.{FIPS5} - stored as an IRI object on wildlifekn's kwgIRI and minted as the county node IRI in spatialkg`: wildlifekn × spatialkg(2,575), sockg × spatialkg(62).
+
+_wildlifekn × spatialkg_
+
+```sparql
+SELECT (COUNT(DISTINCT ?reg) AS ?n) WHERE {
+  GRAPH <https://purl.org/okn/frink/kg/wildlifekn> { ?county <https://kn-wildlife.crc.nd.edu/kg/kwgIRI> ?reg . }
+  GRAPH <https://purl.org/okn/frink/kg/spatialkg> { ?reg a <http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_2> . }
+}
+```
+
+_sockg × spatialkg_
 
 ```sparql
 SELECT (COUNT(DISTINCT ?reg) AS ?n) WHERE {
@@ -1953,7 +1974,7 @@ SELECT (COUNT(DISTINCT ?reg) AS ?n) WHERE {
 }
 ```
 
-**ZIP5** — `bare 5-digit U.S. ZIP code, xsd:string literal (no IRI namespace)`: spoke-okn × dreamkg(53), spoke-okn × ruralkg(5,390), ruralkg × scales(5,297), dreamkg × scales(53), dreamkg × ruralkg(30), spoke-okn × sudokn(13,647), medical-device-kg × spoke-okn(19,563), medical-device-kg × scales(19,089), medical-device-kg × sudokn(11,067), medical-device-kg × ruralkg(5,118), medical-device-kg × dreamkg(50).
+**ZIP5** — `bare 5-digit U.S. ZIP code, xsd:string literal (no IRI namespace)`: spoke-okn × dreamkg(235), spoke-okn × ruralkg(5,390), ruralkg × scales(5,297), dreamkg × scales(235), dreamkg × ruralkg(127), spoke-okn × sudokn(13,647), medical-device-kg × spoke-okn(19,563), medical-device-kg × scales(19,089), medical-device-kg × sudokn(11,067), medical-device-kg × ruralkg(5,118), medical-device-kg × dreamkg(231), securechainkg × spoke-okn(4,375).
 
 _spoke-okn × dreamkg_
 
@@ -2140,6 +2161,22 @@ SELECT (COUNT(DISTINCT ?zip) AS ?n) WHERE {
 }
 ```
 
+_securechainkg × spoke-okn_
+
+```sparql
+SELECT (COUNT(DISTINCT ?zip) AS ?n) WHERE {
+  { SELECT DISTINCT ?zip WHERE {
+      GRAPH <https://purl.org/okn/frink/kg/securechainkg> {
+        ?site <http://asu.edu/semantics/SUDOKN/hasZIPcode> ?zn .
+        ?zn <http://asu.edu/semantics/SUDOKN/hasIntegerValue> ?z0 . }
+      BIND(REPLACE(REPLACE(STR(?z0),'[.]0$',''),'[^0-9]','') AS ?d)
+      BIND(IF(STRLEN(?d)=4, CONCAT('0',?d), SUBSTR(?d,1,5)) AS ?zip)
+      FILTER(REGEX(?zip,'^[0-9]{5}$')) } }
+  GRAPH <https://purl.org/okn/frink/kg/spoke-okn> { ?loc <http://www.w3.org/2000/01/rdf-schema#label> ?zip .
+      FILTER(REGEX(STR(?loc),'/location/[A-Z]{2}-[0-9]+')) }
+}
+```
+
 **GeoNames** — `climatemodelskg <https://climatepub4kg.github.io/ontology#geonameid> (bare GeoNames integer) <-> spoke-okn <https://purl.org/okn/frink/kg/spoke-okn/schema/code> (GeoNames code on schema:AdministrativeArea)`: climatemodelskg × spoke-okn(106).
 
 ```sparql
@@ -2170,7 +2207,7 @@ SELECT (COUNT(DISTINCT ?reach) AS ?n) WHERE {
 
 ### INDUSTRY & SUPPLY CHAIN
 
-**NAICS** — `http://w3id.org/fio/v1/naics#NAICS-{code} (fiokg) ; http://asu.edu/semantics/SUDOKN/naics-{code}.0-inst (securechainkg)`: fiokg × securechainkg(301), fiokg × sudokn(60), securechainkg × sudokn(35).
+**NAICS** — `http://w3id.org/fio/v1/naics#NAICS-{code} (fiokg) ; http://asu.edu/semantics/SUDOKN/naics-{code}.0-inst (securechainkg)`: fiokg × securechainkg(301), fiokg × sudokn(60), securechainkg × sudokn(35), medical-device-kg × fiokg(13), medical-device-kg × securechainkg(12).
 
 _fiokg × securechainkg_
 
@@ -2196,6 +2233,24 @@ _securechainkg × sudokn_
 SELECT (COUNT(DISTINCT ?code) AS ?n) WHERE {
   { SELECT DISTINCT ?code WHERE { GRAPH <https://purl.org/okn/frink/kg/securechainkg> { ?a <http://asu.edu/semantics/SUDOKN/hasPrimaryNAICSClassifier> ?sn . } BIND(REPLACE(STR(?sn),'^.*/naics-([0-9]+)\\.0-inst$','$1') AS ?code) } }
   { SELECT DISTINCT ?code WHERE { GRAPH <https://purl.org/okn/frink/kg/sudokn> { ?b <http://asu.edu/semantics/SUDOKN/hasPrimaryNAICSClassifier> ?dn . } BIND(REPLACE(STR(?dn),'^.*NAICS%20([0-9]+)-individual$','$1') AS ?code) } }
+}
+```
+
+_medical-device-kg × fiokg_
+
+```sparql
+SELECT (COUNT(DISTINCT ?code) AS ?n) WHERE {
+  { SELECT DISTINCT ?code WHERE { GRAPH <https://purl.org/okn/frink/kg/medical-device-kg> { ?m <http://asu.edu/semantics/SUDOKN/hasNAICSClassifier> ?c . ?c <http://medicaldevice.com/ontology/naicsCode> ?c0 . } BIND(STR(?c0) AS ?code) } }
+  { SELECT DISTINCT ?code WHERE { GRAPH <https://purl.org/okn/frink/kg/fiokg> { ?f <http://w3id.org/fio/v1/epa-frs#ofPrimaryIndustry>|<http://w3id.org/fio/v1/epa-frs#ofSecondaryIndustry> ?ind . } BIND(REPLACE(STR(?ind),'^.*naics#NAICS-([0-9]+)$','$1') AS ?code) } }
+}
+```
+
+_medical-device-kg × securechainkg_
+
+```sparql
+SELECT (COUNT(DISTINCT ?code) AS ?n) WHERE {
+  { SELECT DISTINCT ?code WHERE { GRAPH <https://purl.org/okn/frink/kg/medical-device-kg> { ?m <http://asu.edu/semantics/SUDOKN/hasNAICSClassifier> ?c . ?c <http://medicaldevice.com/ontology/naicsCode> ?c0 . } BIND(STR(?c0) AS ?code) } }
+  { SELECT DISTINCT ?code WHERE { GRAPH <https://purl.org/okn/frink/kg/securechainkg> { ?a <http://asu.edu/semantics/SUDOKN/hasPrimaryNAICSClassifier> ?sn . } BIND(REPLACE(STR(?sn),'^.*/naics-([0-9]+)\\.0-inst$','$1') AS ?code) } }
 }
 ```
 
@@ -2252,6 +2307,15 @@ SELECT (COUNT(DISTINCT ?product) AS ?n) WHERE {
   GRAPH <https://purl.org/okn/frink/kg/sudokn> {
     ?m <http://asu.edu/semantics/SUDOKN/manufactures> ?product .
   }
+}
+```
+
+**SUDOKN_company_IRI** — `http://asu.edu/semantics/SUDOKN/{vendor-domain}-company-instance - sudokn's own manufacturer IRIs, re-used verbatim as subjects in the scales graph`: scales × sudokn(100).
+
+```sparql
+SELECT (COUNT(DISTINCT ?org) AS ?n) WHERE {
+  GRAPH <https://purl.org/okn/frink/kg/scales> { ?org <http://schemas.scales-okn.org/rdf/scales#CIKNumber> ?cik . FILTER(STRSTARTS(STR(?org),'http://asu.edu/semantics/SUDOKN/')) }
+  GRAPH <https://purl.org/okn/frink/kg/sudokn> { ?org <http://www.w3.org/2000/01/rdf-schema#label> ?name . }
 }
 ```
 
@@ -2421,13 +2485,15 @@ SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE {
 }
 ```
 
-**concept label (social-service audience term ↔ UMLS concept name)** — `dreamkg schema:audienceType free-text term (e.g. 'anxiety', 'veterans', 'uninsured') <-> biohealth rdfs:label (UMLS concept name, Title-case)`: dreamkg × biohealth(14).
+**concept label (social-service audience term ↔ UMLS concept name)** — `dreamkg audience-category IRI local name (e.g. 'Anxiety', 'Veterans', 'IntellectualDisability') <-> biohealth rdfs:label (UMLS concept name, Title-case)`: dreamkg × biohealth(21).
 
 ```sparql
-SELECT (COUNT(DISTINCT ?aud) AS ?n) WHERE {
-  { SELECT DISTINCT ?aud WHERE { GRAPH <https://purl.org/okn/frink/kg/dreamkg> { ?s <http://schema.org/audienceType> ?aud } } }
-  BIND(CONCAT(UCASE(SUBSTR(?aud,1,1)), SUBSTR(?aud,2)) AS ?cap)
-  GRAPH <https://purl.org/okn/frink/kg/biohealth> { ?bh <http://www.w3.org/2000/01/rdf-schema#label> ?cap . }
+SELECT (COUNT(DISTINCT ?term) AS ?n) WHERE {
+  { SELECT DISTINCT ?term WHERE {
+      GRAPH <https://purl.org/okn/frink/kg/dreamkg> { ?svc <http://schema.org/category> ?c .
+        FILTER(STRSTARTS(STR(?c),'https://purl.org/okn/frink/kg/dreamkg/category/audience/')) }
+      BIND(REPLACE(STRAFTER(STR(?c),'/category/audience/'),'([a-z])([A-Z])','$1 $2') AS ?term) } }
+  GRAPH <https://purl.org/okn/frink/kg/biohealth> { ?bh <http://www.w3.org/2000/01/rdf-schema#label> ?term . }
 }
 ```
 
@@ -2452,13 +2518,13 @@ SELECT (COUNT(*) AS ?n) WHERE {
 
 ### TAXONOMY
 
-**NCBITaxon** — `http://purl.obolibrary.org/obo/NCBITaxon_`: sawgraph × ubergraph(538), spoke-genelab × ubergraph(9), spoke-okn × ubergraph(33,602), gene-expression-atlas-okn × ubergraph(8), biobricks-aopwiki × ubergraph(164), nde × ubergraph(1,797), spoke-genelab → ubergraph → spoke-okn(33,313), spoke-genelab × ubergraph(46), wildlifekn → ubergraph → nde(17), wildlifekn → ubergraph → sawgraph(2), wildlifekn × ubergraph(339).
+**NCBITaxon** — `http://purl.obolibrary.org/obo/NCBITaxon_ - reached by scientific name for Water Quality Portal organisms, directly for the embedded leaf classes`: sawgraph × ubergraph(86), spoke-genelab × ubergraph(9), spoke-okn × ubergraph(33,602), gene-expression-atlas-okn × ubergraph(8), biobricks-aopwiki × ubergraph(164), nde × ubergraph(1,797), spoke-genelab → ubergraph → spoke-okn(33,313), spoke-genelab × ubergraph(46), wildlifekn → ubergraph → nde(17), wildlifekn → ubergraph → sawgraph(3), wildlifekn × ubergraph(339).
 
 _sawgraph × ubergraph_
 
 ```sparql
 SELECT (COUNT(DISTINCT ?taxon) AS ?n) WHERE {
-  GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?taxon <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?sup . FILTER(STRSTARTS(STR(?taxon),'http://purl.obolibrary.org/obo/NCBITaxon_')) }
+  { SELECT DISTINCT ?taxon WHERE { { GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?_taxon1 a <http://w3id.org/sawgraph/v1/us-wqp#Taxon> ; <http://www.w3.org/2000/01/rdf-schema#label> ?_taxon2 . } GRAPH <https://purl.org/okn/frink/kg/ubergraph> { ?taxon <http://www.w3.org/2000/01/rdf-schema#label> ?_taxon2 . FILTER(STRSTARTS(STR(?taxon),'http://purl.obolibrary.org/obo/NCBITaxon_')) } } UNION { GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?taxon <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?_taxon3 . FILTER(STRSTARTS(STR(?taxon),'http://purl.obolibrary.org/obo/NCBITaxon_')) } MINUS { GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?_taxon4 <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?taxon . FILTER(?_taxon4 != ?taxon && STRSTARTS(STR(?_taxon4),'http://purl.obolibrary.org/obo/NCBITaxon_')) } } } } }
   GRAPH <https://purl.org/okn/frink/kg/ubergraph> { ?taxon <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?u . }
 }
 ```
@@ -2560,7 +2626,7 @@ _wildlifekn → ubergraph → sawgraph_
 ```sparql
 SELECT (COUNT(DISTINCT ?t) AS ?shared) WHERE {
   { SELECT DISTINCT ?t WHERE { GRAPH <https://purl.org/okn/frink/kg/wildlifekn> { VALUES ?_tc { <https://wildlife.proto-okn.net/kg/Bird_name> <https://wildlife.proto-okn.net/kg/Amphibian_name> } ?_t1 a ?_tc ; <http://www.w3.org/2000/01/rdf-schema#label> ?_t2 . BIND(REPLACE(STR(?_t2),'^([^ ]+ [^ ]+).*$','$1') AS ?_t3) } GRAPH <https://purl.org/okn/frink/kg/ubergraph> { ?t <http://www.w3.org/2000/01/rdf-schema#label> ?_t3 . FILTER(STRSTARTS(STR(?t),'http://purl.obolibrary.org/obo/NCBITaxon_')) } } }
-  { SELECT DISTINCT ?t WHERE { GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?t <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?_s1 . FILTER(STRSTARTS(STR(?t),'http://purl.obolibrary.org/obo/NCBITaxon_')) } } }
+  { SELECT DISTINCT ?t WHERE { { GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?_t1 a <http://w3id.org/sawgraph/v1/us-wqp#Taxon> ; <http://www.w3.org/2000/01/rdf-schema#label> ?_t2 . } GRAPH <https://purl.org/okn/frink/kg/ubergraph> { ?t <http://www.w3.org/2000/01/rdf-schema#label> ?_t2 . FILTER(STRSTARTS(STR(?t),'http://purl.obolibrary.org/obo/NCBITaxon_')) } } UNION { GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?t <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?_t3 . FILTER(STRSTARTS(STR(?t),'http://purl.obolibrary.org/obo/NCBITaxon_')) } MINUS { GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?_t4 <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?t . FILTER(?_t4 != ?t && STRSTARTS(STR(?_t4),'http://purl.obolibrary.org/obo/NCBITaxon_')) } } } } }
 }
 ```
 
@@ -2573,7 +2639,7 @@ SELECT (COUNT(DISTINCT ?taxon) AS ?n) WHERE {
 }
 ```
 
-**NCBITaxon (biohealth label)** — `biohealth rdfs:label (the UMLS-CUI node's concept name) <-> ubergraph NCBITaxon rdfs:label <-> http://purl.obolibrary.org/obo/NCBITaxon_ (spoke-okn); exact scientific-name match (approximate lower bound; misses synonyms/spelling variants; no subClassOf* clade expansion)`: biohealth → ubergraph → spoke-okn(1,603), biohealth → ubergraph → nde(1,052), biohealth → ubergraph → sawgraph(377), biohealth → ubergraph → biobricks-aopwiki(112), biohealth → ubergraph → spoke-genelab(7), biohealth → ubergraph → gene-expression-atlas-okn(6).
+**NCBITaxon (biohealth label)** — `biohealth rdfs:label (the UMLS-CUI node's concept name) <-> ubergraph NCBITaxon rdfs:label <-> http://purl.obolibrary.org/obo/NCBITaxon_ (spoke-okn); exact scientific-name match (approximate lower bound; misses synonyms/spelling variants; no subClassOf* clade expansion)`: biohealth → ubergraph → spoke-okn(1,603), biohealth → ubergraph → nde(1,052), biohealth → ubergraph → sawgraph(56), biohealth → ubergraph → biobricks-aopwiki(112), biohealth → ubergraph → spoke-genelab(7), biohealth → ubergraph → gene-expression-atlas-okn(6).
 
 _biohealth → ubergraph → spoke-okn_
 
@@ -2605,7 +2671,7 @@ _biohealth → ubergraph → sawgraph_
 
 ```sparql
 SELECT (COUNT(DISTINCT ?taxon) AS ?n) WHERE {
-  GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?taxon <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?sup . FILTER(STRSTARTS(STR(?taxon),'http://purl.obolibrary.org/obo/NCBITaxon_')) }
+  { SELECT DISTINCT ?taxon WHERE { { GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?_taxon1 a <http://w3id.org/sawgraph/v1/us-wqp#Taxon> ; <http://www.w3.org/2000/01/rdf-schema#label> ?_taxon2 . } GRAPH <https://purl.org/okn/frink/kg/ubergraph> { ?taxon <http://www.w3.org/2000/01/rdf-schema#label> ?_taxon2 . FILTER(STRSTARTS(STR(?taxon),'http://purl.obolibrary.org/obo/NCBITaxon_')) } } UNION { GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?taxon <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?_taxon3 . FILTER(STRSTARTS(STR(?taxon),'http://purl.obolibrary.org/obo/NCBITaxon_')) } MINUS { GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?_taxon4 <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?taxon . FILTER(?_taxon4 != ?taxon && STRSTARTS(STR(?_taxon4),'http://purl.obolibrary.org/obo/NCBITaxon_')) } } } } }
   GRAPH <https://purl.org/okn/frink/kg/ubergraph> { ?taxon <http://www.w3.org/2000/01/rdf-schema#label> ?name . }
   GRAPH <https://purl.org/okn/frink/kg/biohealth> { ?bh <http://www.w3.org/2000/01/rdf-schema#label> ?name . }
 }
@@ -2695,4 +2761,4 @@ SELECT (COUNT(DISTINCT ?rs) AS ?n) WHERE {
 
 - **Skeletons are COUNT queries by design.** Each proves the key still joins and reproduces the table's `verified_count`; run it first, then extend it with your payload rather than rebuilding the normalization boilerplate.
 - **The identifier, not the entity, is what matches.** Counts are `COUNT(DISTINCT <shared key>)` — shared identifiers, not shared rows. A KG may mint several nodes carrying the same id.
-- **Sources:** the crosswalk table served by `list_crosswalks` / `get_join_strategy` (verified 2026-10-05).
+- **Sources:** the crosswalk table served by `list_crosswalks` / `get_join_strategy` (verified 2026-10-13).

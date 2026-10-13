@@ -220,8 +220,14 @@ CATALOG_DOMAIN = {
 # crosswalks_example_notes.md: G03 works a 3-way clique row that was later dropped
 # from the table (no row to link it to), and GEO26/GEO28 each work the
 # sudokn×spatialkg pair from a wider transcript that also queries a third KG.
+# T06 and T11 work sawgraph×gene-expression-atlas-okn and sawgraph×spoke-genelab,
+# two taxon-hub pairs retired on 2026-10-13: with sawgraph's organisms read correctly
+# they share no taxon and nest in neither direction. The examples survive as lineage
+# analogies, like G03.
 CATALOG_OVERRIDE: dict[str, tuple[tuple[str, ...], str] | None] = {
     "G03": None,
+    "T06": None,
+    "T11": None,
     "GEO26": (("spatialkg", "sudokn"), "state_FIPS"),
     "GEO28": (("spatialkg", "sudokn"), "S2_L13"),
 }

@@ -162,10 +162,14 @@ standalone (repeat the gene→protein preamble); don't read the second as a vari
 ```
 ?gene rdfs:label ?sym ;                                             # match your gene symbol
       <http://semanticscience.org/resource/SIO_010078> ?prot .      # encodes -> UniProt protein
-?prot <http://purl.obolibrary.org/obo/RO_0002331> ?go .             # involved in -> GO (BP)
-#  or <http://purl.obolibrary.org/obo/RO_0002327> ?go               # enables -> GO (MF)
+?prot <https://w3id.org/biolink/vocab/actively_involved_in> ?go .   # involved in -> GO (BP)
+#  or <https://w3id.org/biolink/vocab/catalyzes> ?go                # enables -> GO (MF)
 #  or <http://purl.uniprot.org/core/partOf> ?go                     # part of -> GO (CC)
 ```
+
+prokn v0.0.6 moved these off the OBO relation IRIs (`RO_0002331` involved in, `RO_0002327`
+enables, `RO_0000056` participates in), which now return **zero rows, not an error** — if a GO or
+Reactome pull comes back empty, check the predicate before concluding there is no annotation.
 
 **(b) Reactome pathway enrichment** — gene → protein → pathway (a DISTINCT deliverable, not a GO
 variant):
@@ -173,7 +177,7 @@ variant):
 ```
 ?gene rdfs:label ?sym ;                                             # match your gene symbol
       <http://semanticscience.org/resource/SIO_010078> ?prot .      # encodes -> UniProt protein
-?prot <http://purl.obolibrary.org/obo/RO_0000056> ?pw .             # participates in -> pathway
+?prot <https://w3id.org/biolink/vocab/participates_in> ?pw .        # participates in -> pathway
 ?pw a <http://purl.uniprot.org/core/Pathway> .
 FILTER(CONTAINS(STR(?pw), "R-HSA"))                                 # human Reactome
 ```
