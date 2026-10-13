@@ -5,7 +5,7 @@ capturing fake records the SPARQL it was handed so the generated query can be
 asserted on without hitting the network.
 """
 
-from mcp_okn import void
+from mcp_okn import registry, void
 from mcp_okn.tools.discovery import get_kg_version
 
 
@@ -108,3 +108,49 @@ async def test_get_kg_version_handles_missing_optional_dates(monkeypatch):
     assert out["version"] == "v0.0.1"
     assert out["last_updated"] is None
     assert "modified" not in out
+
+
+_STALE_ROW = {
+    "s": "https://purl.org/okn/frink/kg/maudekg",
+    "version": "v0.0.1",
+    "last_updated": "2026-03-16T02:27:00.564+00:00",
+}
+
+
+async def test_get_kg_version_drops_unregistered_from_versions(monkeypatch):
+    # A stale VoID entry must not surface as an extra KG: it is kept out of
+    # `versions` / `count` and reported separately.
+    fake, _ = _capturing([_STALE_ROW, _PROKN_ROW])
+    monkeypatch.setattr(void, "run_sparql", fake)
+    out = await get_kg_version()
+    assert out["count"] == 1
+    assert [r["shortname"] for r in out["versions"]] == ["prokn"]
+    assert [r["shortname"] for r in out["unregistered"]] == ["maudekg"]
+
+
+async def test_get_kg_version_omits_unregistered_key_when_clean(monkeypatch):
+    fake, _ = _capturing([_PROKN_ROW])
+    monkeypatch.setattr(void, "run_sparql", fake)
+    assert "unregistered" not in await get_kg_version()
+
+
+async def test_get_kg_version_single_flags_unregistered(monkeypatch):
+    fake, _ = _capturing([_STALE_ROW])
+    monkeypatch.setattr(void, "run_sparql", fake)
+    out = await get_kg_version("maudekg")
+    assert out["version"] == "v0.0.1"
+    assert out["registered"] is False
+    assert "not in the KG registry" in out["note"]
+
+
+async def test_get_kg_version_keeps_everything_without_a_registry(monkeypatch):
+    # Fail open: an unavailable registry must not turn every KG into a stale one.
+    async def no_registry(refresh=False):
+        return []
+
+    fake, _ = _capturing([_STALE_ROW, _PROKN_ROW])
+    monkeypatch.setattr(void, "run_sparql", fake)
+    monkeypatch.setattr(registry, "list_kgs", no_registry)
+    out = await get_kg_version()
+    assert out["count"] == 2
+    assert "unregistered" not in out

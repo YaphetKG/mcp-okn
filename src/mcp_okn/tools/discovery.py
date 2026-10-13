@@ -109,11 +109,30 @@ async def get_kg_version(shortname: str | None = None) -> dict[str, Any]:
 
     Returns (shortname given) a single record dict, or `{"shortname", "version":
     None, "note": ...}` when that KG records no VoID provenance (a few, e.g.
-    `nestkg` and `wikidata`, do not). Returns (shortname omitted) `{"count",
+    `okn-void` and `wikidata`, do not). Returns (shortname omitted) `{"count",
     "versions": [record, ...]}`.
+
+    Only KGs in the registry (those `list_kgs` returns) count as versions. A VoID
+    record whose shortname is NOT in the registry is a stale entry, not another KG:
+    it is left out of `versions` / `count` and listed under `unregistered` instead
+    (the key is present only when there is one), and a single-KG lookup of such a
+    name returns its record with `"registered": False` and a `note`.
     """
     records = await void.fetch_versions(shortname)
+    # Fail open: with no registry listing to check against, flag nothing.
+    known = {kg["shortname"] for kg in await registry.list_kgs()}
+    stale = [r for r in records if known and r["shortname"] not in known]
     if shortname is not None:
+        if stale:
+            return {
+                **stale[0],
+                "registered": False,
+                "note": (
+                    f"'{shortname}' has VoID provenance in the okn-void graph but "
+                    "is not in the KG registry — a stale entry, not a KG this "
+                    "server serves. See `list_kgs` for the available graphs."
+                ),
+            }
         if records:
             return records[0]
         return {
@@ -121,8 +140,12 @@ async def get_kg_version(shortname: str | None = None) -> dict[str, Any]:
             "version": None,
             "note": (
                 f"No VoID provenance recorded for '{shortname}' in the okn-void "
-                "graph (some KGs, e.g. nestkg and wikidata, do not publish version "
+                "graph (some KGs, e.g. okn-void and wikidata, do not publish version "
                 "metadata). Check the shortname with `list_kgs` if unexpected."
             ),
         }
-    return {"count": len(records), "versions": records}
+    versions = [r for r in records if r not in stale]
+    out: dict[str, Any] = {"count": len(versions), "versions": versions}
+    if stale:
+        out["unregistered"] = stale
+    return out
