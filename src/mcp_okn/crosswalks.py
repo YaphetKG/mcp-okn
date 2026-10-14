@@ -161,6 +161,15 @@ _DOMAIN_BY_SHARED_KEY: dict[str, str] = {
     "GlyTouCan<->CHEBI": "Chemicals",
     # glygenkg glycan IRI (GlyTouCan accession) -> PubChem annotation body (rdf:value)
     "GlyTouCan": "Chemicals",
+    # 2026-10-14 babel deep dive
+    "MeSH": "Chemicals",
+    "UMLS <-> chemical id (bridged)": "Chemicals",
+    "chemical id -> ChEMBL/PubChem (bridged)": "Chemicals",
+    "CAS -> ChEMBL/PubChem (bridged)": "Chemicals",
+    "disease id -> MeSH (bridged)": "Disease & phenotype",
+    "MeSH (direct + via babel)": "Disease & phenotype",
+    "disease id -> UMLS (bridged)": "Disease & phenotype",
+    "MeSH <-> NCBITaxon (bridged)": "Taxonomy",
     "NCBITaxon": "Taxonomy",
     "NCBITaxon (biohealth label)": "Taxonomy",
     "S2_L13": "Geospatial",

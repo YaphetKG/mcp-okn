@@ -79,7 +79,7 @@ where a question one graph can't answer alone becomes answerable by combining tw
 This section catalogs the verified crosswalks and shows the queries that exercise
 them.
 
-A visual map of the whole network — all 220 crosswalks across 39 graphs, drawn as
+A visual map of the whole network — all 244 crosswalks across 39 graphs, drawn as
 direct KG-to-KG edges (edge width ∝ log of the verified join count). Each crosswalk is
 its own edge, so multiple crosswalks between the same pair of graphs fan out as parallel
 arcs. Identifier-bridged joins (e.g. `DOID↔MONDO` via `ubergraph`, `HGNC→Entrez` via
@@ -99,13 +99,13 @@ geospatial and industrial joins against their authoritative shared standard):
   key, row count, and a one-line note on what each answers. Start here to see which
   graphs connect and on what identifier.
 - **[Cross-KG crosswalk catalog](docs/crosswalks/crosswalks_example.md)** —
-  **448 example questions** worked end-to-end, each with a full transcript (the live
+  **496 example questions** worked end-to-end, each with a full transcript (the live
   SPARQL and its results), across 17 domains (Anatomy & Cell Type, Biology Concepts, Chemicals, Disease &
   Phenotype, Earth Observation, Environmental Toxicology, Function & Pathways, Genes,
   Geospatial, Hydrology, Industry & Supply Chain, Justice & Public Safety, Proteins,
   Publications, Social Determinants & Services, Taxonomy, Variants). Every crosswalk is worked
   twice — the inventory carries
-  **440 questions — two for every one of the 220 crosswalks** — and the catalog has a
+  **488 questions — two for every one of the 244 crosswalks** — and the catalog has a
   transcript behind each one, plus eight questions on four extra stems (a second example on
   the spoke-genelab×spoke-okn Entrez axis, the three-way gene dossier whose clique row
   was retired, and two sawgraph lineage examples, T06 and T11, whose taxon-hub rows were
@@ -127,7 +127,12 @@ geospatial and industrial joins against their authoritative shared standard):
   2026-10-13, are worked too: its five UniProt joins (P09–P13), three direct Ensembl joins
   (G31–G33), four Entrez joins bridged through Babel (G34–G37), the catalog's first
   PubMed-keyed join, with ProKN (PUB03), and a GlyTouCan join that gives 180 of its glycans
-  PubChem's mass, structure and source-organism annotations (C28).
+  PubChem's mass, structure and source-organism annotations (C28). A deep dive on
+  2026-10-14 added 24 more, each worked twice: eleven direct joins that had never been
+  catalogued (ProKN, NDE and digcfdekg with RDKG on MONDO; MeSH, AOP-Wiki, SOCKG and SAWGraph
+  with Tox21 on CAS; ProKN with PubChem annotations), and thirteen that run through Babel —
+  BioHealth's UMLS concepts to five chemical graphs and to ProKN's diseases, MeSH to the
+  disease graphs and to SPOKE-OKN's organisms, and SPOKE-OKN and SAWGraph to ProKN.
 
 Every catalog row links to a standalone, replayable transcript — the prompt, the
 answer, and every verbatim SPARQL query with its result.

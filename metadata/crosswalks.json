@@ -2,7 +2,7 @@
   "$schema_note": "Combined verified cross-KG joins for the Proto-OKN federation. Merges the A-I clusters with the spoke-okn geolocation crosswalks: cluster J (ZIP, on spoke-okn's full ~42,724-ZIP set) and cluster K (county/state FIPS, including spoke-okn's attachment to the SAWGraph spatial hub). Duplicates removed. Counts are exact COUNT(DISTINCT) over the named graphs on the verified_on date, EXCEPT cluster O (ufokn), whose verified_count is a SAMPLED lower bound (ufokn is too large for an exact full-graph count within the 120s endpoint limit) - see its verified_count_note. A consumer keyed by KG shortname should surface, for a given shortname, every entry where it appears as left_kg, right_kg, or bridge_kg. Clusters: (A) disease/phenotype - oard-kg is the MONDO/HP hub joining prokn, rdkg, nde and ubergraph; spoke-okn attaches via its 180 DOID Disease nodes (DIRECTLY to the DOID carriers prokn/biomarkerkg/nde, A7-A9, and through an ubergraph DOID->MONDO bridge to rdkg/oard-kg, A10-A11), (B) CAS chemical, (C) gene cluster - keyed across THREE id systems: Entrez/NCBI Gene (spoke-okn, spoke-genelab, rdkg, biobricks-aopwiki; in three IRI forms - see C_gene_cluster note - joined by bare-id rebuild; C4-C8), Ensembl (gene-expression-atlas-okn, pankgraph, spoke-okn's schema/ensembl crosswalk, AOP-Wiki, and prokn - whose up:Gene nodes ARE ensembl.org IRIs, so joins to it need an IRI rebuild; C1, C3, C14, C15, C16, C17, F1-F2), and HGNC (prokn, bridged to Entrez through wikidata P354->P351; C9 - a route that is now OPTIONAL, since prokn also carries native Ensembl and Entrez; C16 joins prokn<->spoke-okn directly and is COMPLEMENTARY to C9), (D) SAWGraph S2 spatial hub, (E) toxicology/AOP CAS, (F) AOP-Wiki gene bridge, (G) UniProt protein, (H) soil-carbon spatial leaf (sockg: H1 S2 + H2 county to the spatialkg hub, plus H3 a DIRECT leaf-to-leaf S2 co-location with sawgraph's national US-WQP samples in 2 cells), (I) manufacturing supply-chain, (J) spoke-okn ZIP geography, (K) spoke-okn county/state-FIPS geography. (L) county/state-FIPS attachments of geoconnex, scales and nikg to the SAWGraph spatial hub (spatialkg) and spoke-okn, each carrying the same KWG/FIPS county key under a different non-obvious encoding (geoconnex: geoconnex.us/ref/counties/{FIPS5} reference IRIs on the GNIS county predicate; scales: a NUMERIC IdbCounty literal with the leading zero dropped; nikg: a phila.gov-rewritten KWG sfWithin IRI). Cluster L SUPERSEDES three base-file verdicts: scales (was an island on the unpopulated fips:CountyCode field), nikg (was 'no geographic key at all'), and geoconnex (only non-joins were recorded - its S2-cell and SAWGraph PWS reference-IRI non-joins remain valid, but the county-FIPS key is a separate, working route to the hub). Four further KGs profiled for cluster L (medical-device-kg, phaseskg, nasa-gesdisc-kg, wildlifekn) share no materialized join key and are recorded as islands / thin threads. (M) biobricks-mesh: the NLM MeSH vocabulary attaches to ubergraph on MeSH descriptor ids (oboInOwl:hasDbXref 'MESH:{ID}'), 9,463 matches dominated by MONDO disease (8,202), making it a MeSH-keyed member of the disease cluster A; biobricks-pubchem-annotations was profiled in the same pass and is an island (keyed solely on PubChem CID, which no federation KG materializes). Additionally biobricks-mesh has a second, DIRECT MeSH route (M2): spoke-okn MeSH-tags ~165 of its Disease and SDoH nodes via mesh_ids/mesh_list (HTTPS mesh IRIs vs biobricks-mesh's HTTP), uniquely reaching spoke-okn's social-determinants layer that the MONDO route (M1) cannot. (N) fiokg (SAWGraph FRS KG): a full SAWGraph spatial leaf attaching to the spatialkg hub via owl:sameAs to native KWG IRIs - 681,045 S2 Level-13 cells (N1, the LARGEST S2 join in the federation) and 3,031 county-FIPS AdministrativeRegion_2 IRIs (N2; 3,032 to spoke-okn, N3) - and to the manufacturing cluster I on the bare 6-digit NAICS code (N4 sudokn 64/66, N5 securechainkg 301/301). fiokg and the sawgraph leaf OVERLAP directly in 4,712 Maine S2 cells (N6, leaf-to-leaf), useful because fiokg flags 188,057 EPA-PFAS-Facility instances against sawgraph's PFAS samples. fiokg attaches at the county + S2 levels only (no KWG state IRIs); 261 leading-zero-truncated admin IRIs are excluded (see known_non_joins). (O) ufokn (Urban Flooding OKN): a FIFTH SAWGraph S2-cell spatial leaf. ufokn encodes its S2 cells as BLANK NODES (typed schema:PropertyValue + its own kwg:S2Cell ontology class), not KWG resource IRIs, with the 64-bit S2 cell id held as a bare decimal string in schema:value - the IDENTICAL value spatialkg uses as the suffix of its s2.level13.{id} node IRI. Rebuilding that IRI joins ufokn DIRECTLY to spatialkg's S2Cell_Level13 nodes (O1, no value rewrite). Three type-bounded samples (1k/8k/20k cells) all show 100% containment of ufokn's level-13 cells in spatialkg, so this is a near-complete attachment whose exact cardinality is not enumerable within the endpoint limit (verified_count 7,670 is a sampled lower bound). Cluster O SUPERSEDES the base file's two ufokn non-join verdicts ('unprofiled-large' and 'S2 Level-13 = 0'): the 0 was a direct typed-NODE join against blank nodes (can never match) and the timeout was an unbounded scan of ufokn's ~11.7M S2 nodes. ufokn also carries finer S2 LEVEL-18 cells that nest inside the level-13 hub cells but do not attach to the (level-13) hub directly. (P) biobricks-pubchem-annotations PubChem CID -> spoke-okn: spoke-okn materializes the CID as oboInOwl:hasDbXref identifiers.org/pubchem.compound/{n} on its ChemicalEntity nodes (762, exact 100% join after bare-CID normalization), SUPERSEDING the base file's biobricks-pubchem-annotations island verdict - it never checked spoke-okn's hasDbXref. (BH) biohealth (Bio-Health KG, UVA): a UMLS-CUI-keyed health graph (biomedical + social determinants) whose entities ARE their own https://biohealthkg.proto-okn.net/kg/node/C{cui} IRIs and which carries no outbound xref. It attaches ONLY through ubergraph's inbound UMLS hasDbXref on MONDO (10,087 biohealth CUIs), HP (4,828) and UBERON (2,148) - no CHEBI/UniProt/NCBIGene/NCIT UMLS xref exists, so biohealth crosswalks on disease, phenotype and anatomy only (never chemicals/genes/proteins). Verified joins BH1-BH8: rdkg, prokn, spoke-okn (via MONDO->DOID), oard-kg (MONDO + HP), nde, biomarkerkg (via MONDO->DOID) and gene-expression-atlas-okn. The UBERON anatomy axis is VERIFIED (BH9 biohealth<->GXA 249, BH10 biohealth<->spoke-genelab 35); spoke-okn stores no raw obo/UBERON_ terms and chemicals/genes/proteins remain unreachable. CL is not a biohealth axis (UMLS->CL = 0). biohealth is additionally a fragile LABEL-BRIDGED organism member of the taxon_hub (no NCBITaxon ids). See cluster_notes.BH_biohealth_umls. (AN) Anatomy (UBERON): spoke-genelab (INVESTIGATED_ASiA, 42 terms; + 7 CL cell types) and gene-expression-atlas-okn (biolink:has_attribute, 362 terms) carry raw obo/UBERON_ anatomy and join directly (AN1, 27 shared); biohealth attaches via the ubergraph UMLS->UBERON bridge (BH9/BH10). See cluster_notes.AN_anatomy_uberon.",
   "$count_note": "INTERNAL maintainer note - NOT user-facing. The single user-facing crosswalk count is len(all_crosswalks()) in src/mcp_okn/crosswalks.py - exactly what the list_crosswalks tool returns and what the README, the inventory doc (docs/crosswalks/proto-okn-crosswalk-inventory.md) and the network diagram cite. Do NOT surface the raw length of this verified_crosswalks array to end users: it is an internal storage count that differs from the user-facing number because all_crosswalks() (a) drops the ubergraph hub-scaffolding rows where ubergraph is a bare endpoint (e.g. A6 MONDO-expansion, M1 MeSH<->ubergraph) plus the compressed NCBITaxon hub rows, and (b) re-expands taxon_hub.pairwise into one row per KG pair. That derivation - not any number hardcoded here - is the source of truth, so this note never needs a count update. tests/test_crosswalks.py pins the user-facing docs to len(all_crosswalks()).",
   "federation": "https://purl.org/okn/frink/kg",
-  "verified_on": "2026-10-13",
+  "verified_on": "2026-10-14",
   "taxon_hub": {
     "$note": "Materialized pairwise NCBITaxon overlaps between the hub member KGs (each maps organisms to ubergraph; crosswalks D3-D10). Each record is a non-zero pair {kg_a, kg_b, exact_id, clade_a_in_b, clade_b_in_a}: exact_id = same NCBITaxon id on both sides (symmetric); clade_a_in_b = kg_a taxa nested under kg_b's clades via ubergraph subClassOf* (directional), clade_b_in_a the reverse. Zero-overlap pairs are omitted. Regenerate with scripts/refresh_taxon_overlaps.py when a member KG is updated. UPDATE 2026-06-18: wildlifekn added as a LABEL-BRIDGED member - it has no NCBITaxon IRIs, so its bird/amphibian binomials (authority-stripped) are resolved to NCBITaxon via ubergraph rdfs:label (339 species resolve). Fragile vs the IRI-based members; exact-id pairwise overlaps verified 2026-06-18 (nde 17, sawgraph 2). UPDATE 2026-06-23: biohealth added as a LABEL-BRIDGED member - the Bio-Health KG keys every entity on a UMLS CUI (node IRI) and carries NO NCBITaxon ids, so its organism concepts are resolved to NCBITaxon by matching biohealth rdfs:label to ubergraph NCBITaxon rdfs:label (organism scientific name). Name-based and approximate (misses synonyms/spelling variants, so counts are conservative lower bounds) and CANNOT do subClassOf* clade expansion - even more fragile than wildlifekn (which at least uses cleaned binomials). Recorded as label_match counts (biohealth organisms found by name in each hub KG), NOT exact_id/clade, verified 2026-06-23: aopwiki 112/166, gene-expression-atlas-okn 6/8, sawgraph 377/538, spoke-genelab 7/9 (model organisms), nde 1052/1808, spoke-okn 1603/34570. SAWGRAPH (2026-10-13): sawgraph v0.0.16 dropped the obo:RO_0002162 'in taxon' edge that tied a sample material to its NCBITaxon class, so its organisms are now read on two legs. (1) NAME BRIDGE: a Water Quality Portal organism is a us-wqp:Taxon node (79, all with samples) carrying only a scientific-name rdfs:label, resolved to an NCBITaxon IRI through ubergraph's rdfs:label (75 resolve). (2) EMBEDDED LEAVES: sawgraph also embeds 160 NCBITaxon classes as subjects of rdfs:subClassOf, which is where the Maine EGAD livestock, game and crop organisms sit (Bison, Bos taurus, Capra hircus, Castor, Cervidae, Gallus gallus, Meleagris, Ovis aries, Salmo salar, Sus scrofa domesticus, Zea mays subsp. mays). That fragment is an INFERRED closure reaching up to 'cellular organisms', so only its 36 leaves are organisms - a class with another NCBITaxon subclass is an ancestor. Reading every subClassOf subject, as this recipe did until 2026-10-13, counted the ancestors and inflated every clade overlap. Union of the two legs: 86 organisms. mcp_okn.taxon reads sawgraph through that two-leg source; its pairwise counts were re-measured that day.",
     "hub_kg": "ubergraph",
@@ -3714,7 +3714,7 @@
       "bridge_kg": null,
       "iri_normalization": "spoke-okn types its 762 chemicals as biolink:ChemicalEntity whose NODE IRI IS a PubChem InChIKey IRI (http://rdf.ncbi.nlm.nih.gov/pubchem/inchikey/{InChIKey}); strip to the bare InChIKey (REPLACE '.*/inchikey/' -> ''). prokn carries the InChIKey as a plain literal on its 304,376 ChEMBL compounds via chemrof:inchi_key_string. Match the InChIKey strings directly (no bridge). NEW link (2026-07-11): connects spoke-okn's drugs/environmental chemicals to prokn's ChEMBL bioactivity + protein-target data - the FIRST chemical crosswalk for prokn (a 304k-compound ChEMBL/InChIKey hub that joined on no chemical key) and spoke-okn's first structure-based chemical join. spoke-okn also cross-references these chemicals to ChEMBL/PubChem/ChEBI/DrugBank/KEGG via oboInOwl:hasDbXref.",
       "verified_count": 143,
-      "verified_count_note": "143 of spoke-okn's 762 distinct InChIKey chemicals are prokn ChEMBL compounds - mostly environmental toxicants + drugs (Hexachlorophene CHEMBL496, Vinyl Chloride, Pyrene, 7,12-Dimethylbenz[a]anthracene, Coumaphos, Phenacetin CHEMBL16073). Verified 2026-07-11.",
+      "verified_count_note": "143 of spoke-okn's 762 distinct InChIKey chemicals are prokn ChEMBL compounds - mostly environmental toxicants + drugs (Hexachlorophene CHEMBL496, Vinyl Chloride, Pyrene, 7,12-Dimethylbenz[a]anthracene, Coumaphos, Phenacetin CHEMBL16073). Verified 2026-07-11. A wider babel route between the same graphs, CB4, reaches 278 SPOKE-OKN compounds (2026-10-14).",
       "example_questions": [
         "For a chemical spoke-okn tracks (a drug or an environmental toxicant, keyed by InChIKey), what protein targets and ChEMBL bioactivity does prokn record for the same structure?",
         "How many of spoke-okn's chemicals are also in prokn's ChEMBL bioactivity data, joined on InChIKey?"
@@ -4071,22 +4071,22 @@
       "right_kg": "prokn",
       "right_predicate": "node-iri (obo:NCIT_C43366 Compound, ChEMBL IRI)",
       "right_role": "subject",
-      "shared_key": "CAS -> ChEMBL (bridged)",
-      "key_namespace": "http://identifiers.org/cas/{cas} (same form in babel) -> babel clique -> http://identifiers.org/chembl.compound/CHEMBL{n} -> https://www.ebi.ac.uk/chembl/explore/compound/CHEMBL{n} (prokn)",
+      "shared_key": "CAS -> ChEMBL/PubChem (bridged)",
+      "key_namespace": "http://identifiers.org/cas/{cas} -> babel clique -> ChEMBL / PubChem / DrugCentral / HMDB member -> ProKN compound IRI in that form",
       "bridge_kg": "babel",
-      "iri_normalization": "biobricks-tox21's CAS IRIs are already in babel's identifiers.org form, so the left side needs no rewrite; rebuild prokn's https://www.ebi.ac.uk/chembl/explore/compound/{CHEMBL id} from the chembl.compound clique member and test it against prokn's Compound type. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both - left in one group, the planner can run the FILTER over the whole exactMatch relation and time out.",
-      "verified_count": 2462,
-      "verified_on": "2026-09-26",
+      "iri_normalization": "ProKN keys compounds in four IRI forms, so test every one: ChEMBL https://www.ebi.ac.uk/chembl/explore/compound/{id}, PubChem https://pubchem.ncbi.nlm.nih.gov/compound/{cid}, DrugCentral https://drugcentral.org/drugcard/{n} and HMDB https://hmdb.ca/metabolites/{id}, rewritten from babel's identifiers.org / drugcentral.org members. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both; count source entities, never cliques.",
+      "verified_count": 3182,
+      "verified_on": "2026-10-14",
       "verified_count_secondary": {
-        "prokn_compounds_reached": 2464
+        "chembl_only_count_before_2026_10_14": 2462
       },
-      "verified_count_note": "DISTINCT biobricks-tox21 CAS-keyed chemicals that reach a prokn Compound (obo:NCIT_C43366) through babel: 2,462 chemicals onto 2,464 prokn compounds. The two graphs share no chemical identifier scheme (biobricks-tox21 is CAS-keyed; prokn is ChEMBL/InChIKey/PubChem-keyed with no CAS), so this pair had no crosswalk before babel. Test prokn membership by the Compound type, not skos:exactMatch (some prokn compounds carry no PubChem xref). babel can place one id in two cliques, so a source entity may fan out to more than one target id: count entities, never cliques.",
+      "verified_count_note": "3,182 CAS numbers reach a ProKN compound in any of its four id forms (re-verified 2026-10-14). The original count (2,462) tested only the ChEMBL form; ProKN's PubChem, DrugCentral and HMDB records add the rest. Worked examples written against the ChEMBL-only route remain valid as a subset.",
       "example_question": "Which Tox21-screened chemicals are ChEMBL compounds in ProKN (CAS -> ChEMBL via Babel), and what protein targets does ProKN record for those that are active in Tox21 assays?",
       "example_questions": [
         "Which Tox21-screened chemicals are ChEMBL compounds in ProKN (CAS -> ChEMBL via Babel), and what protein targets does ProKN record for those that are active in Tox21 assays?",
         "How much of the Tox21 chemical library reaches ProKN through Babel, and how many of the bridged chemicals are approved or clinical-stage drugs in ProKN's ChEMBL record?"
       ],
-      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/biobricks-tox21> { ?ent ?p ?o } FILTER(STRSTARTS(STR(?ent),'http://identifiers.org/cas/')) BIND(?ent AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/chembl.compound/'))\n  BIND(IRI(CONCAT('https://www.ebi.ac.uk/chembl/explore/compound/',STRAFTER(STR(?member),'chembl.compound/'))) AS ?cpd)\n  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?cpd a <http://purl.obolibrary.org/obo/NCIT_C43366> }\n}",
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/biobricks-tox21> { ?ent a <http://purl.obolibrary.org/obo/CHEMINF_000446> } BIND(?ent AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(REGEX(STR(?member),'^http://(identifiers\\\\.org/(chembl\\\\.compound|pubchem\\\\.compound|hmdb)|drugcentral\\\\.org/drugcard)/'))\n  BIND(IRI(REPLACE(REPLACE(REPLACE(REPLACE(STR(?member),\n    '^http://identifiers.org/chembl.compound/','https://www.ebi.ac.uk/chembl/explore/compound/'),\n    '^http://identifiers.org/pubchem.compound/','https://pubchem.ncbi.nlm.nih.gov/compound/'),\n    '^http://drugcentral.org/drugcard/','https://drugcentral.org/drugcard/'),\n    '^http://identifiers.org/hmdb/','https://hmdb.ca/metabolites/')) AS ?cpd)\n  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?cpd a ?ptype }\n}",
       "skeleton_verified": true
     },
     {
@@ -4097,22 +4097,22 @@
       "right_kg": "prokn",
       "right_predicate": "node-iri (obo:NCIT_C43366 Compound, ChEMBL IRI)",
       "right_role": "subject",
-      "shared_key": "CAS -> ChEMBL (bridged)",
-      "key_namespace": "http://identifiers.org/cas/{cas} (same form in babel) -> babel clique -> http://identifiers.org/chembl.compound/CHEMBL{n} -> https://www.ebi.ac.uk/chembl/explore/compound/CHEMBL{n} (prokn)",
+      "shared_key": "CAS -> ChEMBL/PubChem (bridged)",
+      "key_namespace": "http://identifiers.org/cas/{cas} -> babel clique -> ChEMBL / PubChem / DrugCentral / HMDB member -> ProKN compound IRI in that form",
       "bridge_kg": "babel",
-      "iri_normalization": "biobricks-toxcast's CAS IRIs are already in babel's identifiers.org form, so the left side needs no rewrite; rebuild prokn's https://www.ebi.ac.uk/chembl/explore/compound/{CHEMBL id} from the chembl.compound clique member and test it against prokn's Compound type. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both - left in one group, the planner can run the FILTER over the whole exactMatch relation and time out.",
-      "verified_count": 2504,
-      "verified_on": "2026-09-26",
+      "iri_normalization": "ProKN keys compounds in four IRI forms, so test every one: ChEMBL https://www.ebi.ac.uk/chembl/explore/compound/{id}, PubChem https://pubchem.ncbi.nlm.nih.gov/compound/{cid}, DrugCentral https://drugcentral.org/drugcard/{n} and HMDB https://hmdb.ca/metabolites/{id}, rewritten from babel's identifiers.org / drugcentral.org members. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both; count source entities, never cliques.",
+      "verified_count": 3243,
+      "verified_on": "2026-10-14",
       "verified_count_secondary": {
-        "prokn_compounds_reached": 2507
+        "chembl_only_count_before_2026_10_14": 2504
       },
-      "verified_count_note": "DISTINCT biobricks-toxcast CAS-keyed chemicals that reach a prokn Compound (obo:NCIT_C43366) through babel: 2,504 chemicals onto 2,507 prokn compounds. The two graphs share no chemical identifier scheme (biobricks-toxcast is CAS-keyed; prokn is ChEMBL/InChIKey/PubChem-keyed with no CAS), so this pair had no crosswalk before babel. Test prokn membership by the Compound type, not skos:exactMatch (some prokn compounds carry no PubChem xref). babel can place one id in two cliques, so a source entity may fan out to more than one target id: count entities, never cliques.",
+      "verified_count_note": "3,243 CAS numbers reach a ProKN compound in any of its four id forms (re-verified 2026-10-14). The original count (2,504) tested only the ChEMBL form; ProKN's PubChem, DrugCentral and HMDB records add the rest. Worked examples written against the ChEMBL-only route remain valid as a subset.",
       "example_question": "Which ToxCast chemicals reach ProKN's ChEMBL compounds through Babel (CAS -> ChEMBL), and for an assay target family, do ToxCast activity calls line up with the protein targets ProKN records?",
       "example_questions": [
         "Which ToxCast chemicals reach ProKN's ChEMBL compounds through Babel (CAS -> ChEMBL), and for an assay target family, do ToxCast activity calls line up with the protein targets ProKN records?",
         "For ToxCast chemicals that are also ProKN compounds, which clinical indications (MeSH, with phase) does ProKN list - i.e. which environmental test chemicals are also drugs?"
       ],
-      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/biobricks-toxcast> { ?t <http://edamontology.org/has_identifier> ?ent } FILTER(STRSTARTS(STR(?ent),'http://identifiers.org/cas/')) BIND(?ent AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/chembl.compound/'))\n  BIND(IRI(CONCAT('https://www.ebi.ac.uk/chembl/explore/compound/',STRAFTER(STR(?member),'chembl.compound/'))) AS ?cpd)\n  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?cpd a <http://purl.obolibrary.org/obo/NCIT_C43366> }\n}",
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/biobricks-toxcast> { ?ent a <http://purl.obolibrary.org/obo/CHEMINF_000446> } BIND(?ent AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(REGEX(STR(?member),'^http://(identifiers\\\\.org/(chembl\\\\.compound|pubchem\\\\.compound|hmdb)|drugcentral\\\\.org/drugcard)/'))\n  BIND(IRI(REPLACE(REPLACE(REPLACE(REPLACE(STR(?member),\n    '^http://identifiers.org/chembl.compound/','https://www.ebi.ac.uk/chembl/explore/compound/'),\n    '^http://identifiers.org/pubchem.compound/','https://pubchem.ncbi.nlm.nih.gov/compound/'),\n    '^http://drugcentral.org/drugcard/','https://drugcentral.org/drugcard/'),\n    '^http://identifiers.org/hmdb/','https://hmdb.ca/metabolites/')) AS ?cpd)\n  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?cpd a ?ptype }\n}",
       "skeleton_verified": true
     },
     {
@@ -5780,6 +5780,698 @@
       "skeleton_query": "SELECT (COUNT(DISTINCT ?pm) AS ?n) WHERE {\n  { SELECT DISTINCT ?ev WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?ev a <http://purl.jp/bio/12/glyco/glycan#Evidence> . } } }\n  BIND(IRI(CONCAT('https://pubmed.ncbi.nlm.nih.gov/', STRAFTER(STR(?ev),'PubMed_'))) AS ?pm)\n  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?s <http://purl.org/ontology/bibo/pmid> ?pm . }\n}",
       "skeleton_verified": true,
       "domain": "Publications"
+    },
+    {
+      "id": "A31-mondo-prokn-rdkg",
+      "left_kg": "prokn",
+      "left_predicate": "http://www.w3.org/2004/02/skos/core#exactMatch (object of an up:Disease record)",
+      "left_role": "object",
+      "right_kg": "rdkg",
+      "right_predicate": "node-iri (biolink:Disease)",
+      "right_role": "subject",
+      "shared_key": "MONDO",
+      "key_namespace": "http://purl.obolibrary.org/obo/MONDO_{n} on both sides",
+      "bridge_kg": null,
+      "iri_normalization": "None: RDKG's disease nodes are MONDO IRIs and ProKN's up:Disease records carry the same IRI on skos:exactMatch. Drive from RDKG's typed diseases.",
+      "verified_count": 2901,
+      "verified_count_secondary": {
+        "prokn_disease_records": 2870,
+        "shared_hp_terms": 274,
+        "with_prokn_gene_association": 2535,
+        "with_rdkg_treatment": 590
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "2,901 MONDO diseases shared, held on 2,870 ProKN records (of 3,147 ProKN records with a MONDO id; RDKG has 22,176 MONDO diseases). ProKN adds gene associations to 2,535 and compound indications to 447; RDKG adds genes to 1,193 and curated treatments to 590. 274 HP terms are also shared. Missed until 2026-10-14: the pair was catalogued only on chemicals (DB2). Verified live 2026-10-14.",
+      "example_question": "Which diseases that RDKG ties to a gene does ProKN record the most indicated compounds for, joined on the MONDO id, and how do RDKG's own gene and treating-drug counts compare?",
+      "example_questions": [
+        "Which diseases that RDKG ties to a gene does ProKN record the most indicated compounds for, joined on the MONDO id, and how do RDKG's own gene and treating-drug counts compare?",
+        "Same crosswalk, coverage angle: how many diseases do ProKN and RDKG share on the MONDO id, and what does each graph attach to the shared diseases?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?m) AS ?n) WHERE {\n  { SELECT DISTINCT ?m WHERE { GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?m a <https://w3id.org/biolink/vocab/Disease> } } }\n  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?d a <http://purl.uniprot.org/core/Disease> ; <http://www.w3.org/2004/02/skos/core#exactMatch> ?m }\n}",
+      "skeleton_verified": true,
+      "domain": "Disease & phenotype"
+    },
+    {
+      "id": "A32-mondo-nde-rdkg",
+      "left_kg": "nde",
+      "left_predicate": "http://schema.org/healthCondition",
+      "left_role": "object",
+      "right_kg": "rdkg",
+      "right_predicate": "node-iri (biolink:Disease)",
+      "right_role": "subject",
+      "shared_key": "MONDO",
+      "key_namespace": "http://purl.obolibrary.org/obo/MONDO_{n} on both sides",
+      "bridge_kg": null,
+      "iri_normalization": "None: same MONDO IRI.",
+      "verified_count": 2907,
+      "verified_count_secondary": {
+        "nde_mondo_conditions": 3364,
+        "nde_datasets_tagged": 101904,
+        "shared_hp_terms": 251
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "2,907 of NDE's 3,364 MONDO health conditions (86%) are RDKG diseases, tagging 101,904 of NDE's 113,181 MONDO-tagged datasets (NCBI GEO supplies 96,296). Connects RDKG's disease genes/phenotypes/treatments to the public datasets that study the disease. Verified live 2026-10-14.",
+      "example_question": "Which RDKG diseases have the most datasets in the NIAID Data Ecosystem (NDE), joined on the MONDO id, and which data catalogs hold them?",
+      "example_questions": [
+        "Which RDKG diseases have the most datasets in the NIAID Data Ecosystem (NDE), joined on the MONDO id, and which data catalogs hold them?",
+        "Same crosswalk, coverage angle: how many of NDE's MONDO health conditions are RDKG diseases, and how many datasets do they tag?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?m) AS ?n) WHERE {\n  { SELECT DISTINCT ?m WHERE { GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?m a <https://w3id.org/biolink/vocab/Disease> } } }\n  GRAPH <https://purl.org/okn/frink/kg/nde> { ?ds <http://schema.org/healthCondition> ?m }\n}",
+      "skeleton_verified": true,
+      "domain": "Disease & phenotype"
+    },
+    {
+      "id": "A33-mondo-nde-prokn",
+      "left_kg": "nde",
+      "left_predicate": "http://schema.org/healthCondition",
+      "left_role": "object",
+      "right_kg": "prokn",
+      "right_predicate": "http://www.w3.org/2004/02/skos/core#exactMatch (object of an up:Disease record)",
+      "right_role": "object",
+      "shared_key": "MONDO",
+      "key_namespace": "http://purl.obolibrary.org/obo/MONDO_{n} on both sides",
+      "bridge_kg": null,
+      "iri_normalization": "None: same MONDO IRI.",
+      "verified_count": 756,
+      "verified_count_secondary": {
+        "prokn_disease_records": 814,
+        "nde_datasets_tagged": 61164
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "756 MONDO diseases shared (814 ProKN records), tagging 61,164 NDE datasets. Bounded by ProKN: only 3,147 of its 8,596 disease records carry a MONDO id. Verified live 2026-10-14.",
+      "example_question": "For diseases that ProKN associates with genes, how many NIAID Data Ecosystem datasets study each, joined on the MONDO id?",
+      "example_questions": [
+        "For diseases that ProKN associates with genes, how many NIAID Data Ecosystem datasets study each, joined on the MONDO id?",
+        "Same crosswalk, coverage angle: how many diseases do ProKN and NDE share on MONDO, and how many NDE datasets do they tag?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?m) AS ?n) WHERE {\n  { SELECT DISTINCT ?m WHERE { GRAPH <https://purl.org/okn/frink/kg/prokn> { ?d a <http://purl.uniprot.org/core/Disease> ; <http://www.w3.org/2004/02/skos/core#exactMatch> ?m FILTER(STRSTARTS(STR(?m),'http://purl.obolibrary.org/obo/MONDO_')) } } }\n  GRAPH <https://purl.org/okn/frink/kg/nde> { ?ds <http://schema.org/healthCondition> ?m }\n}",
+      "skeleton_verified": true,
+      "domain": "Disease & phenotype"
+    },
+    {
+      "id": "A34-mondo-digcfdekg-nde",
+      "left_kg": "digcfdekg",
+      "left_predicate": "node-iri (Trait)",
+      "left_role": "subject",
+      "right_kg": "nde",
+      "right_predicate": "http://schema.org/healthCondition",
+      "right_role": "object",
+      "shared_key": "MONDO",
+      "key_namespace": "http://purl.obolibrary.org/obo/MONDO_{n} on both sides",
+      "bridge_kg": null,
+      "iri_normalization": "None: digcfdekg trait nodes are MONDO IRIs, as are NDE conditions.",
+      "verified_count": 158,
+      "verified_count_secondary": {
+        "digcfdekg_mondo_traits": 226,
+        "nde_datasets_tagged": 38810,
+        "shared_hp_terms": 13
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "158 of digcfdekg's 226 MONDO traits (70%) are NDE health conditions, tagging 38,810 datasets; 13 HP traits add 894 datasets (not counted). Points a trait's inferred gene list at data that could test it. Verified live 2026-10-14.",
+      "example_question": "Which CFDE REVEAL (digcfdekg) disease traits have the most NIAID Data Ecosystem datasets, joined on the MONDO id, and how many genes does digcfdekg associate with each?",
+      "example_questions": [
+        "Which CFDE REVEAL (digcfdekg) disease traits have the most NIAID Data Ecosystem datasets, joined on the MONDO id, and how many genes does digcfdekg associate with each?",
+        "Same crosswalk, coverage angle: how many digcfdekg traits are NDE health conditions, by ontology, and how many datasets do they tag?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?m) AS ?n) WHERE {\n  { SELECT DISTINCT ?m WHERE { GRAPH <https://purl.org/okn/frink/kg/digcfdekg> { ?m a <https://purl.org/okn/frink/kg/digcfdekg/schema/Trait> FILTER(STRSTARTS(STR(?m),'http://purl.obolibrary.org/obo/MONDO_')) } } }\n  GRAPH <https://purl.org/okn/frink/kg/nde> { ?ds <http://schema.org/healthCondition> ?m }\n}",
+      "skeleton_verified": true,
+      "domain": "Disease & phenotype"
+    },
+    {
+      "id": "A35-mesh-mondo-mesh-rdkg-via-babel",
+      "left_kg": "biobricks-mesh",
+      "left_predicate": "node-iri (MeSH descriptor or SCR_Disease)",
+      "left_role": "subject",
+      "right_kg": "rdkg",
+      "right_predicate": "node-iri (biolink:Disease)",
+      "right_role": "subject",
+      "shared_key": "disease id -> MeSH (bridged)",
+      "key_namespace": "http://purl.obolibrary.org/obo/MONDO_{n} (rdkg) -> babel clique -> http://id.nlm.nih.gov/mesh/{D|C…} (biobricks-mesh)",
+      "bridge_kg": "babel",
+      "iri_normalization": "Babel's MeSH member IRI is biobricks-mesh's own record IRI, so no rewrite after the lookup. A supplementary disease record (C…) is placed in the MeSH tree by the descriptor it maps to (meshv:preferredMappedTo). Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both; count source entities, never cliques.",
+      "verified_count": 7934,
+      "verified_count_secondary": {
+        "rdkg_disease_nodes": 26106,
+        "via_scr_disease": 5004,
+        "via_descriptor": 3037
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "7,934 of RDKG's 26,106 disease nodes reach a MeSH record, 5,004 through a supplementary disease record (MeSH files most rare diseases there). By MeSH category RDKG is led by congenital/hereditary (C16, 3,664) and nervous-system diseases (C10, 2,341). Gives RDKG diseases PubMed's indexing headings. Verified live 2026-10-14.",
+      "example_question": "Through Babel, which MeSH disease categories hold the most RDKG diseases?",
+      "example_questions": [
+        "Through Babel, which MeSH disease categories hold the most RDKG diseases?",
+        "Same crosswalk, coverage angle: how many RDKG diseases reach a MeSH record through Babel, and is it a main descriptor or a supplementary disease record?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?ent a <https://w3id.org/biolink/vocab/Disease> } BIND(?ent AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://id.nlm.nih.gov/mesh/'))\n  GRAPH <https://purl.org/okn/frink/kg/biobricks-mesh> { ?member a ?mtype }\n}",
+      "skeleton_verified": true,
+      "domain": "Disease & phenotype"
+    },
+    {
+      "id": "A36-mesh-nde-via-babel",
+      "left_kg": "biobricks-mesh",
+      "left_predicate": "node-iri (MeSH descriptor or SCR_Disease)",
+      "left_role": "subject",
+      "right_kg": "nde",
+      "right_predicate": "http://schema.org/healthCondition (MONDO, NCIT, HP or DOID IRI)",
+      "right_role": "object",
+      "shared_key": "disease id -> MeSH (bridged)",
+      "key_namespace": "NDE condition term (obo IRI) -> babel clique -> http://id.nlm.nih.gov/mesh/{id}",
+      "bridge_kg": "babel",
+      "iri_normalization": "Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both; count source entities, never cliques.",
+      "verified_count": 3467,
+      "verified_count_secondary": {
+        "mondo_terms": 2881,
+        "ncit_terms": 227,
+        "hp_terms": 186,
+        "doid_terms": 173
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "3,467 NDE health-condition terms reach MeSH: 2,881 of 3,364 MONDO, 227 of 703 NCIT, 186 of 258 HP, 173 of 288 DOID. Groups NDE's datasets by MeSH category (neoplasms 55,087 datasets lead). Verified live 2026-10-14.",
+      "example_question": "Through Babel, how do the NIAID Data Ecosystem's datasets distribute over MeSH disease categories, by their health-condition terms?",
+      "example_questions": [
+        "Through Babel, how do the NIAID Data Ecosystem's datasets distribute over MeSH disease categories, by their health-condition terms?",
+        "Same crosswalk, coverage angle: how many of NDE's health-condition terms reach a MeSH record through Babel, by the ontology of the NDE term?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/nde> { ?ds <http://schema.org/healthCondition> ?ent } FILTER(isIRI(?ent)) BIND(?ent AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://id.nlm.nih.gov/mesh/'))\n  GRAPH <https://purl.org/okn/frink/kg/biobricks-mesh> { ?member a ?mtype }\n}",
+      "skeleton_verified": true,
+      "domain": "Disease & phenotype"
+    },
+    {
+      "id": "A37-mesh-prokn-disease",
+      "left_kg": "biobricks-mesh",
+      "left_predicate": "node-iri (MeSH descriptor or SCR_Disease)",
+      "left_role": "subject",
+      "right_kg": "prokn",
+      "right_predicate": "node-iri (up:Disease record) or its skos:exactMatch ids",
+      "right_role": "subject",
+      "shared_key": "MeSH (direct + via babel)",
+      "key_namespace": "https://www.ncbi.nlm.nih.gov/mesh/?term={id} (ProKN record IRI) -> http://id.nlm.nih.gov/mesh/{id}; otherwise ProKN skos:exactMatch id -> babel -> MeSH member",
+      "bridge_kg": "babel",
+      "iri_normalization": "UNION of two routes. DIRECT: 1,588 ProKN up:Disease records ARE MeSH ids, in the NCBI browser form https://www.ncbi.nlm.nih.gov/mesh/?term={id} (1,580) or https://id.nlm.nih.gov/mesh/{id} (14); rebuild http://id.nlm.nih.gov/mesh/{id}. BABEL: the skos:exactMatch ids of the other records (mostly OMIM). Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both; count source entities, never cliques.",
+      "verified_count": 3186,
+      "verified_count_secondary": {
+        "direct_mesh_keyed_records": 1588,
+        "via_babel": 2991,
+        "prokn_disease_records": 8596
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "3,186 of ProKN's 8,596 disease records reach a biobricks-mesh record: 1,588 are MeSH-keyed records themselves, 2,991 get there through babel (most direct ones also do). ProKN keys 6,686 disease records on OMIM, of which many have no MeSH counterpart. Missed by IRI scans because ProKN uses the NCBI MeSH browser URL. Verified live 2026-10-14.",
+      "example_question": "Which MeSH disease categories hold the most ProKN disease records, reached directly or through Babel, and how many genes does ProKN associate with them?",
+      "example_questions": [
+        "Which MeSH disease categories hold the most ProKN disease records, reached directly or through Babel, and how many genes does ProKN associate with them?",
+        "Same crosswalk, coverage angle: how many ProKN disease records reach a MeSH record, directly or through Babel?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/prokn> { ?ent a <http://purl.uniprot.org/core/Disease> ; <http://www.w3.org/2004/02/skos/core#exactMatch> ?src } } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } } } UNION { GRAPH <https://purl.org/okn/frink/kg/prokn> { ?ent a <http://purl.uniprot.org/core/Disease> FILTER(REGEX(STR(?ent),'mesh/(\\\\?term=)?[CD][0-9]+$')) } BIND(IRI(CONCAT('http://id.nlm.nih.gov/mesh/', REPLACE(STR(?ent),'^.*[/=]([CD][0-9]+)$','$1'))) AS ?member) }\n  FILTER(STRSTARTS(STR(?member),'http://id.nlm.nih.gov/mesh/'))\n  GRAPH <https://purl.org/okn/frink/kg/biobricks-mesh> { ?member a ?mtype }\n}",
+      "skeleton_verified": true,
+      "domain": "Disease & phenotype"
+    },
+    {
+      "id": "BH22-umls-biohealth-prokn-disease-via-babel",
+      "left_kg": "biohealth",
+      "left_predicate": "node-iri (UMLS CUI)",
+      "left_role": "subject",
+      "right_kg": "prokn",
+      "right_predicate": "http://www.w3.org/2004/02/skos/core#exactMatch (ids of an up:Disease record)",
+      "right_role": "object",
+      "shared_key": "disease id -> UMLS (bridged)",
+      "key_namespace": "ProKN disease id (OMIM, MeSH, MONDO, DOID…) -> babel clique -> http://identifiers.org/umls/{CUI} -> https://biohealthkg.proto-okn.net/kg/node/{CUI}",
+      "bridge_kg": "babel",
+      "iri_normalization": "BioHealth nodes are https://biohealthkg.proto-okn.net/kg/node/{UMLS CUI}; babel's member is http://identifiers.org/umls/{CUI}. Drive from the smaller graph: BioHealth's 250,976 concepts are too many for the babel lookup. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both; count source entities, never cliques.",
+      "verified_count": 2958,
+      "verified_count_secondary": {
+        "biohealth_concepts_reached": 3462,
+        "prokn_records_with_exactmatch": 4320
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "2,958 ProKN disease records reach 3,462 BioHealth UMLS concepts. Until now the pair joined only on HP phenotypes (BH2). BioHealth adds literature-derived (PubMed) treats/causes statements to ProKN's protein-level disease data. Verified live 2026-10-14.",
+      "example_question": "Which BioHealth disease concepts reached from ProKN's disease records through Babel have the most 'treats' assertions in BioHealth's literature-derived statements?",
+      "example_questions": [
+        "Which BioHealth disease concepts reached from ProKN's disease records through Babel have the most 'treats' assertions in BioHealth's literature-derived statements?",
+        "Same crosswalk, coverage angle: how many ProKN disease records reach a BioHealth UMLS concept through Babel, and how many BioHealth concepts do they land on?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/prokn> { ?ent a <http://purl.uniprot.org/core/Disease> ; <http://www.w3.org/2004/02/skos/core#exactMatch> ?src } } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/umls/'))\n  BIND(IRI(CONCAT('https://biohealthkg.proto-okn.net/kg/node/', STRAFTER(STR(?member),'umls/'))) AS ?node)\n  GRAPH <https://purl.org/okn/frink/kg/biohealth> { ?node <https://w3id.org/biolink/vocab/category> ?bcat }\n}",
+      "skeleton_verified": true,
+      "domain": "Disease & phenotype"
+    },
+    {
+      "id": "M8-cas-mesh-tox21",
+      "left_kg": "biobricks-mesh",
+      "left_predicate": "http://id.nlm.nih.gov/mesh/vocab#registryNumber (literal on a Concept)",
+      "left_role": "object",
+      "right_kg": "biobricks-tox21",
+      "right_predicate": "node-iri (CHEMINF_000446, http://identifiers.org/cas/{CAS})",
+      "right_role": "subject",
+      "shared_key": "CAS",
+      "key_namespace": "bare CAS string (MeSH registryNumber) <-> http://identifiers.org/cas/{CAS} (Tox21)",
+      "bridge_kg": null,
+      "iri_normalization": "Strip Tox21's CAS IRI to the bare string and match meshv:registryNumber; the MeSH record (descriptor or SCR_Chemical) reaches the concept through meshv:concept or meshv:preferredConcept.",
+      "verified_count": 1103,
+      "verified_count_secondary": {
+        "tox21_cas": 8947,
+        "via_scr_chemical": 944,
+        "via_descriptor": 154
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "1,103 of Tox21's 8,947 CAS numbers (12.3%) have a MeSH record, 944 through a supplementary chemical record. Completes the MeSH-tox CAS trio (M3 ICE, M4 ToxCast). MeSH supplies pharmacological actions (anti-bacterial agents lead, 23). Verified live 2026-10-14.",
+      "example_question": "Which MeSH pharmacological actions are most common among chemicals screened in Tox21, joined on the CAS registry number?",
+      "example_questions": [
+        "Which MeSH pharmacological actions are most common among chemicals screened in Tox21, joined on the CAS registry number?",
+        "Same crosswalk, coverage angle: how many Tox21 chemicals have a MeSH record on the CAS number, and is that record a descriptor or a supplementary chemical record?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?cas) AS ?n) WHERE {\n  { SELECT DISTINCT ?cas WHERE { GRAPH <https://purl.org/okn/frink/kg/biobricks-tox21> { ?ch a <http://purl.obolibrary.org/obo/CHEMINF_000446> } BIND(REPLACE(STR(?ch),'^https?://identifiers.org/cas/','') AS ?cas) } }\n  GRAPH <https://purl.org/okn/frink/kg/biobricks-mesh> { ?m <http://id.nlm.nih.gov/mesh/vocab#registryNumber> ?cas }\n}",
+      "skeleton_verified": true,
+      "domain": "Chemicals"
+    },
+    {
+      "id": "E4-cas-aopwiki-tox21",
+      "left_kg": "biobricks-aopwiki",
+      "left_predicate": "node-iri (CAS hub, CHEMINF_000000, https://identifiers.org/cas/{CAS})",
+      "left_role": "subject",
+      "right_kg": "biobricks-tox21",
+      "right_predicate": "node-iri (CHEMINF_000446, http://identifiers.org/cas/{CAS})",
+      "right_role": "subject",
+      "shared_key": "CAS",
+      "key_namespace": "https://identifiers.org/cas/{CAS} (AOP-Wiki) <-> http://identifiers.org/cas/{CAS} (Tox21)",
+      "bridge_kg": null,
+      "iri_normalization": "Switch the scheme https -> http.",
+      "verified_count": 285,
+      "verified_count_secondary": {
+        "aopwiki_cas": 391,
+        "aops_with_a_tox21_stressor": 98
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "285 of AOP-Wiki's 391 CAS-keyed chemicals (73%) are in Tox21; 98 of 126 AOPs with a chemical stressor have at least one. Completes AOP-Wiki's CAS links (E3 ToxCast). Verified live 2026-10-14.",
+      "example_question": "Which Adverse Outcome Pathways have the most chemical stressors that were screened in Tox21, joined on the CAS number?",
+      "example_questions": [
+        "Which Adverse Outcome Pathways have the most chemical stressors that were screened in Tox21, joined on the CAS number?",
+        "Same crosswalk, coverage angle: how many AOP-Wiki chemicals are Tox21 chemicals, and how many AOPs have at least one Tox21-screened stressor?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?c2) AS ?n) WHERE {\n  GRAPH <https://purl.org/okn/frink/kg/biobricks-aopwiki> { ?c a <http://semanticscience.org/resource/CHEMINF_000000> }\n  BIND(IRI(REPLACE(STR(?c),'^https://','http://')) AS ?c2)\n  GRAPH <https://purl.org/okn/frink/kg/biobricks-tox21> { ?c2 a <http://purl.obolibrary.org/obo/CHEMINF_000446> }\n}",
+      "skeleton_verified": true,
+      "domain": "Chemicals"
+    },
+    {
+      "id": "DB6-drugbank-aopwiki-rdkg",
+      "left_kg": "biobricks-aopwiki",
+      "left_predicate": "http://semanticscience.org/resource/CHEMINF_000406 (bare DrugBank literal on an id node)",
+      "left_role": "object",
+      "right_kg": "rdkg",
+      "right_predicate": "node-iri (biolink:Drug)",
+      "right_role": "subject",
+      "shared_key": "DrugBank",
+      "key_namespace": "bare DrugBank literal -> http://identifiers.org/drugbank/{id}",
+      "bridge_kg": null,
+      "iri_normalization": "CONCAT onto the bare literal. The id node hangs off AOP-Wiki's CAS hub (stressor -aop:has_chemical_entity-> CAS hub -skos:exactMatch-> id node), so traverse the hub for AOP context.",
+      "verified_count": 124,
+      "verified_count_secondary": {
+        "aopwiki_drugbank_ids": 210,
+        "with_rdkg_treats": 117
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "124 of AOP-Wiki's 210 DrugBank ids are RDKG drugs; 117 have an RDKG treats edge. E.g. azacitidine (8 AOPs, treats 48 RDKG diseases), methimazole and propylthiouracil (model thyroperoxidase inhibitors, 5 AOPs each). Verified live 2026-10-14.",
+      "example_question": "Which AOP-Wiki chemical stressors are also drugs in RDKG, joined on the DrugBank id, and how many AOPs and RDKG diseases does each touch?",
+      "example_questions": [
+        "Which AOP-Wiki chemical stressors are also drugs in RDKG, joined on the DrugBank id, and how many AOPs and RDKG diseases does each touch?",
+        "Same crosswalk, coverage angle: how many of AOP-Wiki's DrugBank ids are RDKG drugs, and how many of those does RDKG link to a disease it treats?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?db) AS ?n) WHERE {\n  GRAPH <https://purl.org/okn/frink/kg/biobricks-aopwiki> { ?chem <http://semanticscience.org/resource/CHEMINF_000406> ?lit }\n  BIND(IRI(CONCAT('http://identifiers.org/drugbank/', STR(?lit))) AS ?db)\n  GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?db a <https://w3id.org/biolink/vocab/Drug> }\n}",
+      "skeleton_verified": true,
+      "domain": "Chemicals"
+    },
+    {
+      "id": "M9-mesh-rdkg-exposure-mesh",
+      "left_kg": "biobricks-mesh",
+      "left_predicate": "node-iri (MeSH descriptor D… or SCR_Chemical C…)",
+      "left_role": "subject",
+      "right_kg": "rdkg",
+      "right_predicate": "node-iri (biolink:ChemicalExposure, https://rdaccelerate.org/resource/MESH_{id})",
+      "right_role": "subject",
+      "shared_key": "MeSH",
+      "key_namespace": "https://rdaccelerate.org/resource/MESH_{id} (rdkg) -> http://id.nlm.nih.gov/mesh/{id}",
+      "bridge_kg": null,
+      "iri_normalization": "RDKG mints its own IRI around the MeSH id; REPLACE the rdaccelerate prefix with http://id.nlm.nih.gov/mesh/.",
+      "verified_count": 474,
+      "verified_count_secondary": {
+        "via_descriptor": 297,
+        "via_scr_chemical": 177,
+        "with_pharmacological_action": 186
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "All 474 RDKG chemical exposures resolve to a MeSH record. MeSH classifies them (insecticides 35, herbicides 21, cholinesterase inhibitors 17), so RDKG's exposure-contributes_to-disease edges can be grouped by chemical class. Hidden from IRI scans by RDKG's rdaccelerate.org IRIs, which also wrap its CHEBI, CL, UBERON and GO ids. Verified live 2026-10-14.",
+      "example_question": "RDKG keys its chemical exposures on MeSH ids. Which MeSH pharmacological actions are most common among them, and to how many RDKG diseases do those exposures contribute?",
+      "example_questions": [
+        "RDKG keys its chemical exposures on MeSH ids. Which MeSH pharmacological actions are most common among them, and to how many RDKG diseases do those exposures contribute?",
+        "Same crosswalk, coverage angle: how many of RDKG's chemical exposures resolve to a biobricks-mesh record, of which kind, and how many carry a pharmacological action?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?m) AS ?n) WHERE {\n  GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?x a <https://w3id.org/biolink/vocab/ChemicalExposure> }\n  BIND(IRI(REPLACE(STR(?x),'^https://rdaccelerate.org/resource/MESH_','http://id.nlm.nih.gov/mesh/')) AS ?m)\n  GRAPH <https://purl.org/okn/frink/kg/biobricks-mesh> { ?m a ?t }\n}",
+      "skeleton_verified": true,
+      "domain": "Chemicals"
+    },
+    {
+      "id": "P4-pubchem-cid-prokn-pubchemannotations",
+      "left_kg": "prokn",
+      "left_predicate": "node-iri (NCIT_C43366, https://pubchem.ncbi.nlm.nih.gov/compound/{cid})",
+      "left_role": "subject",
+      "right_kg": "biobricks-pubchem-annotations",
+      "right_predicate": "http://www.w3.org/ns/oa#hasTarget",
+      "right_role": "object",
+      "shared_key": "PubChem CID",
+      "key_namespace": "https://pubchem.ncbi.nlm.nih.gov/compound/{cid} -> http://rdf.ncbi.nlm.nih.gov/pubchem/compound/CID{cid}",
+      "bridge_kg": null,
+      "iri_normalization": "Rebuild the annotation-target IRI from the CID; drive from ProKN (an unbound oa:hasTarget scan times out).",
+      "verified_count": 188837,
+      "verified_count_secondary": {
+        "prokn_pubchem_compounds": 327951,
+        "compounds_with_indication": 2010,
+        "annotated_with_indication": 2001
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "188,837 of ProKN's 327,951 PubChem-keyed compounds (58%) are annotated; 2,001 of the 2,010 with a disease indication (99.6%). The largest chemical join in the catalog, and direct: ProKN keys these compounds on the CID. Verified live 2026-10-14.",
+      "example_question": "Which ProKN compounds have the most disease indications, and how many PubChem annotations does biobricks-pubchem-annotations hold for each, joined on the PubChem CID?",
+      "example_questions": [
+        "Which ProKN compounds have the most disease indications, and how many PubChem annotations does biobricks-pubchem-annotations hold for each, joined on the PubChem CID?",
+        "Same crosswalk, coverage angle: how many of ProKN's PubChem-keyed compounds have PubChem annotations, overall and among compounds with a disease indication?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?t) AS ?n) WHERE {\n  { SELECT DISTINCT ?t WHERE { GRAPH <https://purl.org/okn/frink/kg/prokn> { ?c a <http://purl.obolibrary.org/obo/NCIT_C43366> FILTER(STRSTARTS(STR(?c),'https://pubchem.ncbi.nlm.nih.gov/compound/')) }\n      BIND(IRI(CONCAT('http://rdf.ncbi.nlm.nih.gov/pubchem/compound/CID', STRAFTER(STR(?c),'compound/'))) AS ?t) } }\n  GRAPH <https://purl.org/okn/frink/kg/biobricks-pubchem-annotations> { ?a <http://www.w3.org/ns/oa#hasTarget> ?t }\n}",
+      "skeleton_verified": true,
+      "domain": "Chemicals"
+    },
+    {
+      "id": "ET5-cas-tox21-sockg",
+      "left_kg": "biobricks-tox21",
+      "left_predicate": "node-iri (CHEMINF_000446)",
+      "left_role": "subject",
+      "right_kg": "sockg",
+      "right_predicate": "http://w3id.org/coso/v1/contaminoso#casNumber (literal on an ActiveIngredient)",
+      "right_role": "object",
+      "shared_key": "CAS",
+      "key_namespace": "SOCKG casNumber literal -> http://identifiers.org/cas/{CAS}",
+      "bridge_kg": null,
+      "iri_normalization": "CONCAT onto the literal.",
+      "verified_count": 55,
+      "verified_count_secondary": {
+        "sockg_cas": 82,
+        "toxcast": 59,
+        "ice": 68
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "55 of SOCKG's 82 agrochemical CAS numbers are in Tox21 (ToxCast 59, ICE 68). Most-applied: S-metolachlor (815 amendments), atrazine (693). Verified live 2026-10-14.",
+      "example_question": "Which pesticide active ingredients used in SOCKG's soil-carbon field experiments were screened in Tox21, and how often are they applied?",
+      "example_questions": [
+        "Which pesticide active ingredients used in SOCKG's soil-carbon field experiments were screened in Tox21, and how often are they applied?",
+        "Same crosswalk, coverage angle: how many of SOCKG's agrochemicals are in Tox21, compared with ToxCast and ICE?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?cid) AS ?n) WHERE {\n  GRAPH <https://purl.org/okn/frink/kg/sockg> { ?s <http://w3id.org/coso/v1/contaminoso#casNumber> ?cas }\n  BIND(IRI(CONCAT('http://identifiers.org/cas/', STR(?cas))) AS ?cid)\n  GRAPH <https://purl.org/okn/frink/kg/biobricks-tox21> { ?cid a <http://purl.obolibrary.org/obo/CHEMINF_000446> }\n}",
+      "skeleton_verified": true,
+      "domain": "Environmental toxicology"
+    },
+    {
+      "id": "ET6-cas-sawgraph-tox21",
+      "left_kg": "sawgraph",
+      "left_predicate": "http://w3id.org/coso/v1/contaminoso#casNumber (undashed or dashed literal)",
+      "left_role": "object",
+      "right_kg": "biobricks-tox21",
+      "right_predicate": "node-iri (CHEMINF_000446)",
+      "right_role": "subject",
+      "shared_key": "CAS",
+      "key_namespace": "SAWGraph casNumber (dashes rebuilt) -> http://identifiers.org/cas/{CAS}",
+      "bridge_kg": null,
+      "iri_normalization": "Rebuild dashes on undashed literals (NNNNN -> NNN-NN-N) as in ET1.",
+      "verified_count": 11,
+      "verified_count_secondary": {
+        "sawgraph_cas": 114,
+        "toxcast": 34
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "11 of SAWGraph's 114 contaminant CAS numbers are in Tox21 (ToxCast reaches 34): the eight most-measured legacy PFAS (27,000-32,000 observations each) and three fluorinated insecticides. Verified live 2026-10-14.",
+      "example_question": "Which contaminants measured in SAWGraph were screened in Tox21, and how many SAWGraph observations does each have?",
+      "example_questions": [
+        "Which contaminants measured in SAWGraph were screened in Tox21, and how many SAWGraph observations does each have?",
+        "Same crosswalk, coverage angle: how many SAWGraph contaminants are in Tox21, compared with ToxCast?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?casIri) AS ?n) WHERE {\n  { SELECT DISTINCT ?cas WHERE { GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?s <http://w3id.org/coso/v1/contaminoso#casNumber> ?raw .\n      BIND(IF(REGEX(STR(?raw),'^[0-9]{5,10}$'), REPLACE(STR(?raw),'^([0-9]+)([0-9]{2})([0-9])$','$1-$2-$3'), STR(?raw)) AS ?cas)\n      FILTER(REGEX(?cas,'^[0-9]{2,7}-[0-9]{2}-[0-9]$')) } } }\n  BIND(IRI(CONCAT('http://identifiers.org/cas/', ?cas)) AS ?casIri)\n  GRAPH <https://purl.org/okn/frink/kg/biobricks-tox21> { ?casIri a <http://purl.obolibrary.org/obo/CHEMINF_000446> }\n}",
+      "skeleton_verified": true,
+      "domain": "Environmental toxicology"
+    },
+    {
+      "id": "ET7-cas-aopwiki-sockg",
+      "left_kg": "biobricks-aopwiki",
+      "left_predicate": "node-iri (CAS hub, https://identifiers.org/cas/{CAS})",
+      "left_role": "subject",
+      "right_kg": "sockg",
+      "right_predicate": "http://w3id.org/coso/v1/contaminoso#casNumber",
+      "right_role": "object",
+      "shared_key": "CAS",
+      "key_namespace": "SOCKG casNumber -> https://identifiers.org/cas/{CAS}",
+      "bridge_kg": null,
+      "iri_normalization": "CONCAT onto the literal with the https scheme AOP-Wiki uses.",
+      "verified_count": 8,
+      "verified_count_secondary": {
+        "sockg_cas": 82,
+        "with_an_aop": 2
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "8 of SOCKG's 82 agrochemicals are AOP-Wiki chemicals; only atrazine (3 AOPs) and chlorpyrifos (2) are stressors of an AOP. Verified live 2026-10-14.",
+      "example_question": "Which SOCKG agrochemicals are AOP-Wiki chemicals, and which Adverse Outcome Pathways name them as stressors?",
+      "example_questions": [
+        "Which SOCKG agrochemicals are AOP-Wiki chemicals, and which Adverse Outcome Pathways name them as stressors?",
+        "Same crosswalk, coverage angle: how many of SOCKG's agrochemicals does AOP-Wiki carry?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?cid) AS ?n) WHERE {\n  GRAPH <https://purl.org/okn/frink/kg/sockg> { ?s <http://w3id.org/coso/v1/contaminoso#casNumber> ?cas }\n  BIND(IRI(CONCAT('https://identifiers.org/cas/', STR(?cas))) AS ?cid)\n  GRAPH <https://purl.org/okn/frink/kg/biobricks-aopwiki> { ?cid a <http://semanticscience.org/resource/CHEMINF_000000> }\n}",
+      "skeleton_verified": true,
+      "domain": "Environmental toxicology"
+    },
+    {
+      "id": "BH23-umls-biohealth-prokn-chemical-via-babel",
+      "left_kg": "biohealth",
+      "left_predicate": "node-iri (UMLS CUI; biolink:category a chemical semantic type)",
+      "left_role": "subject",
+      "right_kg": "prokn",
+      "right_predicate": "node-iri (compound in ChEMBL / PubChem / DrugCentral / HMDB form)",
+      "right_role": "subject",
+      "shared_key": "UMLS <-> chemical id (bridged)",
+      "key_namespace": "http://identifiers.org/umls/{CUI} -> babel clique -> ChEMBL / PubChem / DrugCentral / HMDB member -> ProKN IRI",
+      "bridge_kg": "babel",
+      "iri_normalization": "Scope BioHealth to chemical semantic types on biolink:category (semtype codes orch, phsu, inch, antb, clnd, hops, horm, lipd, strd, carb, nnon, elii, vita, opco, chvs, chvf; 58,135 concepts) - the whole graph is too large for babel. ProKN keys compounds in four IRI forms, so test every one: ChEMBL https://www.ebi.ac.uk/chembl/explore/compound/{id}, PubChem https://pubchem.ncbi.nlm.nih.gov/compound/{cid}, DrugCentral https://drugcentral.org/drugcard/{n} and HMDB https://hmdb.ca/metabolites/{id}, rewritten from babel's identifiers.org / drugcentral.org members. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both; count source entities, never cliques.",
+      "verified_count": 8488,
+      "verified_count_secondary": {
+        "biohealth_chemical_concepts": 58135,
+        "via_pubchem": 7062,
+        "via_chembl": 6494,
+        "via_drugcentral": 2104
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "8,488 of BioHealth's 58,135 chemical concepts reach a ProKN compound. BioHealth's literature 'treats' counts (ethanol 1,769, dexamethasone 1,701) measure how much a substance is studied, not validated indications; ProKN's curated indications are far fewer. Verified live 2026-10-14.",
+      "example_question": "Which BioHealth substances that reach a ProKN compound through Babel have the most literature 'treats' assertions, and how many indications does ProKN record for them?",
+      "example_questions": [
+        "Which BioHealth substances that reach a ProKN compound through Babel have the most literature 'treats' assertions, and how many indications does ProKN record for them?",
+        "Same crosswalk, coverage angle: how many of BioHealth's chemical concepts reach ProKN through Babel, and through which ProKN identifier form?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/biohealth> { ?ent <https://w3id.org/biolink/vocab/category> ?c } FILTER(REGEX(STR(?c), 'semtype/(.*_)?(orch|phsu|inch|antb|clnd|hops|horm|lipd|strd|carb|nnon|elii|vita|opco|chvs|chvf)(_|$)')) BIND(IRI(CONCAT('http://identifiers.org/umls/', STRAFTER(STR(?ent),'/kg/node/'))) AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(REGEX(STR(?member),'^http://(identifiers\\\\.org/(chembl\\\\.compound|pubchem\\\\.compound|hmdb)|drugcentral\\\\.org/drugcard)/'))\n  BIND(IRI(REPLACE(REPLACE(REPLACE(REPLACE(STR(?member),\n    '^http://identifiers.org/chembl.compound/','https://www.ebi.ac.uk/chembl/explore/compound/'),\n    '^http://identifiers.org/pubchem.compound/','https://pubchem.ncbi.nlm.nih.gov/compound/'),\n    '^http://drugcentral.org/drugcard/','https://drugcentral.org/drugcard/'),\n    '^http://identifiers.org/hmdb/','https://hmdb.ca/metabolites/')) AS ?cpd)\n  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?cpd a ?ptype }\n}",
+      "skeleton_verified": true,
+      "domain": "Chemicals"
+    },
+    {
+      "id": "BH24-umls-cas-biohealth-toxcast-via-babel",
+      "left_kg": "biohealth",
+      "left_predicate": "node-iri (UMLS CUI)",
+      "left_role": "subject",
+      "right_kg": "biobricks-toxcast",
+      "right_predicate": "node-iri (CHEMINF_000446, http://identifiers.org/cas/{CAS})",
+      "right_role": "subject",
+      "shared_key": "UMLS <-> chemical id (bridged)",
+      "key_namespace": "http://identifiers.org/cas/{CAS} -> babel clique -> http://identifiers.org/umls/{CUI} -> BioHealth node",
+      "bridge_kg": "babel",
+      "iri_normalization": "BioHealth nodes are https://biohealthkg.proto-okn.net/kg/node/{UMLS CUI}; babel's member is http://identifiers.org/umls/{CUI}. Drive from the smaller graph: BioHealth's 250,976 concepts are too many for the babel lookup. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both; count source entities, never cliques.",
+      "verified_count": 4400,
+      "verified_count_secondary": {
+        "toxcast_cas": 9542,
+        "biohealth_concepts_reached": 4496
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "4,400 of ToxCast's 9,542 CAS numbers reach a BioHealth concept (mostly organic chemicals, 2,507). Gives BioHealth its first chemical-level link to the tox screening graphs: literature 'causes' statements meet assay data. Verified live 2026-10-14.",
+      "example_question": "Which ToxCast chemicals, mapped to BioHealth UMLS concepts through Babel, have the most literature assertions that they cause a condition?",
+      "example_questions": [
+        "Which ToxCast chemicals, mapped to BioHealth UMLS concepts through Babel, have the most literature assertions that they cause a condition?",
+        "Same crosswalk, coverage angle: how many ToxCast chemicals reach a BioHealth concept through Babel, and of which UMLS semantic type?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/biobricks-toxcast> { ?ent a <http://purl.obolibrary.org/obo/CHEMINF_000446> } BIND(?ent AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/umls/'))\n  BIND(IRI(CONCAT('https://biohealthkg.proto-okn.net/kg/node/', STRAFTER(STR(?member),'umls/'))) AS ?node)\n  GRAPH <https://purl.org/okn/frink/kg/biohealth> { ?node <https://w3id.org/biolink/vocab/category> ?bcat }\n}",
+      "skeleton_verified": true,
+      "domain": "Chemicals"
+    },
+    {
+      "id": "BH25-umls-cas-biohealth-tox21-via-babel",
+      "left_kg": "biohealth",
+      "left_predicate": "node-iri (UMLS CUI)",
+      "left_role": "subject",
+      "right_kg": "biobricks-tox21",
+      "right_predicate": "node-iri (CHEMINF_000446)",
+      "right_role": "subject",
+      "shared_key": "UMLS <-> chemical id (bridged)",
+      "key_namespace": "http://identifiers.org/cas/{CAS} -> babel -> UMLS -> BioHealth node",
+      "bridge_kg": "babel",
+      "iri_normalization": "BioHealth nodes are https://biohealthkg.proto-okn.net/kg/node/{UMLS CUI}; babel's member is http://identifiers.org/umls/{CUI}. Drive from the smaller graph: BioHealth's 250,976 concepts are too many for the babel lookup. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both; count source entities, never cliques.",
+      "verified_count": 4307,
+      "verified_count_secondary": {
+        "tox21_cas": 8947,
+        "biohealth_concepts_reached": 4400
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "4,307 of Tox21's 8,947 CAS numbers reach 4,400 BioHealth concepts. The conditions the literature says these chemicals cause are mostly cell-level (apoptosis 1,080 chemicals, toxic effect 1,009, oxidative stress 713) - the terms Tox21's assays measure. Verified live 2026-10-14.",
+      "example_question": "Which conditions does BioHealth's literature most often say are caused by Tox21 chemicals, mapped through Babel to UMLS?",
+      "example_questions": [
+        "Which conditions does BioHealth's literature most often say are caused by Tox21 chemicals, mapped through Babel to UMLS?",
+        "Same crosswalk, coverage angle: how many Tox21 chemicals reach a BioHealth concept through Babel, and of which UMLS semantic type?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/biobricks-tox21> { ?ent a <http://purl.obolibrary.org/obo/CHEMINF_000446> } BIND(?ent AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/umls/'))\n  BIND(IRI(CONCAT('https://biohealthkg.proto-okn.net/kg/node/', STRAFTER(STR(?member),'umls/'))) AS ?node)\n  GRAPH <https://purl.org/okn/frink/kg/biohealth> { ?node <https://w3id.org/biolink/vocab/category> ?bcat }\n}",
+      "skeleton_verified": true,
+      "domain": "Chemicals"
+    },
+    {
+      "id": "BH26-umls-biohealth-rdkg-chemical-via-babel",
+      "left_kg": "biohealth",
+      "left_predicate": "node-iri (UMLS CUI)",
+      "left_role": "subject",
+      "right_kg": "rdkg",
+      "right_predicate": "node-iri (biolink:Drug / ChemicalEntity / ChemicalExposure)",
+      "right_role": "subject",
+      "shared_key": "UMLS <-> chemical id (bridged)",
+      "key_namespace": "DrugBank / CHEBI / MeSH (rdkg) -> babel -> UMLS -> BioHealth node",
+      "bridge_kg": "babel",
+      "iri_normalization": "Rewrite RDKG's rdaccelerate.org CHEBI and MESH_ IRIs to obo CHEBI_ and id.nlm.nih.gov/mesh/ first; DrugBank drugs are already in babel form. BioHealth nodes are https://biohealthkg.proto-okn.net/kg/node/{UMLS CUI}; babel's member is http://identifiers.org/umls/{CUI}. Drive from the smaller graph: BioHealth's 250,976 concepts are too many for the babel lookup. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both; count source entities, never cliques.",
+      "verified_count": 2387,
+      "verified_count_secondary": {
+        "drugs": 2011,
+        "chemical_exposures": 362,
+        "chemicals": 14,
+        "rdkg_drugbank_keyed_drugs": 2074
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "2,387 RDKG chemical entities reach BioHealth: 2,011 of its 2,074 DrugBank-keyed drugs, 362 of 474 exposures, 14 of 21 chemicals. BioHealth's literature lists several times more uses per drug than RDKG curates (dexamethasone 1,701 vs 290). Verified live 2026-10-14.",
+      "example_question": "For RDKG drugs mapped to BioHealth through Babel, how does the number of diseases RDKG says each treats compare with the conditions BioHealth's literature says it treats?",
+      "example_questions": [
+        "For RDKG drugs mapped to BioHealth through Babel, how does the number of diseases RDKG says each treats compare with the conditions BioHealth's literature says it treats?",
+        "Same crosswalk, coverage angle: how many of RDKG's drugs, chemical exposures and chemicals reach a BioHealth concept through Babel?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { { GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?ent a <https://w3id.org/biolink/vocab/Drug> } BIND(?ent AS ?src) } UNION { GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?ent a <https://w3id.org/biolink/vocab/ChemicalEntity> } BIND(IRI(REPLACE(STR(?ent),'^https://rdaccelerate.org/resource/','http://purl.obolibrary.org/obo/')) AS ?src) } UNION { GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?ent a <https://w3id.org/biolink/vocab/ChemicalExposure> } BIND(IRI(REPLACE(STR(?ent),'^https://rdaccelerate.org/resource/MESH_','http://id.nlm.nih.gov/mesh/')) AS ?src) } } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/umls/'))\n  BIND(IRI(CONCAT('https://biohealthkg.proto-okn.net/kg/node/', STRAFTER(STR(?member),'umls/'))) AS ?node)\n  GRAPH <https://purl.org/okn/frink/kg/biohealth> { ?node <https://w3id.org/biolink/vocab/category> ?bcat }\n}",
+      "skeleton_verified": true,
+      "domain": "Chemicals"
+    },
+    {
+      "id": "BH27-umls-biohealth-spokeokn-chemical-via-babel",
+      "left_kg": "biohealth",
+      "left_predicate": "node-iri (UMLS CUI)",
+      "left_role": "subject",
+      "right_kg": "spoke-okn",
+      "right_predicate": "node-iri (biolink:ChemicalEntity: InChIKey or CHEBI IRI)",
+      "right_role": "subject",
+      "shared_key": "UMLS <-> chemical id (bridged)",
+      "key_namespace": "SPOKE-OKN compound (InChIKey -> http://identifiers.org/inchikey/{key}, or CHEBI) -> babel -> UMLS -> BioHealth node",
+      "bridge_kg": "babel",
+      "iri_normalization": "Rewrite SPOKE-OKN's http://rdf.ncbi.nlm.nih.gov/pubchem/inchikey/{key} node IRI to babel's http://identifiers.org/inchikey/{key}. BioHealth nodes are https://biohealthkg.proto-okn.net/kg/node/{UMLS CUI}; babel's member is http://identifiers.org/umls/{CUI}. Drive from the smaller graph: BioHealth's 250,976 concepts are too many for the babel lookup. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both; count source entities, never cliques.",
+      "verified_count": 608,
+      "verified_count_secondary": {
+        "spoke_compounds": 798,
+        "biohealth_concepts_reached": 639
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "608 of SPOKE-OKN's 798 compounds (76%) reach a BioHealth concept; adds a chemical axis to a pair that joined on diseases and SDoH. Verified live 2026-10-14.",
+      "example_question": "For SPOKE-OKN compounds with a TREATS edge, mapped to BioHealth through Babel, how do SPOKE's treated diseases compare with BioHealth's literature 'treats' assertions?",
+      "example_questions": [
+        "For SPOKE-OKN compounds with a TREATS edge, mapped to BioHealth through Babel, how do SPOKE's treated diseases compare with BioHealth's literature 'treats' assertions?",
+        "Same crosswalk, coverage angle: how many SPOKE-OKN compounds reach a BioHealth concept through Babel, by SPOKE's compound identifier form?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/spoke-okn> { ?ent a <https://w3id.org/biolink/vocab/ChemicalEntity> } BIND(IRI(REPLACE(STR(?ent),'^http://rdf.ncbi.nlm.nih.gov/pubchem/inchikey/','http://identifiers.org/inchikey/')) AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/umls/'))\n  BIND(IRI(CONCAT('https://biohealthkg.proto-okn.net/kg/node/', STRAFTER(STR(?member),'umls/'))) AS ?node)\n  GRAPH <https://purl.org/okn/frink/kg/biohealth> { ?node <https://w3id.org/biolink/vocab/category> ?bcat }\n}",
+      "skeleton_verified": true,
+      "domain": "Chemicals"
+    },
+    {
+      "id": "CB4-chem-spokeokn-prokn-via-babel",
+      "left_kg": "spoke-okn",
+      "left_predicate": "node-iri (biolink:ChemicalEntity)",
+      "left_role": "subject",
+      "right_kg": "prokn",
+      "right_predicate": "node-iri (compound in ChEMBL / PubChem / DrugCentral / HMDB form)",
+      "right_role": "subject",
+      "shared_key": "chemical id -> ChEMBL/PubChem (bridged)",
+      "key_namespace": "SPOKE-OKN InChIKey / ChEMBL / CHEBI node -> babel -> ProKN compound IRI",
+      "bridge_kg": "babel",
+      "iri_normalization": "Rewrite SPOKE-OKN's InChIKey node IRI to http://identifiers.org/inchikey/{key}. ProKN keys compounds in four IRI forms, so test every one: ChEMBL https://www.ebi.ac.uk/chembl/explore/compound/{id}, PubChem https://pubchem.ncbi.nlm.nih.gov/compound/{cid}, DrugCentral https://drugcentral.org/drugcard/{n} and HMDB https://hmdb.ca/metabolites/{id}, rewritten from babel's identifiers.org / drugcentral.org members. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both; count source entities, never cliques.",
+      "verified_count": 278,
+      "verified_count_secondary": {
+        "via_inchikey_c11": 143,
+        "via_pubchem": 251,
+        "via_chembl": 139,
+        "via_drugcentral": 25
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "278 SPOKE-OKN compounds reach ProKN, nearly twice C11's direct InChIKey match (143), because babel knows every ProKN id form. Complements C11; it does not replace it. Verified live 2026-10-14.",
+      "example_question": "Which SPOKE-OKN compounds with a TREATS edge reach a ProKN compound through Babel, and how many ProKN protein targets does each have?",
+      "example_questions": [
+        "Which SPOKE-OKN compounds with a TREATS edge reach a ProKN compound through Babel, and how many ProKN protein targets does each have?",
+        "Same crosswalk, coverage angle: how many SPOKE-OKN compounds reach ProKN through Babel, through which ProKN identifier form, and how does that compare with the direct InChIKey join?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/spoke-okn> { ?ent a <https://w3id.org/biolink/vocab/ChemicalEntity> } BIND(IRI(REPLACE(STR(?ent),'^http://rdf.ncbi.nlm.nih.gov/pubchem/inchikey/','http://identifiers.org/inchikey/')) AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(REGEX(STR(?member),'^http://(identifiers\\\\.org/(chembl\\\\.compound|pubchem\\\\.compound|hmdb)|drugcentral\\\\.org/drugcard)/'))\n  BIND(IRI(REPLACE(REPLACE(REPLACE(REPLACE(STR(?member),\n    '^http://identifiers.org/chembl.compound/','https://www.ebi.ac.uk/chembl/explore/compound/'),\n    '^http://identifiers.org/pubchem.compound/','https://pubchem.ncbi.nlm.nih.gov/compound/'),\n    '^http://drugcentral.org/drugcard/','https://drugcentral.org/drugcard/'),\n    '^http://identifiers.org/hmdb/','https://hmdb.ca/metabolites/')) AS ?cpd)\n  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?cpd a ?ptype }\n}",
+      "skeleton_verified": true,
+      "domain": "Chemicals"
+    },
+    {
+      "id": "CB5-cas-sawgraph-prokn-via-babel",
+      "left_kg": "sawgraph",
+      "left_predicate": "http://w3id.org/coso/v1/contaminoso#casNumber",
+      "left_role": "object",
+      "right_kg": "prokn",
+      "right_predicate": "node-iri (compound, PubChem form)",
+      "right_role": "subject",
+      "shared_key": "CAS -> ChEMBL/PubChem (bridged)",
+      "key_namespace": "SAWGraph CAS (dashes rebuilt) -> babel -> PubChem member -> https://pubchem.ncbi.nlm.nih.gov/compound/{cid}",
+      "bridge_kg": "babel",
+      "iri_normalization": "ProKN keys compounds in four IRI forms, so test every one: ChEMBL https://www.ebi.ac.uk/chembl/explore/compound/{id}, PubChem https://pubchem.ncbi.nlm.nih.gov/compound/{cid}, DrugCentral https://drugcentral.org/drugcard/{n} and HMDB https://hmdb.ca/metabolites/{id}, rewritten from babel's identifiers.org / drugcentral.org members. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both; count source entities, never cliques.",
+      "verified_count": 6,
+      "verified_count_secondary": {
+        "sawgraph_cas_in_babel": 112,
+        "with_chembl_member": 21
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "6 SAWGraph contaminants (PFOS, PFOA, PFHxA, PFHpA, PFPeA, hexaflumuron) reach ProKN, all as Metabolomics Workbench metabolite records (NCIT_C61154, source DDKG_MW) with the tissues they were measured in - human biomonitoring, not drug targets. Supersedes the sawgraph x prokn known_non_join, which tested only ChEMBL. Verified live 2026-10-14.",
+      "example_question": "Which SAWGraph contaminants reach a ProKN compound through Babel, and what does ProKN record about them?",
+      "example_questions": [
+        "Which SAWGraph contaminants reach a ProKN compound through Babel, and what does ProKN record about them?",
+        "Same crosswalk, coverage angle: which Babel identifier schemes carry SAWGraph's contaminants toward ProKN, and how many arrive?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?s <http://w3id.org/coso/v1/contaminoso#casNumber> ?raw } BIND(IF(REGEX(STR(?raw),'^[0-9]{5,10}$'), REPLACE(STR(?raw),'^([0-9]+)([0-9]{2})([0-9])$','$1-$2-$3'), STR(?raw)) AS ?cas) FILTER(REGEX(?cas,'^[0-9]{2,7}-[0-9]{2}-[0-9]$')) BIND(IRI(CONCAT('http://identifiers.org/cas/', ?cas)) AS ?ent) BIND(?ent AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(REGEX(STR(?member),'^http://(identifiers\\\\.org/(chembl\\\\.compound|pubchem\\\\.compound|hmdb)|drugcentral\\\\.org/drugcard)/'))\n  BIND(IRI(REPLACE(REPLACE(REPLACE(REPLACE(STR(?member),\n    '^http://identifiers.org/chembl.compound/','https://www.ebi.ac.uk/chembl/explore/compound/'),\n    '^http://identifiers.org/pubchem.compound/','https://pubchem.ncbi.nlm.nih.gov/compound/'),\n    '^http://drugcentral.org/drugcard/','https://drugcentral.org/drugcard/'),\n    '^http://identifiers.org/hmdb/','https://hmdb.ca/metabolites/')) AS ?cpd)\n  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?cpd a ?ptype }\n}",
+      "skeleton_verified": true,
+      "domain": "Chemicals"
+    },
+    {
+      "id": "M10-mesh-ncbitaxon-mesh-spokeokn-via-babel",
+      "left_kg": "biobricks-mesh",
+      "left_predicate": "node-iri (MeSH organism descriptor or SCR_Organism)",
+      "left_role": "subject",
+      "right_kg": "spoke-okn",
+      "right_predicate": "node-iri (biolink:OrganismTaxon, …/organism/{taxid}.{n})",
+      "right_role": "subject",
+      "shared_key": "MeSH <-> NCBITaxon (bridged)",
+      "key_namespace": "SPOKE-OKN organism/{taxid}.{n} -> http://purl.obolibrary.org/obo/NCBITaxon_{taxid} -> babel -> http://id.nlm.nih.gov/mesh/{id}",
+      "bridge_kg": "babel",
+      "iri_normalization": "Rebuild the NCBITaxon IRI from the taxid prefix of SPOKE-OKN's genome-level organism node; babel holds NCBITaxon-MeSH cliques (and NCBITaxon is not otherwise in babel). Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both; count source entities, never cliques.",
+      "verified_count": 4078,
+      "verified_count_secondary": {
+        "spoke_taxon_ids": 34570,
+        "spoke_organism_nodes": 321442,
+        "via_scr_organism": 3745,
+        "via_descriptor": 333
+      },
+      "verified_on": "2026-10-14",
+      "verified_count_note": "4,078 of SPOKE-OKN's 34,570 taxon ids have a MeSH organism record (3,745 supplementary); almost all fall in MeSH's Bacteria branch (B03, 4,003). biobricks-mesh's first organism link. Verified live 2026-10-14.",
+      "example_question": "Through Babel, which MeSH organism branches do SPOKE-OKN's taxa fall under?",
+      "example_questions": [
+        "Through Babel, which MeSH organism branches do SPOKE-OKN's taxa fall under?",
+        "Same crosswalk, coverage angle: how many of SPOKE-OKN's taxa have a MeSH organism record, and of which kind?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {\n  { SELECT DISTINCT ?ent ?member WHERE {\n    { SELECT DISTINCT ?ent ?pref WHERE {\n        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/spoke-okn> { ?o a <https://w3id.org/biolink/vocab/OrganismTaxon> } BIND(IRI(CONCAT('http://purl.obolibrary.org/obo/NCBITaxon_', REPLACE(STR(?o),'^.*/organism/([0-9]+).*$','$1'))) AS ?ent) BIND(?ent AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://id.nlm.nih.gov/mesh/'))\n  GRAPH <https://purl.org/okn/frink/kg/biobricks-mesh> { ?member a ?mtype }\n}",
+      "skeleton_verified": true,
+      "domain": "Taxonomy"
     }
   ],
   "cluster_notes": {
@@ -5796,7 +6488,7 @@
     "M_mesh_vocabulary": "Cluster M attaches biobricks-mesh - a standalone NLM MeSH vocabulary whose entities are their own id.nlm.nih.gov/mesh/{ID} descriptor IRIs and which carries no outbound xref of its own - to the federation via TWO complementary routes. M1 (broad, indirect): ubergraph cross-references 10,004 MeSH ids as oboInOwl:hasDbXref 'MESH:{ID}' literals; 9,463 of biobricks-mesh's descriptors match (8,202 MONDO disease, 1,051 UBERON anatomy, 83 CL cell type), so through MONDO biobricks-mesh joins the disease cluster A (oard-kg/rdkg/prokn/nde and, via DOID<->MONDO, spoke-okn's disease ontology). M2 (narrow, direct): spoke-okn itself MeSH-tags ~165 nodes through mesh_ids / mesh_list - 155 Disease + 10 SDoH - all matching biobricks-mesh, with NO bridge needed. The two routes are not redundant: M2 uniquely reaches spoke-okn's SDoH (social-determinants) nodes, which have no MONDO term and so are invisible to M1. Watch the IRI gotchas: ubergraph uses 'MESH:{ID}' literals (M1) and spoke-okn uses HTTPS mesh IRIs vs biobricks-mesh's HTTP (M2) - both need bare-id normalization. Overlap check (M2 vs spoke-okn's DOID disease join): all 180 spoke-okn Disease nodes are DOID-identified and 159 also carry a MeSH tag, so for diseases M2 and the DOID join hit the same entities (M2 supplies a MeSH<->DOID map on shared nodes, not new diseases); only the 10 SDoH nodes are unique to M2. Cross-route validation (M2 vs M1): bridging spoke's DOID->MONDO via ubergraph, 118/164 of the spoke MeSH<->DOID disease pairs are exactly corroborated by ubergraph's independent MeSH->MONDO xref, 32 are cases ubergraph has no MeSH (M2 adds coverage), and only 14 disagree - all semantically adjacent (organism-vs-disease or parent/child granularity), no flat errors. MeSH is a high-confidence bridge for exact ids but approximate at the leaves, especially for infections; see M2.cross_route_validation.",
     "N_fiokg_spatial_and_naics": "fiokg (SAWGraph FRS KG; EPA Facility Registry Service) attaches to the federation on TWO axes. (1) SPATIAL - it is a full SAWGraph spatial leaf: every facility links via owl:sameAs to native KWG/STKO resource IRIs (the same stack as spatialkg, sawgraph, hydrologykg, sockg), so attachment needs NO rewrite. It carries 681,108 S2 Level-13 cells (681,045 in spatialkg - the federation's largest S2 join, N1) and 3,040 clean county-FIPS KWG admin-region IRIs (3,031 in spatialkg, N2; 3,032 in spoke-okn, N3). It is the FOURTH and largest S2 leaf on the hub and, being national, the only facility-scale one. It attaches ONLY at the county + S2 levels (0 state KWG IRIs). Because fiokg and sawgraph are both KWG-S2 leaves and fiokg is national while sawgraph is Maine, they OVERLAP directly in 4,712 Maine cells (N6) - a true leaf-to-leaf join, not just a hub rendezvous - which is valuable since fiokg flags 188,057 EPA-PFAS-Facility instances against sawgraph's PFAS samples. (2) INDUSTRY - fiokg classifies facilities with NAICS (ofPrimaryIndustry / ofSecondaryIndustry -> http://w3id.org/fio/v1/naics#NAICS-{6-digit}); the bare 6-digit code joins the manufacturing/supply-chain cluster (I): 64 of sudokn's 66 codes (N4) and all 301 of securechainkg's codes (N5) are contained in fiokg's 3,842-code national span. The join is at the industry-CLASS level (shared NAICS code), not on facility/company instances, exactly as securechainkg<->sudokn (I1). DATA-QUALITY NOTE: of fiokg's 3,301 distinct admin-region owl:sameAs objects, 261 (256 three-digit + 5 four-digit) are leading-zero-truncated and do not match the zero-padded KWG hub form; filter to the 5-digit suffix for the county join (see known_non_joins).",
     "O_ufokn_s2": "ufokn (Urban Flooding OKN) attaches to the SAWGraph spatial hub on S2 Level-13 cells, but via a non-obvious encoding that defeated the base-file scan. Its S2 cells are blank nodes (typed schema:PropertyValue + ufokn's own kwg:S2Cell ontology class), not KWG resource IRIs, and the cell id lives in schema:value as a bare decimal 64-bit integer - the IDENTICAL value spatialkg uses as the suffix of its S2Cell_Level13 node IRI. Rebuilding s2.level13.{value} and joining to spatialkg's typed nodes is direct (no value rewrite). The base file recorded ufokn as 'unprofiled-large' and 'S2 = 0'; both are superseded here (the 0 was a direct typed-NODE join against blank nodes, which can never match; the timeout was an unbounded scan of ~11.7M S2 nodes). Re-profiled with a type-bounded sub-SELECT + object-shape regex filter as the base file advised. All three samples show 100% containment of ufokn level-13 cells in spatialkg, so this is a near-complete leaf attachment whose exact cardinality just isn't enumerable within the endpoint's time limit.",
-    "P_pubchem_cid": "Cluster P attaches biobricks-pubchem-annotations - a 14.4M-compound PubChem annotation graph (oa:Annotation nodes whose oa:hasTarget / dc:subject objects are http://rdf.ncbi.nlm.nih.gov/pubchem/compound/CID{n} IRIs, each annotation carrying free-text hazard/toxicity/use text on its body) - to the federation via PubChem CID. The original profiling pass recorded it as an island because no chemical-cluster KG (biobricks-ice/tox21/toxcast, keyed on CAS+DTXSID) and not identifier-mappings (CID-free) carries a CID. That pass missed spoke-okn: its 798 biolink:ChemicalEntity nodes expose the CID as oboInOwl:hasDbXref objects in http://identifiers.org/pubchem.compound/{n} form (762 distinct), a sibling IRI form of the same CID. A naive IRI join returns 0 (form drift: rdf.ncbi.nlm.nih.gov/.../CID{n} vs identifiers.org/pubchem.compound/{n}); strip both to the bare numeric CID to join. Verified exact 2026-06-11: 762/762 of spoke-okn's CID-bearing compounds (100%) have >=1 biobricks annotation - e.g. Atrazine CID 2256, Diuron CID 3120, Phenytoin CID 1775, Fluorouracil CID 3385. spoke-okn is the ONLY federation partner on PubChem CID. NB spoke-okn ALSO references PubChem as InChIKey IRIs (762 ChemicalEntity node IRIs + 55 INTERACTS_CiC/PARTOF_CpC edge objects, http://rdf.ncbi.nlm.nih.gov/pubchem/inchikey/{KEY}); that is a DIFFERENT key and does NOT match biobricks' CID - use the hasDbXref CID route, not the node-IRI InChIKey route. This SUPERSEDES the base file's biobricks-pubchem-annotations island / PubChem-CID known_non_join. A SECOND join surface, added 2026-10-13: the annotation BODIES. PubChem's GlyTouCan annotations hold the glycan's GlyTouCan accession as a plain rdf:value string, so glygenkg's 1,248 glycans match 180 annotated compounds directly on the accession (GT1) - no CID on the glygenkg side. Those bodies also carry the glycan's mass and source organisms; values are untyped strings, so classify them by form.",
+    "P_pubchem_cid": "Cluster P attaches biobricks-pubchem-annotations - a 14.4M-compound PubChem annotation graph (oa:Annotation nodes whose oa:hasTarget / dc:subject objects are http://rdf.ncbi.nlm.nih.gov/pubchem/compound/CID{n} IRIs, each annotation carrying free-text hazard/toxicity/use text on its body) - to the federation via PubChem CID. The original profiling pass recorded it as an island because no chemical-cluster KG (biobricks-ice/tox21/toxcast, keyed on CAS+DTXSID) and not identifier-mappings (CID-free) carries a CID. That pass missed spoke-okn: its 798 biolink:ChemicalEntity nodes expose the CID as oboInOwl:hasDbXref objects in http://identifiers.org/pubchem.compound/{n} form (762 distinct), a sibling IRI form of the same CID. A naive IRI join returns 0 (form drift: rdf.ncbi.nlm.nih.gov/.../CID{n} vs identifiers.org/pubchem.compound/{n}); strip both to the bare numeric CID to join. Verified exact 2026-06-11: 762/762 of spoke-okn's CID-bearing compounds (100%) have >=1 biobricks annotation - e.g. Atrazine CID 2256, Diuron CID 3120, Phenytoin CID 1775, Fluorouracil CID 3385. spoke-okn is the ONLY federation partner on PubChem CID. NB spoke-okn ALSO references PubChem as InChIKey IRIs (762 ChemicalEntity node IRIs + 55 INTERACTS_CiC/PARTOF_CpC edge objects, http://rdf.ncbi.nlm.nih.gov/pubchem/inchikey/{KEY}); that is a DIFFERENT key and does NOT match biobricks' CID - use the hasDbXref CID route, not the node-IRI InChIKey route. This SUPERSEDES the base file's biobricks-pubchem-annotations island / PubChem-CID known_non_join. A SECOND join surface, added 2026-10-13: the annotation BODIES. PubChem's GlyTouCan annotations hold the glycan's GlyTouCan accession as a plain rdf:value string, so glygenkg's 1,248 glycans match 180 annotated compounds directly on the accession (GT1) - no CID on the glygenkg side. Those bodies also carry the glycan's mass and source organisms; values are untyped strings, so classify them by form. ProKN joins directly too (P4, 2026-10-14): its compounds are https://pubchem.ncbi.nlm.nih.gov/compound/{cid} IRIs, 188,837 of which are annotated - the largest chemical join in the catalog.",
     "BH_biohealth_umls": "Cluster BH attaches biohealth (Bio-Health KG, UVA; ~110M triples, ~251k entities) to the federation. biohealth keys EVERY entity on its UMLS CUI carried as the node's OWN IRI (https://biohealthkg.proto-okn.net/kg/node/C{cui}), typed generically biolink:Entity, with custom schema predicates (COMPLICATES, treats, affects, causes, coexists_with, location_of) whose objects are again CUIs; it carries NO outbound ontology xref of its own. It therefore reaches the federation only through ubergraph's INBOUND UMLS cross-references: ubergraph oboInOwl:hasDbXref 'UMLS:{cui}' lands on MONDO disease (10,087 of them are biohealth CUIs), HP phenotype (4,828) and UBERON anatomy (2,148) - the 498 other UMLS-xref'd terms are blank nodes. Rebuild the biohealth node IRI from the bare CUI (CONCAT('https://biohealthkg.proto-okn.net/kg/node/', ?cui)) to point-check membership; drive joins from the bounded ubergraph bridge set (or an inner DISTINCT of the partner KG's ontology terms) because biohealth is too large to scan unbounded and times out. Verified attachments: BH1 rdkg (MONDO, 9,122), BH2 prokn (HP, 4,284), BH3 spoke-okn (MONDO->DOID two-hop, 173 of ~180), BH4 oard-kg MONDO disease (1,796), BH5 oard-kg HP phenotype (4,549, the largest phenotype join), BH6 nde (MONDO, 2,760), BH7 biomarkerkg (MONDO->DOID two-hop, 620), BH8 gene-expression-atlas-okn (HP, 13). DOID-keyed partners (spoke-okn, biomarkerkg) need the extra MONDO skos:exactMatch DOID hop because DOID is NOT UMLS-xref'd in ubergraph. CEILING: there is NO CHEBI/UniProt/NCBIGene/NCIT UMLS xref, so biohealth can NOT crosswalk on chemicals, genes or proteins - only disease, phenotype and anatomy. The UBERON anatomy axis (2,148 CUIs) is now VERIFIED (2026-06-23): biohealth joins GXA on UBERON (BH9, 249 of GXA's 362 tissue terms via biolink:has_attribute) and spoke-genelab on UBERON (BH10, 35 of 42 via INVESTIGATED_ASiA). spoke-okn does NOT store these as raw obo/UBERON_ terms (0). Cell Ontology (CL) is NOT a biohealth axis - ubergraph UMLS->CL = 0 (e.g. spoke-genelab's 7 CL cell types reach 0 biohealth nodes). biohealth is also a LABEL-BRIDGED member of the taxon_hub for organisms (no NCBITaxon ids; see taxon_hub.$note) - that route is name-based and fragile, but the six non-zero label-match pairs (BH11-BH16) were re-verified and promoted into verified_crosswalks on 2026-06-25 with shared_key 'NCBITaxon (biohealth label)'. Verified 2026-06-23.",
     "AN_anatomy_uberon": "Cluster AN is the Anatomy (UBERON) cluster. Anatomy-carrying KGs that store raw obo/UBERON_ IRIs: spoke-genelab (42 terms on INVESTIGATED_ASiA, biolink:AnatomicalEntity; plus 7 Cell Ontology CL cell types on INVESTIGATED_ASiCT) and gene-expression-atlas-okn (362 tissue terms on biolink:has_attribute). They join DIRECTLY on the shared UBERON IRI: AN1 spoke-genelab<->GXA = 27 shared terms (no bridge). biohealth also participates but only through the ubergraph UMLS bridge (its 2,148 UBERON CUIs): BH9 biohealth<->GXA (249) and BH10 biohealth<->spoke-genelab (35). spoke-okn does NOT carry these raw UBERON terms (verified 0 in both subject and object position), so it is not part of this cluster. ubergraph is the anatomy hub (full UBERON + CL with subClassOf* for clade/part-of expansion and the oboInOwl:hasDbXref UMLS/MeSH cross-references). CL (Cell Ontology) SUB-AXIS: cell types are carried as raw obo/CL_ IRIs by gene-expression-atlas-okn (223 terms, biolink:has_attribute), prokn (cell types as rdf:subject of reified marker-gene statements) and spoke-genelab (7 terms, INVESTIGATED_ASiCT). Verified CL joins: AN2 GXA<->prokn = 31 (the substantive one), AN3 spoke-genelab<->GXA = 4, AN4 spoke-genelab<->prokn = 1. spoke-okn has no CL (0); biohealth has no CL concepts (ubergraph UMLS->CL = 0), so CL is not a biohealth axis.",
     "R_digcfdekg": "Cluster R attaches digcfdekg (CFDE REVEAL KG; statistically inferred genomic evidence graph, PIGEAN + EAGGL) to the federation and is the first integration of the newly added rdkg & digcfdekg pair. digcfdekg is NOW MATERIALIZED at the endpoint (this SUPERSEDES the base file's 'digcfdekg unmaterialized / zero triples' known_non_join, moved to superseded_non_joins). It models reified rdf:Statement associations with edge types geneToTrait, geneToFactor, geneSetToTrait, geneSetToFactor, traitToFactor, geneInGeneSet (each exposed BOTH as a direct triple ?s pred ?o AND as a reified node carrying schema/weight = association probability, dcterms:source PIGEAN|EAGGL, schema/scoreType - use the direct form for join-key extraction). Join keys: genes as Entrez node IRIs (http://www.ncbi.nlm.nih.gov/gene/{entrez}, 21,710 genes) and traits as EFO (1,687) + Orphanet (1,526) + MONDO (435) + internal trait nodes (1,476, no external id). GENE attachments live in the C cluster: C10 digcfdekg<->spoke-okn (16,052, identical Entrez IRI), C11 digcfdekg<->spoke-genelab (19,747, identical Entrez IRI), C12 digcfdekg<->rdkg (8,934, ncbi.nlm.nih.gov/gene <-> identifiers.org/ncbigene rewrite), C13 digcfdekg<->prokn (20,783, Entrez->HGNC via wikidata P351->P354, same bridge as C9). DISEASE attachments live in the A cluster: A25 digcfdekg<->rdkg (1,045), A26 digcfdekg<->oard-kg (402), A27 digcfdekg<->biomarkerkg (123, DOID->MONDO), A28 digcfdekg<->spoke-okn (50, DOID->MONDO), A29 digcfdekg<->gene-expression-atlas-okn (33, direct EFO/Orphanet/MONDO). Because digcfdekg keys diseases mostly on EFO/Orphanet, the disease joins are driven by bridging EFO/Orphanet->MONDO via ubergraph skos:exactMatch (raises the digcfdekg disease set from 435 direct MONDO to 1,634 MONDO terms; direct-only would undercount, e.g. rdkg 180->1,045, oard-kg 37->402). PERFORMANCE: digcfdekg is large and its gene endpoints have very high fan-out - always materialize the DISTINCT key set in an inner SELECT before probing the partner graph; an unbound join over a digcfdekg gene/disease pattern (incl. FILTER EXISTS) OOMs the endpoint at ~210 GB. A full unscoped COUNT(*) and get_schema's class enumeration also exceed endpoint memory - use bounded probes. rdkg's pre-existing joins (A10/A16/A19/A2/BH1/C5/C6/C8/Q1/Q2) are unchanged; C12+A25 are rdkg's only NEW crosswalk (to digcfdekg, complementary gene+disease).",
@@ -5804,7 +6496,7 @@
     "PB_publications": "PB - Publications / bibliographic (DOI). Scholarly DOI is the join key. nasa-gesdisc-kg is a large bibliometric graph (465,143 publications citing/using NASA Earth-science datasets; each with bibo:doi as an http://dx.doi.org/ IRI, plus author ORCID and institution ROR). climatemodelskg carries a DOI literal (https://doi.org/ form) on its 1,910 climate-modeling Paper nodes. Normalize both to the bare lowercase DOI (strip scheme+host, LCASE) and match. PB1 = climatemodelskg x nasa-gesdisc-kg = 651 shared papers (de-islands nasa-gesdisc-kg). The ORCID (author) and ROR (institution) axes on nasa-gesdisc-kg are unexplored bonus bridges to climatemodelskg's authors/affiliations. UPDATE 2026-10-13 (PubMed): PubMed ID is now a second publication key. PB3 = glygenkg x prokn = 752 shared papers: glygenkg embeds the PMID in its evidence node IRI (http://glygen.org/evidence/PubMed_{PMID}) and prokn stores it as the IRI https://pubmed.ncbi.nlm.nih.gov/{PMID} on bibo:pmid (35,986 distinct, mostly on PTM annotations). Structured PMIDs also exist in gene-expression-atlas-okn (wobd:pubmed_id, 2,630) and pankgraph (schema/pubmedid, 957), but neither intersects glygenkg (verified 0s).",
     "EO_earth_observation": "EO - Earth observation instruments & platforms (GCMD name). climatemodelskg NLP-extracts Instrument and Platform mentions from climate-modeling papers (free-text climatepub4kg:name); nasa-gesdisc-kg carries the same as GCMD controlled-vocabulary terms (rdfs:label) in NASA's Global Change Master Directory keyword tree. Lowercase-match the names; the join is self-cleaning (only standardized names match). EO1 = Instrument (115), EO2 = Platform (70). Both are climatemodelskg x nasa-gesdisc-kg and complement PB1 (DOI, 651) - a second, orthogonal edge connecting climate-modeling literature to NASA GES DISC's Earth-observation catalogue. Label bridge (fragile at the margins - a few generic terms like LIDAR/Aircraft slip in), comparable to the taxon/SDoH label bridges.",
     "V_variant_dbsnp": "The variant cluster is dbSNP-only, and every member stores the rsID differently — this is the cluster where the identifier's SHAPE, not its presence, is the whole difficulty. biomarkerkg has real IRIs (https://www.ncbi.nlm.nih.gov/snp/rs{id}, 147,386); pankgraph has xsd:anyURI LITERALS (https://api.ncbi.nlm.nih.gov/variation/v0/refsnp/{id}, 19,448) — a constructed-IRI probe silently returns 0 against them, control-tested; and prokn has NO stored key at all, only 68,695 rsIDs written into the prose of schema:description on its 89,904 UniProt natural-variant annotations ('in AH2; activity abolished; dbSNP:rs80358219'). Reduce every side to the bare rsID string, then rebuild whichever form the partner stores. Three pairs are verified — V2 prokn x biomarkerkg 3,241 (the largest, and the only one that reaches a protein residue), V1 pankgraph x biomarkerkg 214, V3 prokn x pankgraph 214 (equal size to V1 by coincidence; the sets share only 13 members). Two variant surfaces do NOT join: rdkg's 7,367 ClinVar VariationIDs have no partner (see known_non_joins), and prokn's own UniProt VAR_ accessions are carried by no other graph. nestkg and ncipidkg carry no variants at all — exhaustively checked, not sampled: both are small enough to scan every object for rs/refsnp/VAR_/ClinVar/COSMIC/dbVar, and all return 0.",
-    "DB_babel_identifier_bridge": "babel (Translator Babel identifier cliques) is the third bridge KG beside ubergraph and wikidata, restored from EXCLUDED_KGS on 2026-09-26 once the federation loaded it. Shape: every member id skos:exactMatch its clique's preferred id (the preferred id self-loops and alone carries rdfs:label + biolink:category), so a scheme-to-scheme mapping is two exactMatch hops through the shared preferred id. It covers genes (NCBIGene/Ensembl/HGNC), proteins (UniProt/PR, in separate cliques from genes), diseases (MONDO/DOID/HP/OMIM/NCIT/MeSH/UMLS/SNOMED/ICD-10/MedGen) and chemicals (CHEBI/DrugBank/ChEMBL/PubChem/CAS/InChIKey/UNII/HMDB/KEGG/RxCUI), mostly in http://identifiers.org/{prefix}/ and OBO-purl form. The first hop MUST be staged in a SELECT DISTINCT subquery or the join times out; one id can belong to two cliques, so count endpoint entities, never cliques. First crosswalk: DB2 (rdkg DrugBank -> ChEMBL -> prokn, 1,816 drugs), superseding the prokn x rdkg CHEBI-axis known_non_join. 2026-09-26 batch through babel (all skeletons verified): chemicals CB2/CB3 (tox21/toxcast CAS -> ChEMBL -> prokn, 2,462 / 2,504) and DB3/DB4 (tox21/toxcast CAS -> DrugBank -> rdkg, 920 / 928), DB5 (ruralkg DrugBank -> ChEMBL -> prokn, 6); genes C22-C26 (rdkg 9,159 / spoke-genelab 28,554 / digcfdekg 34,013 / biomarkerkg 200 / biobricks-ice 395 Entrez <-> pankgraph Ensembl); diseases BH20/BH21 (digcfdekg 208 / nestkg 12 MONDO -> UMLS -> biohealth). Not catalogued: biobricks-ice's chemical axis (~200k CAS) is too large to push through babel in one query, and sawgraph x prokn is a verified 0 (see known_non_joins). The skeletons use the nested two-subquery shape: a single subquery plus an in-group scheme FILTER times out at ~9k input ids.",
+    "DB_babel_identifier_bridge": "babel (Translator Babel identifier cliques) is the third bridge KG beside ubergraph and wikidata, restored from EXCLUDED_KGS on 2026-09-26 once the federation loaded it. Shape: every member id skos:exactMatch its clique's preferred id (the preferred id self-loops and alone carries rdfs:label + biolink:category), so a scheme-to-scheme mapping is two exactMatch hops through the shared preferred id. It covers genes (NCBIGene/Ensembl/HGNC), proteins (UniProt/PR, in separate cliques from genes), diseases (MONDO/DOID/HP/OMIM/NCIT/MeSH/UMLS/SNOMED/ICD-10/MedGen) and chemicals (CHEBI/DrugBank/ChEMBL/PubChem/CAS/InChIKey/UNII/HMDB/KEGG/RxCUI), mostly in http://identifiers.org/{prefix}/ and OBO-purl form. The first hop MUST be staged in a SELECT DISTINCT subquery or the join times out; one id can belong to two cliques, so count endpoint entities, never cliques. First crosswalk: DB2 (rdkg DrugBank -> ChEMBL -> prokn, 1,816 drugs), superseding the prokn x rdkg CHEBI-axis known_non_join. 2026-09-26 batch through babel (all skeletons verified): chemicals CB2/CB3 (tox21/toxcast CAS -> ChEMBL -> prokn, 2,462 / 2,504) and DB3/DB4 (tox21/toxcast CAS -> DrugBank -> rdkg, 920 / 928), DB5 (ruralkg DrugBank -> ChEMBL -> prokn, 6); genes C22-C26 (rdkg 9,159 / spoke-genelab 28,554 / digcfdekg 34,013 / biomarkerkg 200 / biobricks-ice 395 Entrez <-> pankgraph Ensembl); diseases BH20/BH21 (digcfdekg 208 / nestkg 12 MONDO -> UMLS -> biohealth). Not catalogued: biobricks-ice's chemical axis (~200k CAS) is too large to push through babel in one query, and sawgraph x prokn is a verified 0 (see known_non_joins). The skeletons use the nested two-subquery shape: a single subquery plus an in-group scheme FILTER times out at ~9k input ids. 2026-10-14 deep dive (24 crosswalks, every one verified): a client-side clique intersection over every bio KG's typed ids found that babel also carries UMLS (BioHealth node IRIs are CUIs) to chemicals (BH23-BH27: ProKN 8,488, ToxCast 4,400, Tox21 4,307, RDKG 2,387, SPOKE-OKN 608) and to diseases (BH22, ProKN 2,958); MeSH to MONDO/NCIT/HP/DOID (A35 RDKG 7,934, A36 NDE 3,467, A37 ProKN 3,186 with a direct route) and to NCBITaxon (M10, SPOKE-OKN 4,078); and ChEMBL/PubChem/DrugCentral/HMDB all at once (CB4 SPOKE-OKN -> ProKN 278; CB5 SAWGraph -> ProKN 6, superseding a ChEMBL-only non-join; CB2/CB3 re-counted 3,182/3,243). The same sweep found eleven DIRECT joins never catalogued (A31-A34 MONDO, M8/E4/ET5-ET7 CAS, DB6 DrugBank, M9 MeSH via RDKG's rdaccelerate IRIs, P4 PubChem CID). babel holds no GO mappings and maps NCBITaxon only to MeSH.",
     "GLY_glygenkg": "GLY - glygenkg (GlyGen), restored from EXCLUDED_KGS on 2026-10-13 once the federation loaded it (1,101,681 triples). Human protein glycosylation: 74,722 glycosylation records on 8,112 proteins, 67,510 sites (22,392 distinct protein residues), 1,248 glycans, 1,516 evidence papers, 7,482 SNVs, one taxon. It attaches on FIVE identifier axes - UniProt (protein node IRI; G9-G13), Ensembl (gene locus; C27-C29 direct, C30-C33 through babel to the Entrez graphs), PubMed (evidence IRI; PB3), GlyTouCan (glycan IRI local name; GT1, 180 glycans annotated in biobricks-pubchem-annotations with mass, WURCS, motifs and source organisms) and the ontology backbone (PR terms G14, GlyTouCan -> CHEBI GC1). 14 KG-to-KG crosswalks plus 2 ubergraph-endpoint recipes. No data KG carries the CHEBI glycan terms themselves. NOT joinable: SNVs (chromosome position and alleles only, no dbSNP rsID and no stated genome assembly, so the Variants cluster is out of reach), phosphosite kinases (15 sites). Not added to the NCBITaxon hub: its single taxon (9606) would add an exact_id=1 row against every member and no information. The federated graph is a PARTIAL GlyGen release - EGFR, ERBB2, MUC1 and AFP have no record - so absence from glygenkg is not evidence that a protein is unglycosylated."
   },
   "spatial_hub_note": {
@@ -6037,13 +6729,6 @@
       "diagnosis": "rdkg models variants as 7,367 biolink:SequenceVariant nodes keyed by ClinVar VariationID (https://rdaccelerate.org/resource/CLINVAR_{id}, with biolink:id 'CLINVAR:{id}'), carrying causes_condition -> MONDO and has_gene -> NCBI Gene. NO OTHER FEDERATION KG MATERIALIZES A CLINVAR ID, so the variant axis has no partner even though three other KGs carry variants: they are all on dbSNP (biomarkerkg 147,386 rsID IRIs, prokn 68,695 rsIDs embedded in annotation prose, pankgraph 19,448 rsID literals — cluster V1-V3), and rdkg's SequenceVariant nodes carry no rsID on any predicate (their full property set is type / category / causes_condition / has_gene / id). TRAP CHECKED AND REJECTED: biomarkerkg contains the string 'clinvar' 174,674 times, which looks like a ClinVar surface but is the literal 'clinvar' as a dcterms:source provenance value — the NAME of the source database, not an identifier. BRIDGE ROUTE ALSO DEAD: the federation's wikidata subset carries ClinVar Variation ID (P1929) on just 3 items and dbSNP ID (P6861) on 538, far too thin to route 7,367 ClinVar variants onto the dbSNP cluster. rdkg still reaches the other KGs on its gene (Entrez, C5/C6/C12/C21) and disease (MONDO) axes — it is only the VARIANT axis that is isolated. Verified 2026-09-01."
     },
     {
-      "left_kg": "sawgraph",
-      "right_kg": "prokn",
-      "attempted_key": "CAS -> ChEMBL (bridged via babel)",
-      "result": "0 shared compounds",
-      "diagnosis": "sawgraph's contaminant substances carry CAS numbers (coso:casNumber, mostly undashed; 114 distinct once dashes are rebuilt). 112 of the 114 resolve to a babel clique and 21 of those cliques contain a ChEMBL id, but none of the 21 ChEMBL ids is a prokn compound: prokn carries a bioactivity-focused subset of ChEMBL (~305k compounds), and the PFAS-heavy SAWGraph contaminant list falls outside it (e.g. CHEMBL1076850 is absent from prokn). Checked 2026-09-26. This is a chemical-axis non-join only; sawgraph reaches the chemical cluster through CAS (E-series, M6)."
-    },
-    {
       "left_kg": "bio101",
       "right_kg": "prokn",
       "attempted_key": "PR protein (bio101 label -> ubergraph PR rdfs:label)",
@@ -6150,6 +6835,16 @@
       "result": 0,
       "diagnosis": "securechainkg embeds much of the SUDOKN ontology but does not populate SUDOKN:hasZipcodeValue in the reachable slice, so there is no ZIP-level location to join. Other location encodings were not confirmable (graph large, scans time out) - UNVERIFIED rather than proven absent.",
       "superseded_note": "SUPERSEDED 2026-10-13 by J12-zip-securechainkg-spokeokn (4,375 shared ZIP5). The diagnosis was right that SUDOKN:hasZipcodeValue is empty and right to call the axis UNVERIFIED rather than absent: the ZIP sits two hops away, on ?site SUDOKN:hasZIPcode ?zipNode . ?zipNode SUDOKN:hasIntegerValue ?zip (11,108 sites). The embedded SUDOKN manufacturer block entered securechainkg's curated schema only with the 2026-10-13 refresh."
+    },
+    {
+      "left_kg": "sawgraph",
+      "right_kg": "prokn",
+      "attempted_key": "CAS -> ChEMBL (bridged via babel)",
+      "result": "0 shared compounds",
+      "diagnosis": "sawgraph's contaminant substances carry CAS numbers (coso:casNumber, mostly undashed; 114 distinct once dashes are rebuilt). 112 of the 114 resolve to a babel clique and 21 of those cliques contain a ChEMBL id, but none of the 21 ChEMBL ids is a prokn compound: prokn carries a bioactivity-focused subset of ChEMBL (~305k compounds), and the PFAS-heavy SAWGraph contaminant list falls outside it (e.g. CHEMBL1076850 is absent from prokn). Checked 2026-09-26. This is a chemical-axis non-join only; sawgraph reaches the chemical cluster through CAS (E-series, M6).",
+      "superseded_by": "CB5-cas-sawgraph-prokn-via-babel",
+      "superseded_on": "2026-10-14",
+      "superseded_note": "The check tested only babel's ChEMBL members. ProKN also keys compounds on PubChem CIDs, and 6 SAWGraph contaminants reach ProKN that way (as Metabolomics Workbench metabolite records)."
     }
   ],
   "islands": {

@@ -24,7 +24,10 @@ _Survey date: 2026-06-14 · 41 served KGs · federation endpoint
 > empty since 2026-09-26) and was dropped from `EXCLUDED_KGS`, so `list_kgs` returns
 > **45 KGs**. It joins the UniProt cluster (G9–G13), the Ensembl cluster directly
 > (C27–C29) and through Babel (C30–C33), prokn on PubMed ID (PB3), and
-> biobricks-pubchem-annotations on the GlyTouCan accession (GT1, 180 glycans). See
+> biobricks-pubchem-annotations on the GlyTouCan accession (GT1, 180 glycans). (7) **Babel
+> deep dive** (2026-10-14): 24 crosswalks — eleven direct joins never catalogued (A31–A34,
+> M8, M9, E4, DB6, P4, ET5–ET7) and thirteen through Babel (BH22–BH27, A35–A37, M10, CB4,
+> CB5); the sawgraph × prokn non-join is superseded by CB5. See
 > `metadata/crosswalks.json` for the current table.
 
 **What this is.** An exhaustive sweep of the entity types and ontologies/identifier

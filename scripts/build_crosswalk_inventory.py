@@ -388,6 +388,17 @@ def render_domain_table(domain: str, rows: list[dict]) -> list[str]:
     return out
 
 
+# Taxonomy rows that are not taxon-hub pairs (no ``match_type``), e.g. MeSH organism
+# records joined through babel, render as an ordinary table under the hub table.
+TAXON_OTHER = "Taxonomy: other organism vocabularies"
+
+
+def _split_taxon_rows(rows: list[dict]) -> tuple[list[dict], list[dict]]:
+    hub = [r for r in rows if r.get("match_type") in ("id", "label")]
+    other = [r for r in rows if r.get("match_type") not in ("id", "label")]
+    return hub, other
+
+
 def render_taxonomy(rows: list[dict]) -> list[str]:
     # id-rows first, then label-bridged rows; each ordered by KGs (a, b).
     id_rows = sorted(
@@ -462,7 +473,10 @@ def render() -> str:
     ]
     for domain in domains:
         if domain == TAXON_DOMAIN:
-            lines += render_taxonomy(by_domain[domain])
+            hub, other = _split_taxon_rows(by_domain[domain])
+            lines += render_taxonomy(hub)
+            if other:
+                lines += render_domain_table(TAXON_OTHER, other)
         else:
             lines += render_domain_table(domain, by_domain[domain])
     return "\n".join(lines).rstrip("\n") + "\n"
@@ -738,7 +752,10 @@ def render_html() -> str:
     ]
     for domain in domains:
         if domain == TAXON_DOMAIN:
-            lines += render_taxonomy_html(by_domain[domain], links)
+            hub, other = _split_taxon_rows(by_domain[domain])
+            lines += render_taxonomy_html(hub, links)
+            if other:
+                lines += render_domain_section_html(TAXON_OTHER, other, links)
         else:
             lines += render_domain_section_html(domain, by_domain[domain], links)
     lines += [

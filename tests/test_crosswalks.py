@@ -21,7 +21,14 @@ def test_join_between_is_order_insensitive():
 
 
 def test_join_recipe_carries_the_fields_needed_to_build_sparql():
-    (recipe,) = cw.join_between("biobricks-aopwiki", "rdkg")
+    # aopwiki x rdkg holds two recipes (Entrez genes, DrugBank drugs); each must be complete.
+    recipes = cw.join_between("biobricks-aopwiki", "rdkg")
+    assert {r["shared_key"] for r in recipes} == {"Entrez", "DrugBank"}
+    for recipe in recipes:
+        _assert_recipe_fields(recipe)
+
+
+def _assert_recipe_fields(recipe):
     for field in (
         "left_predicate",
         "right_predicate",
@@ -99,6 +106,31 @@ async def test_glycans_join_pubchem_annotations_on_the_glytoucan_accession():
     out = await get_join_strategy("glygenkg", "biobricks-pubchem-annotations")
     assert out["status"] == "verified"
     assert [r["shared_key"] for r in out["joins"]] == ["GlyTouCan"]
+
+
+async def test_prokn_and_rdkg_join_on_diseases_as_well_as_drugs():
+    # The 2026-10-14 sweep found a direct MONDO join (A31) beside the babel drug join (DB2).
+    out = await get_join_strategy("prokn", "rdkg")
+    assert out["status"] == "verified"
+    assert {"MONDO", "DrugBank -> ChEMBL (bridged)"} <= {
+        r["shared_key"] for r in out["joins"]
+    }
+
+
+async def test_superseded_non_join_now_returns_the_recipe():
+    # sawgraph x prokn was a ChEMBL-only verified 0; CB5 reaches 6 through ProKN's PubChem ids.
+    out = await get_join_strategy("sawgraph", "prokn")
+    assert out["status"] == "verified"
+    assert any(r["bridge_kg"] == "babel" for r in out["joins"])
+
+
+async def test_biohealth_reaches_the_tox_screening_graphs_through_babel():
+    for tox in ("biobricks-toxcast", "biobricks-tox21"):
+        out = await get_join_strategy("biohealth", tox)
+        assert out["status"] == "verified"
+        assert [r["shared_key"] for r in out["joins"]] == [
+            "UMLS <-> chemical id (bridged)"
+        ]
 
 
 async def test_de_islanded_kg_reports_its_new_join():

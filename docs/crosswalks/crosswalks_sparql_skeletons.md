@@ -1,6 +1,6 @@
 # OKN / Proto-OKN Crosswalk Reference — Join Keys & SPARQL Skeletons
 
-- **Date:** 2026-10-13
+- **Date:** 2026-10-14
 - **Model:** claude-opus-4-8
 - **SPARQL endpoint:** https://apps.okn.us/federation/sparql
 
@@ -61,11 +61,11 @@ For each crosswalk, list the join key and the SPARQL skeleton
 
 🧠 **Assistant**
 
-The OKN federation has **220 crosswalks**, which collapse into **72 join-key families** (a domain + a shared identifier). They are grouped below by domain and key family — each entry lists every KG pair sharing that key (with its verified `COUNT(DISTINCT)`), the identifier scheme/namespace, and a runnable `COUNT(DISTINCT)` skeleton with the IRI normalization already applied (a naive join on the raw id usually returns 0 rows).
+The OKN federation has **244 crosswalks**, which collapse into **79 join-key families** (a domain + a shared identifier). They are grouped below by domain and key family — each entry lists every KG pair sharing that key (with its verified `COUNT(DISTINCT)`), the identifier scheme/namespace, and a runnable `COUNT(DISTINCT)` skeleton with the IRI normalization already applied (a naive join on the raw id usually returns 0 rows).
 
 **Pairs in one family often need different SPARQL**, so where a family's members diverge, every distinct skeleton is shown and labelled with the pairs it applies to. The CAS family is the clearest case: the biobricks graphs hang the id off `edam:has_identifier`, MeSH exposes it as `meshv:registryNumber`, and SAWGraph/SOCKG store it as a bare literal that must be rebuilt into an IRI. Copy the skeleton for YOUR pair, then extend it with your payload.
 
-Counts verified 2026-10-13. For any pair, `get_join_strategy(kg_a, kg_b)` returns the same skeleton plus the full recipe (predicates, roles, normalization); `taxon_overlap(kg_a, kg_b)` returns runnable skeletons for the NCBITaxon hub, whose overlaps are two-valued (exact id vs clade membership) and therefore not a single count.
+Counts verified 2026-10-14. For any pair, `get_join_strategy(kg_a, kg_b)` returns the same skeleton plus the full recipe (predicates, roles, normalization); `taxon_overlap(kg_a, kg_b)` returns runnable skeletons for the NCBITaxon hub, whose overlaps are two-valued (exact id vs clade membership) and therefore not a single count.
 
 ### ANATOMY & CELL TYPE
 
@@ -248,7 +248,7 @@ SELECT (COUNT(DISTINCT ?c) AS ?n) WHERE {
 
 ### CHEMICALS
 
-**CAS** — `https://identifiers.org/cas/ ; http://identifiers.org/cas/`: biobricks-aopwiki × biobricks-toxcast(290), biobricks-ice × biobricks-toxcast(9,421), biobricks-tox21 × biobricks-ice(8,916), biobricks-tox21 × biobricks-toxcast(8,909), biobricks-mesh × biobricks-ice(6,924), biobricks-mesh × biobricks-toxcast(1,146), biobricks-mesh × biobricks-aopwiki(26), biobricks-mesh × sawgraph(6), biobricks-mesh × sockg(5).
+**CAS** — `https://identifiers.org/cas/ ; http://identifiers.org/cas/`: biobricks-aopwiki × biobricks-toxcast(290), biobricks-ice × biobricks-toxcast(9,421), biobricks-tox21 × biobricks-ice(8,916), biobricks-tox21 × biobricks-toxcast(8,909), biobricks-mesh × biobricks-ice(6,924), biobricks-mesh × biobricks-toxcast(1,146), biobricks-mesh × biobricks-aopwiki(26), biobricks-mesh × sawgraph(6), biobricks-mesh × sockg(5), biobricks-mesh × biobricks-tox21(1,103), biobricks-aopwiki × biobricks-tox21(285).
 
 _biobricks-aopwiki × biobricks-toxcast_
 
@@ -368,7 +368,26 @@ SELECT (COUNT(DISTINCT ?cas) AS ?n) WHERE {
 }
 ```
 
-**PubChem CID** — `http://rdf.ncbi.nlm.nih.gov/pubchem/compound/CID{n} (biobricks) ; http://identifiers.org/pubchem.compound/{n} (spoke-okn)`: biobricks-pubchem-annotations × spoke-okn(762), biobricks-aopwiki × biobricks-pubchem-annotations(401), biobricks-aopwiki × spoke-okn(87).
+_biobricks-mesh × biobricks-tox21_
+
+```sparql
+SELECT (COUNT(DISTINCT ?cas) AS ?n) WHERE {
+  { SELECT DISTINCT ?cas WHERE { GRAPH <https://purl.org/okn/frink/kg/biobricks-tox21> { ?ch a <http://purl.obolibrary.org/obo/CHEMINF_000446> } BIND(REPLACE(STR(?ch),'^https?://identifiers.org/cas/','') AS ?cas) } }
+  GRAPH <https://purl.org/okn/frink/kg/biobricks-mesh> { ?m <http://id.nlm.nih.gov/mesh/vocab#registryNumber> ?cas }
+}
+```
+
+_biobricks-aopwiki × biobricks-tox21_
+
+```sparql
+SELECT (COUNT(DISTINCT ?c2) AS ?n) WHERE {
+  GRAPH <https://purl.org/okn/frink/kg/biobricks-aopwiki> { ?c a <http://semanticscience.org/resource/CHEMINF_000000> }
+  BIND(IRI(REPLACE(STR(?c),'^https://','http://')) AS ?c2)
+  GRAPH <https://purl.org/okn/frink/kg/biobricks-tox21> { ?c2 a <http://purl.obolibrary.org/obo/CHEMINF_000446> }
+}
+```
+
+**PubChem CID** — `http://rdf.ncbi.nlm.nih.gov/pubchem/compound/CID{n} (biobricks) ; http://identifiers.org/pubchem.compound/{n} (spoke-okn)`: biobricks-pubchem-annotations × spoke-okn(762), biobricks-aopwiki × biobricks-pubchem-annotations(401), biobricks-aopwiki × spoke-okn(87), prokn × biobricks-pubchem-annotations(188,837).
 
 _biobricks-pubchem-annotations × spoke-okn_
 
@@ -411,6 +430,16 @@ SELECT (COUNT(DISTINCT ?cid) AS ?n) WHERE {
 }
 ```
 
+_prokn × biobricks-pubchem-annotations_
+
+```sparql
+SELECT (COUNT(DISTINCT ?t) AS ?n) WHERE {
+  { SELECT DISTINCT ?t WHERE { GRAPH <https://purl.org/okn/frink/kg/prokn> { ?c a <http://purl.obolibrary.org/obo/NCIT_C43366> FILTER(STRSTARTS(STR(?c),'https://pubchem.ncbi.nlm.nih.gov/compound/')) }
+      BIND(IRI(CONCAT('http://rdf.ncbi.nlm.nih.gov/pubchem/compound/CID', STRAFTER(STR(?c),'compound/'))) AS ?t) } }
+  GRAPH <https://purl.org/okn/frink/kg/biobricks-pubchem-annotations> { ?a <http://www.w3.org/ns/oa#hasTarget> ?t }
+}
+```
+
 **CHEBI↔CAS** — `http://purl.obolibrary.org/obo/CHEBI_ ; http://identifiers.org/cas/`: spoke-okn → ubergraph → biobricks-toxcast(496), spoke-okn → ubergraph → biobricks-ice(712), spoke-okn → ubergraph → biobricks-tox21(480).
 
 _spoke-okn → ubergraph → biobricks-toxcast_
@@ -446,7 +475,7 @@ SELECT (COUNT(DISTINCT ?c2) AS ?n) WHERE {
 }
 ```
 
-**DrugBank** — `http://identifiers.org/drugbank/DB{n}`: rdkg × spoke-okn(43), ruralkg × rdkg(2), biobricks-aopwiki × spoke-okn(27).
+**DrugBank** — `http://identifiers.org/drugbank/DB{n}`: rdkg × spoke-okn(43), ruralkg × rdkg(2), biobricks-aopwiki × spoke-okn(27), biobricks-aopwiki × rdkg(124).
 
 _rdkg × spoke-okn_
 
@@ -479,6 +508,16 @@ SELECT (COUNT(DISTINCT ?id) AS ?n) WHERE {
   GRAPH <https://purl.org/okn/frink/kg/spoke-okn> {
     ?cmp <http://www.geneontology.org/formats/oboInOwl#hasDbXref> ?x .
   }
+}
+```
+
+_biobricks-aopwiki × rdkg_
+
+```sparql
+SELECT (COUNT(DISTINCT ?db) AS ?n) WHERE {
+  GRAPH <https://purl.org/okn/frink/kg/biobricks-aopwiki> { ?chem <http://semanticscience.org/resource/CHEMINF_000406> ?lit }
+  BIND(IRI(CONCAT('http://identifiers.org/drugbank/', STR(?lit))) AS ?db)
+  GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?db a <https://w3id.org/biolink/vocab/Drug> }
 }
 ```
 
@@ -538,7 +577,7 @@ SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {
 }
 ```
 
-**CAS→ChEMBL (bridged)** — `http://identifiers.org/cas/{cas} (same form in babel) -> babel clique -> http://identifiers.org/chembl.compound/CHEMBL{n} -> https://www.ebi.ac.uk/chembl/explore/compound/CHEMBL{n} (prokn)`: biobricks-tox21 → babel → prokn(2,462), biobricks-toxcast → babel → prokn(2,504).
+**CAS→ChEMBL/PubChem (bridged)** — `http://identifiers.org/cas/{cas} -> babel clique -> ChEMBL / PubChem / DrugCentral / HMDB member -> ProKN compound IRI in that form`: biobricks-tox21 → babel → prokn(3,182), biobricks-toxcast → babel → prokn(3,243), sawgraph → babel → prokn(6).
 
 _biobricks-tox21 → babel → prokn_
 
@@ -546,12 +585,16 @@ _biobricks-tox21 → babel → prokn_
 SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {
   { SELECT DISTINCT ?ent ?member WHERE {
     { SELECT DISTINCT ?ent ?pref WHERE {
-        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/biobricks-tox21> { ?ent ?p ?o } FILTER(STRSTARTS(STR(?ent),'http://identifiers.org/cas/')) BIND(?ent AS ?src) } }
+        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/biobricks-tox21> { ?ent a <http://purl.obolibrary.org/obo/CHEMINF_000446> } BIND(?ent AS ?src) } }
         GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
     GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
-  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/chembl.compound/'))
-  BIND(IRI(CONCAT('https://www.ebi.ac.uk/chembl/explore/compound/',STRAFTER(STR(?member),'chembl.compound/'))) AS ?cpd)
-  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?cpd a <http://purl.obolibrary.org/obo/NCIT_C43366> }
+  FILTER(REGEX(STR(?member),'^http://(identifiers\\.org/(chembl\\.compound|pubchem\\.compound|hmdb)|drugcentral\\.org/drugcard)/'))
+  BIND(IRI(REPLACE(REPLACE(REPLACE(REPLACE(STR(?member),
+    '^http://identifiers.org/chembl.compound/','https://www.ebi.ac.uk/chembl/explore/compound/'),
+    '^http://identifiers.org/pubchem.compound/','https://pubchem.ncbi.nlm.nih.gov/compound/'),
+    '^http://drugcentral.org/drugcard/','https://drugcentral.org/drugcard/'),
+    '^http://identifiers.org/hmdb/','https://hmdb.ca/metabolites/')) AS ?cpd)
+  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?cpd a ?ptype }
 }
 ```
 
@@ -561,12 +604,35 @@ _biobricks-toxcast → babel → prokn_
 SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {
   { SELECT DISTINCT ?ent ?member WHERE {
     { SELECT DISTINCT ?ent ?pref WHERE {
-        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/biobricks-toxcast> { ?t <http://edamontology.org/has_identifier> ?ent } FILTER(STRSTARTS(STR(?ent),'http://identifiers.org/cas/')) BIND(?ent AS ?src) } }
+        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/biobricks-toxcast> { ?ent a <http://purl.obolibrary.org/obo/CHEMINF_000446> } BIND(?ent AS ?src) } }
         GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
     GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
-  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/chembl.compound/'))
-  BIND(IRI(CONCAT('https://www.ebi.ac.uk/chembl/explore/compound/',STRAFTER(STR(?member),'chembl.compound/'))) AS ?cpd)
-  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?cpd a <http://purl.obolibrary.org/obo/NCIT_C43366> }
+  FILTER(REGEX(STR(?member),'^http://(identifiers\\.org/(chembl\\.compound|pubchem\\.compound|hmdb)|drugcentral\\.org/drugcard)/'))
+  BIND(IRI(REPLACE(REPLACE(REPLACE(REPLACE(STR(?member),
+    '^http://identifiers.org/chembl.compound/','https://www.ebi.ac.uk/chembl/explore/compound/'),
+    '^http://identifiers.org/pubchem.compound/','https://pubchem.ncbi.nlm.nih.gov/compound/'),
+    '^http://drugcentral.org/drugcard/','https://drugcentral.org/drugcard/'),
+    '^http://identifiers.org/hmdb/','https://hmdb.ca/metabolites/')) AS ?cpd)
+  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?cpd a ?ptype }
+}
+```
+
+_sawgraph → babel → prokn_
+
+```sparql
+SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {
+  { SELECT DISTINCT ?ent ?member WHERE {
+    { SELECT DISTINCT ?ent ?pref WHERE {
+        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?s <http://w3id.org/coso/v1/contaminoso#casNumber> ?raw } BIND(IF(REGEX(STR(?raw),'^[0-9]{5,10}$'), REPLACE(STR(?raw),'^([0-9]+)([0-9]{2})([0-9])$','$1-$2-$3'), STR(?raw)) AS ?cas) FILTER(REGEX(?cas,'^[0-9]{2,7}-[0-9]{2}-[0-9]$')) BIND(IRI(CONCAT('http://identifiers.org/cas/', ?cas)) AS ?ent) BIND(?ent AS ?src) } }
+        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+  FILTER(REGEX(STR(?member),'^http://(identifiers\\.org/(chembl\\.compound|pubchem\\.compound|hmdb)|drugcentral\\.org/drugcard)/'))
+  BIND(IRI(REPLACE(REPLACE(REPLACE(REPLACE(STR(?member),
+    '^http://identifiers.org/chembl.compound/','https://www.ebi.ac.uk/chembl/explore/compound/'),
+    '^http://identifiers.org/pubchem.compound/','https://pubchem.ncbi.nlm.nih.gov/compound/'),
+    '^http://drugcentral.org/drugcard/','https://drugcentral.org/drugcard/'),
+    '^http://identifiers.org/hmdb/','https://hmdb.ca/metabolites/')) AS ?cpd)
+  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?cpd a ?ptype }
 }
 ```
 
@@ -642,6 +708,116 @@ SELECT (COUNT(DISTINCT ?glycan) AS ?n) WHERE {
 }
 ```
 
+**MeSH** — `https://rdaccelerate.org/resource/MESH_{id} (rdkg) -> http://id.nlm.nih.gov/mesh/{id}`: biobricks-mesh × rdkg(474).
+
+```sparql
+SELECT (COUNT(DISTINCT ?m) AS ?n) WHERE {
+  GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?x a <https://w3id.org/biolink/vocab/ChemicalExposure> }
+  BIND(IRI(REPLACE(STR(?x),'^https://rdaccelerate.org/resource/MESH_','http://id.nlm.nih.gov/mesh/')) AS ?m)
+  GRAPH <https://purl.org/okn/frink/kg/biobricks-mesh> { ?m a ?t }
+}
+```
+
+**UMLS ↔ chemical id (bridged)** — `http://identifiers.org/umls/{CUI} -> babel clique -> ChEMBL / PubChem / DrugCentral / HMDB member -> ProKN IRI`: biohealth → babel → prokn(8,488), biohealth → babel → biobricks-toxcast(4,400), biohealth → babel → biobricks-tox21(4,307), biohealth → babel → rdkg(2,387), biohealth → babel → spoke-okn(608).
+
+_biohealth → babel → prokn_
+
+```sparql
+SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {
+  { SELECT DISTINCT ?ent ?member WHERE {
+    { SELECT DISTINCT ?ent ?pref WHERE {
+        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/biohealth> { ?ent <https://w3id.org/biolink/vocab/category> ?c } FILTER(REGEX(STR(?c), 'semtype/(.*_)?(orch|phsu|inch|antb|clnd|hops|horm|lipd|strd|carb|nnon|elii|vita|opco|chvs|chvf)(_|$)')) BIND(IRI(CONCAT('http://identifiers.org/umls/', STRAFTER(STR(?ent),'/kg/node/'))) AS ?src) } }
+        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+  FILTER(REGEX(STR(?member),'^http://(identifiers\\.org/(chembl\\.compound|pubchem\\.compound|hmdb)|drugcentral\\.org/drugcard)/'))
+  BIND(IRI(REPLACE(REPLACE(REPLACE(REPLACE(STR(?member),
+    '^http://identifiers.org/chembl.compound/','https://www.ebi.ac.uk/chembl/explore/compound/'),
+    '^http://identifiers.org/pubchem.compound/','https://pubchem.ncbi.nlm.nih.gov/compound/'),
+    '^http://drugcentral.org/drugcard/','https://drugcentral.org/drugcard/'),
+    '^http://identifiers.org/hmdb/','https://hmdb.ca/metabolites/')) AS ?cpd)
+  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?cpd a ?ptype }
+}
+```
+
+_biohealth → babel → biobricks-toxcast_
+
+```sparql
+SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {
+  { SELECT DISTINCT ?ent ?member WHERE {
+    { SELECT DISTINCT ?ent ?pref WHERE {
+        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/biobricks-toxcast> { ?ent a <http://purl.obolibrary.org/obo/CHEMINF_000446> } BIND(?ent AS ?src) } }
+        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/umls/'))
+  BIND(IRI(CONCAT('https://biohealthkg.proto-okn.net/kg/node/', STRAFTER(STR(?member),'umls/'))) AS ?node)
+  GRAPH <https://purl.org/okn/frink/kg/biohealth> { ?node <https://w3id.org/biolink/vocab/category> ?bcat }
+}
+```
+
+_biohealth → babel → biobricks-tox21_
+
+```sparql
+SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {
+  { SELECT DISTINCT ?ent ?member WHERE {
+    { SELECT DISTINCT ?ent ?pref WHERE {
+        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/biobricks-tox21> { ?ent a <http://purl.obolibrary.org/obo/CHEMINF_000446> } BIND(?ent AS ?src) } }
+        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/umls/'))
+  BIND(IRI(CONCAT('https://biohealthkg.proto-okn.net/kg/node/', STRAFTER(STR(?member),'umls/'))) AS ?node)
+  GRAPH <https://purl.org/okn/frink/kg/biohealth> { ?node <https://w3id.org/biolink/vocab/category> ?bcat }
+}
+```
+
+_biohealth → babel → rdkg_
+
+```sparql
+SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {
+  { SELECT DISTINCT ?ent ?member WHERE {
+    { SELECT DISTINCT ?ent ?pref WHERE {
+        { SELECT DISTINCT ?ent ?src WHERE { { GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?ent a <https://w3id.org/biolink/vocab/Drug> } BIND(?ent AS ?src) } UNION { GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?ent a <https://w3id.org/biolink/vocab/ChemicalEntity> } BIND(IRI(REPLACE(STR(?ent),'^https://rdaccelerate.org/resource/','http://purl.obolibrary.org/obo/')) AS ?src) } UNION { GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?ent a <https://w3id.org/biolink/vocab/ChemicalExposure> } BIND(IRI(REPLACE(STR(?ent),'^https://rdaccelerate.org/resource/MESH_','http://id.nlm.nih.gov/mesh/')) AS ?src) } } }
+        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/umls/'))
+  BIND(IRI(CONCAT('https://biohealthkg.proto-okn.net/kg/node/', STRAFTER(STR(?member),'umls/'))) AS ?node)
+  GRAPH <https://purl.org/okn/frink/kg/biohealth> { ?node <https://w3id.org/biolink/vocab/category> ?bcat }
+}
+```
+
+_biohealth → babel → spoke-okn_
+
+```sparql
+SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {
+  { SELECT DISTINCT ?ent ?member WHERE {
+    { SELECT DISTINCT ?ent ?pref WHERE {
+        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/spoke-okn> { ?ent a <https://w3id.org/biolink/vocab/ChemicalEntity> } BIND(IRI(REPLACE(STR(?ent),'^http://rdf.ncbi.nlm.nih.gov/pubchem/inchikey/','http://identifiers.org/inchikey/')) AS ?src) } }
+        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/umls/'))
+  BIND(IRI(CONCAT('https://biohealthkg.proto-okn.net/kg/node/', STRAFTER(STR(?member),'umls/'))) AS ?node)
+  GRAPH <https://purl.org/okn/frink/kg/biohealth> { ?node <https://w3id.org/biolink/vocab/category> ?bcat }
+}
+```
+
+**chemical id→ChEMBL/PubChem (bridged)** — `SPOKE-OKN InChIKey / ChEMBL / CHEBI node -> babel -> ProKN compound IRI`: spoke-okn → babel → prokn(278).
+
+```sparql
+SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {
+  { SELECT DISTINCT ?ent ?member WHERE {
+    { SELECT DISTINCT ?ent ?pref WHERE {
+        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/spoke-okn> { ?ent a <https://w3id.org/biolink/vocab/ChemicalEntity> } BIND(IRI(REPLACE(STR(?ent),'^http://rdf.ncbi.nlm.nih.gov/pubchem/inchikey/','http://identifiers.org/inchikey/')) AS ?src) } }
+        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+  FILTER(REGEX(STR(?member),'^http://(identifiers\\.org/(chembl\\.compound|pubchem\\.compound|hmdb)|drugcentral\\.org/drugcard)/'))
+  BIND(IRI(REPLACE(REPLACE(REPLACE(REPLACE(STR(?member),
+    '^http://identifiers.org/chembl.compound/','https://www.ebi.ac.uk/chembl/explore/compound/'),
+    '^http://identifiers.org/pubchem.compound/','https://pubchem.ncbi.nlm.nih.gov/compound/'),
+    '^http://drugcentral.org/drugcard/','https://drugcentral.org/drugcard/'),
+    '^http://identifiers.org/hmdb/','https://hmdb.ca/metabolites/')) AS ?cpd)
+  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?cpd a ?ptype }
+}
+```
+
 ### DISEASE & PHENOTYPE
 
 **MeSH_descriptor_id** — `http://id.nlm.nih.gov/mesh/{ID} (biobricks-mesh node IRI, HTTP) ; https://id.nlm.nih.gov/mesh/{ID} IRIs on spoke-okn mesh_ids / mesh_list (HTTPS)`: biobricks-mesh × spoke-okn(165), biobricks-mesh × ubergraph(9,883).
@@ -668,7 +844,7 @@ SELECT (COUNT(DISTINCT ?m) AS ?n) WHERE {
 }
 ```
 
-**MONDO** — `biomarkerkg obo:OBCI_1000008 / obo:OBCI_1000002 -> http://purl.obolibrary.org/obo/MONDO_{id} (891 distinct MONDO diseases)`: biomarkerkg × prokn(263), nde × oard-kg(889), oard-kg × prokn(470), rdkg × oard-kg(2,014), biomarkerkg × nde(601), biomarkerkg × rdkg(754), biomarkerkg × oard-kg(290), ubergraph × oard-kg(212), nestkg × biomarkerkg(13).
+**MONDO** — `biomarkerkg obo:OBCI_1000008 / obo:OBCI_1000002 -> http://purl.obolibrary.org/obo/MONDO_{id} (891 distinct MONDO diseases)`: biomarkerkg × prokn(263), nde × oard-kg(889), oard-kg × prokn(470), rdkg × oard-kg(2,014), biomarkerkg × nde(601), biomarkerkg × rdkg(754), biomarkerkg × oard-kg(290), ubergraph × oard-kg(212), nestkg × biomarkerkg(13), prokn × rdkg(2,901), nde × rdkg(2,907), nde × prokn(756), digcfdekg × nde(158).
 
 _biomarkerkg × prokn_
 
@@ -748,6 +924,42 @@ _nestkg × biomarkerkg_
 SELECT (COUNT(DISTINCT ?mondo) AS ?n) WHERE {
   GRAPH <https://purl.org/okn/frink/kg/nestkg> { ?a <https://w3id.org/biolink/vocab/object> ?mondo . }
   GRAPH <https://purl.org/okn/frink/kg/biomarkerkg> { ?s ?bp ?mondo . }
+}
+```
+
+_prokn × rdkg_
+
+```sparql
+SELECT (COUNT(DISTINCT ?m) AS ?n) WHERE {
+  { SELECT DISTINCT ?m WHERE { GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?m a <https://w3id.org/biolink/vocab/Disease> } } }
+  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?d a <http://purl.uniprot.org/core/Disease> ; <http://www.w3.org/2004/02/skos/core#exactMatch> ?m }
+}
+```
+
+_nde × rdkg_
+
+```sparql
+SELECT (COUNT(DISTINCT ?m) AS ?n) WHERE {
+  { SELECT DISTINCT ?m WHERE { GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?m a <https://w3id.org/biolink/vocab/Disease> } } }
+  GRAPH <https://purl.org/okn/frink/kg/nde> { ?ds <http://schema.org/healthCondition> ?m }
+}
+```
+
+_nde × prokn_
+
+```sparql
+SELECT (COUNT(DISTINCT ?m) AS ?n) WHERE {
+  { SELECT DISTINCT ?m WHERE { GRAPH <https://purl.org/okn/frink/kg/prokn> { ?d a <http://purl.uniprot.org/core/Disease> ; <http://www.w3.org/2004/02/skos/core#exactMatch> ?m FILTER(STRSTARTS(STR(?m),'http://purl.obolibrary.org/obo/MONDO_')) } } }
+  GRAPH <https://purl.org/okn/frink/kg/nde> { ?ds <http://schema.org/healthCondition> ?m }
+}
+```
+
+_digcfdekg × nde_
+
+```sparql
+SELECT (COUNT(DISTINCT ?m) AS ?n) WHERE {
+  { SELECT DISTINCT ?m WHERE { GRAPH <https://purl.org/okn/frink/kg/digcfdekg> { ?m a <https://purl.org/okn/frink/kg/digcfdekg/schema/Trait> FILTER(STRSTARTS(STR(?m),'http://purl.obolibrary.org/obo/MONDO_')) } } }
+  GRAPH <https://purl.org/okn/frink/kg/nde> { ?ds <http://schema.org/healthCondition> ?m }
 }
 ```
 
@@ -1151,6 +1363,65 @@ SELECT (COUNT(DISTINCT ?c) AS ?n) WHERE {
 }
 ```
 
+**disease id→MeSH (bridged)** — `http://purl.obolibrary.org/obo/MONDO_{n} (rdkg) -> babel clique -> http://id.nlm.nih.gov/mesh/{D|C…} (biobricks-mesh)`: biobricks-mesh → babel → rdkg(7,934), biobricks-mesh → babel → nde(3,467).
+
+_biobricks-mesh → babel → rdkg_
+
+```sparql
+SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {
+  { SELECT DISTINCT ?ent ?member WHERE {
+    { SELECT DISTINCT ?ent ?pref WHERE {
+        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?ent a <https://w3id.org/biolink/vocab/Disease> } BIND(?ent AS ?src) } }
+        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+  FILTER(STRSTARTS(STR(?member),'http://id.nlm.nih.gov/mesh/'))
+  GRAPH <https://purl.org/okn/frink/kg/biobricks-mesh> { ?member a ?mtype }
+}
+```
+
+_biobricks-mesh → babel → nde_
+
+```sparql
+SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {
+  { SELECT DISTINCT ?ent ?member WHERE {
+    { SELECT DISTINCT ?ent ?pref WHERE {
+        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/nde> { ?ds <http://schema.org/healthCondition> ?ent } FILTER(isIRI(?ent)) BIND(?ent AS ?src) } }
+        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+  FILTER(STRSTARTS(STR(?member),'http://id.nlm.nih.gov/mesh/'))
+  GRAPH <https://purl.org/okn/frink/kg/biobricks-mesh> { ?member a ?mtype }
+}
+```
+
+**MeSH (direct + via babel)** — `https://www.ncbi.nlm.nih.gov/mesh/?term={id} (ProKN record IRI) -> http://id.nlm.nih.gov/mesh/{id}; otherwise ProKN skos:exactMatch id -> babel -> MeSH member`: biobricks-mesh → babel → prokn(3,186).
+
+```sparql
+SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {
+  { { SELECT DISTINCT ?ent ?member WHERE {
+    { SELECT DISTINCT ?ent ?pref WHERE {
+        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/prokn> { ?ent a <http://purl.uniprot.org/core/Disease> ; <http://www.w3.org/2004/02/skos/core#exactMatch> ?src } } }
+        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } } } UNION { GRAPH <https://purl.org/okn/frink/kg/prokn> { ?ent a <http://purl.uniprot.org/core/Disease> FILTER(REGEX(STR(?ent),'mesh/(\\?term=)?[CD][0-9]+$')) } BIND(IRI(CONCAT('http://id.nlm.nih.gov/mesh/', REPLACE(STR(?ent),'^.*[/=]([CD][0-9]+)$','$1'))) AS ?member) }
+  FILTER(STRSTARTS(STR(?member),'http://id.nlm.nih.gov/mesh/'))
+  GRAPH <https://purl.org/okn/frink/kg/biobricks-mesh> { ?member a ?mtype }
+}
+```
+
+**disease id→UMLS (bridged)** — `ProKN disease id (OMIM, MeSH, MONDO, DOID…) -> babel clique -> http://identifiers.org/umls/{CUI} -> https://biohealthkg.proto-okn.net/kg/node/{CUI}`: biohealth → babel → prokn(2,958).
+
+```sparql
+SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {
+  { SELECT DISTINCT ?ent ?member WHERE {
+    { SELECT DISTINCT ?ent ?pref WHERE {
+        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/prokn> { ?ent a <http://purl.uniprot.org/core/Disease> ; <http://www.w3.org/2004/02/skos/core#exactMatch> ?src } } }
+        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/umls/'))
+  BIND(IRI(CONCAT('https://biohealthkg.proto-okn.net/kg/node/', STRAFTER(STR(?member),'umls/'))) AS ?node)
+  GRAPH <https://purl.org/okn/frink/kg/biohealth> { ?node <https://w3id.org/biolink/vocab/category> ?bcat }
+}
+```
+
 ### EARTH OBSERVATION
 
 **GCMD instrument** — `climatemodelskg <https://climatepub4kg.github.io/ontology#name> on a climatepub4kg:Instrument node <-> nasa-gesdisc-kg <http://www.w3.org/2000/01/rdf-schema#label> on a GCMD Instrument node (reached via nasa <https://purl.org/okn/frink/kg/nasa-gesdisc/schema/HAS_INSTRUMENT>). Match on the case-normalized instrument name.`: climatemodelskg × nasa-gesdisc-kg(342).
@@ -1177,7 +1448,7 @@ SELECT (COUNT(DISTINCT ?k) AS ?n) WHERE {
 
 ### ENVIRONMENTAL TOXICOLOGY
 
-**CAS** — `sawgraph coso:casNumber (undashed OR dashed literal; dashes must be reconstructed) -> http://identifiers.org/cas/{cas} (biobricks-toxcast edam:has_identifier IRI)`: sawgraph × biobricks-toxcast(34), sawgraph × biobricks-ice(44), sockg × biobricks-ice(68), sockg × biobricks-toxcast(59).
+**CAS** — `sawgraph coso:casNumber (undashed OR dashed literal; dashes must be reconstructed) -> http://identifiers.org/cas/{cas} (biobricks-toxcast edam:has_identifier IRI)`: sawgraph × biobricks-toxcast(34), sawgraph × biobricks-ice(44), sockg × biobricks-ice(68), sockg × biobricks-toxcast(59), biobricks-tox21 × sockg(55), sawgraph × biobricks-tox21(11), biobricks-aopwiki × sockg(8).
 
 _sawgraph × biobricks-toxcast_
 
@@ -1230,6 +1501,38 @@ SELECT (COUNT(DISTINCT ?cid) AS ?n) WHERE {
   GRAPH <https://purl.org/okn/frink/kg/sockg> { ?s <http://w3id.org/coso/v1/contaminoso#casNumber> ?cas . }
   BIND(IRI(CONCAT('http://identifiers.org/cas/', STR(?cas))) AS ?cid)
   GRAPH <https://purl.org/okn/frink/kg/biobricks-toxcast> { ?x <http://edamontology.org/has_identifier> ?cid . }
+}
+```
+
+_biobricks-tox21 × sockg_
+
+```sparql
+SELECT (COUNT(DISTINCT ?cid) AS ?n) WHERE {
+  GRAPH <https://purl.org/okn/frink/kg/sockg> { ?s <http://w3id.org/coso/v1/contaminoso#casNumber> ?cas }
+  BIND(IRI(CONCAT('http://identifiers.org/cas/', STR(?cas))) AS ?cid)
+  GRAPH <https://purl.org/okn/frink/kg/biobricks-tox21> { ?cid a <http://purl.obolibrary.org/obo/CHEMINF_000446> }
+}
+```
+
+_sawgraph × biobricks-tox21_
+
+```sparql
+SELECT (COUNT(DISTINCT ?casIri) AS ?n) WHERE {
+  { SELECT DISTINCT ?cas WHERE { GRAPH <https://purl.org/okn/frink/kg/sawgraph> { ?s <http://w3id.org/coso/v1/contaminoso#casNumber> ?raw .
+      BIND(IF(REGEX(STR(?raw),'^[0-9]{5,10}$'), REPLACE(STR(?raw),'^([0-9]+)([0-9]{2})([0-9])$','$1-$2-$3'), STR(?raw)) AS ?cas)
+      FILTER(REGEX(?cas,'^[0-9]{2,7}-[0-9]{2}-[0-9]$')) } } }
+  BIND(IRI(CONCAT('http://identifiers.org/cas/', ?cas)) AS ?casIri)
+  GRAPH <https://purl.org/okn/frink/kg/biobricks-tox21> { ?casIri a <http://purl.obolibrary.org/obo/CHEMINF_000446> }
+}
+```
+
+_biobricks-aopwiki × sockg_
+
+```sparql
+SELECT (COUNT(DISTINCT ?cid) AS ?n) WHERE {
+  GRAPH <https://purl.org/okn/frink/kg/sockg> { ?s <http://w3id.org/coso/v1/contaminoso#casNumber> ?cas }
+  BIND(IRI(CONCAT('https://identifiers.org/cas/', STR(?cas))) AS ?cid)
+  GRAPH <https://purl.org/okn/frink/kg/biobricks-aopwiki> { ?cid a <http://semanticscience.org/resource/CHEMINF_000000> }
 }
 ```
 
@@ -2898,6 +3201,20 @@ SELECT (COUNT(DISTINCT ?taxon) AS ?n) WHERE {
 }
 ```
 
+**MeSH ↔ NCBITaxon (bridged)** — `SPOKE-OKN organism/{taxid}.{n} -> http://purl.obolibrary.org/obo/NCBITaxon_{taxid} -> babel -> http://id.nlm.nih.gov/mesh/{id}`: biobricks-mesh → babel → spoke-okn(4,078).
+
+```sparql
+SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {
+  { SELECT DISTINCT ?ent ?member WHERE {
+    { SELECT DISTINCT ?ent ?pref WHERE {
+        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/spoke-okn> { ?o a <https://w3id.org/biolink/vocab/OrganismTaxon> } BIND(IRI(CONCAT('http://purl.obolibrary.org/obo/NCBITaxon_', REPLACE(STR(?o),'^.*/organism/([0-9]+).*$','$1'))) AS ?ent) BIND(?ent AS ?src) } }
+        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+  FILTER(STRSTARTS(STR(?member),'http://id.nlm.nih.gov/mesh/'))
+  GRAPH <https://purl.org/okn/frink/kg/biobricks-mesh> { ?member a ?mtype }
+}
+```
+
 ### VARIANTS
 
 **dbSNP rsID** — `pankgraph <https://api.ncbi.nlm.nih.gov/variation/v0/refsnp/{rsid}> (bare number) <-> biomarkerkg <https://www.ncbi.nlm.nih.gov/snp/rs{rsid}> (rs-prefixed)`: pankgraph × biomarkerkg(214), prokn × biomarkerkg(3,241), prokn × pankgraph(214).
@@ -2951,4 +3268,4 @@ SELECT (COUNT(DISTINCT ?rs) AS ?n) WHERE {
 
 - **Skeletons are COUNT queries by design.** Each proves the key still joins and reproduces the table's `verified_count`; run it first, then extend it with your payload rather than rebuilding the normalization boilerplate.
 - **The identifier, not the entity, is what matches.** Counts are `COUNT(DISTINCT <shared key>)` — shared identifiers, not shared rows. A KG may mint several nodes carrying the same id.
-- **Sources:** the crosswalk table served by `list_crosswalks` / `get_join_strategy` (verified 2026-10-13).
+- **Sources:** the crosswalk table served by `list_crosswalks` / `get_join_strategy` (verified 2026-10-14).
