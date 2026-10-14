@@ -342,6 +342,90 @@ ORDER BY ?relation ?filler
 # isIRI(?r) with the same aura#ID- exclusion.\
 """
 
+#: Query-time rules for ``glygenkg`` (GlyGen: human protein glycosylation). The
+#: graph reads like a protein KG but its central class is a glycosylation RECORD,
+#: and nothing links a record to its protein. Verified live 2026-10-13.
+GLYGENKG_GUIDANCE = """\
+A gly:Glycoprotein IS A RECORD, NOT A PROTEIN. Each of the 74,722
+gly:Glycoprotein nodes is one reported glycosylation observation (one paper,
+at most one site) for one of 8,112 human proteins. Counting gly:Glycoprotein
+nodes counts observations; count DISTINCT gly:has_pro_entry values to count
+glycoproteins.
+
+RECORD -> PROTEIN NEEDS AN IRI REWRITE. No triple connects a record to its
+up:Protein node. The record's only protein key is gly:has_pro_entry, an untyped
+Protein Ontology IRI http://purl.obolibrary.org/obo/PR_<accession>; swap that
+prefix for http://purl.uniprot.org/uniprot/ to get the up:Protein IRI (all
+8,112 resolve), which carries the name, mnemonic, gene (up:encodedBy) and
+organism. Do not use up:sequence for this: on a record it points to an isoform
+IRI that is untyped for 90% of records.
+
+TWO FALDO NAMESPACES. Glycosylation-site coordinates use
+http://www.biohackathon.org/resource/faldo# (WITH www); gene-locus coordinates
+use the standard http://biohackathon.org/resource/faldo# (no www). The wrong
+prefix returns 0 rows without an error.
+
+SITE AND GLYCAN. record -gco:glycosylated_at-> site -faldo:location-> position
+node, which holds faldo:position (1-based residue number on the record's
+isoform) and glycan:has_amino_acid (IRI local name Asn, Ser, Thr ...; a few use
+one-letter N, S, T). 7,212 records have no site, and 4,778 sites have no
+glycan. A glycan is http://glygen.org/glycan/<GlyTouCan accession>; the graph
+holds no structure, mass or composition property, only an rdfs:label such as
+"Hex5HexNAc4 (N-linked, Biantennary)". Read N-linked or O-linked from that
+label (923 and 89 of the 1,248 glycans say so; the rest carry neither word) or
+from the residue.
+
+OTHER SITE DATA IS UNTYPED AND PARTIAL. SNVs (7,482, with gly:glycoeffect on
+3,969), phosphorylation sites (302) and a second glycosylation-site annotation
+(102, on the misspelled predicate gco:glycoylationsite) hang off untyped nodes
+reached through gly:has_site -> www-faldo Region; one region per isoform, so
+they are a sample. gly:keywords says only "disease", "germline", "cancer",
+"somatic" or "ebi": no disease is named anywhere in the graph and there is no
+dbSNP rsID.
+
+JOIN KEYS. All human (one taxon, NCBITaxon_9606). UniProt: the up:Protein node
+IRI. Ensembl: the gly:hasLocus object http://rdf.ebi.ac.uk/resource/ensembl/
+<ENSG>, a form no other graph uses, so rebuild the partner's form from the
+bare id. PubMed: the id is inside the evidence IRI
+http://glygen.org/evidence/PubMed_<PMID>. GlyTouCan: inside the glycan IRI.
+Call get_join_strategy("glygenkg", <kg>) for the verified recipe before
+writing a cross-graph query.\
+"""
+
+#: Companion snippet: every glycosylation site of one protein with its residue,
+#: glycans and supporting papers. Verified 2026-10-13: P02743 (APCS) returns
+#: Asn51 with 16 glycans from 4 papers and Thr195 with one O-linked glycan.
+GLYGENKG_SNIPPET = """\
+# Glycosylation sites of one protein (swap the UniProt accession).
+PREFIX gly:    <https://sparql.glygen.org/ontology/>
+PREFIX gco:    <http://purl.jp/bio/12/glyco/conjugate#>
+PREFIX glycan: <http://purl.jp/bio/12/glyco/glycan#>
+PREFIX faldo:  <http://www.biohackathon.org/resource/faldo#>
+PREFIX up:     <http://purl.uniprot.org/core/>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos:   <http://www.w3.org/2004/02/skos/core#>
+SELECT ?symbol ?position ?aa (COUNT(DISTINCT ?glycan) AS ?glycans)
+       (COUNT(DISTINCT ?ev) AS ?papers) (SAMPLE(?glabel) AS ?example_glycan)
+WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> {
+  VALUES ?protein { <http://purl.uniprot.org/uniprot/P02743> }
+  ?protein up:encodedBy/skos:prefLabel ?symbol .
+  # record -> protein: rewrite the UniProt IRI to the record's PR_ key
+  BIND(IRI(REPLACE(STR(?protein), "http://purl.uniprot.org/uniprot/",
+                   "http://purl.obolibrary.org/obo/PR_")) AS ?pr)
+  ?rec gly:has_pro_entry ?pr ; glycan:has_evidence ?ev ;
+       gco:glycosylated_at ?site .
+  ?site faldo:location ?loc .
+  ?loc faldo:position ?position ; glycan:has_amino_acid ?aaNode .
+  BIND(REPLACE(STR(?aaNode), "^.*/", "") AS ?aa)
+  OPTIONAL { ?site gco:has_saccharide ?glycan .
+             OPTIONAL { ?glycan rdfs:label ?glabel } }
+} }
+GROUP BY ?symbol ?position ?aa
+ORDER BY ?position
+# The PMID is STRAFTER(STR(?ev), "PubMed_"); the GlyTouCan accession is
+# REPLACE(STR(?glycan), "^.*/", "").\
+"""
+
 #: Per-KG usage notes surfaced on ``get_schema`` (attached by the tool wrapper in
 #: :mod:`mcp_okn.tools.schema_tools`), delivered exactly when a client is about to
 #: write SPARQL for that KG. Only KGs with domain rules that the schema alone does
@@ -356,6 +440,11 @@ _KG_USAGE_NOTES: dict[str, dict[str, str]] = {
         "title": "Ontology-reading notes",
         "guidance": BIO101_GUIDANCE,
         "query_snippet": BIO101_SNIPPET,
+    },
+    "glygenkg": {
+        "title": "Glycosylation-record notes",
+        "guidance": GLYGENKG_GUIDANCE,
+        "query_snippet": GLYGENKG_SNIPPET,
     },
     "spoke-genelab": {
         "guidance": SPOKE_GENELAB_CONTRAST_GUIDANCE,

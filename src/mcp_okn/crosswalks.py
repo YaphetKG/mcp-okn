@@ -145,6 +145,8 @@ _DOMAIN_BY_SHARED_KEY: dict[str, str] = {
     "Entrez": "Genes",
     "HGNC -> Entrez (bridged)": "Genes",
     "UniProt": "Proteins",
+    # glygenkg's Protein Ontology terms (obo/PR_{UniProt accession}) in ubergraph
+    "PR": "Proteins",
     "CAS": "Chemicals",
     "CHEBI<->CAS": "Chemicals",
     "CHEBI (bio101 label)": "Chemicals",
@@ -155,6 +157,8 @@ _DOMAIN_BY_SHARED_KEY: dict[str, str] = {
     "CAS -> DrugBank (bridged)": "Chemicals",
     "ChEMBL": "Chemicals",
     "InChIKey": "Chemicals",
+    # glygenkg glycan IRI (GlyTouCan accession) -> CHEBI via ubergraph hasDbXref
+    "GlyTouCan<->CHEBI": "Chemicals",
     "NCBITaxon": "Taxonomy",
     "NCBITaxon (biohealth label)": "Taxonomy",
     "S2_L13": "Geospatial",
@@ -177,6 +181,8 @@ _DOMAIN_BY_SHARED_KEY: dict[str, str] = {
     # CIK — the justice<->manufacturing bridge (I7).
     "SUDOKN_company_IRI": "Industry & supply chain",
     "DOI": "Publications",
+    # glygenkg evidence IRI <-> prokn bibo:pmid (the first PubMed-keyed crosswalk)
+    "PubMed ID": "Publications",
     "author name (string; NOT an ORCID — see the entry's caveat)": "Publications",
     "GCMD instrument": "Earth observation",
     "GCMD platform": "Earth observation",

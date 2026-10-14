@@ -39,25 +39,25 @@ _RAW_BASE = (
 # OWL2 ontology (~6,300 owl:Class concepts, relations only inside
 # owl:Restriction axioms) with no external identifiers.
 # `glygenkg` (GlyGen: glycans, glycoproteins, glycosylation sites) joined the
-# registry by 2026-09-26 but is NOT loaded: LIMIT 1 returns no row under every
-# candidate graph IRI (.../kg/glygenkg, .../kg/glygenkg/, frink.renci.org/kg/
-# glygenkg), checked serially on 2026-09-26. Excluded so `refresh_snapshot.py`
-# does not abort on its missing payload entry while we wait for the upload;
-# integrating it (payload tags, schema, crosswalks — likely UniProt/Entrez into
-# the protein and gene clusters) is its own pass once it is served.
+# registry by 2026-09-26 while the federation served 0 triples for it, and was
+# excluded here so `refresh_snapshot.py` would not abort on its missing payload
+# entry. It was loaded by 2026-10-13 (1,101,681 triples, matching its own
+# endpoint) with an upstream entities.csv, and restored: human glycosylation
+# records keyed on UniProt, Ensembl, PubMed and GlyTouCan (see the `glygenkg`
+# usage notes in schema.py).
 # `kwg-environment`, `kwg-hazards`, `kwg-places` and `kwg-society` (the four
 # KnowWhereGraph thematic layers) joined the registry by 2026-10-13 and are in the
 # same state: COUNT(*) is 0 under .../kg/{name}, and LIMIT 1 returns no row under
 # .../kg/{name}/, frink.renci.org/kg/{name} or purl.org/okn/kg/{name}; okn-void
 # describes none of them and upstream has no entities.csv for them. Checked
-# serially on 2026-10-13. Excluded for the same reason as glygenkg. They matter
+# serially on 2026-10-13. Excluded so `refresh_snapshot.py` does not abort on a
+# servable KG with no payload entry while we wait for the upload. They matter
 # when they land: kwg-places advertises materialized ZIP-code areas, which
 # spatialkg declares but never instantiates (see the dreamkg/ruralkg x spatialkg
 # ZIP non-joins).
 # Drop a name from this set once the federation loads it.
 EXCLUDED_KGS = {
     "semopenalex",
-    "glygenkg",
     "kwg-environment",
     "kwg-hazards",
     "kwg-places",

@@ -48,7 +48,7 @@
 <body>
 <header>
   <h1>Proto-OKN cross-KG crosswalk network</h1>
-  <p>38 knowledge graphs, 206 verified crosswalks (verified 2026-10-13). One edge per crosswalk &mdash; parallel crosswalks between a pair fan out as arcs · color = data domain · width &#8733; log&#8321;&#8320;(verified count).</p>
+  <p>39 knowledge graphs, 218 verified crosswalks (verified 2026-10-13). One edge per crosswalk &mdash; parallel crosswalks between a pair fan out as arcs · color = data domain · width &#8733; log&#8321;&#8320;(verified count).</p>
   <p class="tip">&#9654; <b>Hover</b> a node or edge for detail · <b>drag</b> to rearrange · <b>scroll</b> to zoom · <b>double-click</b> a node to unpin it.<br>&#9654; <b>Click a legend item</b> &mdash; a domain (e.g. <b>Chemicals</b>) or a line style (e.g. <b>via ubergraph</b>) &mdash; to toggle those edges.</p>
 </header>
 <div class="bar" id="legend"></div>
@@ -178,6 +178,9 @@ const R=[
 ["G",["biobricks-aopwiki","gene-expression-atlas-okn"],1355,"Ensembl"],
 ["G",["biobricks-aopwiki","spoke-okn"],1385,"Ensembl"],
 ["G",["gene-expression-atlas-okn","spoke-okn"],15132,"Ensembl"],
+["G",["glygenkg","gene-expression-atlas-okn"],7950,"Ensembl"],
+["G",["glygenkg","pankgraph"],7953,"Ensembl"],
+["G",["glygenkg","spoke-okn"],7315,"Ensembl"],
 ["G",["pankgraph","gene-expression-atlas-okn"],60581,"Ensembl"],
 ["G",["pankgraph","prokn"],37835,"Ensembl"],
 ["G",["pankgraph","spoke-okn"],16314,"Ensembl"],
@@ -197,9 +200,12 @@ const R=[
 ["G",["spoke-genelab","spoke-okn"],16326,"Entrez"],
 ["G",["biobricks-ice","pankgraph"],395,"Entrez→Ensembl (babel)"],
 ["G",["biomarkerkg","pankgraph"],200,"Entrez→Ensembl (babel)"],
+["G",["digcfdekg","glygenkg"],7928,"Entrez→Ensembl (babel)"],
 ["G",["digcfdekg","pankgraph"],34013,"Entrez→Ensembl (babel)"],
 ["G",["digcfdekg","prokn"],7965,"Entrez→Ensembl (wikidata)"],
+["G",["rdkg","glygenkg"],4327,"Entrez→Ensembl (babel)"],
 ["G",["rdkg","pankgraph"],9159,"Entrez→Ensembl (babel)"],
+["G",["spoke-genelab","glygenkg"],7932,"Entrez→Ensembl (babel)"],
 ["G",["spoke-genelab","pankgraph"],28554,"Entrez→Ensembl (babel)"],
 ["G",["digcfdekg","prokn"],20783,"Entrez→HGNC (wikidata)"],
 ["G",["prokn","spoke-okn"],16298,"HGNC→Entrez (wikidata)"],
@@ -266,12 +272,18 @@ const R=[
 ["P",["biobricks-aopwiki","prokn"],1805,"UniProt"],
 ["P",["biomarkerkg","biobricks-aopwiki"],86,"UniProt"],
 ["P",["biomarkerkg","prokn"],209,"UniProt"],
+["P",["glygenkg","biobricks-aopwiki"],756,"UniProt"],
+["P",["glygenkg","biomarkerkg"],123,"UniProt"],
+["P",["glygenkg","ncipidkg"],1348,"UniProt"],
+["P",["glygenkg","nestkg"],7576,"UniProt"],
+["P",["glygenkg","prokn"],8077,"UniProt"],
 ["P",["ncipidkg","prokn"],2493,"UniProt"],
 ["P",["nestkg","biomarkerkg"],230,"UniProt"],
 ["P",["nestkg","ncipidkg"],2451,"UniProt"],
 ["P",["nestkg","prokn"],16729,"UniProt"],
 
 ["B",["climatemodelskg","nasa-gesdisc-kg"],3660,"DOI"],
+["B",["glygenkg","prokn"],752,"PubMed ID"],
 ["B",["climatemodelskg","nasa-gesdisc-kg"],32586,"author name (string; NOT an ORCID — see the entry's caveat)"],
 
 ["L",["spoke-okn","biohealth"],3,"MeSH→UMLS (wikidata)"],

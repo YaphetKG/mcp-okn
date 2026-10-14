@@ -2,12 +2,12 @@
 name: okn-bioanalysis
 description: >-
   Methodology for biomedical knowledge-graph analysis and cross-KG hypotheses over the
-  OKN federated SPARQL endpoint via the mcp-okn tools. Works across the federation's bio graphs
+  OKN federated SPARQL endpoint via the mcp-okn tools. Spans the federation's bio graphs
   (spoke-okn, prokn, rdkg, digcfdekg, gene-expression-atlas-okn, biobricks-aopwiki, biomarkerkg,
-  ncipidkg, nestkg, oard-kg, pankgraph, spoke-genelab, ubergraph),
+  glygenkg, ncipidkg, nestkg, oard-kg, pankgraph, spoke-genelab, ubergraph),
   integrating on shared identifiers — gene, protein, disease (MONDO/DOID), phenotype (HP),
   taxon (NCBITaxon), GO/Reactome, chemical/drug — and can LINK bio entities to place-based data (exposure, facilities,
-  social determinants) via geography (FIPS / ZIP / S2). Use whenever a task involves
+  social determinants) via geography (FIPS/ZIP/S2). Use whenever a task involves
   genes, proteins, diseases, phenotypes, organisms / taxa, pathways, chemicals, drugs, exposures, differential
   expression, enrichment, ortholog projection, or mapping these across KGs or onto locations.
   Triggers: "analyze these genes", "map genes / proteins / diseases to drugs / phenotypes",
@@ -146,7 +146,9 @@ label-match cases, and the bio↔geography bridges are tabulated in **`reference
    privilege one KG). Typical annotations (with example suppliers): disease↔gene;
    **gene↔trait / gene-set — `digcfdekg`** (GWAS-style trait associations; the broad-set supplier for
    enrichment in step 9 — easy to miss, so check it explicitly); gene / protein↔pathway & GO (prokn,
-   ncipidkg), chemical↔gene / adverse-outcome
+   ncipidkg), protein / gene↔glycosylation site & glycan (`glygenkg` — a partial GlyGen release, so
+   absence there is not evidence a protein is unglycosylated; prokn's PTM layer carries GlyGen sites
+   too), chemical↔gene / adverse-outcome
    (biobricks tox + aopwiki), disease / gene / protein↔phenotype (HP — see step 7), gene↔drug &
    disease↔drug (rdkg `treats`), disease / concept↔SDoH (`biohealth` is the UMLS-keyed SDoH hub;
    `dreamkg` social-service audiences and `phaseskg` healthy-aging / loneliness / social-isolation

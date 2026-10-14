@@ -152,6 +152,7 @@ CATALOG_KG_ALIAS = {
     "DreamKG": "dreamkg",
     "dreamkg": "dreamkg",
     "FIOKG": "fiokg",
+    "GlyGen": "glygenkg",
     "GXA": "gene-expression-atlas-okn",
     "HydrologyKG": "hydrologykg",
     "ICE": "biobricks-ice",

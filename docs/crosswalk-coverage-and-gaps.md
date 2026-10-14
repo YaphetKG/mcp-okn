@@ -20,7 +20,10 @@ _Survey date: 2026-06-14 · 41 served KGs · federation endpoint
 > by several worked examples. (5) **bio101 is served again** (2026-10-05, v0.0.1) and
 > was dropped from `EXCLUDED_KGS`: it is a pure OWL ontology with no external
 > identifiers, so its `known_non_join` now records it as an identifier **island**, not
-> as unmaterialized. See
+> as unmaterialized. (6) **glygenkg is served** (2026-10-13; it had been registered but
+> empty since 2026-09-26) and was dropped from `EXCLUDED_KGS`, so `list_kgs` returns
+> **45 KGs**. It joins the UniProt cluster (G9–G13), the Ensembl cluster directly
+> (C27–C29) and through Babel (C30–C32), and prokn on PubMed ID (PB3). See
 > `metadata/crosswalks.json` for the current table.
 
 **What this is.** An exhaustive sweep of the entity types and ontologies/identifier

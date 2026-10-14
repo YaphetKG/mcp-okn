@@ -119,6 +119,13 @@
     "named_graph": "https://purl.org/okn/frink/kg/geoconnex"
   },
   {
+    "shortname": "glygenkg",
+    "title": "GlyGen KG",
+    "description": "A knowledge graph of glycans, glycoproteins, genes that code for these proteins and glycosylation sites integrated with protein, gene, disease and publication data.",
+    "homepage": "https://www.glygen.org/",
+    "named_graph": "https://purl.org/okn/frink/kg/glygenkg"
+  },
+  {
     "shortname": "hydrologykg",
     "title": "SAWGraph Hydrology KG",
     "description": "The Hydrology KG is the part of the SAWGraph project that describes streams, waterbodies and wells and their locations.",

@@ -69,6 +69,30 @@ async def test_single_kg_non_join_blocks_any_pairing():
 
 
 @pytest.mark.asyncio
+async def test_scoped_non_join_does_not_block_a_pair_that_joins_on_another_key():
+    """glygenkg x gene-expression-atlas-okn holds BOTH a verified Ensembl crosswalk
+    and a PubMed-ID non-join (the two literatures share no paper). The non-join is
+    scoped to its key, so the pair must still answer with the recipe."""
+    non_joins = [
+        n
+        for n in cw.load_crosswalks()["known_non_joins"]
+        if {n.get("left_kg"), n.get("right_kg")}
+        == {"glygenkg", "gene-expression-atlas-okn"}
+    ]
+    assert len(non_joins) == 1 and "PubMed" in non_joins[0]["attempted_key"]
+    assert "do NOT read this as" in non_joins[0]["diagnosis"]
+    out = await get_join_strategy("glygenkg", "gene-expression-atlas-okn")
+    assert out["status"] == "verified"
+    assert [r["shared_key"] for r in out["joins"]] == ["Ensembl"]
+
+
+async def test_one_pair_can_join_on_two_identifier_axes():
+    # glygenkg x prokn: proteins on UniProt, publications on PubMed ID.
+    out = await get_join_strategy("prokn", "glygenkg")
+    assert out["status"] == "verified"
+    assert {r["shared_key"] for r in out["joins"]} == {"UniProt", "PubMed ID"}
+
+
 async def test_de_islanded_kg_reports_its_new_join():
     # The reverse guard: a KG whose island record has been superseded must return the
     # recipe, not the stale verdict. medical-device-kg joins spoke-okn on ZIP5.

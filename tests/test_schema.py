@@ -289,6 +289,24 @@ def test_condition_code_regex_matches_codes_not_real_factors():
         assert not pat.match(real), real
 
 
+def test_usage_notes_glygenkg_carries_the_record_to_protein_rule():
+    """glygenkg's central class is a glycosylation RECORD with no edge to its
+    protein; the notes must hand over the PR_ -> UniProt rewrite and warn about the
+    two FALDO namespaces, both of which return 0 rows silently when missed."""
+    notes = usage_notes("glygenkg")
+    assert notes is not None
+    guidance, snippet = notes["guidance"], notes["query_snippet"]
+    assert "RECORD, NOT A PROTEIN" in guidance
+    assert "gly:has_pro_entry" in guidance
+    assert "http://www.biohackathon.org/resource/faldo#" in guidance
+    assert "http://biohackathon.org/resource/faldo#" in guidance
+    assert "get_join_strategy" in guidance
+    # the snippet applies the rewrite it describes, in the right FALDO namespace
+    assert "http://purl.obolibrary.org/obo/PR_" in snippet
+    assert "<http://www.biohackathon.org/resource/faldo#>" in snippet
+    assert "/kg/glygenkg>" in snippet
+
+
 def test_usage_notes_absent_for_other_kgs():
     assert usage_notes("prokn") is None
     assert usage_notes("spoke-okn") is None

@@ -49,6 +49,7 @@
 - `nestkg` — <https://purl.org/okn/frink/kg/nestkg>
 - `medical-device-kg` — <https://purl.org/okn/frink/kg/medical-device-kg>
 - `bio101` — <https://purl.org/okn/frink/kg/bio101>
+- `glygenkg` — <https://purl.org/okn/frink/kg/glygenkg>
 
 ## Conversation
 
@@ -60,7 +61,7 @@ For each crosswalk, list the join key and the SPARQL skeleton
 
 🧠 **Assistant**
 
-The OKN federation has **206 crosswalks**, which collapse into **68 join-key families** (a domain + a shared identifier). They are grouped below by domain and key family — each entry lists every KG pair sharing that key (with its verified `COUNT(DISTINCT)`), the identifier scheme/namespace, and a runnable `COUNT(DISTINCT)` skeleton with the IRI normalization already applied (a naive join on the raw id usually returns 0 rows).
+The OKN federation has **218 crosswalks**, which collapse into **71 join-key families** (a domain + a shared identifier). They are grouped below by domain and key family — each entry lists every KG pair sharing that key (with its verified `COUNT(DISTINCT)`), the identifier scheme/namespace, and a runnable `COUNT(DISTINCT)` skeleton with the IRI normalization already applied (a naive join on the raw id usually returns 0 rows).
 
 **Pairs in one family often need different SPARQL**, so where a family's members diverge, every distinct skeleton is shown and labelled with the pairs it applies to. The CAS family is the clearest case: the biobricks graphs hang the id off `edam:has_identifier`, MeSH exposes it as `meshv:registryNumber`, and SAWGraph/SOCKG store it as a bare literal that must be rebuilt into an IRI. Copy the skeleton for YOUR pair, then extend it with your payload.
 
@@ -616,6 +617,16 @@ SELECT (COUNT(DISTINCT ?c) AS ?n) WHERE {
       FILTER(STRSTARTS(STR(?t),'http://purl.obolibrary.org/obo/CHEBI_')) }
   } }
   GRAPH <https://purl.org/okn/frink/kg/spoke-okn> { ?cmp <http://www.geneontology.org/formats/oboInOwl#hasDbXref> ?t . }
+}
+```
+
+**GlyTouCan↔CHEBI** — `http://glygen.org/glycan/{accession} (glygenkg glycan node IRI) -> 'glytoucan:{accession}' xref literal on a CHEBI class (ubergraph)`: glygenkg × ubergraph(208).
+
+```sparql
+SELECT (COUNT(DISTINCT ?g) AS ?n) WHERE {
+  { SELECT DISTINCT ?g WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?g a <http://purl.jp/bio/12/glyco/glycan#Saccharide> . } } }
+  BIND(CONCAT('glytoucan:', REPLACE(STR(?g),'^.*/','')) AS ?x)
+  GRAPH <https://purl.org/okn/frink/kg/ubergraph> { ?c <http://www.geneontology.org/formats/oboInOwl#hasDbXref> ?x . }
 }
 ```
 
@@ -1282,7 +1293,7 @@ SELECT (COUNT(DISTINCT ?c) AS ?n) WHERE {
 
 ### GENES
 
-**Ensembl** — `https://identifiers.org/ensembl/ ; http://identifiers.org/ensembl/`: biobricks-aopwiki × gene-expression-atlas-okn(1,355), biobricks-aopwiki × spoke-okn(1,385), gene-expression-atlas-okn × spoke-okn(15,132), pankgraph × spoke-okn(16,314), pankgraph × gene-expression-atlas-okn(60,581), pankgraph × prokn(37,835), prokn × spoke-okn(16,140).
+**Ensembl** — `https://identifiers.org/ensembl/ ; http://identifiers.org/ensembl/`: biobricks-aopwiki × gene-expression-atlas-okn(1,355), biobricks-aopwiki × spoke-okn(1,385), gene-expression-atlas-okn × spoke-okn(15,132), pankgraph × spoke-okn(16,314), pankgraph × gene-expression-atlas-okn(60,581), pankgraph × prokn(37,835), prokn × spoke-okn(16,140), glygenkg × spoke-okn(7,315), glygenkg × gene-expression-atlas-okn(7,950), glygenkg × pankgraph(7,953).
 
 _biobricks-aopwiki × gene-expression-atlas-okn_
 
@@ -1354,6 +1365,36 @@ SELECT (COUNT(DISTINCT ?ens) AS ?n) WHERE {
   { SELECT DISTINCT ?e WHERE { GRAPH <https://purl.org/okn/frink/kg/spoke-okn> { ?x <https://purl.org/okn/frink/kg/spoke-okn/schema/ensembl> ?e . } } }
   BIND(IRI(CONCAT('https://www.ensembl.org/id/', REPLACE(STR(?e),'^.*/',''))) AS ?ens)
   GRAPH <https://purl.org/okn/frink/kg/prokn> { ?ens a <http://purl.uniprot.org/core/Gene> . }
+}
+```
+
+_glygenkg × spoke-okn_
+
+```sparql
+SELECT (COUNT(DISTINCT ?ens) AS ?n) WHERE {
+  { SELECT DISTINCT ?locus WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?g <https://sparql.glygen.org/ontology/hasLocus> ?locus . } } }
+  BIND(IRI(CONCAT('http://identifiers.org/ensembl/', REPLACE(STR(?locus),'^.*/',''))) AS ?ens)
+  GRAPH <https://purl.org/okn/frink/kg/spoke-okn> { ?x <https://purl.org/okn/frink/kg/spoke-okn/schema/ensembl> ?ens . }
+}
+```
+
+_glygenkg × gene-expression-atlas-okn_
+
+```sparql
+SELECT (COUNT(DISTINCT ?locus) AS ?n) WHERE {
+  { SELECT DISTINCT ?locus WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?g <https://sparql.glygen.org/ontology/hasLocus> ?locus . } } }
+  BIND(REPLACE(STR(?locus),'^.*/','') AS ?ensg)
+  GRAPH <https://purl.org/okn/frink/kg/gene-expression-atlas-okn> { ?gx <https://w3id.org/biolink/vocab/id> ?ensg . }
+}
+```
+
+_glygenkg × pankgraph_
+
+```sparql
+SELECT (COUNT(DISTINCT ?ens) AS ?n) WHERE {
+  { SELECT DISTINCT ?locus WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?g <https://sparql.glygen.org/ontology/hasLocus> ?locus . } } }
+  BIND(IRI(CONCAT('http://identifiers.org/ensembl/', REPLACE(STR(?locus),'^.*/',''))) AS ?ens)
+  GRAPH <https://purl.org/okn/frink/kg/pankgraph> { ?ens a <https://w3id.org/biolink/vocab/Gene> . }
 }
 ```
 
@@ -1544,7 +1585,7 @@ SELECT (COUNT(DISTINCT ?h) AS ?n) WHERE {
 }
 ```
 
-**Entrez→Ensembl (bridged)** — `http://www.ncbi.nlm.nih.gov/gene/{entrez} (digcfdekg) -> https://www.ensembl.org/id/{ENSG} (prokn gene node IRI)`: digcfdekg → wikidata → prokn(7,965), rdkg → babel → pankgraph(9,159), spoke-genelab → babel → pankgraph(28,554), digcfdekg → babel → pankgraph(34,013), biomarkerkg → babel → pankgraph(200), biobricks-ice → babel → pankgraph(395).
+**Entrez→Ensembl (bridged)** — `http://www.ncbi.nlm.nih.gov/gene/{entrez} (digcfdekg) -> https://www.ensembl.org/id/{ENSG} (prokn gene node IRI)`: digcfdekg → wikidata → prokn(7,965), rdkg → babel → pankgraph(9,159), spoke-genelab → babel → pankgraph(28,554), digcfdekg → babel → pankgraph(34,013), biomarkerkg → babel → pankgraph(200), biobricks-ice → babel → pankgraph(395), rdkg → babel → glygenkg(4,327), digcfdekg → babel → glygenkg(7,928), spoke-genelab → babel → glygenkg(7,932).
 
 _digcfdekg → wikidata → prokn_
 
@@ -1628,6 +1669,50 @@ SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {
     GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
   FILTER(STRSTARTS(STR(?member),'http://identifiers.org/ensembl/'))
   GRAPH <https://purl.org/okn/frink/kg/pankgraph> { ?member a <https://w3id.org/biolink/vocab/Gene> }
+}
+```
+
+_rdkg → babel → glygenkg_
+
+```sparql
+SELECT (COUNT(DISTINCT ?locus) AS ?n) WHERE {
+  { SELECT DISTINCT ?locus ?member WHERE {
+    { SELECT DISTINCT ?locus ?pref WHERE {
+        { SELECT DISTINCT ?locus ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?g <https://sparql.glygen.org/ontology/hasLocus> ?locus } BIND(IRI(CONCAT('http://identifiers.org/ensembl/', REPLACE(STR(?locus),'^.*/',''))) AS ?src) } }
+        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/ncbigene/'))
+  GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?member a <https://w3id.org/biolink/vocab/Gene> }
+}
+```
+
+_digcfdekg → babel → glygenkg_
+
+```sparql
+SELECT (COUNT(DISTINCT ?locus) AS ?n) WHERE {
+  { SELECT DISTINCT ?locus ?member WHERE {
+    { SELECT DISTINCT ?locus ?pref WHERE {
+        { SELECT DISTINCT ?locus ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?g <https://sparql.glygen.org/ontology/hasLocus> ?locus } BIND(IRI(CONCAT('http://identifiers.org/ensembl/', REPLACE(STR(?locus),'^.*/',''))) AS ?src) } }
+        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/ncbigene/'))
+  BIND(IRI(CONCAT('http://www.ncbi.nlm.nih.gov/gene/', STRAFTER(STR(?member),'ncbigene/'))) AS ?eg)
+  GRAPH <https://purl.org/okn/frink/kg/digcfdekg> { ?eg ?p ?o }
+}
+```
+
+_spoke-genelab → babel → glygenkg_
+
+```sparql
+SELECT (COUNT(DISTINCT ?locus) AS ?n) WHERE {
+  { SELECT DISTINCT ?locus ?member WHERE {
+    { SELECT DISTINCT ?locus ?pref WHERE {
+        { SELECT DISTINCT ?locus ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?g <https://sparql.glygen.org/ontology/hasLocus> ?locus } BIND(IRI(CONCAT('http://identifiers.org/ensembl/', REPLACE(STR(?locus),'^.*/',''))) AS ?src) } }
+        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/ncbigene/'))
+  BIND(IRI(CONCAT('http://www.ncbi.nlm.nih.gov/gene/', STRAFTER(STR(?member),'ncbigene/'))) AS ?eg)
+  GRAPH <https://purl.org/okn/frink/kg/spoke-genelab> { ?eg ?p ?o }
 }
 ```
 
@@ -2334,7 +2419,7 @@ SELECT (COUNT(DISTINCT ?off) AS ?n) WHERE {
 
 ### PROTEINS
 
-**UniProt** — `https://identifiers.org/uniprot/ ; http://purl.uniprot.org/uniprot/`: biobricks-aopwiki × prokn(1,805), ncipidkg × prokn(2,493), biomarkerkg × prokn(209), biomarkerkg × biobricks-aopwiki(86), nestkg × prokn(16,729), biobricks-aopwiki × nestkg(1,376), nestkg × ncipidkg(2,451), nestkg × biomarkerkg(230).
+**UniProt** — `https://identifiers.org/uniprot/ ; http://purl.uniprot.org/uniprot/`: biobricks-aopwiki × prokn(1,805), ncipidkg × prokn(2,493), biomarkerkg × prokn(209), biomarkerkg × biobricks-aopwiki(86), nestkg × prokn(16,729), biobricks-aopwiki × nestkg(1,376), nestkg × ncipidkg(2,451), nestkg × biomarkerkg(230), glygenkg × prokn(8,077), glygenkg × nestkg(7,576), glygenkg × ncipidkg(1,348), glygenkg × biobricks-aopwiki(756), glygenkg × biomarkerkg(123).
 
 _biobricks-aopwiki × prokn_
 
@@ -2434,6 +2519,74 @@ SELECT (COUNT(DISTINCT ?up) AS ?n) WHERE {
 }
 ```
 
+_glygenkg × prokn_
+
+```sparql
+SELECT (COUNT(DISTINCT ?up) AS ?n) WHERE {
+  GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?up a <http://purl.uniprot.org/core/Protein> . }
+  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?up ?p ?o . }
+}
+```
+
+_glygenkg × nestkg_
+
+```sparql
+SELECT (COUNT(DISTINCT ?up) AS ?n) WHERE {
+  GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?up a <http://purl.uniprot.org/core/Protein> . }
+  GRAPH <https://purl.org/okn/frink/kg/nestkg> { ?up a <http://semanticscience.org/resource/SIO_010043> . }
+}
+```
+
+_glygenkg × ncipidkg_
+
+```sparql
+SELECT (COUNT(DISTINCT ?u) AS ?n) WHERE {
+  {
+    GRAPH <https://purl.org/okn/frink/kg/ncipidkg> {
+      ?s <http://www.w3.org/2002/07/owl#sameAs> ?u .
+      FILTER(STRSTARTS(STR(?u),'http://purl.uniprot.org/uniprot/'))
+    }
+  } UNION {
+    GRAPH <https://purl.org/okn/frink/kg/ncipidkg> {
+      ?u a <http://semanticscience.org/resource/SIO_010043> .
+      FILTER(STRSTARTS(STR(?u),'http://purl.uniprot.org/uniprot/'))
+    }
+  }
+  GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?u a <http://purl.uniprot.org/core/Protein> . }
+}
+```
+
+_glygenkg × biobricks-aopwiki_
+
+```sparql
+SELECT (COUNT(DISTINCT ?up) AS ?n) WHERE {
+  GRAPH <https://purl.org/okn/frink/kg/biobricks-aopwiki> { ?y <http://www.w3.org/2004/02/skos/core#exactMatch> ?u . FILTER(STRSTARTS(STR(?u),'https://identifiers.org/uniprot/')) }
+  BIND(IRI(CONCAT('http://purl.uniprot.org/uniprot/',REPLACE(STR(?u),'^.*/uniprot/',''))) AS ?up)
+  GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?up a <http://purl.uniprot.org/core/Protein> . }
+}
+```
+
+_glygenkg × biomarkerkg_
+
+```sparql
+SELECT (COUNT(DISTINCT ?up) AS ?n) WHERE {
+  GRAPH <https://purl.org/okn/frink/kg/biomarkerkg> {
+    VALUES ?bp { <http://purl.obolibrary.org/obo/OBCI_1000009> <http://purl.obolibrary.org/obo/OBCI_1000015> <http://purl.obolibrary.org/obo/OBCI_1000016> <http://purl.obolibrary.org/obo/OBCI_1000017> }
+    ?s ?bp ?up . FILTER(STRSTARTS(STR(?up),'http://purl.uniprot.org/uniprot/'))
+  }
+  GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?up a <http://purl.uniprot.org/core/Protein> . }
+}
+```
+
+**PR** — `http://purl.obolibrary.org/obo/PR_{UniProt accession} on both sides - the Protein Ontology's accession-based terms, no rewrite`: glygenkg × ubergraph(8,067).
+
+```sparql
+SELECT (COUNT(DISTINCT ?pr) AS ?n) WHERE {
+  { SELECT DISTINCT ?pr WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?r <https://sparql.glygen.org/ontology/has_pro_entry> ?pr . } } }
+  GRAPH <https://purl.org/okn/frink/kg/ubergraph> { ?pr <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?parent . }
+}
+```
+
 ### PUBLICATIONS
 
 **DOI** — `climatemodelskg <https://climatepub4kg.github.io/ontology#doi> (DOI as string literal, https://doi.org/ form) <-> nasa-gesdisc-kg <http://purl.org/ontology/bibo/doi> (DOI as IRI, http://dx.doi.org/ form)`: climatemodelskg × nasa-gesdisc-kg(3,660).
@@ -2458,6 +2611,16 @@ SELECT (COUNT(DISTINCT ?nm) AS ?n) WHERE {
   GRAPH <https://purl.org/okn/frink/kg/nasa-gesdisc-kg> {
     ?b a <https://purl.org/okn/frink/kg/nasa-gesdisc/schema/Author> ;
        <http://www.w3.org/2000/01/rdf-schema#label> ?nm . }
+}
+```
+
+**PubMed ID** — `http://glygen.org/evidence/PubMed_{PMID} (glygenkg evidence node IRI) -> https://pubmed.ncbi.nlm.nih.gov/{PMID} (prokn bibo:pmid object IRI)`: glygenkg × prokn(752).
+
+```sparql
+SELECT (COUNT(DISTINCT ?pm) AS ?n) WHERE {
+  { SELECT DISTINCT ?ev WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?ev a <http://purl.jp/bio/12/glyco/glycan#Evidence> . } } }
+  BIND(IRI(CONCAT('https://pubmed.ncbi.nlm.nih.gov/', STRAFTER(STR(?ev),'PubMed_'))) AS ?pm)
+  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?s <http://purl.org/ontology/bibo/pmid> ?pm . }
 }
 ```
 

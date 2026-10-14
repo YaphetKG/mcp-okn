@@ -76,6 +76,17 @@ async def test_find_context_sources_surfaces_suppliers_by_size():
     assert all({"shared_key", "predicate", "size"} <= set(j) for j in prokn["joins"])
 
 
+async def test_find_context_sources_surfaces_glygenkg_for_glycans():
+    """`glycan` is carried by glygenkg alone, so a "who supplies glycosylation?"
+    lookup must return it with the keys it joins on — a tag with no reachable
+    supplier would advertise a capability nothing answers."""
+    assert pay.kgs_with_payload("glycan") == ["glygenkg"]
+    out = await find_context_sources(want=["glycan"], join_key="UniProt")
+    gly = next(s for s in out["sources"]["glycan"] if s["kg"] == "glygenkg")
+    assert gly["joins"] and all(j["shared_key"] == "UniProt" for j in gly["joins"])
+    assert not out["payload_only"]
+
+
 async def test_find_context_sources_payload_only_bucket():
     # ncipidkg supplies gene context but keys on UniProt, not Entrez -> not hidden,
     # surfaced under payload_only so the agent knows to convert the id.

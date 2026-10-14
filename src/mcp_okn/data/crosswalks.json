@@ -5305,14 +5305,426 @@
       "verified_on": "2026-10-05",
       "domain": "Biology concepts",
       "methodology_note": "The broadest bio101 bridge: biohealth's UMLS names cover textbook biology across every category, not just one ontology. Stage the label match first (bound literal, 1,512 raw pairs in a few seconds), then apply the type-agreement VALUES table and the bio101 root path. LCASE matching on biohealth labels would force a scan of its ~250k labels and time out (BH18)."
+    },
+    {
+      "id": "G9-uniprot-glygenkg-prokn",
+      "left_kg": "glygenkg",
+      "left_predicate": "node-iri (up:Protein; the node IRI IS the UniProt IRI)",
+      "left_role": "subject",
+      "right_kg": "prokn",
+      "right_predicate": "node-iri (the same http://purl.uniprot.org/uniprot/{acc} IRI)",
+      "right_role": "subject",
+      "shared_key": "UniProt",
+      "key_namespace": "glygenkg and prokn both mint <http://purl.uniprot.org/uniprot/{acc}> - identical namespace, no rewrite",
+      "bridge_kg": null,
+      "iri_normalization": "NONE - the protein IRIs join literally. Drive from glygenkg's TYPED proteins (?up a up:Protein, 8,112) and probe prokn; an unbound scan on the prokn side times out. WITHIN glygenkg, a glycosylation record (gly:Glycoprotein) has no edge to this protein node: its only protein key is gly:has_pro_entry -> http://purl.obolibrary.org/obo/PR_{acc}, so reach the records, sites and glycans with BIND(IRI(REPLACE(STR(?up),'http://purl.uniprot.org/uniprot/','http://purl.obolibrary.org/obo/PR_')) AS ?pr) and ?rec gly:has_pro_entry ?pr (see the glygenkg usage notes). SITE-LEVEL JOIN: prokn's PTM layer keys a modified residue on the same accession plus a residue number (?ptm a up:PTM_Annotation ; bao:BAO_0003063 ?up ; up:position ?pos ; dcterms:type 'N-GLYCOSYLATION' | 'O-GLYCOSYLATION' ; dcterms:source ?src), and glygenkg's faldo:position is the same xsd:int, so a glycosylation site can be matched residue-for-residue (not just protein-for-protein).",
+      "verified_count": 8077,
+      "verified_count_secondary": {
+        "glygenkg_proteins": 8112,
+        "glygenkg_site_residues": 22392,
+        "site_residues_with_prokn_glycosylation_ptm": 17440,
+        "prokn_proteins_with_glygen_sourced_ptm": 8264,
+        "of_those_in_glygenkg": 4048
+      },
+      "verified_on": "2026-10-13",
+      "verified_count_note": "8,077 of glygenkg's 8,112 proteins (99.6%) have a prokn record. Verified live 2026-10-13. At the residue level 17,440 of glygenkg's 22,392 distinct (protein, residue) site positions (77.9%, on 4,056 of 5,024 proteins) carry a glycosylation PTM annotation at the same residue in prokn. The two graphs are OVERLAPPING samples of GlyGen, not one a subset of the other: prokn's PTM layer (iPTMnet) cites dcterms:source 'glygen' for 8,264 proteins, only 4,048 of which are glygenkg proteins (EGFR, ERBB2, MUC1 and AFP have GlyGen-sourced sites in prokn - 22, 9, 21 and 2 annotations - and no record in glygenkg), while glygenkg holds 4,952 site residues prokn does not annotate. For a complete site list, query both. Residue numbers in glygenkg refer to the isoform named on each record, so the residue match is a lower bound.",
+      "example_question": "For a glycoprotein such as the insulin receptor, which of GlyGen's glycosylated residues does ProKN's PTM layer also record, and what other modifications (phosphorylation, S-nitrosylation) does ProKN add on the same protein?",
+      "example_questions": [
+        "For a glycoprotein such as the insulin receptor, which of GlyGen's glycosylated residues does ProKN's PTM layer also record, and what other modifications (phosphorylation, S-nitrosylation) does ProKN add on the same protein?",
+        "How many of glygenkg's 8,112 proteins have a ProKN record, and how many of its glycosylated residues match a ProKN glycosylation annotation at the same position?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?up) AS ?n) WHERE {\n  GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?up a <http://purl.uniprot.org/core/Protein> . }\n  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?up ?p ?o . }\n}",
+      "skeleton_verified": true,
+      "domain": "Proteins"
+    },
+    {
+      "id": "G10-uniprot-glygenkg-nestkg",
+      "left_kg": "glygenkg",
+      "left_predicate": "node-iri (up:Protein; the node IRI IS the UniProt IRI)",
+      "left_role": "subject",
+      "right_kg": "nestkg",
+      "right_predicate": "node-iri (a sio:SIO_010043 'protein' node; the same UniProt IRI)",
+      "right_role": "subject",
+      "shared_key": "UniProt",
+      "key_namespace": "glygenkg and nestkg both mint <http://purl.uniprot.org/uniprot/{acc}> - identical namespace, no rewrite",
+      "bridge_kg": null,
+      "iri_normalization": "NONE - the protein IRIs join literally; bind both sides by TYPE (glygenkg ?up a up:Protein, nestkg ?up a sio:SIO_010043). WITHIN glygenkg, a glycosylation record (gly:Glycoprotein) has no edge to this protein node: its only protein key is gly:has_pro_entry -> http://purl.obolibrary.org/obo/PR_{acc}, so reach the records, sites and glycans with BIND(IRI(REPLACE(STR(?up),'http://purl.uniprot.org/uniprot/','http://purl.obolibrary.org/obo/PR_')) AS ?pr) and ?rec gly:has_pro_entry ?pr (see the glygenkg usage notes). nestkg's system membership is ?sys biolink:has_member ?up, published only for systems under NeST's size cutoff.",
+      "verified_count": 7576,
+      "verified_count_secondary": {
+        "glygenkg_proteins": 8112,
+        "in_a_named_nest_system": 2842,
+        "nest_proteins": 16767,
+        "nest_proteins_in_a_named_system": 5334
+      },
+      "verified_on": "2026-10-13",
+      "verified_count_note": "7,576 of glygenkg's 8,112 proteins (93.4%) are NeST proteins; 2,842 of them are members of a named NeST system (53.3% of the 5,334 proteins NeST places in one). Verified live 2026-10-13. GLYCOSYLATED DOES NOT MEAN SECRETED: a ranking of systems by share of glycosylated members mixes extracellular assemblies (basement membrane, collagens, complement - asparagine and serine/threonine residues) with nuclear complexes (Prp19, spliceosome, BAF, PML body - serine/threonine only, 0-2 asparagine residues), because GlyGen's O-linked records include intracellular O-GlcNAc. Split by the modified residue (glycan:has_amino_acid) before interpreting.",
+      "example_question": "Which NeST cancer protein systems have the largest share of members with a GlyGen glycosylation site, and are those sites on asparagine (N-linked) or on serine/threonine (O-linked)?",
+      "example_questions": [
+        "Which NeST cancer protein systems have the largest share of members with a GlyGen glycosylation site, and are those sites on asparagine (N-linked) or on serine/threonine (O-linked)?",
+        "How many of glygenkg's 8,112 proteins are NeST proteins, and how many belong to a named NeST system?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?up) AS ?n) WHERE {\n  GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?up a <http://purl.uniprot.org/core/Protein> . }\n  GRAPH <https://purl.org/okn/frink/kg/nestkg> { ?up a <http://semanticscience.org/resource/SIO_010043> . }\n}",
+      "skeleton_verified": true,
+      "domain": "Proteins"
+    },
+    {
+      "id": "G11-uniprot-glygenkg-ncipidkg",
+      "left_kg": "glygenkg",
+      "left_predicate": "node-iri (up:Protein; the node IRI IS the UniProt IRI)",
+      "left_role": "subject",
+      "right_kg": "ncipidkg",
+      "right_predicate": "TWO LEGS, as in G2/G7: (a) node-iri - ncipidkg's own sio:SIO_010043-typed http://purl.uniprot.org/uniprot/{acc} nodes, which are the interaction participants; and (b) http://www.w3.org/2002/07/owl#sameAs (object role), alias accessions hung off those nodes. UNION both legs when counting the IDENTIFIERS the graphs share (that is what verified_count measures). When the answer is about NCI-PID PROTEINS, keep the participant node as the projected entity and use the sameAs object only as the join key (?protein owl:sameAs? ?key).",
+      "right_role": "subject (node-IRI leg) + object (owl:sameAs leg)",
+      "shared_key": "UniProt",
+      "key_namespace": "glygenkg and both ncipidkg legs both mint <http://purl.uniprot.org/uniprot/{acc}> - identical namespace, no rewrite",
+      "bridge_kg": null,
+      "iri_normalization": "NONE - all three IRI sets are in the http://purl.uniprot.org/uniprot/{acc} form. Materialise each ncipidkg leg and match glygenkg by type (?u a up:Protein). WITHIN glygenkg, a glycosylation record (gly:Glycoprotein) has no edge to this protein node: its only protein key is gly:has_pro_entry -> http://purl.obolibrary.org/obo/PR_{acc}, so reach the records, sites and glycans with BIND(IRI(REPLACE(STR(?up),'http://purl.uniprot.org/uniprot/','http://purl.obolibrary.org/obo/PR_')) AS ?pr) and ?rec gly:has_pro_entry ?pr (see the glygenkg usage notes).",
+      "verified_count": 1348,
+      "verified_count_secondary": {
+        "node_iri_leg": 299,
+        "sameAs_leg": 1062,
+        "both_legs": 13,
+        "ncipidkg_protein_nodes_reaching_glygenkg": 1362,
+        "ncipidkg_protein_nodes": 2536
+      },
+      "verified_on": "2026-10-13",
+      "verified_count_note": "1,348 UniProt accessions are shared, via the UNION of ncipidkg's two near-disjoint legs: 299 are its own protein nodes and 1,062 are owl:sameAs alias accessions (13 are on both). Verified live 2026-10-13. WHAT 1,348 COUNTS: distinct ACCESSIONS, not ncipidkg entities. For 'how many NCI-PID proteins have GlyGen data', count participant nodes that reach glygenkg directly or through an alias: 1,362 of 2,536 protein nodes (53.7%). ncipidkg's obo/PR_ terms do not overlap glygenkg's gly:has_pro_entry PR terms (0 shared), so PR is not a second route for this pair.",
+      "example_question": "Which well-evidenced NCI-PID signalling interactions connect two proteins that both carry glycosylation sites in GlyGen (e.g. the insulin receptor and IRS1, NOTCH1 and NOTCH2)?",
+      "example_questions": [
+        "Which well-evidenced NCI-PID signalling interactions connect two proteins that both carry glycosylation sites in GlyGen (e.g. the insulin receptor and IRS1, NOTCH1 and NOTCH2)?",
+        "How many UniProt accessions do glygenkg and ncipidkg share, and how does that split between ncipidkg's own protein nodes and its owl:sameAs alias accessions?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?u) AS ?n) WHERE {\n  {\n    GRAPH <https://purl.org/okn/frink/kg/ncipidkg> {\n      ?s <http://www.w3.org/2002/07/owl#sameAs> ?u .\n      FILTER(STRSTARTS(STR(?u),'http://purl.uniprot.org/uniprot/'))\n    }\n  } UNION {\n    GRAPH <https://purl.org/okn/frink/kg/ncipidkg> {\n      ?u a <http://semanticscience.org/resource/SIO_010043> .\n      FILTER(STRSTARTS(STR(?u),'http://purl.uniprot.org/uniprot/'))\n    }\n  }\n  GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?u a <http://purl.uniprot.org/core/Protein> . }\n}",
+      "skeleton_verified": true,
+      "domain": "Proteins"
+    },
+    {
+      "id": "G12-uniprot-glygenkg-aopwiki",
+      "left_kg": "glygenkg",
+      "left_predicate": "node-iri (up:Protein; the node IRI IS the UniProt IRI)",
+      "left_role": "subject",
+      "right_kg": "biobricks-aopwiki",
+      "right_predicate": "http://www.w3.org/2004/02/skos/core#exactMatch (on a gene/protein node; object is https://identifiers.org/uniprot/{acc})",
+      "right_role": "object",
+      "shared_key": "UniProt",
+      "key_namespace": "http://purl.uniprot.org/uniprot/{acc} (glygenkg node IRI) <- https://identifiers.org/uniprot/{acc} (AOP-Wiki skos:exactMatch object)",
+      "bridge_kg": null,
+      "iri_normalization": "Two IRI forms for the same accession, so a direct join returns 0. Drive from AOP-Wiki, extract the accession and rebuild glygenkg's form: BIND(IRI(CONCAT('http://purl.uniprot.org/uniprot/',REPLACE(STR(?u),'^.*/uniprot/',''))) AS ?up), then match ?up a up:Protein in glygenkg. The AOP context hangs off the same AOP-Wiki node: ?ke edam:data_1025 ?node ; ?aop aopkb:has_key_event ?ke ; dc:title. WITHIN glygenkg, a glycosylation record (gly:Glycoprotein) has no edge to this protein node: its only protein key is gly:has_pro_entry -> http://purl.obolibrary.org/obo/PR_{acc}, so reach the records, sites and glycans with BIND(IRI(REPLACE(STR(?up),'http://purl.uniprot.org/uniprot/','http://purl.obolibrary.org/obo/PR_')) AS ?pr) and ?rec gly:has_pro_entry ?pr (see the glygenkg usage notes).",
+      "verified_count": 756,
+      "verified_count_secondary": {
+        "aopwiki_uniprot_targets": 7437,
+        "with_a_site_record": 557,
+        "on_a_key_event_of_a_named_aop": 456
+      },
+      "verified_on": "2026-10-13",
+      "verified_count_note": "756 of AOP-Wiki's 7,437 UniProt-identified targets (10.2%) are glygenkg proteins; 557 of them have a site-level glycosylation record and 456 are attached to a key event of a named AOP. Verified live 2026-10-13. glygenkg is human only and a partial GlyGen release, so the low share is expected; the species mix of AOP-Wiki's accessions was not measured. The same pair also joins on Ensembl (AOP-Wiki skos:exactMatch https://identifiers.org/ensembl/{ENSG} vs glygenkg gly:hasLocus): 755 shared genes, essentially the same set, so it is not catalogued separately.",
+      "example_question": "Which adverse outcome pathways have the most key-event target proteins that are glycosylated in GlyGen, and which targets are they?",
+      "example_questions": [
+        "Which adverse outcome pathways have the most key-event target proteins that are glycosylated in GlyGen, and which targets are they?",
+        "How many of AOP-Wiki's UniProt-identified targets are glygenkg proteins, and how many of those have a glycosylation site record?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?up) AS ?n) WHERE {\n  GRAPH <https://purl.org/okn/frink/kg/biobricks-aopwiki> { ?y <http://www.w3.org/2004/02/skos/core#exactMatch> ?u . FILTER(STRSTARTS(STR(?u),'https://identifiers.org/uniprot/')) }\n  BIND(IRI(CONCAT('http://purl.uniprot.org/uniprot/',REPLACE(STR(?u),'^.*/uniprot/',''))) AS ?up)\n  GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?up a <http://purl.uniprot.org/core/Protein> . }\n}",
+      "skeleton_verified": true,
+      "domain": "Proteins"
+    },
+    {
+      "id": "G13-uniprot-glygenkg-biomarkerkg",
+      "left_kg": "glygenkg",
+      "left_predicate": "node-iri (up:Protein; the node IRI IS the UniProt IRI)",
+      "left_role": "subject",
+      "right_kg": "biomarkerkg",
+      "right_predicate": "obo:OBCI_1000009 / OBCI_1000015 / OBCI_1000016 / OBCI_1000017 (biomarker -> entity; object is a UniProt IRI when the analyte is a protein)",
+      "right_role": "object",
+      "shared_key": "UniProt",
+      "key_namespace": "glygenkg and biomarkerkg both mint <http://purl.uniprot.org/uniprot/{acc}> - identical namespace, no rewrite",
+      "bridge_kg": null,
+      "iri_normalization": "NONE - same http://purl.uniprot.org/uniprot/{acc} form on both sides. Take the union of biomarkerkg's four biomarker-to-entity predicates and FILTER the object to /uniprot/ (the same predicates also point to cell types and PubChem genes). The condition is on the same biomarker node (OBCI_1000002 / _1000006 / _1000008 -> MONDO). WITHIN glygenkg, a glycosylation record (gly:Glycoprotein) has no edge to this protein node: its only protein key is gly:has_pro_entry -> http://purl.obolibrary.org/obo/PR_{acc}, so reach the records, sites and glycans with BIND(IRI(REPLACE(STR(?up),'http://purl.uniprot.org/uniprot/','http://purl.obolibrary.org/obo/PR_')) AS ?pr) and ?rec gly:has_pro_entry ?pr (see the glygenkg usage notes).",
+      "verified_count": 123,
+      "verified_count_secondary": {
+        "biomarkerkg_uniprot_analytes": 245,
+        "with_a_site_record": 103,
+        "with_a_reported_glycan": 98,
+        "on_OBCI_1000009_alone": 110
+      },
+      "verified_on": "2026-10-13",
+      "verified_count_note": "123 of biomarkerkg's 245 UniProt protein analytes (50.2%) are glygenkg proteins; 103 have a site-level record and 98 a reported glycan structure. Verified live 2026-10-13. Restricting to obo:OBCI_1000009 alone gives 110. The other 122 analytes are absent from glygenkg, which is a partial GlyGen release - absence is not evidence that a biomarker is unglycosylated. GlyGen reports glycans observed on the protein in general, not in the disease biomarkerkg names.",
+      "example_question": "Which clinical protein biomarkers carry the most distinct glycan structures in GlyGen (haptoglobin, lactotransferrin, PSA), at how many sites, and for which conditions are they biomarkers?",
+      "example_questions": [
+        "Which clinical protein biomarkers carry the most distinct glycan structures in GlyGen (haptoglobin, lactotransferrin, PSA), at how many sites, and for which conditions are they biomarkers?",
+        "How many of BiomarkerKG's 245 UniProt protein analytes are glygenkg proteins, and how many have a site-level glycosylation record?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?up) AS ?n) WHERE {\n  GRAPH <https://purl.org/okn/frink/kg/biomarkerkg> {\n    VALUES ?bp { <http://purl.obolibrary.org/obo/OBCI_1000009> <http://purl.obolibrary.org/obo/OBCI_1000015> <http://purl.obolibrary.org/obo/OBCI_1000016> <http://purl.obolibrary.org/obo/OBCI_1000017> }\n    ?s ?bp ?up . FILTER(STRSTARTS(STR(?up),'http://purl.uniprot.org/uniprot/'))\n  }\n  GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?up a <http://purl.uniprot.org/core/Protein> . }\n}",
+      "skeleton_verified": true,
+      "domain": "Proteins"
+    },
+    {
+      "id": "G14-pr-glygenkg-ubergraph",
+      "left_kg": "glygenkg",
+      "left_predicate": "https://sparql.glygen.org/ontology/has_pro_entry (on a gly:Glycoprotein record; object is an untyped http://purl.obolibrary.org/obo/PR_{UniProt accession})",
+      "left_role": "object",
+      "right_kg": "ubergraph",
+      "right_predicate": "node-iri (the PR class; rdfs:subClassOf / rdfs:label)",
+      "right_role": "subject",
+      "shared_key": "PR",
+      "key_namespace": "http://purl.obolibrary.org/obo/PR_{UniProt accession} on both sides - the Protein Ontology's accession-based terms, no rewrite",
+      "bridge_kg": null,
+      "iri_normalization": "NONE - glygenkg's gly:has_pro_entry objects are OBO PR IRIs that ubergraph holds as classes, so they join literally. Materialise the distinct PR terms in a subquery first (74,722 records collapse to 8,112 terms), then bind the ubergraph class. ubergraph's precomputed closure makes ?pr rdfs:subClassOf ?family a one-step family lookup (PR_000030035 'G-protein coupled receptor', PR_000044676 'channel protein', ...); exclude the upper classes every protein has (protein, Homo sapiens protein, CHEBI/BFO ancestors). To get from the PR term to the up:Protein node rewrite the prefix to http://purl.uniprot.org/uniprot/.",
+      "verified_count": 8067,
+      "verified_count_secondary": {
+        "glygenkg_pr_terms": 8112,
+        "GPCR_PR_000030035": 135,
+        "channel_protein_PR_000044676": 112
+      },
+      "verified_on": "2026-10-13",
+      "verified_count_note": "8,067 of glygenkg's 8,112 Protein Ontology terms (99.4%) are classes in ubergraph, all with a label and a subClassOf hierarchy. Verified live 2026-10-13. This is glygenkg's overlap with the ontology BACKBONE, used for protein-family expansion (135 are G-protein coupled receptors, 112 channel proteins); it is not a KG-to-KG integration and is omitted from list_crosswalks. No data KG shares these accession-based PR terms: ncipidkg's obo/PR_ terms overlap 0, and prokn and spoke-okn hold none of them as subject or object (all measured 2026-10-13). babel does hold 8,067 of them in its protein cliques, but glygenkg's own UniProt node IRIs make that hop unnecessary.",
+      "example_question": "Which Protein Ontology families (G-protein coupled receptors, ion channels, ...) do GlyGen's glycoproteins fall into, using ubergraph's PR hierarchy?",
+      "example_questions": [
+        "Which Protein Ontology families (G-protein coupled receptors, ion channels, ...) do GlyGen's glycoproteins fall into, using ubergraph's PR hierarchy?",
+        "How many of glygenkg's 8,112 Protein Ontology entries are classes in ubergraph?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?pr) AS ?n) WHERE {\n  { SELECT DISTINCT ?pr WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?r <https://sparql.glygen.org/ontology/has_pro_entry> ?pr . } } }\n  GRAPH <https://purl.org/okn/frink/kg/ubergraph> { ?pr <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?parent . }\n}",
+      "skeleton_verified": true,
+      "domain": "Proteins"
+    },
+    {
+      "id": "C27-ensembl-glygenkg-spokeokn",
+      "left_kg": "glygenkg",
+      "left_predicate": "https://sparql.glygen.org/ontology/hasLocus (up:Gene -> gly:Gene_Locus; the locus IRI is the Ensembl gene)",
+      "left_role": "object",
+      "right_kg": "spoke-okn",
+      "right_predicate": "https://purl.org/okn/frink/kg/spoke-okn/schema/ensembl",
+      "right_role": "object",
+      "shared_key": "Ensembl",
+      "key_namespace": "http://rdf.ebi.ac.uk/resource/ensembl/{ENSG} (glygenkg gly:hasLocus object) -> http://identifiers.org/ensembl/{ENSG} (spoke-okn schema/ensembl object)",
+      "bridge_kg": null,
+      "iri_normalization": "glygenkg writes the gene locus as http://rdf.ebi.ac.uk/resource/ensembl/{ENSG} (object of gly:hasLocus), a form NO other federation graph uses, so a direct variable join returns 0 everywhere. Strip the locus IRI to the bare ENSG and rebuild spoke-okn's form: BIND(IRI(CONCAT('http://identifiers.org/ensembl/', REPLACE(STR(?locus),'^.*/',''))) AS ?ens), then ?x spoke:ensembl ?ens. The spoke-okn gene node ?x is an Entrez IRI and carries the disease edges (?d spoke:ASSOCIATES_DaG ?x). To reach the protein and its sites from the locus: ?protein up:encodedBy ?gene . ?gene gly:hasLocus ?locus, then the PR_ rewrite to the glycosylation records. Only 7,959 of glygenkg's 8,097 genes carry an Ensembl locus; the other 138 cannot use this axis and are reachable only through their protein (UniProt).",
+      "verified_count": 7315,
+      "verified_count_secondary": {
+        "glygenkg_gene_loci": 7959,
+        "with_a_spoke_disease_association": 3311
+      },
+      "verified_on": "2026-10-13",
+      "verified_count_note": "7,315 of glygenkg's 7,959 Ensembl gene loci (91.9%) are spoke-okn genes; 3,311 of them carry at least one ASSOCIATES_DaG disease association. Verified live 2026-10-13. glygenkg names no disease anywhere (its SNV keywords say only 'disease' or 'cancer'), so this is one of the routes that give its genes disease context.",
+      "example_question": "For the genes whose proteins carry the most N-glycosylated residues in GlyGen (LRP1, SORL1, PTPRC, APOB), which diseases does SPOKE associate with each gene?",
+      "example_questions": [
+        "For the genes whose proteins carry the most N-glycosylated residues in GlyGen (LRP1, SORL1, PTPRC, APOB), which diseases does SPOKE associate with each gene?",
+        "How many of glygenkg's 7,959 Ensembl gene loci are SPOKE genes, and how many of those have a SPOKE disease association?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ens) AS ?n) WHERE {\n  { SELECT DISTINCT ?locus WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?g <https://sparql.glygen.org/ontology/hasLocus> ?locus . } } }\n  BIND(IRI(CONCAT('http://identifiers.org/ensembl/', REPLACE(STR(?locus),'^.*/',''))) AS ?ens)\n  GRAPH <https://purl.org/okn/frink/kg/spoke-okn> { ?x <https://purl.org/okn/frink/kg/spoke-okn/schema/ensembl> ?ens . }\n}",
+      "skeleton_verified": true,
+      "domain": "Genes"
+    },
+    {
+      "id": "C28-ensembl-glygenkg-gxa",
+      "left_kg": "glygenkg",
+      "left_predicate": "https://sparql.glygen.org/ontology/hasLocus (up:Gene -> gly:Gene_Locus; the locus IRI is the Ensembl gene)",
+      "left_role": "object",
+      "right_kg": "gene-expression-atlas-okn",
+      "right_predicate": "https://w3id.org/biolink/vocab/id (the bare ENSG accession as a string literal on a biolink:Gene node)",
+      "right_role": "object",
+      "shared_key": "Ensembl",
+      "key_namespace": "http://rdf.ebi.ac.uk/resource/ensembl/{ENSG} (glygenkg gly:hasLocus object) -> bare '{ENSG}' literal on biolink:id (GXA)",
+      "bridge_kg": null,
+      "iri_normalization": "glygenkg writes the gene locus as http://rdf.ebi.ac.uk/resource/ensembl/{ENSG} (object of gly:hasLocus), a form NO other federation graph uses, so a direct variable join returns 0 everywhere. Take the bare accession and bind it as a literal: BIND(REPLACE(STR(?locus),'^.*/','') AS ?ensg), then ?gx biolink:id ?ensg in GXA. USE THE LITERAL, NOT THE NODE IRI: GXA has two gene-node forms and the differential-expression statements (?stmt biolink:object ?gx ; biolink:subject ?assay ; wobd:log2fc ; wobd:adj_p_value) hang off the nodes the literal reaches. Matching the node IRI http://identifiers.org/ensembl/{ENSG} is a correct but smaller subset (7,393) and its nodes often have no expression statements (the INSR Ensembl-IRI node has none). Only 7,959 of glygenkg's 8,097 genes carry an Ensembl locus; the other 138 cannot use this axis and are reachable only through their protein (UniProt).",
+      "verified_count": 7950,
+      "verified_count_secondary": {
+        "glygenkg_gene_loci": 7959,
+        "by_ensembl_node_iri": 7393,
+        "with_a_differential_expression_result": 7935
+      },
+      "verified_on": "2026-10-13",
+      "verified_count_note": "7,950 of glygenkg's 7,959 Ensembl gene loci (99.9%) reach an Expression Atlas gene through its biolink:id literal, and 7,935 of them have at least one differential-expression result. Verified live 2026-10-13. The Ensembl-node-IRI join reaches only 7,393 - the same two-form behaviour recorded for pankgraph x GXA (C15).",
+      "example_question": "For the genes whose proteins carry the most distinct glycan structures in GlyGen (LAMP1, PIGR, CLU, FN1), in how many Expression Atlas contrasts is each gene differentially expressed, and in which direction?",
+      "example_questions": [
+        "For the genes whose proteins carry the most distinct glycan structures in GlyGen (LAMP1, PIGR, CLU, FN1), in how many Expression Atlas contrasts is each gene differentially expressed, and in which direction?",
+        "How many of glygenkg's 7,959 Ensembl gene loci are Expression Atlas genes, and how many have a differential-expression result?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?locus) AS ?n) WHERE {\n  { SELECT DISTINCT ?locus WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?g <https://sparql.glygen.org/ontology/hasLocus> ?locus . } } }\n  BIND(REPLACE(STR(?locus),'^.*/','') AS ?ensg)\n  GRAPH <https://purl.org/okn/frink/kg/gene-expression-atlas-okn> { ?gx <https://w3id.org/biolink/vocab/id> ?ensg . }\n}",
+      "skeleton_verified": true,
+      "domain": "Genes"
+    },
+    {
+      "id": "C29-ensembl-glygenkg-pankgraph",
+      "left_kg": "glygenkg",
+      "left_predicate": "https://sparql.glygen.org/ontology/hasLocus (up:Gene -> gly:Gene_Locus; the locus IRI is the Ensembl gene)",
+      "left_role": "object",
+      "right_kg": "pankgraph",
+      "right_predicate": "node-iri (biolink:Gene; the gene node IS http://identifiers.org/ensembl/{ENSG})",
+      "right_role": "subject",
+      "shared_key": "Ensembl",
+      "key_namespace": "http://rdf.ebi.ac.uk/resource/ensembl/{ENSG} (glygenkg gly:hasLocus object) -> http://identifiers.org/ensembl/{ENSG} (pankgraph gene node IRI)",
+      "bridge_kg": null,
+      "iri_normalization": "glygenkg writes the gene locus as http://rdf.ebi.ac.uk/resource/ensembl/{ENSG} (object of gly:hasLocus), a form NO other federation graph uses, so a direct variable join returns 0 everywhere. Rebuild pankgraph's gene node IRI: BIND(IRI(CONCAT('http://identifiers.org/ensembl/', REPLACE(STR(?locus),'^.*/',''))) AS ?ens), then ?ens a biolink:Gene in pankgraph (it carries biolink:expressed_in <CL_...>, biolink:gene_associated_with_condition <MONDO_...>). DO NOT use pankgraph's rdfs:seeAlso literal from the glygenkg side: a string built with BIND(CONCAT('https://www.ensembl.org/id/', ...)) and matched against ?s rdfs:seeAlso ?lit returns 0 (verified 2026-10-13), although the same 7,953 genes are found when the query is driven FROM pankgraph's literal. Only 7,959 of glygenkg's 8,097 genes carry an Ensembl locus; the other 138 cannot use this axis and are reachable only through their protein (UniProt).",
+      "verified_count": 7953,
+      "verified_count_secondary": {
+        "glygenkg_gene_loci": 7959,
+        "with_a_beta_cell_expression_record": 6053,
+        "pankgraph_t1d_genes_in_glygenkg": 73,
+        "pankgraph_t1d_genes": 176
+      },
+      "verified_on": "2026-10-13",
+      "verified_count_note": "7,953 of glygenkg's 7,959 Ensembl gene loci (99.9%) are pankgraph gene nodes - the most complete gene join glygenkg has, because pankgraph's gene catalogue is genome-wide. 6,053 have a beta-cell expression record (CL_0000169) and 73 are among pankgraph's 176 type 1 diabetes genes, 55 of them with a site-level glycosylation record. Verified live 2026-10-13.",
+      "example_question": "Which of PanKgraph's type 1 diabetes genes encode a protein that is glycosylated in GlyGen (PIGR, CD63, HLA-DRB1, IL2RA), and how many glycosylated residues and glycans does each carry?",
+      "example_questions": [
+        "Which of PanKgraph's type 1 diabetes genes encode a protein that is glycosylated in GlyGen (PIGR, CD63, HLA-DRB1, IL2RA), and how many glycosylated residues and glycans does each carry?",
+        "How many of glygenkg's 7,959 Ensembl gene loci are PanKgraph genes, and how many of those are expressed in beta cells?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?ens) AS ?n) WHERE {\n  { SELECT DISTINCT ?locus WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?g <https://sparql.glygen.org/ontology/hasLocus> ?locus . } } }\n  BIND(IRI(CONCAT('http://identifiers.org/ensembl/', REPLACE(STR(?locus),'^.*/',''))) AS ?ens)\n  GRAPH <https://purl.org/okn/frink/kg/pankgraph> { ?ens a <https://w3id.org/biolink/vocab/Gene> . }\n}",
+      "skeleton_verified": true,
+      "domain": "Genes"
+    },
+    {
+      "id": "C30-entrez-rdkg-glygenkg-via-babel",
+      "left_kg": "rdkg",
+      "left_predicate": "node-iri (biolink:Gene, http://identifiers.org/ncbigene/{id})",
+      "left_role": "subject",
+      "right_kg": "glygenkg",
+      "right_predicate": "https://sparql.glygen.org/ontology/hasLocus (up:Gene -> gly:Gene_Locus; the locus IRI is the Ensembl gene)",
+      "right_role": "object",
+      "shared_key": "Entrez -> Ensembl (bridged)",
+      "key_namespace": "http://identifiers.org/ncbigene/{id} (rdkg) <-> babel gene clique <-> http://identifiers.org/ensembl/{ENSG} (babel) -> http://rdf.ebi.ac.uk/resource/ensembl/{ENSG} (glygenkg)",
+      "bridge_kg": "babel",
+      "iri_normalization": "One rewrite, on the glygenkg side: its locus IRI http://rdf.ebi.ac.uk/resource/ensembl/{ENSG} must be rebuilt as babel's http://identifiers.org/ensembl/{ENSG} before the clique lookup (and the reverse when starting from rdkg); rdkg's gene IRIs are already in babel's form. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both - left in one group, the planner can run the FILTER over the whole exactMatch relation and time out. Only 7,959 of glygenkg's 8,097 genes carry an Ensembl locus; the other 138 cannot use this axis and are reachable only through their protein (UniProt).",
+      "verified_count": 4327,
+      "verified_count_secondary": {
+        "glygenkg_gene_loci": 7959,
+        "rdkg_cdg_genes": 41,
+        "rdkg_cdg_genes_reaching_glygenkg": 28
+      },
+      "verified_on": "2026-10-13",
+      "verified_count_note": "4,327 of glygenkg's 7,959 gene loci (54.4%) bridge to an rdkg gene, one rdkg gene each. Verified live 2026-10-13. The lower share reflects rdkg's scope (genes with a rare-disease link), not a weaker bridge: the same babel hop reaches 7,928 loci in digcfdekg. Ranking rdkg diseases by the number of glycoprotein genes returns the diseases with the most genes overall (common cancers through rdkg's broad related_to edges), so an enrichment claim needs each disease's total gene count. Worked case: 28 of the 41 genes rdkg links to a congenital disorder of glycosylation reach glygenkg, and 21 encode a protein GlyGen itself records as glycosylated (STT3B, STT3A, MAN1B1, B4GALT1).",
+      "example_question": "Which genes behind RDKG's congenital disorders of glycosylation encode a protein that GlyGen itself records as glycosylated, and at how many residues?",
+      "example_questions": [
+        "Which genes behind RDKG's congenital disorders of glycosylation encode a protein that GlyGen itself records as glycosylated, and at how many residues?",
+        "How many of glygenkg's gene loci bridge to an RDKG rare-disease gene through Babel, and which rare diseases have the most genes encoding GlyGen glycoproteins?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?locus) AS ?n) WHERE {\n  { SELECT DISTINCT ?locus ?member WHERE {\n    { SELECT DISTINCT ?locus ?pref WHERE {\n        { SELECT DISTINCT ?locus ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?g <https://sparql.glygen.org/ontology/hasLocus> ?locus } BIND(IRI(CONCAT('http://identifiers.org/ensembl/', REPLACE(STR(?locus),'^.*/',''))) AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/ncbigene/'))\n  GRAPH <https://purl.org/okn/frink/kg/rdkg> { ?member a <https://w3id.org/biolink/vocab/Gene> }\n}",
+      "skeleton_verified": true,
+      "domain": "Genes"
+    },
+    {
+      "id": "C31-entrez-digcfdekg-glygenkg-via-babel",
+      "left_kg": "digcfdekg",
+      "left_predicate": "node-iri (gene node, http://www.ncbi.nlm.nih.gov/gene/{id})",
+      "left_role": "subject",
+      "right_kg": "glygenkg",
+      "right_predicate": "https://sparql.glygen.org/ontology/hasLocus (up:Gene -> gly:Gene_Locus; the locus IRI is the Ensembl gene)",
+      "right_role": "object",
+      "shared_key": "Entrez -> Ensembl (bridged)",
+      "key_namespace": "http://www.ncbi.nlm.nih.gov/gene/{id} (digcfdekg) <- http://identifiers.org/ncbigene/{id} (babel) <-> babel gene clique <-> http://identifiers.org/ensembl/{ENSG} (babel) -> http://rdf.ebi.ac.uk/resource/ensembl/{ENSG} (glygenkg)",
+      "bridge_kg": "babel",
+      "iri_normalization": "Two rewrites around one bridge: glygenkg's locus IRI http://rdf.ebi.ac.uk/resource/ensembl/{ENSG} -> babel's http://identifiers.org/ensembl/{ENSG}; then babel's http://identifiers.org/ncbigene/{id} member -> digcfdekg's http://www.ncbi.nlm.nih.gov/gene/{id}. digcfdekg's scored trait links are reified: ?st rdf:subject ?gene ; rdf:predicate dig:geneToTrait ; rdf:object ?trait ; dig:weight ?w. Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both - left in one group, the planner can run the FILTER over the whole exactMatch relation and time out. Only 7,959 of glygenkg's 8,097 genes carry an Ensembl locus; the other 138 cannot use this axis and are reachable only through their protein (UniProt).",
+      "verified_count": 7928,
+      "verified_count_secondary": {
+        "glygenkg_gene_loci": 7959,
+        "with_a_gene_to_trait_association": 7799
+      },
+      "verified_on": "2026-10-13",
+      "verified_count_note": "7,928 of glygenkg's 7,959 gene loci (99.6%) bridge to a digcfdekg gene and 7,799 carry at least one gene-to-trait association. Verified live 2026-10-13. It supplies NAMED traits for 98% of glygenkg's gene loci; the weight is digcfdekg's gene-to-trait score, not a measure of glycosylation involvement.",
+      "example_question": "For the genes whose proteins carry the most distinct glycan structures in GlyGen (PSAP, TF, KNG1, LAMP2), which traits does the CFDE gene-trait graph link them to most strongly?",
+      "example_questions": [
+        "For the genes whose proteins carry the most distinct glycan structures in GlyGen (PSAP, TF, KNG1, LAMP2), which traits does the CFDE gene-trait graph link them to most strongly?",
+        "How many of glygenkg's gene loci bridge to a digcfdekg gene through Babel, and how many carry a gene-to-trait association?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?locus) AS ?n) WHERE {\n  { SELECT DISTINCT ?locus ?member WHERE {\n    { SELECT DISTINCT ?locus ?pref WHERE {\n        { SELECT DISTINCT ?locus ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?g <https://sparql.glygen.org/ontology/hasLocus> ?locus } BIND(IRI(CONCAT('http://identifiers.org/ensembl/', REPLACE(STR(?locus),'^.*/',''))) AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/ncbigene/'))\n  BIND(IRI(CONCAT('http://www.ncbi.nlm.nih.gov/gene/', STRAFTER(STR(?member),'ncbigene/'))) AS ?eg)\n  GRAPH <https://purl.org/okn/frink/kg/digcfdekg> { ?eg ?p ?o }\n}",
+      "skeleton_verified": true,
+      "domain": "Genes"
+    },
+    {
+      "id": "C32-entrez-spokegenelab-glygenkg-via-babel",
+      "left_kg": "spoke-genelab",
+      "left_predicate": "node-iri (biolink:Gene, http://www.ncbi.nlm.nih.gov/gene/{id})",
+      "left_role": "subject",
+      "right_kg": "glygenkg",
+      "right_predicate": "https://sparql.glygen.org/ontology/hasLocus (up:Gene -> gly:Gene_Locus; the locus IRI is the Ensembl gene)",
+      "right_role": "object",
+      "shared_key": "Entrez -> Ensembl (bridged)",
+      "key_namespace": "http://www.ncbi.nlm.nih.gov/gene/{id} (spoke-genelab) <- http://identifiers.org/ncbigene/{id} (babel) <-> babel gene clique <-> http://identifiers.org/ensembl/{ENSG} (babel) -> http://rdf.ebi.ac.uk/resource/ensembl/{ENSG} (glygenkg)",
+      "bridge_kg": "babel",
+      "iri_normalization": "Two rewrites around one bridge: glygenkg's locus IRI http://rdf.ebi.ac.uk/resource/ensembl/{ENSG} -> babel's http://identifiers.org/ensembl/{ENSG}; then babel's http://identifiers.org/ncbigene/{id} member -> spoke-genelab's http://www.ncbi.nlm.nih.gov/gene/{id}. That lands on the HUMAN gene; rodent expression statements attach to the mouse gene, so add spoke-genelab's own ortholog hop (?mouseGene s:IS_ORTHOLOG_MGiG ?humanGene ; s:organism 'Mus musculus') and restrict assays to the clean contrasts from get_valid_contrasts(). Resolve each source id's babel clique (?src skos:exactMatch ?pref) in a SELECT DISTINCT subquery, take the clique members in a second SELECT DISTINCT subquery around it, and filter on the target scheme outside both - left in one group, the planner can run the FILTER over the whole exactMatch relation and time out. Only 7,959 of glygenkg's 8,097 genes carry an Ensembl locus; the other 138 cannot use this axis and are reachable only through their protein (UniProt).",
+      "verified_count": 7932,
+      "verified_count_secondary": {
+        "glygenkg_gene_loci": 7959,
+        "with_a_mouse_ortholog": 7750
+      },
+      "verified_on": "2026-10-13",
+      "verified_count_note": "7,932 of glygenkg's 7,959 gene loci (99.7%) bridge to a spoke-genelab gene, and 7,750 have a mouse ortholog there, which is the set usable for rodent spaceflight questions. Verified live 2026-10-13. The measurement is mouse mRNA and the glycans are on the human protein: the join says the gene encoding a glycosylated human protein has a mouse ortholog whose transcript changes, nothing about the protein's glycoforms in flight.",
+      "example_question": "Which mouse orthologs of GlyGen's glycan-richest genes (haptoglobin, transferrin, kininogen) are differentially expressed in liver in clean spaceflight-versus-ground-control contrasts, and in which direction?",
+      "example_questions": [
+        "Which mouse orthologs of GlyGen's glycan-richest genes (haptoglobin, transferrin, kininogen) are differentially expressed in liver in clean spaceflight-versus-ground-control contrasts, and in which direction?",
+        "How many of glygenkg's gene loci bridge to a GeneLab gene through Babel, and how many have a mouse ortholog GeneLab has measured?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?locus) AS ?n) WHERE {\n  { SELECT DISTINCT ?locus ?member WHERE {\n    { SELECT DISTINCT ?locus ?pref WHERE {\n        { SELECT DISTINCT ?locus ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?g <https://sparql.glygen.org/ontology/hasLocus> ?locus } BIND(IRI(CONCAT('http://identifiers.org/ensembl/', REPLACE(STR(?locus),'^.*/',''))) AS ?src) } }\n        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }\n  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/ncbigene/'))\n  BIND(IRI(CONCAT('http://www.ncbi.nlm.nih.gov/gene/', STRAFTER(STR(?member),'ncbigene/'))) AS ?eg)\n  GRAPH <https://purl.org/okn/frink/kg/spoke-genelab> { ?eg ?p ?o }\n}",
+      "skeleton_verified": true,
+      "domain": "Genes"
+    },
+    {
+      "id": "GC1-glytoucan-chebi-glygenkg-ubergraph",
+      "left_kg": "glygenkg",
+      "left_predicate": "node-iri (glycan:Saccharide; http://glygen.org/glycan/{GlyTouCan accession})",
+      "left_role": "subject",
+      "right_kg": "ubergraph",
+      "right_predicate": "http://www.geneontology.org/formats/oboInOwl#hasDbXref (string literal 'glytoucan:{accession}' on a CHEBI class)",
+      "right_role": "object",
+      "shared_key": "GlyTouCan<->CHEBI",
+      "key_namespace": "http://glygen.org/glycan/{accession} (glygenkg glycan node IRI) -> 'glytoucan:{accession}' xref literal on a CHEBI class (ubergraph)",
+      "bridge_kg": null,
+      "iri_normalization": "The GlyTouCan accession is the local name of glygenkg's glycan IRI; ubergraph holds it as a LOWERCASE-prefixed CURIE literal on CHEBI classes ('glytoucan:G00031MO'; 'GlyTouCan:' with capitals matches nothing, and a parallel 'glygen:{accession}' xref exists). Build the literal and bind it: BIND(CONCAT('glytoucan:', REPLACE(STR(?g),'^.*/','')) AS ?x), then ?chebi oboInOwl:hasDbXref ?x. The bound-literal form works when driven from glygenkg's 1,248 glycans.",
+      "verified_count": 208,
+      "verified_count_secondary": {
+        "glygenkg_glycans": 1248,
+        "chebi_terms_reached": 211,
+        "ubergraph_glytoucan_xrefs": 10603
+      },
+      "verified_on": "2026-10-13",
+      "verified_count_note": "208 of glygenkg's 1,248 glycans (16.7%) have a CHEBI term in ubergraph, 211 CHEBI classes in all (a few glycans map to more than one). Verified live 2026-10-13. This gives a glycan the CHEBI name and class hierarchy that glygenkg lacks (it holds no structure, mass or composition beyond a label). It is an ontology-backbone overlap, omitted from list_crosswalks: NO data KG carries these CHEBI glycan terms - checked as subject and object in spoke-okn, prokn, nde, rdkg, biobricks-aopwiki/tox21/toxcast/ice, biohealth, biomarkerkg and sawgraph (all 0). They occur only in babel (211) and wikidata (52), so glycans remain a glygenkg-only entity type.",
+      "example_question": "Which CHEBI classes do GlyGen's glycans fall under, for the glycans that carry a GlyTouCan cross-reference in ubergraph?",
+      "example_questions": [
+        "Which CHEBI classes do GlyGen's glycans fall under, for the glycans that carry a GlyTouCan cross-reference in ubergraph?",
+        "How many of glygenkg's 1,248 glycans have a CHEBI term in ubergraph through their GlyTouCan accession?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?g) AS ?n) WHERE {\n  { SELECT DISTINCT ?g WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?g a <http://purl.jp/bio/12/glyco/glycan#Saccharide> . } } }\n  BIND(CONCAT('glytoucan:', REPLACE(STR(?g),'^.*/','')) AS ?x)\n  GRAPH <https://purl.org/okn/frink/kg/ubergraph> { ?c <http://www.geneontology.org/formats/oboInOwl#hasDbXref> ?x . }\n}",
+      "skeleton_verified": true,
+      "domain": "Chemicals"
+    },
+    {
+      "id": "PB3-pmid-glygenkg-prokn",
+      "left_kg": "glygenkg",
+      "left_predicate": "http://purl.jp/bio/12/glyco/glycan#has_evidence (object is a glycan:Evidence node whose IRI embeds the PMID: http://glygen.org/evidence/PubMed_{PMID})",
+      "left_role": "object",
+      "right_kg": "prokn",
+      "right_predicate": "http://purl.org/ontology/bibo/pmid (object is the IRI https://pubmed.ncbi.nlm.nih.gov/{PMID}; on up:PTM_Annotation, rdf:Statement and up:citation nodes)",
+      "right_role": "object",
+      "shared_key": "PubMed ID",
+      "key_namespace": "http://glygen.org/evidence/PubMed_{PMID} (glygenkg evidence node IRI) -> https://pubmed.ncbi.nlm.nih.gov/{PMID} (prokn bibo:pmid object IRI)",
+      "bridge_kg": null,
+      "iri_normalization": "The PMID is a literal on NEITHER side: glygenkg embeds it in the evidence node IRI and prokn stores it as an IRI object. Extract it with STRAFTER(STR(?ev),'PubMed_') and rebuild prokn's form: BIND(IRI(CONCAT('https://pubmed.ncbi.nlm.nih.gov/', STRAFTER(STR(?ev),'PubMed_'))) AS ?pm), then ?s bibo:pmid ?pm. Drive from glygenkg's 1,516 evidence nodes. Read the PMID from the OBJECT of bibo:pmid: only 2,199 of prokn's 1.36M bibo:pmid subjects are themselves pubmed IRIs (up:citation nodes); the rest are annotation and statement nodes.",
+      "verified_count": 752,
+      "verified_count_secondary": {
+        "glygenkg_papers": 1516,
+        "prokn_distinct_pmids": 35986,
+        "cited_by_a_prokn_ptm_annotation": 728,
+        "cited_by_a_prokn_reified_statement": 129,
+        "prokn_ptm_annotations_on_shared_papers": 100662
+      },
+      "verified_on": "2026-10-13",
+      "verified_count_note": "752 of the 1,516 papers glygenkg cites as glycosylation evidence (49.6%) are also cited in prokn: 728 by a PTM annotation and 129 by a reified statement (105 by both). Verified live 2026-10-13, server-side and by a client-side intersection of the two PMID sets. prokn attributes 100,662 PTM annotations to the shared papers: N-glycosylation from 446 papers, O-glycosylation from 230, and phosphorylation from only 84 papers but 74,580 annotations. A paper cited on both sides does not mean both hold the same sites from it: GlyGen's largest source (PMID 37074911, 29,122 records) is not in prokn at all, and four shared papers have over 1,000 GlyGen records against 2-13 prokn annotations. This is the first PubMed-keyed crosswalk in the catalog; it is a publication-axis non-join for glygenkg x gene-expression-atlas-okn and x pankgraph (see known_non_joins).",
+      "example_question": "For the papers that support the most glycosylation records in GlyGen, how many PTM annotations of which types does ProKN attribute to the same PubMed ID?",
+      "example_questions": [
+        "For the papers that support the most glycosylation records in GlyGen, how many PTM annotations of which types does ProKN attribute to the same PubMed ID?",
+        "How many of the 1,516 papers GlyGen cites as glycosylation evidence are also cited in ProKN, by which kinds of record and for which modification types?"
+      ],
+      "skeleton_query": "SELECT (COUNT(DISTINCT ?pm) AS ?n) WHERE {\n  { SELECT DISTINCT ?ev WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?ev a <http://purl.jp/bio/12/glyco/glycan#Evidence> . } } }\n  BIND(IRI(CONCAT('https://pubmed.ncbi.nlm.nih.gov/', STRAFTER(STR(?ev),'PubMed_'))) AS ?pm)\n  GRAPH <https://purl.org/okn/frink/kg/prokn> { ?s <http://purl.org/ontology/bibo/pmid> ?pm . }\n}",
+      "skeleton_verified": true,
+      "domain": "Publications"
     }
   ],
   "cluster_notes": {
     "A_disease": "spoke-okn keys diseases on DOID (180 biolink:Disease nodes whose IRI is the obo/DOID_ term). It joins the DOID carriers DIRECTLY on the shared DOID IRI: prokn 96 (A7), biomarkerkg 79 (A8), nde 20 (A9; nde's schema:healthCondition holds DOID alongside MONDO/HP/NCIT). The MONDO-keyed members need a DOID->MONDO bridge through ubergraph (?mondo skos:exactMatch ?doid, equivalently oboInOwl:hasDbXref 'DOID:{id}' - both give identical coverage): rdkg 149 (A10, the broadest spoke-okn disease join since rdkg is rare-disease-rich), oard-kg 40 (A11, attaching spoke-okn to the disease-cluster hub; the existing DOID pair biomarkerkg<->prokn is A5). Every federation disease KG is thus reachable from spoke-okn: DOID carriers directly, MONDO members via ubergraph. Caveat: spoke-okn's disease set is small (180), so counts are bounded by spoke-okn.",
-    "C_gene_cluster": "The gene cluster spans THREE id systems. (1) ENTREZ / NCBI Gene is the federation's de-facto gene join key, but in THREE IRI FORMS: http://www.ncbi.nlm.nih.gov/gene/{id} (spoke-okn and spoke-genelab gene NODES; spoke-okn types them biolink:Gene, 16,346 nodes), http://identifiers.org/ncbigene/{id} (rdkg gene nodes), and https://identifiers.org/ncbigene/{id} (biobricks-aopwiki, as skos:exactMatch on key-event target genes). Same numeric id - join by stripping to the bare integer and rebuilding the partner's form (bind the same term in both GRAPH blocks; never FILTER(STR(?a)=?b), which returns 0 here). Verified Entrez pairs: spoke-okn<->spoke-genelab (C4, 16,326), rdkg<->spoke-okn (C5, 8,475), rdkg<->spoke-genelab (C6, 9,034), aopwiki<->spoke-genelab (C7, 1,472), aopwiki<->rdkg (C8, 1,193). C7 is notable: spoke-genelab is Entrez-only, so AOP-Wiki - previously tied to the cluster only on Ensembl (F1/F2) - reaches it only via this Entrez route. (2) ENSEMBL members are gene-expression-atlas-okn, pankgraph, biobricks-aopwiki and PROKN, plus spoke-okn via its schema/ensembl crosswalk (16,316 of its 16,346 genes carry an http://identifiers.org/ensembl/{ENSG} value). Ensembl comes in TWO IRI FORMS and the split matters: GXA, pankgraph and spoke-okn all use http://identifiers.org/ensembl/{ENSG} and so join each other NATIVELY with no normalization, whereas prokn's gene nodes ARE https://www.ensembl.org/id/{ENSG} IRIs (typed up:Gene) and pankgraph additionally mirrors that form as a STRING LITERAL on rdfs:seeAlso — so every join TO prokn must strip to the bare ENSG and rebuild the partner's form (C14, C16); a naive same-term join returns 0. pankgraph is Ensembl-ONLY (its gene nodes are ensembl IRIs with no Entrez xref; only expressed_in->CL and functional_association->GO edges). The C1-C3/F1 joins to spoke-okn remain valid and unchanged, but the spoke-okn side is reached via the schema/ensembl predicate (Ensembl as object), not the gene node. The Ensembl pairings are: GXA<->spoke-okn 15,132 (C1), pankgraph<->spoke-okn 16,314 (C3), pankgraph<->GXA 38,804 (C15), pankgraph<->prokn 37,835 (C14), and prokn<->spoke-okn 16,140 shared ids / 16,148 spoke-okn genes (C16). spoke-okn's ~16,324 xrefs are the binding constraint wherever it appears. THREE corrections, all from the same root cause — a row that was not a pairwise overlap sitting in a table of pairwise overlaps, or a pair no one looked for. (a) C3 was RESCOPED on 2026-07-13: it formerly counted 168 and drove from biolink:gene_associated_with_condition, whose sole object across pankgraph is MONDO_0005147 (type 1 diabetes, 176 genes) — a one-disease gene-list coverage figure, not the pair's catalog overlap, which is 16,314. That T1D cohort now lives as C3's example question q2. (b) C2 ('C2-ensembl-3way', a GXA+pankgraph+spoke-okn clique counting 15,132) was DROPPED on 2026-07-13: it duplicated C1's count exactly, introduced no new key or pair, and — because clique members render alphabetically, placing pankgraph in the middle — read as a BRIDGE through pankgraph, which never existed. The free 3-way dossier it advertised is now C1's example question q1 plus C1's note. (c) C16 was ADDED on 2026-07-13: prokn<->spoke-okn was catalogued ONLY as the wikidata-bridged C9, because this very note asserted prokn had no Ensembl or Entrez of its own. It does (see (3)), and the pair joins directly. (3) HGNC is carried ONLY by prokn (http://identifiers.org/hgnc/{N}, ~38,328 distinct ids, mostly on rdf:subject/rdf:object reified INDRA statements and rdfs:seeAlso). But prokn is NOT HGNC-only, and the long-standing claim in this note that it 'has no Entrez/Ensembl of its own' was FALSE. prokn's gene layer is 38,372 up:Gene nodes, of which 38,001 ARE native Ensembl IRIs (https://www.ensembl.org/id/{ENSG}), and those same nodes carry native ENTREZ on skos:exactMatch as https://www.ncbi.nlm.nih.gov/gene/{id} — in the HTTPS form, where spoke-okn and spoke-genelab gene NODES are HTTP, so the scheme must be rewritten or the join silently returns 0 (this scheme mismatch is very likely why prokn was written off as Entrez-less in the first place). The Ensembl nodes are not a stub layer: they carry the full relation set (INDRA rdf:subject/rdf:object, HAS_MARKER_GENE, biolink:target_for, biolink:expressed_in, biolink:entity_negatively_regulates_entity / process_positively_regulates_process regulation - published as RO_0002206 and RO_0002212/RO_0002213 before prokn v0.0.6). CONSEQUENCE: prokn has THREE routes to the Entrez/Ensembl world, not one. For prokn<->spoke-okn all three were measured on 2026-07-13: direct Ensembl 16,148 spoke-okn genes (C16), wikidata HGNC->Entrez 16,298 (C9), direct Entrez via skos:exactMatch 16,150 (not catalogued — it adds nothing the other two miss). Their union is 16,314, i.e. spoke-okn's entire Ensembl-annotated gene set; C16 and C9 are tagged COMPLEMENTARY (C9 uniquely adds 166 genes, C16 uniquely adds 16), so UNION them for complete coverage. The wikidata bridge is therefore still USEFUL (best single-route coverage, and it is what reaches prokn's HGNC-keyed INDRA slice) but no longer NECESSARY. PROFILED 2026-07-13 — prokn's other two wikidata-bridged gene routes DO also have working direct Entrez alternatives on the same skos:exactMatch key (HTTPS->HTTP rewrite), but in BOTH cases the wikidata route keeps the better coverage and remains the primary, so neither direct route is catalogued as its own row. (i) prokn<->spoke-genelab: direct Entrez reaches 22,700 spoke-genelab biolink:Gene nodes vs 27,225 via wikidata; the union is 27,323, so the direct path uniquely adds only 98 genes. (ii) digcfdekg<->prokn (C13): counting digcfdekg's geneToTrait gene nodes, direct Entrez reaches 19,167 vs 20,783 via wikidata; the union is 20,796, so the direct path uniquely adds only 13. In both, the direct route is a near-SUBSET of the wikidata route — the opposite of the prokn<->spoke-okn case (C16), where the direct path is worth its own row not for coverage (it too adds only 16 genes over C9) but because it is a 2-graph join with NO bridge graph at ~99% of the coverage. The same bridge-free option exists for these two pairs and is worth using when cost matters; it is simply not worth a duplicate row. Note also that C9's stored secondary count for the spoke-genelab leg (27,226) re-measured at 27,225 on 2026-07-13 — a 1-gene drift, not a break. Note identifier-mappings does NOT carry HGNC — wikidata is the bridge for the HGNC route. prokn is also a protein-cluster member (G1/G2, UniProt): it holds marker genes as HGNC/Ensembl and proteins as UniProt. HINGES: spoke-okn ties the Entrez and Ensembl sub-worlds together (it alone carries both — Entrez node + Ensembl crosswalk); prokn now bridges HGNC, Ensembl and Entrez in a single gene node, making it a second, independent hinge; and wikidata remains a bridge for the HGNC-keyed slice. So every gene member is reachable from every other: the Entrez core (spoke-okn, spoke-genelab, rdkg, aopwiki) directly, the Ensembl members (GXA, pankgraph) via spoke-okn's crosswalk or pankgraph's seeAlso, and prokn directly on Ensembl (C14, C16) or via wikidata on HGNC (C9).",
+    "C_gene_cluster": "The gene cluster spans THREE id systems. (1) ENTREZ / NCBI Gene is the federation's de-facto gene join key, but in THREE IRI FORMS: http://www.ncbi.nlm.nih.gov/gene/{id} (spoke-okn and spoke-genelab gene NODES; spoke-okn types them biolink:Gene, 16,346 nodes), http://identifiers.org/ncbigene/{id} (rdkg gene nodes), and https://identifiers.org/ncbigene/{id} (biobricks-aopwiki, as skos:exactMatch on key-event target genes). Same numeric id - join by stripping to the bare integer and rebuilding the partner's form (bind the same term in both GRAPH blocks; never FILTER(STR(?a)=?b), which returns 0 here). Verified Entrez pairs: spoke-okn<->spoke-genelab (C4, 16,326), rdkg<->spoke-okn (C5, 8,475), rdkg<->spoke-genelab (C6, 9,034), aopwiki<->spoke-genelab (C7, 1,472), aopwiki<->rdkg (C8, 1,193). C7 is notable: spoke-genelab is Entrez-only, so AOP-Wiki - previously tied to the cluster only on Ensembl (F1/F2) - reaches it only via this Entrez route. (2) ENSEMBL members are gene-expression-atlas-okn, pankgraph, biobricks-aopwiki and PROKN, plus spoke-okn via its schema/ensembl crosswalk (16,316 of its 16,346 genes carry an http://identifiers.org/ensembl/{ENSG} value). Ensembl comes in TWO IRI FORMS and the split matters: GXA, pankgraph and spoke-okn all use http://identifiers.org/ensembl/{ENSG} and so join each other NATIVELY with no normalization, whereas prokn's gene nodes ARE https://www.ensembl.org/id/{ENSG} IRIs (typed up:Gene) and pankgraph additionally mirrors that form as a STRING LITERAL on rdfs:seeAlso — so every join TO prokn must strip to the bare ENSG and rebuild the partner's form (C14, C16); a naive same-term join returns 0. pankgraph is Ensembl-ONLY (its gene nodes are ensembl IRIs with no Entrez xref; only expressed_in->CL and functional_association->GO edges). The C1-C3/F1 joins to spoke-okn remain valid and unchanged, but the spoke-okn side is reached via the schema/ensembl predicate (Ensembl as object), not the gene node. The Ensembl pairings are: GXA<->spoke-okn 15,132 (C1), pankgraph<->spoke-okn 16,314 (C3), pankgraph<->GXA 38,804 (C15), pankgraph<->prokn 37,835 (C14), and prokn<->spoke-okn 16,140 shared ids / 16,148 spoke-okn genes (C16). spoke-okn's ~16,324 xrefs are the binding constraint wherever it appears. THREE corrections, all from the same root cause — a row that was not a pairwise overlap sitting in a table of pairwise overlaps, or a pair no one looked for. (a) C3 was RESCOPED on 2026-07-13: it formerly counted 168 and drove from biolink:gene_associated_with_condition, whose sole object across pankgraph is MONDO_0005147 (type 1 diabetes, 176 genes) — a one-disease gene-list coverage figure, not the pair's catalog overlap, which is 16,314. That T1D cohort now lives as C3's example question q2. (b) C2 ('C2-ensembl-3way', a GXA+pankgraph+spoke-okn clique counting 15,132) was DROPPED on 2026-07-13: it duplicated C1's count exactly, introduced no new key or pair, and — because clique members render alphabetically, placing pankgraph in the middle — read as a BRIDGE through pankgraph, which never existed. The free 3-way dossier it advertised is now C1's example question q1 plus C1's note. (c) C16 was ADDED on 2026-07-13: prokn<->spoke-okn was catalogued ONLY as the wikidata-bridged C9, because this very note asserted prokn had no Ensembl or Entrez of its own. It does (see (3)), and the pair joins directly. (3) HGNC is carried ONLY by prokn (http://identifiers.org/hgnc/{N}, ~38,328 distinct ids, mostly on rdf:subject/rdf:object reified INDRA statements and rdfs:seeAlso). But prokn is NOT HGNC-only, and the long-standing claim in this note that it 'has no Entrez/Ensembl of its own' was FALSE. prokn's gene layer is 38,372 up:Gene nodes, of which 38,001 ARE native Ensembl IRIs (https://www.ensembl.org/id/{ENSG}), and those same nodes carry native ENTREZ on skos:exactMatch as https://www.ncbi.nlm.nih.gov/gene/{id} — in the HTTPS form, where spoke-okn and spoke-genelab gene NODES are HTTP, so the scheme must be rewritten or the join silently returns 0 (this scheme mismatch is very likely why prokn was written off as Entrez-less in the first place). The Ensembl nodes are not a stub layer: they carry the full relation set (INDRA rdf:subject/rdf:object, HAS_MARKER_GENE, biolink:target_for, biolink:expressed_in, biolink:entity_negatively_regulates_entity / process_positively_regulates_process regulation - published as RO_0002206 and RO_0002212/RO_0002213 before prokn v0.0.6). CONSEQUENCE: prokn has THREE routes to the Entrez/Ensembl world, not one. For prokn<->spoke-okn all three were measured on 2026-07-13: direct Ensembl 16,148 spoke-okn genes (C16), wikidata HGNC->Entrez 16,298 (C9), direct Entrez via skos:exactMatch 16,150 (not catalogued — it adds nothing the other two miss). Their union is 16,314, i.e. spoke-okn's entire Ensembl-annotated gene set; C16 and C9 are tagged COMPLEMENTARY (C9 uniquely adds 166 genes, C16 uniquely adds 16), so UNION them for complete coverage. The wikidata bridge is therefore still USEFUL (best single-route coverage, and it is what reaches prokn's HGNC-keyed INDRA slice) but no longer NECESSARY. PROFILED 2026-07-13 — prokn's other two wikidata-bridged gene routes DO also have working direct Entrez alternatives on the same skos:exactMatch key (HTTPS->HTTP rewrite), but in BOTH cases the wikidata route keeps the better coverage and remains the primary, so neither direct route is catalogued as its own row. (i) prokn<->spoke-genelab: direct Entrez reaches 22,700 spoke-genelab biolink:Gene nodes vs 27,225 via wikidata; the union is 27,323, so the direct path uniquely adds only 98 genes. (ii) digcfdekg<->prokn (C13): counting digcfdekg's geneToTrait gene nodes, direct Entrez reaches 19,167 vs 20,783 via wikidata; the union is 20,796, so the direct path uniquely adds only 13. In both, the direct route is a near-SUBSET of the wikidata route — the opposite of the prokn<->spoke-okn case (C16), where the direct path is worth its own row not for coverage (it too adds only 16 genes over C9) but because it is a 2-graph join with NO bridge graph at ~99% of the coverage. The same bridge-free option exists for these two pairs and is worth using when cost matters; it is simply not worth a duplicate row. Note also that C9's stored secondary count for the spoke-genelab leg (27,226) re-measured at 27,225 on 2026-07-13 — a 1-gene drift, not a break. Note identifier-mappings does NOT carry HGNC — wikidata is the bridge for the HGNC route. prokn is also a protein-cluster member (G1/G2, UniProt): it holds marker genes as HGNC/Ensembl and proteins as UniProt. HINGES: spoke-okn ties the Entrez and Ensembl sub-worlds together (it alone carries both — Entrez node + Ensembl crosswalk); prokn now bridges HGNC, Ensembl and Entrez in a single gene node, making it a second, independent hinge; and wikidata remains a bridge for the HGNC-keyed slice. So every gene member is reachable from every other: the Entrez core (spoke-okn, spoke-genelab, rdkg, aopwiki) directly, the Ensembl members (GXA, pankgraph) via spoke-okn's crosswalk or pankgraph's seeAlso, and prokn directly on Ensembl (C14, C16) or via wikidata on HGNC (C9). UPDATE 2026-10-13 (glygenkg): glygenkg adds a FOURTH Ensembl IRI form to the cluster - http://rdf.ebi.ac.uk/resource/ensembl/{ENSG} on gly:hasLocus - which no other graph uses, so every glygenkg gene join rebuilds the partner's form from the bare ENSG: C27 spoke-okn 7,315 (identifiers.org object), C28 gene-expression-atlas-okn 7,950 (biolink:id LITERAL; the node-IRI subset is 7,393), C29 pankgraph 7,953 (identifiers.org node IRI). The Entrez-keyed graphs are reached through babel: C30 rdkg 4,327, C31 digcfdekg 7,928, C32 spoke-genelab 7,932. Only 7,959 of glygenkg's 8,097 genes carry a locus. prokn is reachable on Ensembl too (7,841 of its up:Gene nodes) but is catalogued on UniProt (G9), the richer key for that pair.",
     "E_toxicology_cas": "biobricks-tox21 and biobricks-aopwiki both attach to the CAS chemical cluster anchored by biobricks-toxcast / biobricks-ice (base file B1). tox21 joins natively (same http://identifiers.org/cas/ node-IRI form); AOP-Wiki needs the https->http rewrite. This makes AOP-Wiki a hinge: its stressors carry CAS (chemical cluster) AND its key-event targets carry Ensembl + UniProt (gene/protein clusters).",
     "F_aopwiki_gene_bridge": "AOP-Wiki's skos:exactMatch block carries genes as BOTH Entrez (~1,480 https://identifiers.org/ncbigene/ ids) and Ensembl (~1,478 https://identifiers.org/ensembl/ENSG ids), plus hmdb/chebi/pubchem.compound/drugbank chemical ids. F1/F2 use its Ensembl route (to spoke-okn and GXA); the Entrez route is now verified too and links the Entrez-only member spoke-genelab (C7) and rdkg (C8). Standard https->http (or bare-id rebuild) normalization applies.",
-    "G_protein_cluster": "UniProt accession is a federation-wide protein key but appears in several IRI forms: https://identifiers.org/uniprot/ (aopwiki) and http://purl.uniprot.org/uniprot/ (prokn, which models proteins with the UniProt core ontology; also biomarkerkg, nestkg, and — since v0.0.2 — ncipidkg, whose owl:sameAs leg used to carry the http://identifiers.org/uniprot/ form and no longer does, see G2's drift_note). Always join on the bare accession, never the raw IRI: a stored normalization can outlive the namespace it rewrites, and a join that rewrites a namespace the graph has dropped returns 0 with no error. UPDATE 2026-09-01: nestkg joins the cluster on the FOURTH form — none. It mints its protein nodes directly as http://purl.uniprot.org/uniprot/{acc}, the same form prokn uses, so nestkg<->prokn (G5, 16,729) needs no rewrite at all; only the aopwiki leg (G6) does. Note also that the DEPLOYED ncipidkg materializes purl.uniprot.org node IRIs alongside its identifiers.org owl:sameAs leg, so a partner can join it either way (G7).",
+    "G_protein_cluster": "UniProt accession is a federation-wide protein key but appears in several IRI forms: https://identifiers.org/uniprot/ (aopwiki) and http://purl.uniprot.org/uniprot/ (prokn, which models proteins with the UniProt core ontology; also biomarkerkg, nestkg, and — since v0.0.2 — ncipidkg, whose owl:sameAs leg used to carry the http://identifiers.org/uniprot/ form and no longer does, see G2's drift_note). Always join on the bare accession, never the raw IRI: a stored normalization can outlive the namespace it rewrites, and a join that rewrites a namespace the graph has dropped returns 0 with no error. UPDATE 2026-09-01: nestkg joins the cluster on the FOURTH form — none. It mints its protein nodes directly as http://purl.uniprot.org/uniprot/{acc}, the same form prokn uses, so nestkg<->prokn (G5, 16,729) needs no rewrite at all; only the aopwiki leg (G6) does. Note also that the DEPLOYED ncipidkg materializes purl.uniprot.org node IRIs alongside its identifiers.org owl:sameAs leg, so a partner can join it either way (G7). UPDATE 2026-10-13 (glygenkg): glygenkg (GlyGen, human protein glycosylation) joins the cluster on the purl.uniprot.org form with no rewrite - G9 prokn 8,077, G10 nestkg 7,576, G11 ncipidkg 1,348 (two legs), G12 biobricks-aopwiki 756 (identifiers.org rewrite), G13 biomarkerkg 123. Its trap is INSIDE the graph, not at the join: a gly:Glycoprotein node is a glycosylation RECORD with no edge to the up:Protein node, reachable only by rewriting gly:has_pro_entry's obo/PR_{acc} to the UniProt IRI. With prokn the join goes down to the residue (accession + position against up:PTM_Annotation). Its PR terms also reach ubergraph's Protein Ontology hierarchy (G14, 8,067) for family expansion.",
     "H_soil_spatial": "sockg (Soil Organic Carbon KG) joins the SAWGraph spatial hub (base D-series) as a third leaf next to sawgraph (Maine PFAS) and hydrologykg (Illinois). It reuses the SAWGraph/KWG spatial stack wholesale: S2Cell_Level13 cells, GADM AdministrativeRegion_0..2 nodes, kwg:sfWithin / sfContains, spatial-full:connectedTo, and GeoSPARQL geometries — all in native KWG IRI forms, so attachment to spatialkg needs no rewrite. Note: sockg ALSO carries contaminoso:casNumber (coso/contaminoso vocabulary) on its chemical entities, the same CAS chemical world as base-file B1 (toxcast/ice) and the E-series — a real thread into the chemical cluster that is intentionally NOT expanded here (out of scope: chemical/tox is already covered).",
     "I_manufacturing_supply_chain": "securechainkg embeds the SUDOKN manufacturing ontology (http://asu.edu/semantics/SUDOKN/*) almost in full on its Manufacturer entities: hasPrimaryNAICSClassifier, suppliesToIndustry, hasProcessCapability, hasMaterialCapability, organizationLocatedIn, hasCertificate, hasNumberOfEmployees, hasOrganizationYearOfEstablishment. This makes SecureChain and SUDOKN siblings on the manufacturing side. They share the industry-classification vocabularies (NAICS codes I1; industry sectors I2) but NOT the individual company instances (different IRI minting), so joins are at the industry-class level. Beyond the manufacturing overlap, securechainkg adds a software-supply-chain layer with no cross-KG partner in the federation: Software / SoftwareVersion / Vulnerability (CVE-style ids via schema:identifier), Hardware / HardwareVersion (CPE 2.3 via secure-chain:cpe23), license (schema:license) and dependsOn / vulnerableTo edges. These are useful securechainkg-internal join keys but have no second graph to bridge to here. UPDATE 2026-09-01: the cluster gains its first NON-NAICS edge. medical-device-kg carries no NAICS code at all, but it does carry the firms — 53,499 mdo:Manufacturer entities and 25,132 FDA registration records — so it joins sudokn's manufacturers on the normalized company NAME (I3, 361 names, 260 of them ZIP-confirmed). Note the asymmetry with the securechainkg<->sudokn pair above: those two share the industry VOCABULARY but not company instances, whereas medical-device-kg and sudokn share company INSTANCES but no industry vocabulary. Neither pair shares both, so the manufacturing cluster still has no single key that spans it. UPDATE 2026-09-10: the claim above that securechainkg's software-supply-chain layer \"has no second graph to bridge to here\" is CORRECTED for one of its classes. sc:HardwareVersion carries 18,094 owl:sameAs assertions, every one of them onto a SUDOKN product IRI (18,074 distinct subjects, 17,645 distinct objects) — so the pair joins at the PRODUCT grain, not only at the industry-class level. 17,644 of those objects resolve to a sudokn product reachable via sudokn:manufactures, reaching 241 SUDOKN manufacturers; adding sc:vulnerableTo attributes 435 CVEs to 51 named manufacturers across 5,563 products. Catalogued as I4-product-identity-securechain-sudokn. The company-instance statement in this note remains correct: the two graphs still mint different Manufacturer IRIs, and the manufacturer is reached from the SUDOKN side after joining on the product.",
     "J_spoke_okn_zip_geography": "spoke-okn carries ~42,724 ZIP nodes (.../location/{STATE}-{ZIP}), ALL with a bare-ZIP rdfs:label (xsd:string) - the clean cross-KG key. (Only 978 also have a KWG ZipCodeArea rdfs:seeAlso, stored as an HTML-anchor literal and unusable as an IRI; do not gate on it - that was the bug that undercounted the first version of this file.) securechainkg joined the cluster on 2026-10-13 (J12, 4,375 ZIPs, via SUDOKN:hasZIPcode / hasIntegerValue on its embedded manufacturer sites). Partners with bare 5-digit ZIPs join directly: sudokn (schema:postalCode, 13,647 - J1; the hasZipcodeValue predicate behind the original 12,329 is empty), ruralkg (schema:postalCode, 4,938 = all of ruralkg), dreamkg (schema:postalCode, 235 as of 2026-10-13, was 53 = all of dreamkg). For coarser geography spoke-okn also exposes county FIPS and state FIPS in its node IRIs - see the admin-region file (cluster K), including its attachment to the spatialkg hub. Pervasive failure mode: the OKN cross-graph literal-join quirk (FILTER(STR(?a)=?b) yields 0; bind the same variable term in both GRAPH blocks). UPDATE 2026-09-01: medical-device-kg joins the cluster (J7-J11) on two predicates at once — mdo:zip (X-ray assembler sites, MQSA mammography facilities) UNION mdo:postalCode (510(k) and PMA applicants, recalling firms). It is the only member carrying NON-US postal codes on the same predicates (e.g. Canadian 'L5C 4K3'), so its skeletons add FILTER(REGEX(?zip,'^[0-9]{5}$')) after the digit-strip; without it the strip yields short junk that pads into false 5-digit ZIPs.",
@@ -5326,10 +5738,11 @@
     "AN_anatomy_uberon": "Cluster AN is the Anatomy (UBERON) cluster. Anatomy-carrying KGs that store raw obo/UBERON_ IRIs: spoke-genelab (42 terms on INVESTIGATED_ASiA, biolink:AnatomicalEntity; plus 7 Cell Ontology CL cell types on INVESTIGATED_ASiCT) and gene-expression-atlas-okn (362 tissue terms on biolink:has_attribute). They join DIRECTLY on the shared UBERON IRI: AN1 spoke-genelab<->GXA = 27 shared terms (no bridge). biohealth also participates but only through the ubergraph UMLS bridge (its 2,148 UBERON CUIs): BH9 biohealth<->GXA (249) and BH10 biohealth<->spoke-genelab (35). spoke-okn does NOT carry these raw UBERON terms (verified 0 in both subject and object position), so it is not part of this cluster. ubergraph is the anatomy hub (full UBERON + CL with subClassOf* for clade/part-of expansion and the oboInOwl:hasDbXref UMLS/MeSH cross-references). CL (Cell Ontology) SUB-AXIS: cell types are carried as raw obo/CL_ IRIs by gene-expression-atlas-okn (223 terms, biolink:has_attribute), prokn (cell types as rdf:subject of reified marker-gene statements) and spoke-genelab (7 terms, INVESTIGATED_ASiCT). Verified CL joins: AN2 GXA<->prokn = 31 (the substantive one), AN3 spoke-genelab<->GXA = 4, AN4 spoke-genelab<->prokn = 1. spoke-okn has no CL (0); biohealth has no CL concepts (ubergraph UMLS->CL = 0), so CL is not a biohealth axis.",
     "R_digcfdekg": "Cluster R attaches digcfdekg (CFDE REVEAL KG; statistically inferred genomic evidence graph, PIGEAN + EAGGL) to the federation and is the first integration of the newly added rdkg & digcfdekg pair. digcfdekg is NOW MATERIALIZED at the endpoint (this SUPERSEDES the base file's 'digcfdekg unmaterialized / zero triples' known_non_join, moved to superseded_non_joins). It models reified rdf:Statement associations with edge types geneToTrait, geneToFactor, geneSetToTrait, geneSetToFactor, traitToFactor, geneInGeneSet (each exposed BOTH as a direct triple ?s pred ?o AND as a reified node carrying schema/weight = association probability, dcterms:source PIGEAN|EAGGL, schema/scoreType - use the direct form for join-key extraction). Join keys: genes as Entrez node IRIs (http://www.ncbi.nlm.nih.gov/gene/{entrez}, 21,710 genes) and traits as EFO (1,687) + Orphanet (1,526) + MONDO (435) + internal trait nodes (1,476, no external id). GENE attachments live in the C cluster: C10 digcfdekg<->spoke-okn (16,052, identical Entrez IRI), C11 digcfdekg<->spoke-genelab (19,747, identical Entrez IRI), C12 digcfdekg<->rdkg (8,934, ncbi.nlm.nih.gov/gene <-> identifiers.org/ncbigene rewrite), C13 digcfdekg<->prokn (20,783, Entrez->HGNC via wikidata P351->P354, same bridge as C9). DISEASE attachments live in the A cluster: A25 digcfdekg<->rdkg (1,045), A26 digcfdekg<->oard-kg (402), A27 digcfdekg<->biomarkerkg (123, DOID->MONDO), A28 digcfdekg<->spoke-okn (50, DOID->MONDO), A29 digcfdekg<->gene-expression-atlas-okn (33, direct EFO/Orphanet/MONDO). Because digcfdekg keys diseases mostly on EFO/Orphanet, the disease joins are driven by bridging EFO/Orphanet->MONDO via ubergraph skos:exactMatch (raises the digcfdekg disease set from 435 direct MONDO to 1,634 MONDO terms; direct-only would undercount, e.g. rdkg 180->1,045, oard-kg 37->402). PERFORMANCE: digcfdekg is large and its gene endpoints have very high fan-out - always materialize the DISTINCT key set in an inner SELECT before probing the partner graph; an unbound join over a digcfdekg gene/disease pattern (incl. FILTER EXISTS) OOMs the endpoint at ~210 GB. A full unscoped COUNT(*) and get_schema's class enumeration also exceed endpoint memory - use bounded probes. rdkg's pre-existing joins (A10/A16/A19/A2/BH1/C5/C6/C8/Q1/Q2) are unchanged; C12+A25 are rdkg's only NEW crosswalk (to digcfdekg, complementary gene+disease).",
     "BH_sdoh": "Cluster BH-SDoH connects the Social-Determinants-of-Health layers of biohealth and spoke-okn - the first SDoH crosswalk between them (prior BH3/BH11 link only disease and taxonomy). spoke-okn has a dedicated SDoH class (1,426 concepts) keyed on SNOMED CT concept ids in the node IRI, with geographic prevalence (PREVALENCEIN_SpL, ~3M statements over 1,144 concepts) and a small SDoH->disease layer (ASSOCIATES_SaD, 39 MeSH-co-occurrence statements); only 10 SDoH carry spoke:mesh_ids (the County Health Rankings indicators). biohealth keys every node on a UMLS CUI (node IRI .../node/C{cui}, rdfs:label = concept name, SemMedDB predicates) and carries NO MeSH/SNOMED/MONDO/DOID xref, so the join must route through UMLS. Two complementary routes: BH17 MeSH->UMLS via wikidata P486->P2892 (3 of the 10 MeSH indicators reach a biohealth node - precise, hits the data-rich CHR indicators) and BH18 concept-label match (89 of 1,426 SDoH exact-match a biohealth concept by suffix-stripped label - broad, covers the SNOMED ontology backbone). The ideal key, SNOMED->UMLS, is UNAVAILABLE: the federation wikidata has no P5806 and no graph materializes a UMLS<->SNOMED map (it lives in the UMLS Metathesaurus, not loaded). Loading that map - or having biohealth emit SNOMED xrefs - would turn ~90 label matches into a full ~1,400-concept SDoH join. PERFORMANCE: a case-insensitive label join (LCASE over biohealth's ~250k labels) OOMs/times out; drive from the bounded spoke SDoH side with the bound label and probe biohealth (indexed).",
-    "PB_publications": "PB - Publications / bibliographic (DOI). Scholarly DOI is the join key. nasa-gesdisc-kg is a large bibliometric graph (465,143 publications citing/using NASA Earth-science datasets; each with bibo:doi as an http://dx.doi.org/ IRI, plus author ORCID and institution ROR). climatemodelskg carries a DOI literal (https://doi.org/ form) on its 1,910 climate-modeling Paper nodes. Normalize both to the bare lowercase DOI (strip scheme+host, LCASE) and match. PB1 = climatemodelskg x nasa-gesdisc-kg = 651 shared papers (de-islands nasa-gesdisc-kg). The ORCID (author) and ROR (institution) axes on nasa-gesdisc-kg are unexplored bonus bridges to climatemodelskg's authors/affiliations.",
+    "PB_publications": "PB - Publications / bibliographic (DOI). Scholarly DOI is the join key. nasa-gesdisc-kg is a large bibliometric graph (465,143 publications citing/using NASA Earth-science datasets; each with bibo:doi as an http://dx.doi.org/ IRI, plus author ORCID and institution ROR). climatemodelskg carries a DOI literal (https://doi.org/ form) on its 1,910 climate-modeling Paper nodes. Normalize both to the bare lowercase DOI (strip scheme+host, LCASE) and match. PB1 = climatemodelskg x nasa-gesdisc-kg = 651 shared papers (de-islands nasa-gesdisc-kg). The ORCID (author) and ROR (institution) axes on nasa-gesdisc-kg are unexplored bonus bridges to climatemodelskg's authors/affiliations. UPDATE 2026-10-13 (PubMed): PubMed ID is now a second publication key. PB3 = glygenkg x prokn = 752 shared papers: glygenkg embeds the PMID in its evidence node IRI (http://glygen.org/evidence/PubMed_{PMID}) and prokn stores it as the IRI https://pubmed.ncbi.nlm.nih.gov/{PMID} on bibo:pmid (35,986 distinct, mostly on PTM annotations). Structured PMIDs also exist in gene-expression-atlas-okn (wobd:pubmed_id, 2,630) and pankgraph (schema/pubmedid, 957), but neither intersects glygenkg (verified 0s).",
     "EO_earth_observation": "EO - Earth observation instruments & platforms (GCMD name). climatemodelskg NLP-extracts Instrument and Platform mentions from climate-modeling papers (free-text climatepub4kg:name); nasa-gesdisc-kg carries the same as GCMD controlled-vocabulary terms (rdfs:label) in NASA's Global Change Master Directory keyword tree. Lowercase-match the names; the join is self-cleaning (only standardized names match). EO1 = Instrument (115), EO2 = Platform (70). Both are climatemodelskg x nasa-gesdisc-kg and complement PB1 (DOI, 651) - a second, orthogonal edge connecting climate-modeling literature to NASA GES DISC's Earth-observation catalogue. Label bridge (fragile at the margins - a few generic terms like LIDAR/Aircraft slip in), comparable to the taxon/SDoH label bridges.",
     "V_variant_dbsnp": "The variant cluster is dbSNP-only, and every member stores the rsID differently — this is the cluster where the identifier's SHAPE, not its presence, is the whole difficulty. biomarkerkg has real IRIs (https://www.ncbi.nlm.nih.gov/snp/rs{id}, 147,386); pankgraph has xsd:anyURI LITERALS (https://api.ncbi.nlm.nih.gov/variation/v0/refsnp/{id}, 19,448) — a constructed-IRI probe silently returns 0 against them, control-tested; and prokn has NO stored key at all, only 68,695 rsIDs written into the prose of schema:description on its 89,904 UniProt natural-variant annotations ('in AH2; activity abolished; dbSNP:rs80358219'). Reduce every side to the bare rsID string, then rebuild whichever form the partner stores. Three pairs are verified — V2 prokn x biomarkerkg 3,241 (the largest, and the only one that reaches a protein residue), V1 pankgraph x biomarkerkg 214, V3 prokn x pankgraph 214 (equal size to V1 by coincidence; the sets share only 13 members). Two variant surfaces do NOT join: rdkg's 7,367 ClinVar VariationIDs have no partner (see known_non_joins), and prokn's own UniProt VAR_ accessions are carried by no other graph. nestkg and ncipidkg carry no variants at all — exhaustively checked, not sampled: both are small enough to scan every object for rs/refsnp/VAR_/ClinVar/COSMIC/dbVar, and all return 0.",
-    "DB_babel_identifier_bridge": "babel (Translator Babel identifier cliques) is the third bridge KG beside ubergraph and wikidata, restored from EXCLUDED_KGS on 2026-09-26 once the federation loaded it. Shape: every member id skos:exactMatch its clique's preferred id (the preferred id self-loops and alone carries rdfs:label + biolink:category), so a scheme-to-scheme mapping is two exactMatch hops through the shared preferred id. It covers genes (NCBIGene/Ensembl/HGNC), proteins (UniProt/PR, in separate cliques from genes), diseases (MONDO/DOID/HP/OMIM/NCIT/MeSH/UMLS/SNOMED/ICD-10/MedGen) and chemicals (CHEBI/DrugBank/ChEMBL/PubChem/CAS/InChIKey/UNII/HMDB/KEGG/RxCUI), mostly in http://identifiers.org/{prefix}/ and OBO-purl form. The first hop MUST be staged in a SELECT DISTINCT subquery or the join times out; one id can belong to two cliques, so count endpoint entities, never cliques. First crosswalk: DB2 (rdkg DrugBank -> ChEMBL -> prokn, 1,816 drugs), superseding the prokn x rdkg CHEBI-axis known_non_join. 2026-09-26 batch through babel (all skeletons verified): chemicals CB2/CB3 (tox21/toxcast CAS -> ChEMBL -> prokn, 2,462 / 2,504) and DB3/DB4 (tox21/toxcast CAS -> DrugBank -> rdkg, 920 / 928), DB5 (ruralkg DrugBank -> ChEMBL -> prokn, 6); genes C22-C26 (rdkg 9,159 / spoke-genelab 28,554 / digcfdekg 34,013 / biomarkerkg 200 / biobricks-ice 395 Entrez <-> pankgraph Ensembl); diseases BH20/BH21 (digcfdekg 208 / nestkg 12 MONDO -> UMLS -> biohealth). Not catalogued: biobricks-ice's chemical axis (~200k CAS) is too large to push through babel in one query, and sawgraph x prokn is a verified 0 (see known_non_joins). The skeletons use the nested two-subquery shape: a single subquery plus an in-group scheme FILTER times out at ~9k input ids."
+    "DB_babel_identifier_bridge": "babel (Translator Babel identifier cliques) is the third bridge KG beside ubergraph and wikidata, restored from EXCLUDED_KGS on 2026-09-26 once the federation loaded it. Shape: every member id skos:exactMatch its clique's preferred id (the preferred id self-loops and alone carries rdfs:label + biolink:category), so a scheme-to-scheme mapping is two exactMatch hops through the shared preferred id. It covers genes (NCBIGene/Ensembl/HGNC), proteins (UniProt/PR, in separate cliques from genes), diseases (MONDO/DOID/HP/OMIM/NCIT/MeSH/UMLS/SNOMED/ICD-10/MedGen) and chemicals (CHEBI/DrugBank/ChEMBL/PubChem/CAS/InChIKey/UNII/HMDB/KEGG/RxCUI), mostly in http://identifiers.org/{prefix}/ and OBO-purl form. The first hop MUST be staged in a SELECT DISTINCT subquery or the join times out; one id can belong to two cliques, so count endpoint entities, never cliques. First crosswalk: DB2 (rdkg DrugBank -> ChEMBL -> prokn, 1,816 drugs), superseding the prokn x rdkg CHEBI-axis known_non_join. 2026-09-26 batch through babel (all skeletons verified): chemicals CB2/CB3 (tox21/toxcast CAS -> ChEMBL -> prokn, 2,462 / 2,504) and DB3/DB4 (tox21/toxcast CAS -> DrugBank -> rdkg, 920 / 928), DB5 (ruralkg DrugBank -> ChEMBL -> prokn, 6); genes C22-C26 (rdkg 9,159 / spoke-genelab 28,554 / digcfdekg 34,013 / biomarkerkg 200 / biobricks-ice 395 Entrez <-> pankgraph Ensembl); diseases BH20/BH21 (digcfdekg 208 / nestkg 12 MONDO -> UMLS -> biohealth). Not catalogued: biobricks-ice's chemical axis (~200k CAS) is too large to push through babel in one query, and sawgraph x prokn is a verified 0 (see known_non_joins). The skeletons use the nested two-subquery shape: a single subquery plus an in-group scheme FILTER times out at ~9k input ids.",
+    "GLY_glygenkg": "GLY - glygenkg (GlyGen), restored from EXCLUDED_KGS on 2026-10-13 once the federation loaded it (1,101,681 triples). Human protein glycosylation: 74,722 glycosylation records on 8,112 proteins, 67,510 sites (22,392 distinct protein residues), 1,248 glycans, 1,516 evidence papers, 7,482 SNVs, one taxon. It attaches on FOUR identifier axes - UniProt (protein node IRI; G9-G13), Ensembl (gene locus; C27-C29 direct, C30-C32 through babel to the Entrez graphs), PubMed (evidence IRI; PB3) and the ontology backbone (PR terms G14, GlyTouCan -> CHEBI GC1). 12 KG-to-KG crosswalks plus 2 ubergraph-endpoint recipes. NOT joinable: glycans as an entity (no data KG carries a GlyTouCan id or the CHEBI glycan terms), SNVs (chromosome position and alleles only, no dbSNP rsID and no stated genome assembly, so the Variants cluster is out of reach), phosphosite kinases (15 sites). Not added to the NCBITaxon hub: its single taxon (9606) would add an exact_id=1 row against every member and no information. The federated graph is a PARTIAL GlyGen release - EGFR, ERBB2, MUC1 and AFP have no record - so absence from glygenkg is not evidence that a protein is unglycosylated."
   },
   "spatial_hub_note": {
     "hub_kg": "spatialkg",
@@ -5479,7 +5892,7 @@
       "kg": "gene-expression-atlas-okn",
       "attempted_key": "PubMed ID (literature provenance)",
       "result": "no structured partner",
-      "diagnosis": "GXA exposes 2,630 structured PMIDs (wobd:pubmed_id, integer literals) - the only KG with clean structured PMIDs. ncipidkg and biobricks-aopwiki embed PMIDs only inside free-text / EndNote-XML description blobs (not joinable); nde and biohealth have no structured PMID predicate. So PMID cannot form a crosswalk without first extracting PMIDs from the free-text KGs. Verified 2026-06-27."
+      "diagnosis": "GXA exposes 2,630 structured PMIDs (wobd:pubmed_id, integer literals) - the only KG with clean structured PMIDs. ncipidkg and biobricks-aopwiki embed PMIDs only inside free-text / EndNote-XML description blobs (not joinable); nde and biohealth have no structured PMID predicate. So PMID cannot form a crosswalk without first extracting PMIDs from the free-text KGs. Verified 2026-06-27. UPDATE 2026-10-13: the premise that GXA is the only KG with structured PMIDs no longer holds. glygenkg (1,516 PMIDs in evidence IRIs), prokn (35,986 on bibo:pmid) and pankgraph (957 on schema/pubmedid) now carry them too, and glygenkg x prokn is a verified PubMed crosswalk (PB3-pmid-glygenkg-prokn, 752). GXA itself still has no partner: glygenkg x GXA and glygenkg x pankgraph are verified 0s (see their pair records); GXA x prokn and GXA x pankgraph were not measured."
     },
     {
       "kg": "securechainkg",
@@ -5587,6 +6000,20 @@
       "attempted_key": "NCBITaxon (exact id or clade nesting via ubergraph subClassOf*)",
       "result": "0 shared taxa, 0 nested in either direction",
       "diagnosis": "Measured 2026-10-13 with sawgraph read on its two-leg organism source (86 organisms: Water Quality Portal fish by scientific name, plus the leaf NCBITaxon classes it embeds for Maine livestock, game and crops). No organism is shared with gene-expression-atlas-okn and none is nested under the other graph's taxa. The taxon-hub row this pair used to hold (exact 0, clade-only) existed because sawgraph's embedded NCBITaxon fragment contains inferred ANCESTOR classes (Metazoa, Viridiplantae, ... up to 'cellular organisms'), under which the partner's organisms trivially fall; that was never a statement about what sawgraph samples. The two graphs remain related only by lineage analogy - a sawgraph fish and a gene-expression-atlas-okn fish share Actinopterygii - which the worked examples T06-Q1/Q2 illustrate with fixed taxa and say so. This is a taxon-axis non-join only."
+    },
+    {
+      "left_kg": "glygenkg",
+      "right_kg": "gene-expression-atlas-okn",
+      "attempted_key": "PubMed ID (glygenkg evidence IRI PubMed_{PMID} <-> partner PMID literal)",
+      "result": 0,
+      "diagnosis": "Both graphs carry structured PubMed IDs and the forms line up (glygenkg http://glygen.org/evidence/PubMed_{PMID}; GXA wobd:pubmed_id as an xsd:string), but the two literatures do not intersect: 0 of glygenkg's 1,516 glycoproteomics papers are among GXA's 2,630 expression-study papers. Verified 2026-10-13 three ways - two server-side query shapes and a client-side intersection of the two PMID sets (a BIND-built IRI inside OPTIONAL can return a false 0, so the set intersection is the one to trust). This is a publication-axis non-join only: the pair DOES join on Ensembl (C28-ensembl-glygenkg-gxa, 7,950 genes), so do NOT read this as 'glygenkg does not join gene-expression-atlas-okn'."
+    },
+    {
+      "left_kg": "glygenkg",
+      "right_kg": "pankgraph",
+      "attempted_key": "PubMed ID (glygenkg evidence IRI PubMed_{PMID} <-> partner PMID literal)",
+      "result": 0,
+      "diagnosis": "pankgraph carries 957 PubMed IDs as integers on its schema/pubmedid edge property (gene_associated_with_condition provenance); none is among glygenkg's 1,516 evidence papers (client-side set intersection, 2026-10-13). This is a publication-axis non-join only: the pair DOES join on Ensembl (C29-ensembl-glygenkg-pankgraph, 7,953 genes), so do NOT read this as 'glygenkg does not join pankgraph'."
     }
   ],
   "superseded_non_joins": [

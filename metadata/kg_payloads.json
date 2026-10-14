@@ -9,6 +9,7 @@
     "trait": "Traits / GWAS-style associations",
     "variant": "Sequence variants - SNPs / SNVs / eQTLs / natural variants",
     "protein": "Proteins (UniProt) and protein-level annotations",
+    "glycan": "Glycans and protein glycosylation sites (GlyTouCan)",
     "GO": "Gene Ontology terms / annotations",
     "Reactome": "Reactome pathway membership",
     "pathway": "Pathways and biomolecular / signaling interactions (Reactome / NCI-PID)",
@@ -143,6 +144,13 @@
       "hydrology",
       "geospatial",
       "dataset"
+    ],
+    "glygenkg": [
+      "glycan",
+      "protein",
+      "gene",
+      "variant",
+      "publication"
     ],
     "hydrologykg": [
       "hydrology",
