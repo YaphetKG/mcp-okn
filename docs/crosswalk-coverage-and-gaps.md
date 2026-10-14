@@ -23,7 +23,8 @@ _Survey date: 2026-06-14 · 41 served KGs · federation endpoint
 > as unmaterialized. (6) **glygenkg is served** (2026-10-13; it had been registered but
 > empty since 2026-09-26) and was dropped from `EXCLUDED_KGS`, so `list_kgs` returns
 > **45 KGs**. It joins the UniProt cluster (G9–G13), the Ensembl cluster directly
-> (C27–C29) and through Babel (C30–C32), and prokn on PubMed ID (PB3). See
+> (C27–C29) and through Babel (C30–C33), prokn on PubMed ID (PB3), and
+> biobricks-pubchem-annotations on the GlyTouCan accession (GT1, 180 glycans). See
 > `metadata/crosswalks.json` for the current table.
 
 **What this is.** An exhaustive sweep of the entity types and ontologies/identifier

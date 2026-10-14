@@ -45,7 +45,7 @@ to ask the tools for.
 |---|---|
 | Gene | Entrez / Ensembl (+ HGNC symbol) |
 | Protein | UniProt (inside glygenkg, a glycosylation record reaches its protein only via a Protein Ontology `PR_` IRI — the recipe gives the rewrite) |
-| Glycan | GlyTouCan (glygenkg only; no data KG shares it; 208 of 1,248 map to CHEBI via ubergraph) |
+| Glycan | GlyTouCan (glygenkg; 180 glycans join biobricks-pubchem-annotations for mass / structure / source organisms; 208 map to CHEBI via ubergraph) |
 | Disease | MONDO / DOID (bridged via ubergraph `skos:exactMatch`) |
 | Phenotype | HP (HPO) |
 | Pathway / function | Reactome `R-HSA`, GO |

@@ -61,7 +61,7 @@ For each crosswalk, list the join key and the SPARQL skeleton
 
 🧠 **Assistant**
 
-The OKN federation has **218 crosswalks**, which collapse into **71 join-key families** (a domain + a shared identifier). They are grouped below by domain and key family — each entry lists every KG pair sharing that key (with its verified `COUNT(DISTINCT)`), the identifier scheme/namespace, and a runnable `COUNT(DISTINCT)` skeleton with the IRI normalization already applied (a naive join on the raw id usually returns 0 rows).
+The OKN federation has **220 crosswalks**, which collapse into **72 join-key families** (a domain + a shared identifier). They are grouped below by domain and key family — each entry lists every KG pair sharing that key (with its verified `COUNT(DISTINCT)`), the identifier scheme/namespace, and a runnable `COUNT(DISTINCT)` skeleton with the IRI normalization already applied (a naive join on the raw id usually returns 0 rows).
 
 **Pairs in one family often need different SPARQL**, so where a family's members diverge, every distinct skeleton is shown and labelled with the pairs it applies to. The CAS family is the clearest case: the biobricks graphs hang the id off `edam:has_identifier`, MeSH exposes it as `meshv:registryNumber`, and SAWGraph/SOCKG store it as a bare literal that must be rebuilt into an IRI. Copy the skeleton for YOUR pair, then extend it with your payload.
 
@@ -627,6 +627,18 @@ SELECT (COUNT(DISTINCT ?g) AS ?n) WHERE {
   { SELECT DISTINCT ?g WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?g a <http://purl.jp/bio/12/glyco/glycan#Saccharide> . } } }
   BIND(CONCAT('glytoucan:', REPLACE(STR(?g),'^.*/','')) AS ?x)
   GRAPH <https://purl.org/okn/frink/kg/ubergraph> { ?c <http://www.geneontology.org/formats/oboInOwl#hasDbXref> ?x . }
+}
+```
+
+**GlyTouCan** — `http://glygen.org/glycan/{accession} (glygenkg glycan node IRI) <-> "{accession}" rdf:value literal on an annotation body (biobricks-pubchem-annotations) -> oa:hasTarget http://rdf.ncbi.nlm.nih.gov/pubchem/compound/CID{n}`: glygenkg × biobricks-pubchem-annotations(180).
+
+```sparql
+SELECT (COUNT(DISTINCT ?glycan) AS ?n) WHERE {
+  { SELECT DISTINCT ?glycan ?body WHERE {
+      { SELECT DISTINCT ?glycan ?acc WHERE { GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?glycan a <http://purl.jp/bio/12/glyco/glycan#Saccharide> . } BIND(STR(REPLACE(STR(?glycan),'^.*/','')) AS ?acc) } }
+      GRAPH <https://purl.org/okn/frink/kg/biobricks-pubchem-annotations> { ?body <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> ?acc . } } }
+  GRAPH <https://purl.org/okn/frink/kg/biobricks-pubchem-annotations> { ?anno <http://www.w3.org/ns/oa#hasBody> ?body ; <http://www.w3.org/ns/oa#hasTarget> ?cid . }
+  FILTER(STRSTARTS(STR(?cid),'http://rdf.ncbi.nlm.nih.gov/pubchem/compound/'))
 }
 ```
 
@@ -1585,7 +1597,7 @@ SELECT (COUNT(DISTINCT ?h) AS ?n) WHERE {
 }
 ```
 
-**Entrez→Ensembl (bridged)** — `http://www.ncbi.nlm.nih.gov/gene/{entrez} (digcfdekg) -> https://www.ensembl.org/id/{ENSG} (prokn gene node IRI)`: digcfdekg → wikidata → prokn(7,965), rdkg → babel → pankgraph(9,159), spoke-genelab → babel → pankgraph(28,554), digcfdekg → babel → pankgraph(34,013), biomarkerkg → babel → pankgraph(200), biobricks-ice → babel → pankgraph(395), rdkg → babel → glygenkg(4,327), digcfdekg → babel → glygenkg(7,928), spoke-genelab → babel → glygenkg(7,932).
+**Entrez→Ensembl (bridged)** — `http://www.ncbi.nlm.nih.gov/gene/{entrez} (digcfdekg) -> https://www.ensembl.org/id/{ENSG} (prokn gene node IRI)`: digcfdekg → wikidata → prokn(7,965), rdkg → babel → pankgraph(9,159), spoke-genelab → babel → pankgraph(28,554), digcfdekg → babel → pankgraph(34,013), biomarkerkg → babel → pankgraph(200), biobricks-ice → babel → pankgraph(395), rdkg → babel → glygenkg(4,327), digcfdekg → babel → glygenkg(7,928), spoke-genelab → babel → glygenkg(7,932), biobricks-ice → babel → glygenkg(187).
 
 _digcfdekg → wikidata → prokn_
 
@@ -1713,6 +1725,21 @@ SELECT (COUNT(DISTINCT ?locus) AS ?n) WHERE {
   FILTER(STRSTARTS(STR(?member),'http://identifiers.org/ncbigene/'))
   BIND(IRI(CONCAT('http://www.ncbi.nlm.nih.gov/gene/', STRAFTER(STR(?member),'ncbigene/'))) AS ?eg)
   GRAPH <https://purl.org/okn/frink/kg/spoke-genelab> { ?eg ?p ?o }
+}
+```
+
+_biobricks-ice → babel → glygenkg_
+
+```sparql
+SELECT (COUNT(DISTINCT ?ent) AS ?n) WHERE {
+  { SELECT DISTINCT ?ent ?member WHERE {
+    { SELECT DISTINCT ?ent ?pref WHERE {
+        { SELECT DISTINCT ?ent ?src WHERE { GRAPH <https://purl.org/okn/frink/kg/biobricks-ice> { ?a <https://ice.ntp.niehs.nih.gov/property/assay_entrez_gene_id> ?x } BIND(REPLACE(STR(?x),'.*/gene/','') AS ?bare) FILTER(?bare != 'None') BIND(IRI(CONCAT('http://identifiers.org/ncbigene/', ?bare)) AS ?ent) BIND(?ent AS ?src) } }
+        GRAPH <https://purl.org/okn/frink/kg/babel> { ?src <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+    GRAPH <https://purl.org/okn/frink/kg/babel> { ?member <http://www.w3.org/2004/02/skos/core#exactMatch> ?pref } } }
+  FILTER(STRSTARTS(STR(?member),'http://identifiers.org/ensembl/'))
+  BIND(IRI(CONCAT('http://rdf.ebi.ac.uk/resource/ensembl/', STRAFTER(STR(?member),'ensembl/'))) AS ?locus)
+  GRAPH <https://purl.org/okn/frink/kg/glygenkg> { ?g <https://sparql.glygen.org/ontology/hasLocus> ?locus }
 }
 ```
 

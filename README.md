@@ -79,7 +79,7 @@ where a question one graph can't answer alone becomes answerable by combining tw
 This section catalogs the verified crosswalks and shows the queries that exercise
 them.
 
-A visual map of the whole network — all 218 crosswalks across 39 graphs, drawn as
+A visual map of the whole network — all 220 crosswalks across 39 graphs, drawn as
 direct KG-to-KG edges (edge width ∝ log of the verified join count). Each crosswalk is
 its own edge, so multiple crosswalks between the same pair of graphs fan out as parallel
 arcs. Identifier-bridged joins (e.g. `DOID↔MONDO` via `ubergraph`, `HGNC→Entrez` via
@@ -99,13 +99,13 @@ geospatial and industrial joins against their authoritative shared standard):
   key, row count, and a one-line note on what each answers. Start here to see which
   graphs connect and on what identifier.
 - **[Cross-KG crosswalk catalog](docs/crosswalks/crosswalks_example.md)** —
-  **444 example questions** worked end-to-end, each with a full transcript (the live
+  **448 example questions** worked end-to-end, each with a full transcript (the live
   SPARQL and its results), across 17 domains (Anatomy & Cell Type, Biology Concepts, Chemicals, Disease &
   Phenotype, Earth Observation, Environmental Toxicology, Function & Pathways, Genes,
   Geospatial, Hydrology, Industry & Supply Chain, Justice & Public Safety, Proteins,
   Publications, Social Determinants & Services, Taxonomy, Variants). Every crosswalk is worked
   twice — the inventory carries
-  **436 questions — two for every one of the 218 crosswalks** — and the catalog has a
+  **440 questions — two for every one of the 220 crosswalks** — and the catalog has a
   transcript behind each one, plus eight questions on four extra stems (a second example on
   the spoke-genelab×spoke-okn Entrez axis, the three-way gene dossier whose clique row
   was retired, and two sawgraph lineage examples, T06 and T11, whose taxon-hub rows were
@@ -122,11 +122,12 @@ geospatial and industrial joins against their authoritative shared standard):
   That refresh also recorded four redeploys (scales, prokn, sawgraph, dreamkg). Every
   transcript they affected — 51 in all — was re-run and regenerated against the current
   releases the same day, and two taxon-hub pairs that no longer hold (sawgraph with
-  spoke-genelab and with the Expression Atlas) were retired. The twelve crosswalks of
+  spoke-genelab and with the Expression Atlas) were retired. The fourteen crosswalks of
   **glygenkg** (GlyGen, human protein glycosylation), loaded into the federation on
   2026-10-13, are worked too: its five UniProt joins (P09–P13), three direct Ensembl joins
-  (G31–G33), three Entrez joins bridged through Babel (G34–G36) and the catalog's first
-  PubMed-keyed join, with ProKN (PUB03).
+  (G31–G33), four Entrez joins bridged through Babel (G34–G37), the catalog's first
+  PubMed-keyed join, with ProKN (PUB03), and a GlyTouCan join that gives 180 of its glycans
+  PubChem's mass, structure and source-organism annotations (C28).
 
 Every catalog row links to a standalone, replayable transcript — the prompt, the
 answer, and every verbatim SPARQL query with its result.

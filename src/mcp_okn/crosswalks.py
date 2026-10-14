@@ -159,6 +159,8 @@ _DOMAIN_BY_SHARED_KEY: dict[str, str] = {
     "InChIKey": "Chemicals",
     # glygenkg glycan IRI (GlyTouCan accession) -> CHEBI via ubergraph hasDbXref
     "GlyTouCan<->CHEBI": "Chemicals",
+    # glygenkg glycan IRI (GlyTouCan accession) -> PubChem annotation body (rdf:value)
+    "GlyTouCan": "Chemicals",
     "NCBITaxon": "Taxonomy",
     "NCBITaxon (biohealth label)": "Taxonomy",
     "S2_L13": "Geospatial",

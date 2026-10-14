@@ -373,7 +373,8 @@ glycan. A glycan is http://glygen.org/glycan/<GlyTouCan accession>; the graph
 holds no structure, mass or composition property, only an rdfs:label such as
 "Hex5HexNAc4 (N-linked, Biantennary)". Read N-linked or O-linked from that
 label (923 and 89 of the 1,248 glycans say so; the rest carry neither word) or
-from the residue.
+from the residue. For 180 glycans, biobricks-pubchem-annotations supplies the
+mass, WURCS structure, motifs and the organisms each is reported in (GT1).
 
 OTHER SITE DATA IS UNTYPED AND PARTIAL. SNVs (7,482, with gly:glycoeffect on
 3,969), phosphorylation sites (302) and a second glycosylation-site annotation
@@ -387,7 +388,8 @@ JOIN KEYS. All human (one taxon, NCBITaxon_9606). UniProt: the up:Protein node
 IRI. Ensembl: the gly:hasLocus object http://rdf.ebi.ac.uk/resource/ensembl/
 <ENSG>, a form no other graph uses, so rebuild the partner's form from the
 bare id. PubMed: the id is inside the evidence IRI
-http://glygen.org/evidence/PubMed_<PMID>. GlyTouCan: inside the glycan IRI.
+http://glygen.org/evidence/PubMed_<PMID>. GlyTouCan: inside the glycan IRI;
+biobricks-pubchem-annotations holds it as a plain rdf:value string.
 Call get_join_strategy("glygenkg", <kg>) for the verified recipe before
 writing a cross-graph query.\
 """

@@ -93,6 +93,14 @@ async def test_one_pair_can_join_on_two_identifier_axes():
     assert {r["shared_key"] for r in out["joins"]} == {"UniProt", "PubMed ID"}
 
 
+async def test_glycans_join_pubchem_annotations_on_the_glytoucan_accession():
+    # glygenkg's glycans reach a data KG: PubChem's GlyTouCan annotations hold the
+    # accession as an rdf:value string. Before GT1 this pair had no recipe at all.
+    out = await get_join_strategy("glygenkg", "biobricks-pubchem-annotations")
+    assert out["status"] == "verified"
+    assert [r["shared_key"] for r in out["joins"]] == ["GlyTouCan"]
+
+
 async def test_de_islanded_kg_reports_its_new_join():
     # The reverse guard: a KG whose island record has been superseded must return the
     # recipe, not the stale verdict. medical-device-kg joins spoke-okn on ZIP5.
