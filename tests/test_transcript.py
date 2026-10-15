@@ -708,7 +708,7 @@ async def test_json_format_includes_log():
 
 
 async def test_unsupported_format_returns_error():
-    out = await create_chat_transcript(model="m", format="pdf")
+    out = await create_chat_transcript(model="m", format="docx")
     assert "error" in out
 
 

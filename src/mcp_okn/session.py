@@ -49,7 +49,14 @@ _GRAPH_RE = re.compile(r"GRAPH\s*<https://purl\.org/okn/frink/kg/([^>]+)>")
 class _Store:
     """The mutable per-session state: query log, diagrams, last transcript."""
 
-    __slots__ = ("last_transcript", "log", "skipped", "visualizations")
+    __slots__ = (
+        "last_transcript",
+        "last_transcript_html",
+        "last_transcript_pdf",
+        "log",
+        "skipped",
+        "visualizations",
+    )
 
     def __init__(self) -> None:
         self.log: list[dict[str, Any]] = []
@@ -60,6 +67,8 @@ class _Store:
         self.skipped: list[dict[str, Any]] = []
         self.visualizations: list[dict[str, Any]] = []
         self.last_transcript: str | None = None
+        self.last_transcript_html: str | None = None
+        self.last_transcript_pdf: bytes | None = None
 
 
 #: Scope used when the caller doesn't name one. A single (non-parallel) analysis
@@ -292,6 +301,33 @@ def last_transcript(scope: str | None = None) -> str | None:
     return _current_store(scope).last_transcript
 
 
+def set_last_transcript_rendering(
+    *, html: str | None = None, pdf: bytes | None = None, scope: str | None = None
+) -> None:
+    """Store the latest HTML and/or PDF rendering of the transcript.
+
+    Exposed via the ``transcript://session/latest.html`` / ``latest.pdf`` resources,
+    the counterparts of the Markdown one, so a client can fetch the rendered file
+    directly. Each is replaced only when given, so an HTML render never discards an
+    earlier PDF (and vice versa).
+    """
+    store = _current_store(scope)
+    if html is not None:
+        store.last_transcript_html = html
+    if pdf is not None:
+        store.last_transcript_pdf = pdf
+
+
+def last_transcript_html(scope: str | None = None) -> str | None:
+    """Return the most recent HTML rendering of the transcript, or None."""
+    return _current_store(scope).last_transcript_html
+
+
+def last_transcript_pdf(scope: str | None = None) -> bytes | None:
+    """Return the most recent PDF rendering of the transcript, or None."""
+    return _current_store(scope).last_transcript_pdf
+
+
 def reset(scope: str | None = None) -> int:
     """Clear ONE scope's log (queries, visualizations, last transcript).
 
@@ -306,4 +342,6 @@ def reset(scope: str | None = None) -> int:
     store.skipped.clear()
     store.visualizations.clear()
     store.last_transcript = None
+    store.last_transcript_html = None
+    store.last_transcript_pdf = None
     return n

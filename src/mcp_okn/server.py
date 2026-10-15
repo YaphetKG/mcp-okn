@@ -56,6 +56,8 @@ from .tools.transcript import (
     create_reproducibility_record,
     get_query_log,
     get_skipped_queries,
+    latest_transcript_html_resource,
+    latest_transcript_pdf_resource,
     latest_transcript_resource,
     reset_query_log,
 )
@@ -93,6 +95,8 @@ __all__ = [
     "get_server_info",
     "get_skipped_queries",
     "get_valid_contrasts",
+    "latest_transcript_html_resource",
+    "latest_transcript_pdf_resource",
     "latest_transcript_resource",
     "list_crosswalks",
     "list_kgs",

@@ -7,10 +7,13 @@ latest-transcript MCP resource.
 from __future__ import annotations
 
 import re
+import tempfile
 from datetime import date as _date
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
 
+from mcp.types import ResourceLink, TextContent
 from sparql_to_mermaid import try_to_mermaid
 
 from .. import __version__, session
@@ -18,6 +21,19 @@ from ..app import mcp
 from ..build_info import build_id, build_suffix
 from ..mermaid_namespace import namespace_document
 from ..sparql import FEDERATION_ENDPOINT, named_graph
+from ..transcript_render import (
+    MERMAID_LABEL,
+    PdfRendererUnavailable,
+    html_to_pdf,
+    markdown_to_html,
+)
+
+#: `create_chat_transcript` formats that render the Markdown document; `json` is
+#: the structured alternative. `html`/`pdf` are conversions of the Markdown.
+_DOCUMENT_FORMATS = ("markdown", "html", "pdf")
+LATEST_URI = "transcript://session/latest"
+LATEST_HTML_URI = "transcript://session/latest.html"
+LATEST_PDF_URI = "transcript://session/latest.pdf"
 
 # NOTE: turning per-query diagrams OFF (include_query_diagrams=False) is only HALF the defer-and-re-add
 # flow — the diagrams must be re-added before delivering (see the `include_query_diagrams` arg doc and
@@ -162,6 +178,8 @@ def _render_stub(
     skills: list[str] | None = None,
     mcp_servers: list[str] | None = None,
     recovery: str = "",
+    resource: str = LATEST_URI,
+    kind: str = "markdown",
 ) -> str:
     """Return a compact stand-in when the full transcript is too large to hand back.
 
@@ -170,7 +188,9 @@ def _render_stub(
     and points the caller there, so it never reconstructs a truncated one. When
     ``recovery`` is given, it is appended as a second blockquote — a tool-specific,
     ACTIONABLE way to obtain an inline-fitting document (e.g. curating a lean record's
-    `supporting` set), so the stub is a next step, not a dead end.
+    `supporting` set), so the stub is a next step, not a dead end. ``resource`` and
+    ``kind`` name where the full document lives and what it is (the HTML rendering
+    is published at its own resource).
     """
     kg_list = ", ".join(f"`{k['shortname']}`" for k in kgs) or "_none_"
     lines = [
@@ -192,8 +212,8 @@ def _render_stub(
         f"> This transcript ({n_chars:,} chars) exceeds the inline result size, "
         "so the full body was NOT returned here — returning it risks a harness "
         "spill/truncation and a fabricated substitute. The COMPLETE, verbatim "
-        "markdown is published at the read-only MCP resource "
-        "`transcript://session/latest`: the client can fetch/save it DIRECTLY, "
+        f"{kind} is published at the read-only MCP resource "
+        f"`{resource}`: the client can fetch/save it DIRECTLY, "
         "bypassing the size limit and the model's context (this works even when "
         "the server is hosted remotely). Point the user there — do NOT "
         "hand-write, summarize, or reconstruct a substitute transcript.",
@@ -589,8 +609,17 @@ async def create_chat_transcript(
             a phantom source in the returned warnings — credit a KG only if a
             logged query used it.
         date: ISO date (`YYYY-MM-DD`) of the session. Defaults to today.
-        format: `markdown` (default) for a rendered document string, or `json`
-            for the structured fields.
+        format: `markdown` (default) for a rendered document string; `html` or
+            `pdf` when the user asks for an .html or .pdf transcript; or `json`
+            for the structured fields. `html` and `pdf` are conversions of the
+            same markdown document, with every ```mermaid block drawn as an image
+            by the latest Mermaid 12.x instead of shown as source. `html` returns
+            a standalone page (string) to save verbatim as `.html`; it loads
+            Mermaid from jsDelivr when opened. `pdf` prints that page in
+            headless Chromium on the server and returns a short summary plus a
+            link to `transcript://session/latest.pdf` (and a server-local file
+            path) — the PDF bytes are not inlined. If the server has no Chromium,
+            `pdf` returns an `error` naming the fix; fall back to `html`.
         title: Heading for the transcript.
         include_query_log: If true (default), append the auto-logged queries
             as a "SPARQL queries executed" section.
@@ -679,6 +708,13 @@ async def create_chat_transcript(
         Mermaid diagram of the query — see `include_query_diagrams`), their
         result tables, and schema diagrams in fenced ```mermaid blocks under the
         answer.
+        For `html`: the transcript as one standalone HTML page (or a stub
+        pointing at `transcript://session/latest.html` when it exceeds
+        `max_inline_chars`). SAVE IT VERBATIM to a `.html` file, exactly like
+        the markdown.
+        For `pdf`: a summary line with the PDF's resource link
+        (`transcript://session/latest.pdf`) and server-local path; deliver that
+        file, never a PDF you produce yourself.
         For `json`: a dict with `title`, `date`, `model`, `exchanges`,
         `knowledge_graphs`, `query_log`, `visualizations`, and
         `sparql_endpoint`.
@@ -783,8 +819,11 @@ async def create_chat_transcript(
             payload["warnings"] = warnings
         return payload
 
-    if format != "markdown":
-        return {"error": f"Unsupported format {format!r}; use 'markdown' or 'json'."}
+    if format not in _DOCUMENT_FORMATS:
+        return {
+            "error": f"Unsupported format {format!r}; use 'markdown', 'html', "
+            "'pdf', or 'json'."
+        }
 
     # Build the BODY first (conversation + query appendix + schema diagrams), then
     # derive the header's Contents manifest from what actually rendered — so the
@@ -858,21 +897,114 @@ async def create_chat_transcript(
                 body += [f"_{ctx}_", ""]
             body += ["```mermaid", (viz.get("mermaid") or "").strip(), "```", ""]
 
-    return _finalize_document(
+    rendered = format != "markdown"
+    document = _finalize_document(
         title=title,
         when=when,
         model=model,
         kgs=kgs,
         body=body,
-        warnings=warnings,
+        # html/pdf convert the CLEAN, complete markdown (also published at
+        # transcript://session/latest); their own size guard and warnings apply below.
+        warnings=[] if rendered else warnings,
         n_schema_diagrams=len(visualizations),
         n_queries_for_stub=len(log),
         n_viz_for_stub=len(visualizations),
         scope=scope,
-        max_inline_chars=max_inline_chars,
+        max_inline_chars=None if rendered else max_inline_chars,
         skills=skill_list,
         mcp_servers=server_list,
     )
+    if not rendered:
+        return document
+    page = markdown_to_html(document, title)
+    session.set_last_transcript_rendering(html=page, scope=scope)
+    if format == "html":
+        if max_inline_chars is not None and len(page) > max_inline_chars:
+            page = _render_stub(
+                title=title,
+                when=when,
+                model=model,
+                kgs=kgs,
+                n_chars=len(page),
+                n_lines=page.count("\n") + 1,
+                n_queries=len(log),
+                n_viz=len(visualizations),
+                skills=skill_list,
+                mcp_servers=server_list,
+                resource=LATEST_HTML_URI,
+                kind="HTML page",
+            )
+        if warnings:
+            note = "\n".join(f"<!-- mcp-okn WARNING: {w} -->" for w in warnings)
+            return f"{note}\n{page}"
+        return page
+    return await _deliver_pdf(
+        page, title=title, when=when, warnings=warnings, scope=scope
+    )
+
+
+def _pdf_path(title: str, when: str) -> Path:
+    """Return where a rendered PDF is written on the machine running the server.
+
+    A fixed directory under the system temp dir and a filename slugged from the title
+    and date: the caller never chooses the path, so a remote client cannot make a
+    hosted server write anywhere else.
+    """
+    slug = re.sub(r"[^A-Za-z0-9]+", "-", title).strip("-").lower()[:60] or "transcript"
+    folder = Path(tempfile.gettempdir()) / "mcp-okn-transcripts"
+    folder.mkdir(parents=True, exist_ok=True)
+    return folder / f"{slug}-{when}.pdf"
+
+
+async def _deliver_pdf(
+    page: str,
+    *,
+    title: str,
+    when: str,
+    warnings: list[str],
+    scope: str | None,
+) -> Any:
+    """Print the HTML transcript to PDF and return a summary plus a link to it.
+
+    The PDF itself is NOT inlined in the tool result — a multi-megabyte base64 blob
+    would flood the model's context. It is published at
+    ``transcript://session/latest.pdf`` (returned as a resource link the client can
+    fetch) and written to a server-local file, which a client running mcp-okn on
+    its own machine can copy directly.
+    """
+    try:
+        pdf = await html_to_pdf(page)
+    except PdfRendererUnavailable as exc:
+        return {
+            "error": str(exc),
+            "html_resource": LATEST_HTML_URI,
+            "warnings": warnings,
+        }
+    session.set_last_transcript_rendering(pdf=pdf, scope=scope)
+    path = _pdf_path(title, when)
+    path.write_bytes(pdf)
+    lines = [
+        f"PDF transcript rendered ({len(pdf):,} bytes; diagrams drawn by "
+        f"{MERMAID_LABEL}).",
+        f"- Resource: `{LATEST_PDF_URI}` — fetch/save it from there (works when the "
+        "server is hosted remotely).",
+        f"- Server-local file: `{path}` — usable only when mcp-okn runs on the same "
+        "machine as you; copy it to the user's folder.",
+        "Deliver this file as-is; do not regenerate the PDF yourself.",
+        *(f"WARNING: {w}" for w in warnings),
+    ]
+    return [
+        TextContent(type="text", text="\n".join(lines)),
+        ResourceLink(
+            type="resource_link",
+            name=path.name,
+            title=title,
+            uri=LATEST_PDF_URI,  # type: ignore[arg-type]
+            mimeType="application/pdf",
+            size=len(pdf),
+        ),
+    ]
 
 
 @mcp.tool()
@@ -1191,6 +1323,52 @@ def latest_transcript_resource() -> str:
             "rendered document then appears here."
         )
     return md
+
+
+@mcp.resource(
+    LATEST_HTML_URI,
+    name="Latest chat transcript (HTML)",
+    description=(
+        "The most recent create_chat_transcript rendering in format='html' or "
+        "'pdf': a standalone HTML page whose diagrams are drawn by "
+        f"{MERMAID_LABEL}. Fetch/save it directly as a .html file."
+    ),
+    mime_type="text/html",
+)
+def latest_transcript_html_resource() -> str:
+    """Return the last HTML transcript rendering, or a placeholder if none yet."""
+    page = session.last_transcript_html()
+    if not page:
+        return (
+            "<!doctype html><title>No transcript yet</title><p>Call "
+            "<code>create_chat_transcript</code> with <code>format='html'</code> "
+            "first; the rendered page then appears here.</p>"
+        )
+    return page
+
+
+@mcp.resource(
+    LATEST_PDF_URI,
+    name="Latest chat transcript (PDF)",
+    description=(
+        "The most recent create_chat_transcript rendering in format='pdf'. "
+        "Fetch/save it directly as a .pdf file."
+    ),
+    mime_type="application/pdf",
+)
+def latest_transcript_pdf_resource() -> bytes:
+    """Return the last PDF transcript rendering.
+
+    Raises:
+        ValueError: No PDF has been rendered yet this session (an empty "PDF"
+            would be saved as a broken file, so this fails loudly instead).
+    """
+    pdf = session.last_transcript_pdf()
+    if not pdf:
+        raise ValueError(
+            "No PDF transcript yet: call create_chat_transcript with format='pdf' first."
+        )
+    return pdf
 
 
 # Internal bookkeeping the model sometimes buries in a query `description`
