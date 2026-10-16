@@ -300,3 +300,20 @@ def test_naics_code_and_census_definition():
         "2022",
     )
     assert cut.description.endswith("Makes pet food.")
+
+
+def test_alt_label_counts_only_in_graphs_that_declare_it():
+    alt = "http://www.w3.org/2004/02/skos/core#altLabel"
+    linkml = "https://w3id.org/linkml/ClassDefinition"
+    rows = [
+        {
+            "u": SUD + "ASG",
+            "g": KG + "sudokn",
+            "p": alt,
+            "o": "Aluminum Silicate Glass",
+        },
+        {"u": linkml, "g": KG + "ubergraph", "p": alt, "o": "message"},
+    ]
+    hits = vt.pick_federation_hits(rows, {})
+    assert hits[SUD + "ASG"].label == "Aluminum Silicate Glass"
+    assert linkml not in hits

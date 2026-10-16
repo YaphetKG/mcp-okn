@@ -56,11 +56,13 @@ _CURATED_USAGE = ("owl:onProperty", "never asserted", "not populated")
 _RESTRICTION_COUNT = re.compile(r"owl:onProperty of ([\d,]+)")
 
 #: Extra text predicates for the cross-graph lookup (on top of the builder's).
-EXTRA_LABEL_PREDICATES = (
-    "http://www.w3.org/2004/02/skos/core#prefLabel",
-    # sudokn's registry entry names altLabel as its second label role.
-    "http://www.w3.org/2004/02/skos/core#altLabel",
-)
+EXTRA_LABEL_PREDICATES = ("http://www.w3.org/2004/02/skos/core#prefLabel",)
+
+#: skos:altLabel is a label only where a KG's okn-registry entry says so (sudokn's
+#: ``label`` role lists it). Elsewhere it holds synonyms: LinkML's altLabel for
+#: ClassDefinition is "message", for class_uri "public ID".
+ALT_LABEL = "http://www.w3.org/2004/02/skos/core#altLabel"
+ALT_LABEL_GRAPHS = frozenset({"sudokn"})
 EXTRA_DESCRIPTION_PREDICATES = (
     "http://www.w3.org/2004/02/skos/core#scopeNote",
     "http://schema.org/description",
@@ -290,6 +292,7 @@ def federation_text_query(uris: Iterable[str]) -> str:
         for p in (
             *LABEL_PREDICATES,
             *EXTRA_LABEL_PREDICATES,
+            ALT_LABEL,
             *DESCRIPTION_PREDICATES,
             *EXTRA_DESCRIPTION_PREDICATES,
         )
@@ -312,7 +315,7 @@ def pick_federation_hits(
     within a graph, predicates in preference order. ``own_graph`` maps a URI to the
     graph of the KG being filled.
     """
-    label_rank = [*LABEL_PREDICATES, *EXTRA_LABEL_PREDICATES]
+    label_rank = [*LABEL_PREDICATES, *EXTRA_LABEL_PREDICATES, ALT_LABEL]
     desc_rank = [*DESCRIPTION_PREDICATES, *EXTRA_DESCRIPTION_PREDICATES]
     best: dict[str, dict[str, tuple[tuple[int, str, int, str], str]]] = {}
     for r in rows:
@@ -321,6 +324,8 @@ def pick_federation_hits(
         if not (u and g and text):
             continue
         shortname = g.removeprefix(_KG_PREFIX)
+        if p == ALT_LABEL and shortname not in ALT_LABEL_GRAPHS:
+            continue
         g_rank = 0 if g == own_graph.get(u) else 1 if shortname == "ubergraph" else 2
         for kind, ranking in (("label", label_rank), ("description", desc_rank)):
             if p in ranking:

@@ -16155,7 +16155,7 @@
   },
   "https://w3id.org/linkml/AltDescription": {
    "description": "an attributed description",
-   "label": "structured description",
+   "label": "",
    "source": "LinkML"
   },
   "https://w3id.org/linkml/Annotation": {
@@ -16165,7 +16165,7 @@
   },
   "https://w3id.org/linkml/ClassDefinition": {
    "description": "an element whose instances are complex objects that may have slot-value assignments",
-   "label": "message",
+   "label": "",
    "source": "LinkML"
   },
   "https://w3id.org/linkml/Example": {
@@ -16180,12 +16180,12 @@
   },
   "https://w3id.org/linkml/SchemaDefinition": {
    "description": "A collection of definitions that make up a schema or a data model.",
-   "label": "data dictionary",
+   "label": "",
    "source": "LinkML"
   },
   "https://w3id.org/linkml/SlotDefinition": {
    "description": "an element that describes how instances are related to other instances",
-   "label": "attribute",
+   "label": "",
    "source": "LinkML"
   },
   "https://w3id.org/linkml/SubsetDefinition": {
@@ -16210,7 +16210,7 @@
   },
   "https://w3id.org/linkml/alt_descriptions": {
    "description": "A sourced alternative description for an element",
-   "label": "alternate definitions",
+   "label": "",
    "source": "LinkML"
   },
   "https://w3id.org/linkml/annotations": {
@@ -16226,7 +16226,7 @@
   "https://w3id.org/linkml/canonical_predicate": null,
   "https://w3id.org/linkml/class_uri": {
    "description": "URI of the class that provides a semantic interpretation of the element in a linked data context. The URI may come from any namespace and may be shared between schemas",
-   "label": "public ID",
+   "label": "",
    "source": "LinkML"
   },
   "https://w3id.org/linkml/classes": {
@@ -16271,7 +16271,7 @@
   },
   "https://w3id.org/linkml/designates_type": {
    "description": "True means that the key slot(s) is used to determine the instantiation (types) relation between objects and a ClassDefinition",
-   "label": "type designator",
+   "label": "",
    "source": "LinkML"
   },
   "https://w3id.org/linkml/domain": {
@@ -16322,7 +16322,7 @@
   },
   "https://w3id.org/linkml/identifier": {
    "description": "True means that the slot is the identifier slot of its class. Such a slot uniquely identifies instances of the class throughout an entire document, meaning there cannot be two (or more) instances of the class (or instances of any of its descendants) with the same value for the identifier slot anywhere in the document.",
-   "label": "ID",
+   "label": "",
    "source": "LinkML"
   },
   "https://w3id.org/linkml/imported_from": {
@@ -16368,7 +16368,7 @@
   "https://w3id.org/linkml/local_names": null,
   "https://w3id.org/linkml/meaning": {
    "description": "the value meaning of a permissible value",
-   "label": "PV meaning",
+   "label": "",
    "source": "LinkML"
   },
   "https://w3id.org/linkml/metamodel_version": {
@@ -16378,12 +16378,12 @@
   },
   "https://w3id.org/linkml/mixin": {
    "description": "Indicates the class or slot is intended to be inherited from without being an is_a parent. mixins should not be inherited from using is_a, except by other mixins.",
-   "label": "trait",
+   "label": "",
    "source": "LinkML"
   },
   "https://w3id.org/linkml/mixins": {
    "description": "A collection of secondary parent classes or slots from which inheritable metaslots are propagated from.",
-   "label": "traits",
+   "label": "",
    "source": "LinkML"
   },
   "https://w3id.org/linkml/multivalued": {
@@ -16405,7 +16405,7 @@
   },
   "https://w3id.org/linkml/permissible_values": {
    "description": "A list of possible values for a slot range",
-   "label": "coded values",
+   "label": "",
    "source": "LinkML"
   },
   "https://w3id.org/linkml/prefix_prefix": {
@@ -16425,7 +16425,7 @@
   },
   "https://w3id.org/linkml/range": {
    "description": "defines the type of the object of the slot. Given the following slot definition S1: domain: C1 range: C2 the declaration X: S1: Y implicitly asserts Y is an instance of C2",
-   "label": "value domain",
+   "label": "",
    "source": "LinkML"
   },
   "https://w3id.org/linkml/reachable_from": {
@@ -16435,7 +16435,7 @@
   },
   "https://w3id.org/linkml/relationship_types": {
    "description": "A list of relationship types (properties) that are used in a reachability query",
-   "label": "predicates",
+   "label": "",
    "source": "LinkML"
   },
   "https://w3id.org/linkml/repr": {
@@ -16455,7 +16455,7 @@
   },
   "https://w3id.org/linkml/slot_uri": {
    "description": "URI of the class that provides a semantic interpretation of the slot in a linked data context. The URI may come from any namespace and may be shared between schemas.",
-   "label": "public ID",
+   "label": "",
    "source": "LinkML"
   },
   "https://w3id.org/linkml/slot_usage": {
@@ -16470,7 +16470,7 @@
   },
   "https://w3id.org/linkml/source": {
    "description": "A related resource from which the element is derived.",
-   "label": "derived from",
+   "label": "",
    "source": "LinkML"
   },
   "https://w3id.org/linkml/source_file": {
@@ -16495,7 +16495,7 @@
   },
   "https://w3id.org/linkml/source_ontology": {
    "description": "An ontology or vocabulary or terminology that is used in a query to obtain a set of permissible values",
-   "label": "terminology",
+   "label": "",
    "source": "LinkML"
   },
   "https://w3id.org/linkml/subsets": {
