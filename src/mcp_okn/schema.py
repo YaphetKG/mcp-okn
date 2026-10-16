@@ -1579,6 +1579,10 @@ MAX_DIAGRAM_ARROWS = 100
 #: Labels shown on one merged arrow; the rest become "+N more" (hydrologykg packed
 #: a 498-character label of spatial predicates onto one arrow).
 MAX_ARROW_LABELS = 4
+#: Edge classes sharing source, target and edge properties are drawn as one box
+#: (listing their names) from this many on: spoke-genelab's three MEASURED_*
+#: relationships stay separate, biohealth's 66 Entity -> Entity ones merge.
+MIN_EDGE_GROUP = 4
 
 _ARROW = re.compile(r"^  (\S+) --> (\S+)(?: : (.*))?$")
 
@@ -1786,19 +1790,40 @@ def build_mermaid_diagram(
         if member not in declared[cid]:
             declared[cid].append(member)
 
-    # Edge predicates with properties → intermediary classes.
+    # Edge predicates with properties → intermediary classes. Relationships that
+    # share source, target and edge properties are drawn as ONE box listing their
+    # names (biohealth: 66 Entity -> Entity relationships, each with only
+    # `source`, made a fan of 132 arrows into one box).
+    edges: list[tuple[str, list[str], str, str]] = []
     for rel_label, edge_info in edge_properties.items():
-        edge_id = _mermaid_id(rel_label)
         members = []
         for prop in edge_info.get("properties", []):
             mtype = _member_type(prop.get("description", ""))
             member = f"{mtype} {_mermaid_id(prop.get('label', ''))}".strip()
             if member and member not in members:
                 members.append(member)
+        src, tgt = edge_info.get("source_class", ""), edge_info.get("target_class", "")
+        edges.append((rel_label, members, src, tgt))
+    groups: dict[tuple[str, str, tuple[str, ...]], list[str]] = {}
+    for rel_label, members, src, tgt in edges:
+        groups.setdefault((src, tgt, tuple(sorted(members))), []).append(rel_label)
+    drawn_groups: set[tuple[str, str, tuple[str, ...]]] = set()
+    for rel_label, members, src, tgt in edges:
+        key = (src, tgt, tuple(sorted(members)))
+        names = groups[key]
+        if len(names) >= MIN_EDGE_GROUP:
+            if key in drawn_groups:
+                continue
+            drawn_groups.add(key)
+            src_name = _mermaid_id(iri_label.get(src, src)) if src else "Any"
+            tgt_name = _mermaid_id(iri_label.get(tgt, tgt)) if tgt else "Any"
+            edge_id = f"{src_name}_to_{tgt_name}_{len(names)}_relationships"
+            members = members + [_mermaid_id(n) for n in sorted(names)]
+        else:
+            edge_id = _mermaid_id(rel_label)
         declared[edge_id] = members
         if edge_id not in edge_class_ids:
             edge_class_ids.append(edge_id)
-        src, tgt = edge_info.get("source_class", ""), edge_info.get("target_class", "")
         if src:
             relationships.append(f"  {ensure_class(src)} --> {edge_id}")
         if tgt:

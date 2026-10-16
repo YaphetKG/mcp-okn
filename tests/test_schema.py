@@ -885,3 +885,37 @@ def test_owl_predicates_are_not_drawn_as_relationships():
     assert "Observation --> Sample : has feature of interest" in diagram
     assert "same as" not in diagram
     assert "animal_material" not in diagram and "organism_material" not in diagram
+
+
+def test_edge_classes_with_same_ends_and_properties_merge_into_one_box():
+    """biohealth: dozens of Entity -> Entity relationships, each with only `source`."""
+    names = ["TREATS", "CAUSES", "INHIBITS", "NEG_TREATS", "PREVENTS"]
+    edge_properties = {
+        n: {
+            "source_class": "Entity",
+            "target_class": "Entity",
+            "properties": [{"label": "source", "description": "(string)"}],
+        }
+        for n in names
+    }
+    edge_properties["MEASURED"] = {
+        "source_class": "Assay",
+        "target_class": "Gene",
+        "properties": [{"label": "log2fc", "description": "(float)"}],
+    }
+    schema = {
+        "classes": {
+            "columns": ["uri", "label"],
+            "data": [["u:E", "Entity"], ["u:A", "Assay"], ["u:G", "Gene"]],
+        },
+        "edge_properties": edge_properties,
+    }
+    diagram = build_mermaid_diagram("biohealth", schema)
+    box = "Entity_to_Entity_5_relationships"
+    assert f"  Entity --> {box}" in diagram and f"  {box} --> Entity" in diagram
+    arrows = [line for line in diagram.splitlines() if " --> " in line]
+    assert arrows.count(f"  {box} --> Entity") == 1  # one arrow back, not five
+    assert len([a for a in arrows if a.endswith("--> Entity")]) == 1
+    for n in names:
+        assert f"    {n}" in diagram  # each name listed in the box
+    assert "Assay --> MEASURED" in diagram  # a lone relationship keeps its own box
