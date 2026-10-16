@@ -173,6 +173,7 @@ def test_axiom_property_rows_cover_owl_relations_void_cannot_see():
     assert "owl:onProperty of 14 owl:Restrictions" in ox.note
     assert "of 1 owl:Restriction;" in part.note
     assert (lat.source_class, lat.triples) == ("", 0)
+    assert (ox.pattern, part.pattern, lat.pattern) == ("axiom", "axiom", "declared")
     assert lat.note.startswith("Declared in the schema")
 
 
@@ -206,6 +207,7 @@ async def test_build_kg_schema_adds_owl_axiom_properties(monkeypatch):
     rows, notes = await vs.build_kg_schema("bio101", log=lambda _m: None)
     (ox,) = _by(rows, AURA + "has-oxidized-form")
     assert (ox.type, ox.triples, ox.label) == ("Predicate", 0, "has-oxidized-form")
+    assert ox.pattern == "axiom"
     assert "never asserted as a direct triple" in ox.description
     assert notes == []
 
@@ -388,6 +390,9 @@ async def test_build_kg_schema_driver_end_to_end(monkeypatch):
     assert (edge.uri, edge.triples) == (SG + "log2fc", 50208066)
     (reified_only,) = _by(rows, SG + "R")
     assert (reified_only.source_class, reified_only.triples) == (BL + "Gene", 9)
+    assert reified_only.pattern == "reified"
+    assert {r.pattern for r in _by(rows, SG + "PERFORMED_SpAS")} == {"direct"}
+    assert edge.pattern == "" and all(not r.pattern for r in rows if r.type == "Class")
     assert all(r.label for r in rows)
     assert notes == []
 
@@ -416,3 +421,27 @@ async def test_check_freshness_unknown_when_count_times_out(monkeypatch):
     monkeypatch.setattr(vs, "run_sparql", fake)
     got = await vs.check_freshness("ubergraph")
     assert got["matches"] is None and "timed out" in got["error"]
+
+
+def test_add_patterns_marks_direct_predicates_also_reified_or_in_axioms():
+    """spoke-genelab's expression edge: 50,208,066 asserted triples AND statements."""
+    rows = [
+        vs.SchemaRow(DE, "Predicate", pattern="direct"),
+        vs.SchemaRow(AURA + "in-concept", "Predicate", pattern="direct"),
+        vs.SchemaRow(SG + "log2fc", "Predicate", edge_property_of=DE),
+        vs.SchemaRow(BL + "Gene", "Class"),
+    ]
+    vs.add_patterns(rows, {DE: 50208066}, {AURA + "in-concept": 3})
+    assert [r.pattern for r in rows] == ["direct;reified", "direct;axiom", "", ""]
+    assert (
+        rows[1].note
+        == "Also used inside class axioms, as owl:onProperty of 3 owl:Restrictions."
+    )
+
+
+def test_validate_rows_flags_unknown_pattern():
+    rec = dict.fromkeys(vs.COLUMNS, "")
+    ok = {**rec, "URI": "u", "Type": "Predicate", "Pattern": "direct;reified"}
+    bad = {**rec, "URI": "u", "Type": "Predicate", "Pattern": "direct;edge"}
+    assert vs.validate_rows([ok], vs.COLUMNS) == []
+    assert any("Pattern" in p for p in vs.validate_rows([bad], vs.COLUMNS))

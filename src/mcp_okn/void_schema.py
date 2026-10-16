@@ -59,10 +59,19 @@ COLUMNS = [
     "SourceClass",
     "TargetClass",
     "Triples",
+    "Pattern",
 ]
 
 #: Columns of the curated proto-okn ``*_entities.csv`` files.
-CURATED_COLUMNS = COLUMNS[:-1]
+CURATED_COLUMNS = COLUMNS[:7]
+
+#: How a predicate is stored, which decides the query shape (``Pattern`` column):
+#: ``direct`` asserted triples (``?s <p> ?o``); ``reified`` the subject of
+#: ``rdf:Statement``s with ``rdf:predicate <p>`` (edge properties hang off them);
+#: ``axiom`` only as ``owl:onProperty`` of OWL restrictions; ``declared`` declared
+#: and used nowhere. Several are joined with ``;`` in this order (spoke-genelab's
+#: expression edge is ``direct;reified``). Class and edge-property rows carry none.
+PATTERNS = ("direct", "reified", "axiom", "declared")
 
 VOID = "http://rdfs.org/ns/void#"
 VOID_EXT = "http://ldf.fi/void-ext#"
@@ -124,6 +133,8 @@ class SchemaRow:
     triples: int | None = None
     #: Data-derived usage text appended to the description (not a CSV column).
     note: str = ""
+    #: :data:`PATTERNS` values, ``;``-joined.
+    pattern: str = ""
 
     def as_record(self) -> list[str]:
         """The row as CSV cells, in :data:`COLUMNS` order."""
@@ -136,6 +147,7 @@ class SchemaRow:
             self.source_class,
             self.target_class,
             "" if self.triples is None else str(self.triples),
+            self.pattern,
         ]
 
 
@@ -430,21 +442,35 @@ def predicate_rows(
         for target, n in sorted((part.classes or {}).items()):
             rows.append(
                 SchemaRow(
-                    prop, "Predicate", source_class=cls, target_class=target, triples=n
+                    prop,
+                    "Predicate",
+                    source_class=cls,
+                    target_class=target,
+                    triples=n,
+                    pattern="direct",
                 )
             )
             assigned += n
         for target, n in sorted((part.datatypes or {}).items()):
             rows.append(
                 SchemaRow(
-                    prop, "Predicate", source_class=cls, target_class=target, triples=n
+                    prop,
+                    "Predicate",
+                    source_class=cls,
+                    target_class=target,
+                    triples=n,
+                    pattern="direct",
                 )
             )
             assigned += n
         if part.total is not None and part.total > assigned:
             rows.append(
                 SchemaRow(
-                    prop, "Predicate", source_class=cls, triples=part.total - assigned
+                    prop,
+                    "Predicate",
+                    source_class=cls,
+                    triples=part.total - assigned,
+                    pattern="direct",
                 )
             )
     for b in dataset_properties:
@@ -457,7 +483,9 @@ def predicate_rows(
         ):
             continue
         seen_props.add(prop)
-        rows.append(SchemaRow(prop, "Predicate", triples=_int(b.get("n"))))
+        rows.append(
+            SchemaRow(prop, "Predicate", triples=_int(b.get("n")), pattern="direct")
+        )
     return rows
 
 
@@ -588,11 +616,12 @@ def reified_only_rows(
             source_class=b["sc"],
             target_class=b["oc"],
             triples=_int(b.get("n")),
+            pattern="reified",
         )
         for b in bindings
         if b.get("sc") and b.get("oc")
     ]
-    return rows or [SchemaRow(pred, "Predicate", triples=statements)]
+    return rows or [SchemaRow(pred, "Predicate", triples=statements, pattern="reified")]
 
 
 def axiom_property_rows(
@@ -634,9 +663,36 @@ def axiom_property_rows(
                     target_class=rng,
                     triples=0,
                     note=note,
+                    pattern="axiom" if n else "declared",
                 )
             )
     return rows
+
+
+def add_patterns(
+    rows: list[SchemaRow], reified: Iterable[str], axioms: dict[str, int]
+) -> None:
+    """Mark asserted predicates that are ALSO reified or used in OWL axioms.
+
+    Rows built from VoID partitions are ``direct``; this adds ``reified`` for a
+    predicate that also appears as ``rdf:predicate`` and ``axiom`` (with a note on
+    the restriction count) for one that is also an ``owl:onProperty`` value.
+    """
+    reified_set = set(reified)
+    for row in rows:
+        if row.type != "Predicate" or row.edge_property_of or not row.pattern:
+            continue
+        found = set(row.pattern.split(";"))
+        if row.uri in reified_set:
+            found.add("reified")
+        n = axioms.get(row.uri, 0)
+        if n and "axiom" not in found:
+            found.add("axiom")
+            row.note = (
+                f"Also used inside class axioms, as owl:onProperty of {n:,} "
+                f"owl:Restriction{'s' if n != 1 else ''}."
+            )
+        row.pattern = ";".join(p for p in PATTERNS if p in found)
 
 
 # ---------------------------------------------------------------------------- text
@@ -758,6 +814,8 @@ async def build_kg_schema(
 
     # Reified edge properties: only for KGs whose VoID shows rdf:predicate in use.
     void_props = {b.get("prop") for b in ds_props} | {b.get("prop") for b in partitions}
+    reified: dict[str, int] = {}
+    axiom_counts: dict[str, int] = {}
     if RDF_PREDICATE in void_props:
         res = await run_sparql(reified_predicates_query(kg), client=client)
         reified = {r["pred"]: _int(r["n"]) or 0 for r in res["rows"] if r.get("pred")}
@@ -819,10 +877,14 @@ async def build_kg_schema(
             log(f"  OWL axiom-property lookup failed: {str(exc)[:120]}")
             notes.append("OWL axiom properties: live lookup failed; omitted")
         else:
+            axiom_counts = {
+                b["prop"]: _int(b.get("n")) or 0 for b in axioms if b.get("prop")
+            }
             owl_rows = axiom_property_rows(axioms, declared, {r.uri for r in preds})
             log(f"  {len({r.uri for r in owl_rows})} axiom-only/declared propert(ies)")
             preds.extend(owl_rows)
 
+    add_patterns(preds, reified, axiom_counts)
     rows.extend(preds)
     uris = sorted({r.uri for r in rows})
     kg_text = await _lookup_text(kg_iri(kg), uris, client, log)
@@ -869,6 +931,9 @@ def validate_rows(records: list[dict[str, str]], header: list[str]) -> list[str]
             problems.append(f"line {i}: wrong column count")
         if r.get("Type") not in ("Class", "Predicate"):
             problems.append(f"line {i}: Type {r.get('Type')!r}")
+        pat = r.get("Pattern") or ""
+        if pat and any(p not in PATTERNS for p in pat.split(";")):
+            problems.append(f"line {i}: Pattern {pat!r}")
         t = r.get("Triples") or ""
         if t and not t.isdigit():
             problems.append(f"line {i}: Triples {t!r}")

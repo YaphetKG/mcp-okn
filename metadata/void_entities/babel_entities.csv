@@ -1,4 +1,4 @@
-URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples
-http://www.w3.org/2004/02/skos/core#exactMatch,exactMatch,,Predicate,,,,638334283
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,,,433226356
-https://w3id.org/biolink/vocab/category,category,,Predicate,,,,439115950
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples,Pattern
+http://www.w3.org/2004/02/skos/core#exactMatch,exactMatch,,Predicate,,,,638334283,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,,,433226356,direct
+https://w3id.org/biolink/vocab/category,category,,Predicate,,,,439115950,direct

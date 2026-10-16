@@ -585,6 +585,7 @@ def parse_entity_metadata(content: str) -> dict[str, dict[str, Any]]:
         triples = int(raw_triples) if raw_triples.isdigit() else None
         label = (row.get("Label") or "").strip()
         description = (row.get("Description") or "").strip()
+        patterns = [p for p in (row.get("Pattern") or "").strip().split(";") if p]
 
         kinds = by_uri.setdefault(uri, {})
         entry = kinds.get(row_type.lower())
@@ -597,6 +598,7 @@ def parse_entity_metadata(content: str) -> dict[str, dict[str, Any]]:
                 "source_class": source,
                 "target_class": target,
                 "pairs": [],
+                "patterns": [],
             }
         elif not edge_property_of:
             # Last row wins, as before; a repeated edge-property row only adds a
@@ -613,6 +615,7 @@ def parse_entity_metadata(content: str) -> dict[str, dict[str, Any]]:
             entry["edge_property_of"] = ";".join(parents)
         if source or target or triples is not None:
             entry["pairs"].append((source, target, triples))
+        entry["patterns"] += [p for p in patterns if p not in entry["patterns"]]
 
     metadata: dict[str, dict[str, Any]] = {}
     for uri, kinds in by_uri.items():
@@ -625,8 +628,20 @@ def parse_entity_metadata(content: str) -> dict[str, dict[str, Any]]:
     return metadata
 
 
+#: Canonical order of ``Pattern`` values (see ``void_schema.PATTERNS``).
+_PATTERN_ORDER = ("direct", "reified", "axiom", "declared")
+
+
 def _set_primary_pair(entry: dict[str, Any]) -> None:
-    """Order ``pairs`` primary-first and copy the primary into source/target."""
+    """Order ``pairs`` primary-first and copy the primary into source/target.
+
+    Also joins the entry's ``Pattern`` values across its rows (``direct;reified``).
+    """
+    found = entry.pop("patterns", [])
+    entry["pattern"] = ";".join(
+        [p for p in _PATTERN_ORDER if p in found]
+        + [p for p in found if p not in _PATTERN_ORDER]
+    )
     pairs = entry["pairs"]
     if not pairs:
         entry["triples"] = None
@@ -854,6 +869,7 @@ def _build_schema_from_metadata(
                     "source_class": meta.get("source_class", ""),
                     "target_class": meta.get("target_class", ""),
                     "has_edge_properties": False,
+                    "pattern": meta.get("pattern", ""),
                     "triples": meta.get("triples"),
                     "other_pairs": _pair_summary(meta.get("pairs") or []),
                 }
@@ -907,7 +923,8 @@ def _build_schema_from_metadata(
             ),
         }
 
-    # Counts and extra source/target pairs exist only in the VoID-built files; the
+    # Pattern (how a predicate is stored: direct / reified / axiom / declared), counts
+    # and extra source/target pairs exist only in the VoID-built files; the
     # columns appear only then, so curated-file output is unchanged.
     class_cols = ["uri", "label", "description", "type"]
     if any(c["instances"] is not None for c in classes):
@@ -921,6 +938,8 @@ def _build_schema_from_metadata(
         "target_class",
         "has_edge_properties",
     ]
+    if any(p["pattern"] for p in predicates):
+        pred_cols.append("pattern")
     if any(p["triples"] is not None for p in predicates):
         pred_cols.append("triples")
     if any(p["other_pairs"] for p in predicates):

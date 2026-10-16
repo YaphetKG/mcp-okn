@@ -416,17 +416,17 @@ XSD = "http://www.w3.org/2001/XMLSchema#"
 
 #: Trimmed from metadata/void_entities/spoke-genelab_entities.csv (2026-10-15).
 VOID_CSV = f"""\
-URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples
-{SG}Assay,Assay,,Class,,,,13146
-{DE},DE,,Predicate,,http://purl.obolibrary.org/obo/OBI_0000070,https://w3id.org/biolink/vocab/Gene,50208066
-{SG}taxonomy,taxonomy,,Predicate,,{SG}Study,,212
-{SG}name,name,,Predicate,,{SG}Study,{XSD}string,10
-{SG}name,name,,Predicate,,{SG}Mission,{XSD}string,40
-{SG}name,name,,Predicate,,{SG}Gene,{XSD}string,30
-{SG}name,name,,Predicate,,{SG}Assay,{XSD}string,20
-{SG}name,name,,Predicate,,{SG}Organism,{XSD}string,5
-{SG}log2fc,log2fc,,Predicate,{DE},{STMT},{XSD}double,50208066
-{SG}log2fc,log2fc,,Predicate,{DE},{STMT},{XSD}string,2
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples,Pattern
+{SG}Assay,Assay,,Class,,,,13146,
+{DE},DE,,Predicate,,http://purl.obolibrary.org/obo/OBI_0000070,https://w3id.org/biolink/vocab/Gene,50208066,direct;reified
+{SG}taxonomy,taxonomy,,Predicate,,{SG}Study,,212,direct
+{SG}name,name,,Predicate,,{SG}Study,{XSD}string,10,direct
+{SG}name,name,,Predicate,,{SG}Mission,{XSD}string,40,direct
+{SG}name,name,,Predicate,,{SG}Gene,{XSD}string,30,direct
+{SG}name,name,,Predicate,,{SG}Assay,{XSD}string,20,direct
+{SG}name,name,,Predicate,,{SG}Organism,{XSD}string,5,direct
+{SG}log2fc,log2fc,,Predicate,{DE},{STMT},{XSD}double,50208066,
+{SG}log2fc,log2fc,,Predicate,{DE},{STMT},{XSD}string,2,
 """
 
 
@@ -467,13 +467,15 @@ def test_void_rollup_adds_counts_and_extra_pairs():
     assert schema["classes"]["columns"][-1] == "instances"
     preds = schema["predicates"]
     cols = preds["columns"]
-    assert cols[-2:] == ["triples", "other_pairs"]
+    assert cols[-3:] == ["pattern", "triples", "other_pairs"]
     rows = {r[0]: dict(zip(cols, r, strict=True)) for r in preds["data"]}
     assert rows[SG + "name"]["triples"] == 105
     assert rows[SG + "name"]["other_pairs"] == (
         "Gene → string (30); Assay → string (20); Study → string (10); +1 more"
     )
     assert rows[SG + "taxonomy"]["other_pairs"] == ""
+    assert rows[DE]["pattern"] == "direct;reified"
+    assert rows[SG + "name"]["pattern"] == "direct"
 
 
 def test_curated_layout_output_has_no_new_columns():
@@ -578,7 +580,7 @@ def test_uri_with_several_kinds_keeps_each():
 def test_curated_repeats_keep_last_row_primary_and_list_the_rest():
     schema = _build_schema_from_metadata("demo", _parse(MIXED_CSV), compact=True)
     cols = schema["predicates"]["columns"]
-    assert "triples" not in cols  # no counts in a curated file
+    assert "triples" not in cols and "pattern" not in cols  # curated file
     rows = {r[0]: dict(zip(cols, r, strict=True)) for r in schema["predicates"]["data"]}
     obs = rows["https://ex.org/OBSERVED_AT"]
     assert obs["source_class"] == "https://ex.org/Frog"

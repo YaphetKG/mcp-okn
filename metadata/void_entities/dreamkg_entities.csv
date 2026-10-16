@@ -1,56 +1,73 @@
-URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples
-http://schema.org/CategoryCode,CategoryCode,,Class,,,,387
-http://schema.org/ContactPoint,ContactPoint,,Class,,,,1321
-http://schema.org/Place,Place,,Class,,,,1018
-http://schema.org/Rating,Rating,,Class,,,,3762
-http://schema.org/Review,Review,,Class,,,,3762
-http://schema.org/Service,Service,,Class,,,,1321
-http://schema.org/ServiceChannel,ServiceChannel,,Class,,,,2642
-http://schema.org/TextObject,TextObject,,Class,,,,1321
-http://www.opengis.net/ont/geosparql#Geometry,Geometry,,Class,,,,996
-http://www.w3.org/2002/07/owl#Class,Class,,Class,,,,15
-http://www.w3.org/2002/07/owl#DatatypeProperty,DatatypeProperty,,Class,,,,27
-http://www.w3.org/2002/07/owl#NamedIndividual,NamedIndividual,,Class,,,,5
-http://www.w3.org/2002/07/owl#ObjectProperty,ObjectProperty,,Class,,,,18
-http://www.w3.org/2002/07/owl#Ontology,Ontology,,Class,,,,1
-http://schema.org/codeValue,codeValue,,Predicate,,http://schema.org/CategoryCode,http://www.w3.org/2001/XMLSchema#string,387
-http://schema.org/inCodeSet,inCodeSet,,Predicate,,http://schema.org/CategoryCode,http://www.w3.org/2002/07/owl#NamedIndividual,375
-http://schema.org/inCodeSet,inCodeSet,,Predicate,,http://schema.org/CategoryCode,,12
-http://www.w3.org/2004/02/skos/core#exactMatch,exactMatch,,Predicate,,http://schema.org/CategoryCode,,49
-http://schema.org/telephone,telephone,,Predicate,,http://schema.org/ContactPoint,http://www.w3.org/2001/XMLSchema#string,1200
-http://schema.org/address,address,,Predicate,,http://schema.org/Place,http://www.w3.org/2001/XMLSchema#string,1051
-http://schema.org/containedInPlace,containedInPlace,,Predicate,,http://schema.org/Place,,1045
-http://schema.org/hasMap,hasMap,,Predicate,,http://schema.org/Place,http://www.w3.org/2001/XMLSchema#anyUri,1000
-http://schema.org/latitude,latitude,,Predicate,,http://schema.org/Place,http://www.w3.org/2001/XMLSchema#decimal,1002
-http://schema.org/longitude,longitude,,Predicate,,http://schema.org/Place,http://www.w3.org/2001/XMLSchema#decimal,1016
-http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,sfWithin,,Predicate,,http://schema.org/Place,,1045
-http://www.opengis.net/ont/geosparql#defaultGeometry,defaultGeometry,,Predicate,,http://schema.org/Place,http://www.opengis.net/ont/geosparql#Geometry,996
-http://www.opengis.net/ont/geosparql#hasGeometry,hasGeometry,,Predicate,,http://schema.org/Place,http://www.opengis.net/ont/geosparql#Geometry,996
-http://schema.org/reviewBody,reviewBody,,Predicate,,http://schema.org/Review,http://www.w3.org/2001/XMLSchema#string,2312
-http://schema.org/reviewRating,reviewRating,,Predicate,,http://schema.org/Review,http://schema.org/Rating,3762
-http://schema.org/areaServed,areaServed,,Predicate,,http://schema.org/Service,http://www.w3.org/2001/XMLSchema#string,1321
-http://schema.org/availableChannel,availableChannel,,Predicate,,http://schema.org/Service,http://schema.org/ServiceChannel,2642
-http://schema.org/category,category,,Predicate,,http://schema.org/Service,http://schema.org/CategoryCode,11851
-http://schema.org/category,category,,Predicate,,http://schema.org/Service,,9197
-http://schema.org/description,description,,Predicate,,http://schema.org/Service,http://schema.org/TextObject,1321
-http://schema.org/description,description,,Predicate,,http://schema.org/Service,,1321
-http://schema.org/identifier,identifier,,Predicate,,http://schema.org/Service,http://www.w3.org/2001/XMLSchema#string,1321
-http://schema.org/name,name,,Predicate,,http://schema.org/Service,http://www.w3.org/2001/XMLSchema#string,1369
-http://schema.org/openingHours,openingHours,,Predicate,,http://schema.org/Service,,9226
-http://schema.org/postalCode,postalCode,,Predicate,,http://schema.org/Service,http://www.w3.org/2001/XMLSchema#string,1045
-http://schema.org/provider,provider,,Predicate,,http://schema.org/Service,,1321
-http://schema.org/ratingValue,ratingValue,,Predicate,,http://schema.org/Service,http://www.w3.org/2001/XMLSchema#decimal,374
-http://schema.org/sameAs,sameAs,,Predicate,,http://schema.org/Service,http://www.w3.org/2001/XMLSchema#anyUri,1656
-http://schema.org/disambiguatingDescription,disambiguatingDescription,,Predicate,,http://schema.org/ServiceChannel,http://www.w3.org/2001/XMLSchema#string,2642
-http://schema.org/serviceLocation,serviceLocation,,Predicate,,http://schema.org/ServiceChannel,http://schema.org/Place,1018
-http://schema.org/serviceLocation,serviceLocation,,Predicate,,http://schema.org/ServiceChannel,,303
-http://schema.org/servicePhone,servicePhone,,Predicate,,http://schema.org/ServiceChannel,http://schema.org/ContactPoint,1321
-http://schema.org/serviceUrl,serviceUrl,,Predicate,,http://schema.org/ServiceChannel,http://www.w3.org/2001/XMLSchema#anyUri,2668
-http://schema.org/conditionsOfAccess,conditionsOfAccess,,Predicate,,http://schema.org/TextObject,http://www.w3.org/2001/XMLSchema#string,1326
-http://schema.org/text,text,,Predicate,,http://schema.org/TextObject,http://www.w3.org/2001/XMLSchema#string,1327
-http://www.opengis.net/ont/geosparql#asWKT,asWKT,,Predicate,,http://www.opengis.net/ont/geosparql#Geometry,http://www.opengis.net/ont/geosparql#wktLiteral,1016
-http://www.w3.org/2000/01/rdf-schema#subClassOf,subClassOf,,Predicate,,http://www.w3.org/2002/07/owl#Class,,1
-http://www.w3.org/2000/01/rdf-schema#subPropertyOf,subPropertyOf,,Predicate,,http://www.w3.org/2002/07/owl#DatatypeProperty,,1
-http://www.w3.org/2000/01/rdf-schema#subPropertyOf,subPropertyOf,,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,,1
-http://www.w3.org/2000/01/rdf-schema#comment,comment,,Predicate,,http://www.w3.org/2002/07/owl#Ontology,http://www.w3.org/2001/XMLSchema#string,2
-https://www.w3.org/TR/xmlschema11-2#time,time,,Predicate,,,,6345
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples,Pattern
+http://schema.org/CategoryCode,CategoryCode,,Class,,,,387,
+http://schema.org/ContactPoint,ContactPoint,,Class,,,,1321,
+http://schema.org/Place,Place,,Class,,,,1018,
+http://schema.org/Rating,Rating,,Class,,,,3762,
+http://schema.org/Review,Review,,Class,,,,3762,
+http://schema.org/Service,Service,,Class,,,,1321,
+http://schema.org/ServiceChannel,ServiceChannel,,Class,,,,2642,
+http://schema.org/TextObject,TextObject,,Class,,,,1321,
+http://www.opengis.net/ont/geosparql#Geometry,Geometry,,Class,,,,996,
+http://www.w3.org/2002/07/owl#Class,Class,,Class,,,,15,
+http://www.w3.org/2002/07/owl#DatatypeProperty,DatatypeProperty,,Class,,,,27,
+http://www.w3.org/2002/07/owl#NamedIndividual,NamedIndividual,,Class,,,,5,
+http://www.w3.org/2002/07/owl#ObjectProperty,ObjectProperty,,Class,,,,18,
+http://www.w3.org/2002/07/owl#Ontology,Ontology,,Class,,,,1,
+http://schema.org/codeValue,codeValue,,Predicate,,http://schema.org/CategoryCode,http://www.w3.org/2001/XMLSchema#string,387,direct
+http://schema.org/inCodeSet,inCodeSet,,Predicate,,http://schema.org/CategoryCode,http://www.w3.org/2002/07/owl#NamedIndividual,375,direct
+http://schema.org/inCodeSet,inCodeSet,,Predicate,,http://schema.org/CategoryCode,,12,direct
+http://www.w3.org/2004/02/skos/core#exactMatch,exactMatch,,Predicate,,http://schema.org/CategoryCode,,49,direct
+http://schema.org/telephone,telephone,,Predicate,,http://schema.org/ContactPoint,http://www.w3.org/2001/XMLSchema#string,1200,direct
+http://schema.org/address,address,,Predicate,,http://schema.org/Place,http://www.w3.org/2001/XMLSchema#string,1051,direct
+http://schema.org/containedInPlace,containedInPlace,,Predicate,,http://schema.org/Place,,1045,direct
+http://schema.org/hasMap,hasMap,,Predicate,,http://schema.org/Place,http://www.w3.org/2001/XMLSchema#anyUri,1000,direct
+http://schema.org/latitude,latitude,,Predicate,,http://schema.org/Place,http://www.w3.org/2001/XMLSchema#decimal,1002,direct
+http://schema.org/longitude,longitude,,Predicate,,http://schema.org/Place,http://www.w3.org/2001/XMLSchema#decimal,1016,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,sfWithin,,Predicate,,http://schema.org/Place,,1045,direct
+http://www.opengis.net/ont/geosparql#defaultGeometry,defaultGeometry,,Predicate,,http://schema.org/Place,http://www.opengis.net/ont/geosparql#Geometry,996,direct
+http://www.opengis.net/ont/geosparql#hasGeometry,hasGeometry,,Predicate,,http://schema.org/Place,http://www.opengis.net/ont/geosparql#Geometry,996,direct
+http://schema.org/reviewBody,reviewBody,,Predicate,,http://schema.org/Review,http://www.w3.org/2001/XMLSchema#string,2312,direct
+http://schema.org/reviewRating,reviewRating,,Predicate,,http://schema.org/Review,http://schema.org/Rating,3762,direct
+http://schema.org/areaServed,areaServed,,Predicate,,http://schema.org/Service,http://www.w3.org/2001/XMLSchema#string,1321,direct
+http://schema.org/availableChannel,availableChannel,,Predicate,,http://schema.org/Service,http://schema.org/ServiceChannel,2642,direct
+http://schema.org/category,category,,Predicate,,http://schema.org/Service,http://schema.org/CategoryCode,11851,direct
+http://schema.org/category,category,,Predicate,,http://schema.org/Service,,9197,direct
+http://schema.org/description,description,,Predicate,,http://schema.org/Service,http://schema.org/TextObject,1321,direct
+http://schema.org/description,description,,Predicate,,http://schema.org/Service,,1321,direct
+http://schema.org/identifier,identifier,,Predicate,,http://schema.org/Service,http://www.w3.org/2001/XMLSchema#string,1321,direct
+http://schema.org/name,name,,Predicate,,http://schema.org/Service,http://www.w3.org/2001/XMLSchema#string,1369,direct
+http://schema.org/openingHours,openingHours,,Predicate,,http://schema.org/Service,,9226,direct
+http://schema.org/postalCode,postalCode,,Predicate,,http://schema.org/Service,http://www.w3.org/2001/XMLSchema#string,1045,direct
+http://schema.org/provider,provider,,Predicate,,http://schema.org/Service,,1321,direct
+http://schema.org/ratingValue,ratingValue,,Predicate,,http://schema.org/Service,http://www.w3.org/2001/XMLSchema#decimal,374,direct
+http://schema.org/sameAs,sameAs,,Predicate,,http://schema.org/Service,http://www.w3.org/2001/XMLSchema#anyUri,1656,direct
+http://schema.org/disambiguatingDescription,disambiguatingDescription,,Predicate,,http://schema.org/ServiceChannel,http://www.w3.org/2001/XMLSchema#string,2642,direct
+http://schema.org/serviceLocation,serviceLocation,,Predicate,,http://schema.org/ServiceChannel,http://schema.org/Place,1018,direct
+http://schema.org/serviceLocation,serviceLocation,,Predicate,,http://schema.org/ServiceChannel,,303,direct
+http://schema.org/servicePhone,servicePhone,,Predicate,,http://schema.org/ServiceChannel,http://schema.org/ContactPoint,1321,direct
+http://schema.org/serviceUrl,serviceUrl,,Predicate,,http://schema.org/ServiceChannel,http://www.w3.org/2001/XMLSchema#anyUri,2668,direct
+http://schema.org/conditionsOfAccess,conditionsOfAccess,,Predicate,,http://schema.org/TextObject,http://www.w3.org/2001/XMLSchema#string,1326,direct
+http://schema.org/text,text,,Predicate,,http://schema.org/TextObject,http://www.w3.org/2001/XMLSchema#string,1327,direct
+http://www.opengis.net/ont/geosparql#asWKT,asWKT,,Predicate,,http://www.opengis.net/ont/geosparql#Geometry,http://www.opengis.net/ont/geosparql#wktLiteral,1016,direct
+http://www.w3.org/2000/01/rdf-schema#subClassOf,subClassOf,,Predicate,,http://www.w3.org/2002/07/owl#Class,,1,direct
+http://www.w3.org/2000/01/rdf-schema#subPropertyOf,subPropertyOf,,Predicate,,http://www.w3.org/2002/07/owl#DatatypeProperty,,1,direct
+http://www.w3.org/2000/01/rdf-schema#subPropertyOf,subPropertyOf,,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,,1,direct
+http://www.w3.org/2000/01/rdf-schema#comment,comment,,Predicate,,http://www.w3.org/2002/07/owl#Ontology,http://www.w3.org/2001/XMLSchema#string,2,direct
+https://www.w3.org/TR/xmlschema11-2#time,time,,Predicate,,,,6345,direct
+http://schema.org/about,about,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0,declared
+http://schema.org/abstract,abstract,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0,declared
+http://schema.org/audience,audience,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0,declared
+http://schema.org/audienceType,audienceType,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0,declared
+http://schema.org/closes,closes,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0,declared
+http://schema.org/dayOfWeek,dayOfWeek,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0,declared
+http://schema.org/hoursAvailable,hoursAvailable,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0,declared
+http://schema.org/isAccessibleForFree,isAccessibleForFree,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0,declared
+http://schema.org/itemReviewed,itemReviewed,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0,declared
+http://schema.org/opens,opens,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0,declared
+http://schema.org/review,review,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0,declared
+http://schema.org/serviceChannel,serviceChannel,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0,declared
+http://schema.org/subjectOf,subjectOf,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0,declared
+http://schema.org/suggestedAnswer,suggestedAnswer,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0,declared
+http://schema.org/url,url,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0,declared
+http://www.opengis.net/ont/geosparql#lat,lat,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0,declared
+http://www.opengis.net/ont/geosparql#long,long,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0,declared

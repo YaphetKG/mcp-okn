@@ -195,7 +195,6 @@ biobricks-mesh,http://id.nlm.nih.gov/mesh/vocab#SupplementaryConceptRecord,,MeSH
 biobricks-mesh,http://www.w3.org/2002/07/owl#Class,,Class,The class of OWL classes.,curated-only
 biobricks-mesh,http://www.w3.org/2002/07/owl#Ontology,,Ontology,The class of ontology headers.,curated-only
 biobricks-mesh,http://www.w3.org/2002/07/owl#TransitiveProperty,,TransitiveProperty,The class of transitive object properties.,curated-only
-biobricks-mesh,http://id.nlm.nih.gov/mesh/vocab#broader,,broader,A broader MeSH concept related to the subject.,not-in-void
 biobricks-mesh,http://purl.org/dc/terms/created,,created,Date of creation of the resource.,not-in-void
 biobricks-mesh,http://purl.org/dc/terms/creator,,creator,An entity responsible for making the resource.,not-in-void
 biobricks-mesh,http://purl.org/dc/terms/date,,date,A point or period of time associated with the resource.,not-in-void
@@ -399,25 +398,20 @@ dreamkg,http://schema.org/TextObject,,TextObject,"A text file, including article
 dreamkg,http://www.opengis.net/ont/geosparql#Geometry,,Geometry,"A coherent set of direct positions in space (GeoSPARQL); here the point geometry of a place, read through geo:asWKT.",curated-only
 dreamkg,http://schema.org/address,,address,Physical address of the item.,curated-only
 dreamkg,http://schema.org/areaServed,,areaServed,The geographic area where a service or offered item is provided.,curated-only
-dreamkg,http://schema.org/audienceType,,audienceType,"The target group associated with a given audience (e.g., veterans, car owners, musicians). Declared in the schema but not populated in the current release.",not-in-void
 dreamkg,http://schema.org/availableChannel,,availableChannel,"A means of accessing the service (e.g. a phone bank, a web site, a location).",curated-only
 dreamkg,http://schema.org/category,,category,"A category for the item. Besides typed category codes (service types, languages, availability, cost), services point to audience and service_type category IRIs that carry no rdf:type.",curated-only
-dreamkg,http://schema.org/closes,,closes,The closing hour of the place or service on the given day(s) of the week. Declared in the schema but not populated in the current release.,not-in-void
 dreamkg,http://schema.org/codeValue,,codeValue,A short textual code that uniquely identifies the value.,curated-only
 dreamkg,http://schema.org/conditionsOfAccess,,conditionsOfAccess,"Conditions that affect the availability of, or method(s) of access to, an item.",curated-only
 dreamkg,http://schema.org/containedInPlace,,containedInPlace,The basic containment relation between a place and one that contains it. Here the containing place is a KnowWhereGraph ZIP code area IRI (kwg resource zipCodeArea.<zip>).,curated-only
-dreamkg,http://schema.org/dayOfWeek,,dayOfWeek,The day of the week for which these opening hours are valid. Declared in the schema but not populated in the current release.,not-in-void
 dreamkg,http://schema.org/description,,description,A description of the item.,curated-only
 dreamkg,http://schema.org/disambiguatingDescription,,disambiguatingDescription,A sub property of description providing a short description to disambiguate instances with similar names.,curated-only
 dreamkg,http://schema.org/hasMap,,hasMap,A URL to a map of the place.,curated-only
-dreamkg,http://schema.org/hoursAvailable,,hoursAvailable,The hours during which this service or contact is available. Declared in the schema but not populated in the current release.,not-in-void
 dreamkg,http://schema.org/identifier,,identifier,The identifier property represents any kind of identifier for any kind of Thing.,curated-only
 dreamkg,http://schema.org/inCodeSet,,inCodeSet,"A CategoryCodeSet that contains this category code. The code sets are five named individuals (services main and other, languages, availability, cost).",curated-only
 dreamkg,http://schema.org/latitude,,latitude,The latitude of a location.,curated-only
 dreamkg,http://schema.org/longitude,,longitude,The longitude of a location.,curated-only
 dreamkg,http://schema.org/name,,name,The name of the item.,curated-only
 dreamkg,http://schema.org/openingHours,,openingHours,"The opening hours of a service. Here the object is a node per service and weekday whose text is read through the xmlschema11-2#time predicate, not a literal.",curated-only
-dreamkg,http://schema.org/opens,,opens,The opening hour of the place or service on the given day(s) of the week. Declared in the schema but not populated in the current release.,not-in-void
 dreamkg,http://schema.org/postalCode,,Postal Code,The postal code of an address.,curated-only
 dreamkg,http://schema.org/provider,,provider,"The service provider, service operator, or service performer. Each service has its own provider IRI, which carries no rdf:type and no properties in this release.",curated-only
 dreamkg,http://schema.org/ratingValue,,Rating Value,The numeric value of a rating.,curated-only
@@ -429,7 +423,6 @@ dreamkg,http://schema.org/servicePhone,,servicePhone,The phone number to use to 
 dreamkg,http://schema.org/serviceUrl,,serviceUrl,The website to access the service.,curated-only
 dreamkg,http://schema.org/telephone,,telephone,The telephone number.,curated-only
 dreamkg,http://schema.org/text,,text,The textual content of this CreativeWork.,curated-only
-dreamkg,http://schema.org/url,,URL,The URL of the item. Declared in the schema but not populated in the current release.,not-in-void
 dreamkg,http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,,sfWithin,Indicates that a place is spatially within a KnowWhereGraph ZIP code area (kwg resource zipCodeArea.<zip>); the join key to other spatial graphs.,curated-only
 dreamkg,http://www.opengis.net/ont/geosparql#asWKT,,asWKT,"The Well-Known Text serialization of a geometry, here a point such as POINT(-118.222463 33.792303) in longitude latitude order.",curated-only
 dreamkg,http://www.opengis.net/ont/geosparql#defaultGeometry,,defaultGeometry,The default geometry to be used in spatial calculations; here the same point geometry as geo:hasGeometry.,curated-only
@@ -518,12 +511,10 @@ fiokg,http://stko-kwg.geog.ucsb.edu/lod/ontology/sfTouches,,spatially touches,"I
 fiokg,http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,,spatially within,"Indicates that a facility is spatially within a region: its county (KnowWhereGraph administrativeRegion.USA.<fips>), its county subdivision (Data Commons geoId IRI) and its Level 13 S2 cell (KnowWhereGraph s2.level13.<id>). The regions carry no type more specific than geo:SpatialObject, so select them by IRI pattern.",curated-only
 fiokg,http://stko-kwg.geog.ucsb.edu/lod/ontology/spatialRelation,,spatial relation,A general spatial relationship between two geographic features. It holds the same triples as spatial:connectedTo in this graph.,curated-only
 fiokg,http://stko-kwg.geog.ucsb.edu/lod/ontology/spatialRelation,,spatial relation,A general spatial relationship between two geographic features. It holds the same triples as spatial:connectedTo in this graph.,curated-only
-fiokg,http://w3id.org/fio/v1/epa-frs#fromSystem,,from System,Links a record to the information system it originated from,curated-only
 fiokg,http://w3id.org/fio/v1/epa-frs#hasEnvironmentalInterest,,in program type,Links a facility to the environmental program types or interest classifications that apply to it,curated-only
 fiokg,http://w3id.org/fio/v1/epa-frs#hasRecord,,has record,Links a facility to any type of environmental record associated with it,curated-only
 fiokg,http://w3id.org/fio/v1/epa-frs#hasSupplementalRecord,,has supplemental record,Links a facility to supplemental records that provide additional information,curated-only
 fiokg,http://w3id.org/fio/v1/epa-frs#ofFacilityType,,of facility type,Links a facility to its type classification in the EPA FRS controlled vocabulary,curated-only
-fiokg,http://w3id.org/fio/v1/epa-frs#ofInterestType,,of program category,Links an environmental interest to its classification category,curated-only
 fiokg,http://w3id.org/fio/v1/epa-frs#ofPrimaryIndustry,,of Primary Industry,Links a facility to its primary industry classification using NAICS codes,curated-only
 fiokg,http://w3id.org/fio/v1/epa-frs#ofSecondaryIndustry,,of Secondary Industry,Links a facility to its secondary industry classification using NAICS codes,curated-only
 fiokg,http://w3id.org/fio/v1/epa-frs#partOf,,part Of,Indicates hierarchical relationship - this entity is part of another entity,curated-only
@@ -1105,7 +1096,6 @@ hydrologykg,http://purl.org/spatialai/spatial/spatial-full#connectedTo,,topologi
 hydrologykg,http://purl.org/spatialai/spatial/spatial-full#spatiallyRelatedTo,,spatially related to (sawgraph),A general topological connection or spatial contact. It holds the same triples as spatial:connectedTo in this graph; see that predicate for the classes it links.,curated-only
 hydrologykg,http://purl.org/spatialai/stad/v2/core/generatedBy,,stad:generatedBy,STAD term used in the dataset-summary layer; the graph gives it no definition.,curated-only
 hydrologykg,http://purl.org/spatialai/stad/v2/core/generatedBy,,stad:generatedBy,STAD term used in the dataset-summary layer; the graph gives it no definition.,curated-only
-hydrologykg,http://purl.org/spatialai/stad/v2/core/hasBaseDataset,,stad:hasBaseDataset,STAD term used in the dataset-summary layer; the graph gives it no definition.,curated-only
 hydrologykg,http://purl.org/spatialai/stad/v2/core/hasDatasetDescription,,stad:hasDatasetDescription,STAD term used in the dataset-summary layer; the graph gives it no definition.,curated-only
 hydrologykg,http://purl.org/spatialai/stad/v2/core/hasQualityKind,,stad:hasQualityKind,STAD term used in the dataset-summary layer; the graph gives it no definition.,curated-only
 hydrologykg,http://purl.org/spatialai/stad/v2/core/hasQualityKind,,stad:hasQualityKind,STAD term used in the dataset-summary layer; the graph gives it no definition.,curated-only
@@ -3002,7 +2992,6 @@ sawgraph,http://purl.org/dc/terms/contributor,,contributor,An entity responsible
 sawgraph,http://purl.org/dc/terms/created,,created,Date of creation of the resource.,curated-only
 sawgraph,http://purl.org/dc/terms/creator,,creator,An entity responsible for making the resource.,curated-only
 sawgraph,http://purl.org/dc/terms/date,,date,A point or period of time associated with the resource.,curated-only
-sawgraph,http://purl.org/dc/terms/description,,description,An account of the resource.,curated-only
 sawgraph,http://purl.org/dc/terms/identifier,,identifier,An unambiguous reference to the resource within a given context.,curated-only
 sawgraph,http://purl.org/dc/terms/isReplacedBy,,is Replaced By,A related resource that supplants or replaces the described resource.,curated-only
 sawgraph,http://purl.org/dc/terms/issued,,issued,Date of formal issuance of the resource.,curated-only
@@ -3020,15 +3009,11 @@ sawgraph,http://purl.org/spatialai/stad/v2/core/hasQualityKind,,has quality kind
 sawgraph,http://purl.org/spatialai/stad/v2/core/hasQualityKind,,has quality kind,STAD counterpart of qudt:hasQuantityKind; it holds the same values in this graph.,curated-only
 sawgraph,http://purl.org/spatialai/stad/v2/core/hasSpatialCoverage,,has spatial coverage,"Links a source dataset to the administrative regions (states) it covers, given as KnowWhereGraph region IRIs.",curated-only
 sawgraph,http://purl.org/spatialai/stad/v2/core/hasTemporalCoverage,,has temporal coverage,Links a source dataset to the time interval it covers.,curated-only
-sawgraph,http://qudt.org/schema/qudt/conversionMultiplier,,conversion multiplier,Factor that converts a value in this unit to the corresponding SI unit.,curated-only
 sawgraph,http://qudt.org/schema/qudt/exponent,,exponent,The exponent of a unit within a factor unit (integer).,curated-only
 sawgraph,http://qudt.org/schema/qudt/hasFactorUnit,,has factor unit,Links a derived unit to the factor units it is composed of.,curated-only
-sawgraph,http://qudt.org/schema/qudt/hasQuantityKind,,has quantity kind,"Links a contaminant measurement, or a unit, to the kind of quantity it expresses (e.g., quantitykind:MassConcentration).",curated-only
-sawgraph,http://qudt.org/schema/qudt/hasQuantityKind,,has quantity kind,"Links a contaminant measurement, or a unit, to the kind of quantity it expresses (e.g., quantitykind:MassConcentration).",curated-only
 sawgraph,http://qudt.org/schema/qudt/numericValue,,numeric value,"The number of a quantity value, or of a detection or quantitation limit; read it together with qudt:hasUnit.",curated-only
 sawgraph,http://qudt.org/schema/qudt/numericValue,,numeric value,"The number of a quantity value, or of a detection or quantitation limit; read it together with qudt:hasUnit.",curated-only
 sawgraph,http://qudt.org/schema/qudt/numericValue,,numeric value,"The number of a quantity value, or of a detection or quantitation limit; read it together with qudt:hasUnit.",curated-only
-sawgraph,http://qudt.org/schema/qudt/quantityValue,,quantity value,"Links a contaminant measurement to its quantity value node, which holds either a numeric value and unit or a non-detect / non-quantified marker.",curated-only
 sawgraph,http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains,,spatially contains,"Indicates that one geographic feature spatially contains another: an S2 cell contains sample points and sites, and a sampled feature contains its sample points.",curated-only
 sawgraph,http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains,,spatially contains,"Indicates that one geographic feature spatially contains another: an S2 cell contains sample points and sites, and a sampled feature contains its sample points.",curated-only
 sawgraph,http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains,,spatially contains,"Indicates that one geographic feature spatially contains another: an S2 cell contains sample points and sites, and a sampled feature contains its sample points.",curated-only
@@ -3068,17 +3053,13 @@ sawgraph,http://w3id.org/DSSTox/v1/soilAdsorptionCoefficientKoc,,soil adsorption
 sawgraph,http://w3id.org/DSSTox/v1/vaporPressure,,vapor pressure,Vapor pressure of the chemical.,curated-only
 sawgraph,http://w3id.org/DSSTox/v1/waterSolubility,,water solubility,Water solubility of the chemical.,curated-only
 sawgraph,http://w3id.org/coso/v1/contaminoso#hasMember,,has Member,Relates a collection to one of its members.,curated-only
-sawgraph,http://w3id.org/coso/v1/contaminoso#sampleFeatureType,,sample Feature Type,The type of feature from which a sample was taken.,curated-only
 sawgraph,http://w3id.org/sawgraph/v1/me-egad#associatedSite,,egad - associated site,Maine EGAD associated site.,curated-only
 sawgraph,http://w3id.org/sawgraph/v1/me-egad#dep_chemicalID,,egad - chemical identifier,Maine EGAD dep chemical id.,curated-only
 sawgraph,http://w3id.org/sawgraph/v1/me-egad#labQualifier,,egad - lab qualifier,Maine EGAD lab qualifier.,curated-only
 sawgraph,http://w3id.org/sawgraph/v1/me-egad#methodDetectionLimit,,egad - method detection limit,Maine EGAD method detection limit. Range Thing.,curated-only
 sawgraph,http://w3id.org/sawgraph/v1/me-egad#reportingLimit,,egad - reporting limit,Maine EGAD reporting limit. Range Thing.,curated-only
 sawgraph,http://w3id.org/sawgraph/v1/me-egad#resultType,,egad - result type,Maine EGAD result type. Domain sosa:Observation. Range Thing.,curated-only
-sawgraph,http://w3id.org/sawgraph/v1/me-egad#sampleCollectionLocation,,egad - sample collection location,Maine EGAD sample collection location. Domain sosa:Sample. Range Thing.,curated-only
-sawgraph,http://w3id.org/sawgraph/v1/me-egad#sampleCollectionMethod,,egad - sample collection method,Maine EGAD sample collection method. Domain sosa:Sample. Range Thing.,curated-only
 sawgraph,http://w3id.org/sawgraph/v1/me-egad#samplePointType,,egad - sample point type,Maine EGAD sample point type.,curated-only
-sawgraph,http://w3id.org/sawgraph/v1/me-egad#sampleTreatmentStatus,,egad - sample treatment status,Maine EGAD sample treatment status. Domain sosa:Sample. Range Thing.,curated-only
 sawgraph,http://w3id.org/sawgraph/v1/me-egad#sampledFeatureType,,egad - sampled feature type,Maine EGAD sampled feature type. Range Thing.,curated-only
 sawgraph,http://w3id.org/sawgraph/v1/me-egad#siteType,,site type,Type of the Maine EGAD monitoring site at which a sample was taken.,curated-only
 sawgraph,http://w3id.org/sawgraph/v1/me-egad#validationLevel,,egad - validation level,Maine EGAD validation level.,curated-only
@@ -3107,7 +3088,6 @@ sawgraph,http://www.w3.org/2002/07/owl#sameAs,,same as,"Links a Maine EGAD publi
 sawgraph,http://www.w3.org/2004/02/skos/core#altLabel,,altLabel,An alternative lexical label for a concept.,curated-only
 sawgraph,http://www.w3.org/2004/02/skos/core#definition,,definition,A statement of the meaning of a concept.,curated-only
 sawgraph,http://www.w3.org/2004/02/skos/core#notation,,notation,"A notation for a unit; here the UCUM codes of a QUDT unit (e.g., ug/L and ug.L-1).",curated-only
-sawgraph,http://www.w3.org/ns/prov#wasAttributedTo,,was attributed to,"Links an entity to the agent responsible for it, used here to credit the reporting organization.",curated-only
 sawgraph,http://www.w3.org/ns/sosa/hasResult,,has result (SOSA),Relation linking an Observation or Actuation or act of Sampling and a Result or Sample.,curated-only
 sawgraph,http://www.w3.org/ns/sosa/isSampleOf,,is sample of (SOSA),Relation from a Sample to the FeatureOfInterest that it is intended to be representative of.,curated-only
 sawgraph,http://www.w3.org/ns/sosa/observedProperty,,observed property (SOSA),Relation linking an Observation to the property that was observed. The ObservableProperty should be a property of the FeatureOfInterest (linked by hasFeatureOfInterest) of this Observation.,curated-only
@@ -3492,8 +3472,6 @@ spatialkg,http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains,,spatially conta
 spatialkg,http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains,,spatially contains,Indicates that one geographic feature spatially contains another (DE-9IM pattern T*****FF*).,curated-only
 spatialkg,http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains,,spatially contains,Indicates that one geographic feature spatially contains another (DE-9IM pattern T*****FF*).,curated-only
 spatialkg,http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains,,spatially contains,Indicates that one geographic feature spatially contains another (DE-9IM pattern T*****FF*).,curated-only
-spatialkg,http://stko-kwg.geog.ucsb.edu/lod/ontology/sfCrosses,,spatially crosses,Indicates that two geographic features cross each other (DE-9IM pattern T*T****** for line/area). Declared in the schema but not populated in the current release.,not-in-void
-spatialkg,http://stko-kwg.geog.ucsb.edu/lod/ontology/sfEquals,,spatially equals,Indicates that two geographic features are spatially equal (DE-9IM pattern TFFFTFFFT). Declared in the schema but not populated in the current release.,not-in-void
 spatialkg,http://stko-kwg.geog.ucsb.edu/lod/ontology/sfOverlaps,,spatially overlaps,Indicates that two geographic features partially overlap (DE-9IM pattern T*T***T** for areas).,curated-only
 spatialkg,http://stko-kwg.geog.ucsb.edu/lod/ontology/sfOverlaps,,spatially overlaps,Indicates that two geographic features partially overlap (DE-9IM pattern T*T***T** for areas).,curated-only
 spatialkg,http://stko-kwg.geog.ucsb.edu/lod/ontology/sfOverlaps,,spatially overlaps,Indicates that two geographic features partially overlap (DE-9IM pattern T*T***T** for areas).,curated-only
@@ -3770,26 +3748,21 @@ sudokn,http://asu.edu/semantics/SUDOKN/VirtualLocationIdentifier,,Virtual Locati
 sudokn,http://www.opengis.net/ont/geosparql#Feature,,Feature,A discrete spatial phenomenon in a universe of discourse (GeoSPARQL). Every SUDOKN geospatial location has this type.,curated-only
 sudokn,http://www.opengis.net/ont/geosparql#Geometry,,Geometry,"A coherent set of direct positions in space (GeoSPARQL); here the point geometry of a geospatial location, read through geo:asWKT.",curated-only
 sudokn,https://schema.org/Place,,Place,"Entities that have a somewhat fixed, physical extension (schema.org). Every SUDOKN geospatial location has this type.",curated-only
-sudokn,http://asu.edu/semantics/SUDOKN/attestsTo,,attests to,Links a certificate to the capability it attests to. Declared in the schema but not populated in the current release.,not-in-void
 sudokn,http://asu.edu/semantics/SUDOKN/classifiedByProductCategory,,classified by product category,"Links a material product to its product category. The object is a product category class IRI used as a node (e.g., sud:TelevisionsProductCategory), not an instance.",curated-only
 sudokn,http://asu.edu/semantics/SUDOKN/hasBusinessDescription,,has business description,"Links a manufacturer to its business description node, whose text is read through hasTextValue.",curated-only
 sudokn,http://asu.edu/semantics/SUDOKN/hasCertificate,,has certificate,"Links a manufacturer to a certificate it holds (e.g., ISO 9001, AS9100, ITAR).",curated-only
 sudokn,http://asu.edu/semantics/SUDOKN/hasEmailAddress,,has email address,Links a manufacturer to an email address node.,curated-only
 sudokn,http://asu.edu/semantics/SUDOKN/hasGeospatialLocation,,has geospatial location,"Links a geospatial site of the older location model to its IOF geospatial location, which carries latitude and longitude.",curated-only
-sudokn,http://asu.edu/semantics/SUDOKN/hasManagementCapability,,has management capability,Links an organization to a quality management capability. Declared in the schema but not populated in the current release.,not-in-void
 sudokn,http://asu.edu/semantics/SUDOKN/hasMaterialCapability,,has material capability,Links a manufacturer to a material it can process; the capability node is typed with a material capability class such as sud:AluminumProcessingCapability.,curated-only
-sudokn,http://asu.edu/semantics/SUDOKN/hasNAICSClassifier,,has NAICS classifier,Links an organization to a NAICS classifier; the data uses its sub-properties hasPrimaryNAICSClassifier and hasSecondaryNAICSClassifier. Declared in the schema but not populated in the current release.,not-in-void
 sudokn,http://asu.edu/semantics/SUDOKN/hasOwnershipStatusClassifier,,has ownership status classifier,Links a manufacturer to an ownership status such as minority-owned or veteran-owned.,curated-only
 sudokn,http://asu.edu/semantics/SUDOKN/hasPrimaryNAICSClassifier,,has primary NAICS classifier,"Links a manufacturer to its primary NAICS industry code (e.g., sud:NAICS332).",curated-only
 sudokn,http://asu.edu/semantics/SUDOKN/hasProcessCapability,,has process capability,Links a manufacturer to a manufacturing process it offers; the capability node is typed with a process capability class such as sud:CNCMachiningCapability.,curated-only
 sudokn,http://asu.edu/semantics/SUDOKN/hasSecondaryNAICSClassifier,,has secondary NAICS classifier,Links a manufacturer to a secondary NAICS industry code.,curated-only
-sudokn,http://asu.edu/semantics/SUDOKN/hasSpecialBusinessStatusClassifier,,has special business status classifier,Links an organization to a special business status. Declared in the schema but not populated in the current release.,not-in-void
 sudokn,http://asu.edu/semantics/SUDOKN/hasWebAddress,,has web address,Links a manufacturer to its web address node.,curated-only
 sudokn,http://asu.edu/semantics/SUDOKN/locatedInCity,,located in city,Relationship between a geospatial location or site and the city it is located in.,curated-only
 sudokn,http://asu.edu/semantics/SUDOKN/locatedInCity,,located in city,Relationship between a geospatial location or site and the city it is located in.,curated-only
 sudokn,http://asu.edu/semantics/SUDOKN/locatedInCountry,,located in country,Relationship between a geospatial location or site and the country it is located in.,curated-only
 sudokn,http://asu.edu/semantics/SUDOKN/locatedInCountry,,located in country,Relationship between a geospatial location or site and the country it is located in.,curated-only
-sudokn,http://asu.edu/semantics/SUDOKN/locatedInCounty,,located in county,Relationship between a geospatial site and a county when the site is located in the county. Declared in the schema but not populated in the current release.,not-in-void
 sudokn,http://asu.edu/semantics/SUDOKN/locatedInState,,located in state,Relationship between a geospatial location or site and the state it is located in.,curated-only
 sudokn,http://asu.edu/semantics/SUDOKN/locatedInState,,located in state,Relationship between a geospatial location or site and the state it is located in.,curated-only
 sudokn,http://asu.edu/semantics/SUDOKN/manufactures,,manufactures,Links a manufacturer to a material product it makes.,curated-only
@@ -3799,8 +3772,6 @@ sudokn,http://asu.edu/semantics/SUDOKN/organizationLocatedIn,,organization locat
 sudokn,http://www.opengis.net/ont/geosparql#hasGeometry,,has geometry,Links a geospatial location to its point geometry.,curated-only
 sudokn,http://asu.edu/semantics/SUDOKN/hasVirtualLocationIdentifierValue,,has virtual location identifier value,The value of a virtual location identifier (email or web address).,curated-only
 sudokn,http://asu.edu/semantics/SUDOKN/hasVirtualLocationIdentifierValue,,has virtual location identifier value,The value of a virtual location identifier (email or web address).,curated-only
-sudokn,http://asu.edu/semantics/SUDOKN/hasPhoneNumberValue,,has phone number value,Phone number value. Declared in the schema but not populated in the current release.,not-in-void
-sudokn,http://asu.edu/semantics/SUDOKN/hasFaxNumberValue,,has fax number value,Fax number value. Declared in the schema but not populated in the current release.,not-in-void
 sudokn,http://asu.edu/semantics/SUDOKN/hasNumberOfEmployees,,has number of employees,Number of employees in the organization.,curated-only
 sudokn,http://asu.edu/semantics/SUDOKN/hasOrganizationYearOfEstablishment,,has organization year of establishment,Year the organization was established.,curated-only
 sudokn,http://asu.edu/semantics/SUDOKN/hasLatitudeValue,,has latitude value,Latitude coordinate value.,curated-only

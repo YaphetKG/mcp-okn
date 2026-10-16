@@ -1,174 +1,174 @@
-URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples
-http://sail.ua.edu/ruralkg/settlementtype/CountyStatus,CountyStatus,Status of a county in terms of rural or urban classification.,Class,,,,3234
-http://sail.ua.edu/ruralkg/settlementtype/RUCC,RUCC,Rural-Urban Continuum Code classification.,Class,,,,10
-http://sail.ua.edu/ruralkg/substanceabuse/Substance,Substance,Types of substances that can be abused.,Class,,,,23
-http://sail.ua.edu/ruralkg/substanceabuse/SubstanceRelatedIncident,SubstanceRelatedIncident,Types of incidents related to substance abuse.,Class,,,,17
-http://sail.ua.edu/ruralkg/treatment/MentalHealthService,MentalHealthService,Specific mental health services offered.,Class,,,,176
-http://sail.ua.edu/ruralkg/treatment/MentalHealthServiceCategory,MentalHealthServiceCategory,Categories of mental health services.,Class,,,,21
-http://sail.ua.edu/ruralkg/treatment/TreatmentProvider,TreatmentProvider,Entities that provide treatment services.,Class,,,,9037
-http://sail.ua.edu/ruralkg/variable/BRFSS,BRFSS,Variables from the Behavioral Risk Factor Surveillance System dataset (year 2022). Topic placement lives on the section-class side under publichealth:/substanceabuse:/settlement:; this class is just the dataset tag.,Class,,,,324
-http://sail.ua.edu/ruralkg/variable/BRFSSAnswer,BRFSSAnswer,Answer options for BRFSS variables.,Class,,,,2011
-http://sail.ua.edu/ruralkg/variable/MEPS,MEPS,Variables from the Medical Expenditure Panel Survey dataset.,Class,,,,1419
-http://sail.ua.edu/ruralkg/variable/MEPSAnswer,MEPSAnswer,Answer options for MEPS variables.,Class,,,,6336
-http://sail.ua.edu/ruralkg/variable/NIBRS,NIBRS,Variables from the National Incident-Based Reporting System dataset.,Class,,,,469
-http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,NIBRSAnswer,Answer options for NIBRS variables.,Class,,,,2258
-http://sail.ua.edu/ruralkg/variable/NSDUH,NSDUH,Variables from the National Survey on Drug Use and Health dataset.,Class,,,,2464
-http://sail.ua.edu/ruralkg/variable/NSDUHAnswer,NSDUHAnswer,Answer options for NSDUH variables.,Class,,,,14923
-http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,Property,,Class,,,,28
-http://www.w3.org/2000/01/rdf-schema#Class,Class,,Class,,,,242
-http://www.w3.org/2002/07/owl#AnnotationProperty,AnnotationProperty,,Class,,,,1
-http://www.w3.org/2002/07/owl#ObjectProperty,ObjectProperty,,Class,,,,1
-http://www.w3.org/2002/07/owl#Ontology,Ontology,,Class,,,,1
-http://sail.ua.edu/ruralkg/settlementtype/censusCounty,censusCounty,,Predicate,,http://sail.ua.edu/ruralkg/settlementtype/CountyStatus,,3234
-http://sail.ua.edu/ruralkg/settlementtype/hasRUCC,hasRUCC,,Predicate,,http://sail.ua.edu/ruralkg/settlementtype/CountyStatus,http://sail.ua.edu/ruralkg/settlementtype/RUCC,3234
-http://sail.ua.edu/ruralkg/settlementtype/population,population,,Predicate,,http://sail.ua.edu/ruralkg/settlementtype/CountyStatus,http://www.w3.org/2001/XMLSchema#integer,3234
-http://sail.ua.edu/ruralkg/settlementtype/year,year,,Predicate,,http://sail.ua.edu/ruralkg/settlementtype/CountyStatus,http://www.w3.org/2001/XMLSchema#integer,3234
-http://purl.org/dc/terms/description,description,,Predicate,,http://sail.ua.edu/ruralkg/settlementtype/RUCC,http://www.w3.org/2001/XMLSchema#string,10
-http://purl.org/dc/terms/identifier,identifier,,Predicate,,http://sail.ua.edu/ruralkg/settlementtype/RUCC,http://www.w3.org/2001/XMLSchema#string,10
-http://sail.ua.edu/ruralkg/settlementtype/code,code,,Predicate,,http://sail.ua.edu/ruralkg/settlementtype/RUCC,http://www.w3.org/2001/XMLSchema#string,10
-http://sail.ua.edu/ruralkg/settlementtype/year,year,,Predicate,,http://sail.ua.edu/ruralkg/settlementtype/RUCC,http://www.w3.org/2001/XMLSchema#integer,10
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://sail.ua.edu/ruralkg/settlementtype/RUCC,http://www.w3.org/2001/XMLSchema#string,10
-http://purl.org/dc/terms/description,description,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,http://www.w3.org/2001/XMLSchema#string,23
-http://purl.org/dc/terms/identifier,identifier,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,http://www.w3.org/2001/XMLSchema#string,23
-http://sail.ua.edu/ruralkg/substanceabuse/code,code,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,http://www.w3.org/2001/XMLSchema#string,23
-http://sail.ua.edu/ruralkg/substanceabuse/fromDataset,fromDataset,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,http://www.w3.org/2001/XMLSchema#string,23
-http://sail.ua.edu/ruralkg/substanceabuse/mentionedInVariable,mentionedInVariable,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,http://sail.ua.edu/ruralkg/variable/NSDUH,1220
-http://sail.ua.edu/ruralkg/substanceabuse/wikidataId,wikidataId,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,http://www.w3.org/2001/XMLSchema#string,23
-http://sail.ua.edu/ruralkg/substanceabuse/year,year,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,http://www.w3.org/2001/XMLSchema#integer,23
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,http://www.w3.org/2001/XMLSchema#string,23
-http://www.w3.org/2002/07/owl#sameAs,sameAs,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,,30
-http://www.w3.org/2004/02/skos/core#exactMatch,exactMatch,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,,30
-https://schema.org/name,name,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,http://www.w3.org/2001/XMLSchema#string,23
-http://sail.ua.edu/ruralkg/substanceabuse/fromDataset,fromDataset,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/SubstanceRelatedIncident,http://www.w3.org/2001/XMLSchema#string,17
-http://sail.ua.edu/ruralkg/substanceabuse/year,year,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/SubstanceRelatedIncident,http://www.w3.org/2001/XMLSchema#integer,17
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/SubstanceRelatedIncident,http://www.w3.org/2001/XMLSchema#string,17
-https://schema.org/name,name,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/SubstanceRelatedIncident,http://www.w3.org/2001/XMLSchema#string,17
-http://purl.org/dc/terms/description,description,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthService,http://www.w3.org/2001/XMLSchema#string,176
-http://purl.org/dc/terms/identifier,identifier,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthService,http://www.w3.org/2001/XMLSchema#string,176
-http://sail.ua.edu/ruralkg/treatment/code,code,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthService,http://www.w3.org/2001/XMLSchema#string,176
-http://sail.ua.edu/ruralkg/treatment/year,year,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthService,http://www.w3.org/2001/XMLSchema#integer,176
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthService,http://www.w3.org/2001/XMLSchema#string,176
-https://schema.org/name,name,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthService,http://www.w3.org/2001/XMLSchema#string,176
-http://purl.org/dc/terms/identifier,identifier,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthServiceCategory,http://www.w3.org/2001/XMLSchema#string,21
-http://sail.ua.edu/ruralkg/treatment/code,code,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthServiceCategory,http://www.w3.org/2001/XMLSchema#string,21
-http://sail.ua.edu/ruralkg/treatment/containsService,containsService,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthServiceCategory,http://sail.ua.edu/ruralkg/treatment/MentalHealthService,176
-http://sail.ua.edu/ruralkg/treatment/year,year,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthServiceCategory,http://www.w3.org/2001/XMLSchema#integer,21
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthServiceCategory,http://www.w3.org/2001/XMLSchema#string,21
-https://schema.org/name,name,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthServiceCategory,http://www.w3.org/2001/XMLSchema#string,21
-http://sail.ua.edu/ruralkg/treatment/providesService,providesService,,Predicate,,http://sail.ua.edu/ruralkg/treatment/TreatmentProvider,http://sail.ua.edu/ruralkg/treatment/MentalHealthService,442841
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://sail.ua.edu/ruralkg/treatment/TreatmentProvider,http://www.w3.org/2001/XMLSchema#string,9037
-http://www.w3.org/2004/02/skos/core#altLabel,altLabel,,Predicate,,http://sail.ua.edu/ruralkg/treatment/TreatmentProvider,http://www.w3.org/2001/XMLSchema#string,9037
-https://schema.org/address,address,,Predicate,,http://sail.ua.edu/ruralkg/treatment/TreatmentProvider,http://www.w3.org/2001/XMLSchema#string,9037
-https://schema.org/name,name,,Predicate,,http://sail.ua.edu/ruralkg/treatment/TreatmentProvider,http://www.w3.org/2001/XMLSchema#string,9037
-https://schema.org/postalCode,postalCode,,Predicate,,http://sail.ua.edu/ruralkg/treatment/TreatmentProvider,http://www.w3.org/2001/XMLSchema#string,9037
-https://schema.org/serviceLocation,serviceLocation,,Predicate,,http://sail.ua.edu/ruralkg/treatment/TreatmentProvider,,8114
-https://schema.org/telephone,telephone,,Predicate,,http://sail.ua.edu/ruralkg/treatment/TreatmentProvider,,9037
-http://purl.org/dc/terms/description,description,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSS,http://www.w3.org/2001/XMLSchema#string,324
-http://purl.org/dc/terms/identifier,identifier,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSS,http://www.w3.org/2001/XMLSchema#string,324
-http://sail.ua.edu/ruralkg/variable/code,code,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSS,http://www.w3.org/2001/XMLSchema#string,324
-http://sail.ua.edu/ruralkg/variable/content,content,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSS,http://www.w3.org/2001/XMLSchema#string,324
-http://sail.ua.edu/ruralkg/variable/fromDataset,fromDataset,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSS,http://www.w3.org/2001/XMLSchema#string,324
-http://sail.ua.edu/ruralkg/variable/generatedDescription,generatedDescription,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSS,http://www.w3.org/2001/XMLSchema#string,324
-http://sail.ua.edu/ruralkg/variable/hasAnswer,hasAnswer,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSS,http://sail.ua.edu/ruralkg/variable/BRFSSAnswer,2011
-http://sail.ua.edu/ruralkg/variable/year,year,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSS,http://www.w3.org/2001/XMLSchema#integer,324
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSS,http://www.w3.org/2001/XMLSchema#string,324
-http://sail.ua.edu/ruralkg/variable/answerCode,answerCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSSAnswer,http://www.w3.org/2001/XMLSchema#string,2011
-http://sail.ua.edu/ruralkg/variable/answerContent,answerContent,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSSAnswer,http://www.w3.org/2001/XMLSchema#string,2011
-http://purl.org/dc/terms/description,description,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#string,1419
-http://purl.org/dc/terms/identifier,identifier,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#string,1419
-http://sail.ua.edu/ruralkg/variable/code,code,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#string,1419
-http://sail.ua.edu/ruralkg/variable/content,content,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#string,1419
-http://sail.ua.edu/ruralkg/variable/fromDataset,fromDataset,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#string,1419
-http://sail.ua.edu/ruralkg/variable/generatedDescription,generatedDescription,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#string,1419
-http://sail.ua.edu/ruralkg/variable/hasAnswer,hasAnswer,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://sail.ua.edu/ruralkg/variable/MEPSAnswer,6333
-http://sail.ua.edu/ruralkg/variable/ontologyConfidence,ontologyConfidence,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#decimal,1341
-http://sail.ua.edu/ruralkg/variable/ontologyPath,ontologyPath,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#string,1341
-http://sail.ua.edu/ruralkg/variable/ontologyRationale,ontologyRationale,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#string,1332
-http://sail.ua.edu/ruralkg/variable/year,year,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#integer,1419
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#string,1419
-http://sail.ua.edu/ruralkg/variable/answerCode,answerCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPSAnswer,http://www.w3.org/2001/XMLSchema#string,6336
-http://sail.ua.edu/ruralkg/variable/answerContent,answerContent,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPSAnswer,http://www.w3.org/2001/XMLSchema#string,6336
-http://purl.org/dc/terms/description,description,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRS,http://www.w3.org/2001/XMLSchema#string,469
-http://purl.org/dc/terms/identifier,identifier,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRS,http://www.w3.org/2001/XMLSchema#string,469
-http://sail.ua.edu/ruralkg/variable/code,code,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRS,http://www.w3.org/2001/XMLSchema#string,469
-http://sail.ua.edu/ruralkg/variable/content,content,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRS,http://www.w3.org/2001/XMLSchema#string,469
-http://sail.ua.edu/ruralkg/variable/correspondingPredicate,corresponding predicate,Links a RuralKG variable to the corresponding FBI NIBRS or NIEM predicate used by interoperable justice knowledge graphs.,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRS,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,264
-http://sail.ua.edu/ruralkg/variable/fromDataset,fromDataset,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRS,http://www.w3.org/2001/XMLSchema#string,469
-http://sail.ua.edu/ruralkg/variable/generatedDescription,generatedDescription,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRS,http://www.w3.org/2001/XMLSchema#string,469
-http://sail.ua.edu/ruralkg/variable/hasAnswer,hasAnswer,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRS,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,2258
-http://sail.ua.edu/ruralkg/variable/year,year,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRS,http://www.w3.org/2001/XMLSchema#integer,469
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRS,http://www.w3.org/2001/XMLSchema#string,469
-http://fbi.gov/cjis/nibrs/2023.0/ArresteeArmedWithCode,ArresteeArmedWithCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,14
-http://fbi.gov/cjis/nibrs/2023.0/ChargeUCRCode,ChargeUCRCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,126
-http://fbi.gov/cjis/nibrs/2023.0/CriminalActivityCategoryCode,CriminalActivityCategoryCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,7
-http://fbi.gov/cjis/nibrs/2023.0/IncidentExceptionalClearanceCode,IncidentExceptionalClearanceCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,1
-http://fbi.gov/cjis/nibrs/2023.0/InjuryCategoryCode,InjuryCategoryCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,14
-http://fbi.gov/cjis/nibrs/2023.0/LocationCategoryCode,LocationCategoryCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,44
-http://fbi.gov/cjis/nibrs/2023.0/NIBRSBiasMotivationCode,NIBRSBiasMotivationCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,27
-http://fbi.gov/cjis/nibrs/2023.0/OffenseAttemptedIndicator,OffenseAttemptedIndicator,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,6
-http://fbi.gov/cjis/nibrs/2023.0/OffenseFactorCode,OffenseFactorCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,9
-http://fbi.gov/cjis/nibrs/2023.0/OffenseUCRCode,OffenseUCRCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,168
-http://fbi.gov/cjis/nibrs/2023.0/SubstanceUnitCode,SubstanceUnitCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,9
-http://fbi.gov/cjis/nibrs/2023.0/VictimToSubjectRelationshipCode,VictimToSubjectRelationshipCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,4
-http://release.niem.gov/niem/domains/jxdm/7.2/#ArrestSubjectCountCode,ArrestSubjectCountCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,8
-http://release.niem.gov/niem/domains/jxdm/7.2/#DrugCategoryCode,DrugCategoryCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,16
-http://release.niem.gov/niem/domains/jxdm/7.2/#ForceCategoryCode,ForceCategoryCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,12
-http://release.niem.gov/niem/domains/jxdm/7.2/#ItemCategoryNIBRSPropertyCategoryCode,ItemCategoryNIBRSPropertyCategoryCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,61
-http://release.niem.gov/niem/domains/jxdm/7.2/#ItemStatusCode,ItemStatusCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,1
-http://release.niem.gov/niem/domains/jxdm/7.2/#PassagePointMethodCOde,PassagePointMethodCOde,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,6
-http://release.niem.gov/niem/domains/jxdm/7.2/#PersonEthnicityCode,PersonEthnicityCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,24
-http://release.niem.gov/niem/domains/jxdm/7.2/#PersonRaceCode,PersonRaceCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,24
-http://release.niem.gov/niem/domains/jxdm/7.2/#PersonResidentCode,PersonResidentCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,16
-http://release.niem.gov/niem/domains/jxdm/7.2/#PersonSexCode,PersonSexCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,24
-http://release.niem.gov/niem/domains/jxdm/7.2/#VictimAggravatedAssaultHomicideFactorCode,VictimAggravatedAssaultHomicideFactorCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,112
-http://release.niem.gov/niem/domains/jxdm/7.2/#VictimCategoryCode,VictimCategoryCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,32
-http://sail.ua.edu/ruralkg/variable/answerCode,answerCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,2258
-http://sail.ua.edu/ruralkg/variable/answerContent,answerContent,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,2258
-http://purl.org/dc/terms/description,description,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUH,http://www.w3.org/2001/XMLSchema#string,2464
-http://purl.org/dc/terms/identifier,identifier,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUH,http://www.w3.org/2001/XMLSchema#string,2464
-http://sail.ua.edu/ruralkg/substanceabuse/mentionsSubstance,mentionsSubstance,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUH,http://sail.ua.edu/ruralkg/substanceabuse/Substance,1220
-http://sail.ua.edu/ruralkg/variable/code,code,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUH,http://www.w3.org/2001/XMLSchema#string,2464
-http://sail.ua.edu/ruralkg/variable/content,content,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUH,http://www.w3.org/2001/XMLSchema#string,2465
-http://sail.ua.edu/ruralkg/variable/fromDataset,fromDataset,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUH,http://www.w3.org/2001/XMLSchema#string,2464
-http://sail.ua.edu/ruralkg/variable/generatedDescription,generatedDescription,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUH,http://www.w3.org/2001/XMLSchema#string,2465
-http://sail.ua.edu/ruralkg/variable/hasAnswer,hasAnswer,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUH,http://sail.ua.edu/ruralkg/variable/NSDUHAnswer,14923
-http://sail.ua.edu/ruralkg/variable/year,year,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUH,http://www.w3.org/2001/XMLSchema#integer,2464
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUH,http://www.w3.org/2001/XMLSchema#string,2464
-http://sail.ua.edu/ruralkg/variable/answerCode,answerCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUHAnswer,http://www.w3.org/2001/XMLSchema#string,14923
-http://sail.ua.edu/ruralkg/variable/answerContent,answerContent,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUHAnswer,http://www.w3.org/2001/XMLSchema#string,14923
-http://sail.ua.edu/ruralkg/healthcare/hasVariable,hasVariable,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://sail.ua.edu/ruralkg/variable/MEPS,867
-http://sail.ua.edu/ruralkg/justice/hasVariable,hasVariable,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://sail.ua.edu/ruralkg/variable/NIBRS,309
-http://sail.ua.edu/ruralkg/publichealth/hasVariable,hasVariable,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://sail.ua.edu/ruralkg/variable/BRFSS,237
-http://sail.ua.edu/ruralkg/publichealth/hasVariable,hasVariable,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://sail.ua.edu/ruralkg/variable/MEPS,456
-http://sail.ua.edu/ruralkg/settlementtype/hasVariable,hasVariable,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://sail.ua.edu/ruralkg/variable/BRFSS,2
-http://sail.ua.edu/ruralkg/settlementtype/hasVariable,hasVariable,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://sail.ua.edu/ruralkg/variable/MEPS,4
-http://sail.ua.edu/ruralkg/substanceabuse/conceptType,conceptType,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2001/XMLSchema#string,39
-http://sail.ua.edu/ruralkg/substanceabuse/domainCategory,domainCategory,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2001/XMLSchema#string,39
-http://sail.ua.edu/ruralkg/substanceabuse/hasVariable,hasVariable,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://sail.ua.edu/ruralkg/variable/BRFSS,24
-http://sail.ua.edu/ruralkg/substanceabuse/hasVariable,hasVariable,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://sail.ua.edu/ruralkg/variable/MEPS,14
-http://sail.ua.edu/ruralkg/substanceabuse/hasVariable,hasVariable,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://sail.ua.edu/ruralkg/variable/NSDUH,2027
-http://sail.ua.edu/ruralkg/substanceabuse/hierarchyLevel,hierarchyLevel,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2001/XMLSchema#integer,39
-http://sail.ua.edu/ruralkg/variable/year,year,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2001/XMLSchema#integer,43
-http://www.w3.org/2000/01/rdf-schema#comment,comment,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2001/XMLSchema#string,242
-http://www.w3.org/2000/01/rdf-schema#isDefinedBy,isDefinedBy,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2002/07/owl#Ontology,118
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2001/XMLSchema#string,226
-http://www.w3.org/2000/01/rdf-schema#subClassOf,subClassOf,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2000/01/rdf-schema#Class,235
-http://www.w3.org/2000/01/rdf-schema#comment,comment,,Predicate,,http://www.w3.org/2002/07/owl#AnnotationProperty,http://www.w3.org/2001/XMLSchema#string,1
-http://www.w3.org/2000/01/rdf-schema#isDefinedBy,isDefinedBy,,Predicate,,http://www.w3.org/2002/07/owl#AnnotationProperty,http://www.w3.org/2002/07/owl#Ontology,1
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://www.w3.org/2002/07/owl#AnnotationProperty,http://www.w3.org/2001/XMLSchema#string,1
-http://www.w3.org/2000/01/rdf-schema#comment,comment,,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2001/XMLSchema#string,1
-http://www.w3.org/2000/01/rdf-schema#domain,domain,,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2000/01/rdf-schema#Class,1
-http://www.w3.org/2000/01/rdf-schema#isDefinedBy,isDefinedBy,,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2002/07/owl#Ontology,1
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2001/XMLSchema#string,1
-http://www.w3.org/2000/01/rdf-schema#range,range,,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,,1
-http://purl.org/dc/terms/created,created,,Predicate,,http://www.w3.org/2002/07/owl#Ontology,http://www.w3.org/2001/XMLSchema#string,1
-http://purl.org/dc/terms/creator,creator,,Predicate,,http://www.w3.org/2002/07/owl#Ontology,http://www.w3.org/2001/XMLSchema#string,1
-http://purl.org/dc/terms/description,description,,Predicate,,http://www.w3.org/2002/07/owl#Ontology,http://www.w3.org/2001/XMLSchema#string,1
-http://purl.org/dc/terms/hasVersion,hasVersion,,Predicate,,http://www.w3.org/2002/07/owl#Ontology,http://www.w3.org/2001/XMLSchema#string,1
-http://purl.org/dc/terms/title,title,,Predicate,,http://www.w3.org/2002/07/owl#Ontology,http://www.w3.org/2001/XMLSchema#string,1
-http://www.w3.org/2000/01/rdf-schema#comment,comment,,Predicate,,http://www.w3.org/2002/07/owl#Ontology,http://www.w3.org/2001/XMLSchema#string,1
-https://schema.org/alternateName,alternateName,,Predicate,,,,56
-http://sail.ua.edu/ruralkg/property/cityPopulationRank,city population rank,RuralKG-derived integer population rank of a U.S. city. Attached as an annotation to the GNIS feature IRI for the city. Lower values indicate higher population.,Predicate,,,,30985
-https://schema.org/longitude,longitude,,Predicate,,,,31002
-https://schema.org/latitude,latitude,,Predicate,,,,31002
-https://schema.org/containedInPlace,containedInPlace,,Predicate,,,,34246
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples,Pattern
+http://sail.ua.edu/ruralkg/settlementtype/CountyStatus,CountyStatus,Status of a county in terms of rural or urban classification.,Class,,,,3234,
+http://sail.ua.edu/ruralkg/settlementtype/RUCC,RUCC,Rural-Urban Continuum Code classification.,Class,,,,10,
+http://sail.ua.edu/ruralkg/substanceabuse/Substance,Substance,Types of substances that can be abused.,Class,,,,23,
+http://sail.ua.edu/ruralkg/substanceabuse/SubstanceRelatedIncident,SubstanceRelatedIncident,Types of incidents related to substance abuse.,Class,,,,17,
+http://sail.ua.edu/ruralkg/treatment/MentalHealthService,MentalHealthService,Specific mental health services offered.,Class,,,,176,
+http://sail.ua.edu/ruralkg/treatment/MentalHealthServiceCategory,MentalHealthServiceCategory,Categories of mental health services.,Class,,,,21,
+http://sail.ua.edu/ruralkg/treatment/TreatmentProvider,TreatmentProvider,Entities that provide treatment services.,Class,,,,9037,
+http://sail.ua.edu/ruralkg/variable/BRFSS,BRFSS,Variables from the Behavioral Risk Factor Surveillance System dataset (year 2022). Topic placement lives on the section-class side under publichealth:/substanceabuse:/settlement:; this class is just the dataset tag.,Class,,,,324,
+http://sail.ua.edu/ruralkg/variable/BRFSSAnswer,BRFSSAnswer,Answer options for BRFSS variables.,Class,,,,2011,
+http://sail.ua.edu/ruralkg/variable/MEPS,MEPS,Variables from the Medical Expenditure Panel Survey dataset.,Class,,,,1419,
+http://sail.ua.edu/ruralkg/variable/MEPSAnswer,MEPSAnswer,Answer options for MEPS variables.,Class,,,,6336,
+http://sail.ua.edu/ruralkg/variable/NIBRS,NIBRS,Variables from the National Incident-Based Reporting System dataset.,Class,,,,469,
+http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,NIBRSAnswer,Answer options for NIBRS variables.,Class,,,,2258,
+http://sail.ua.edu/ruralkg/variable/NSDUH,NSDUH,Variables from the National Survey on Drug Use and Health dataset.,Class,,,,2464,
+http://sail.ua.edu/ruralkg/variable/NSDUHAnswer,NSDUHAnswer,Answer options for NSDUH variables.,Class,,,,14923,
+http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,Property,,Class,,,,28,
+http://www.w3.org/2000/01/rdf-schema#Class,Class,,Class,,,,242,
+http://www.w3.org/2002/07/owl#AnnotationProperty,AnnotationProperty,,Class,,,,1,
+http://www.w3.org/2002/07/owl#ObjectProperty,ObjectProperty,,Class,,,,1,
+http://www.w3.org/2002/07/owl#Ontology,Ontology,,Class,,,,1,
+http://sail.ua.edu/ruralkg/settlementtype/censusCounty,censusCounty,,Predicate,,http://sail.ua.edu/ruralkg/settlementtype/CountyStatus,,3234,direct
+http://sail.ua.edu/ruralkg/settlementtype/hasRUCC,hasRUCC,,Predicate,,http://sail.ua.edu/ruralkg/settlementtype/CountyStatus,http://sail.ua.edu/ruralkg/settlementtype/RUCC,3234,direct
+http://sail.ua.edu/ruralkg/settlementtype/population,population,,Predicate,,http://sail.ua.edu/ruralkg/settlementtype/CountyStatus,http://www.w3.org/2001/XMLSchema#integer,3234,direct
+http://sail.ua.edu/ruralkg/settlementtype/year,year,,Predicate,,http://sail.ua.edu/ruralkg/settlementtype/CountyStatus,http://www.w3.org/2001/XMLSchema#integer,3234,direct
+http://purl.org/dc/terms/description,description,,Predicate,,http://sail.ua.edu/ruralkg/settlementtype/RUCC,http://www.w3.org/2001/XMLSchema#string,10,direct
+http://purl.org/dc/terms/identifier,identifier,,Predicate,,http://sail.ua.edu/ruralkg/settlementtype/RUCC,http://www.w3.org/2001/XMLSchema#string,10,direct
+http://sail.ua.edu/ruralkg/settlementtype/code,code,,Predicate,,http://sail.ua.edu/ruralkg/settlementtype/RUCC,http://www.w3.org/2001/XMLSchema#string,10,direct
+http://sail.ua.edu/ruralkg/settlementtype/year,year,,Predicate,,http://sail.ua.edu/ruralkg/settlementtype/RUCC,http://www.w3.org/2001/XMLSchema#integer,10,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://sail.ua.edu/ruralkg/settlementtype/RUCC,http://www.w3.org/2001/XMLSchema#string,10,direct
+http://purl.org/dc/terms/description,description,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,http://www.w3.org/2001/XMLSchema#string,23,direct
+http://purl.org/dc/terms/identifier,identifier,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,http://www.w3.org/2001/XMLSchema#string,23,direct
+http://sail.ua.edu/ruralkg/substanceabuse/code,code,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,http://www.w3.org/2001/XMLSchema#string,23,direct
+http://sail.ua.edu/ruralkg/substanceabuse/fromDataset,fromDataset,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,http://www.w3.org/2001/XMLSchema#string,23,direct
+http://sail.ua.edu/ruralkg/substanceabuse/mentionedInVariable,mentionedInVariable,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,http://sail.ua.edu/ruralkg/variable/NSDUH,1220,direct
+http://sail.ua.edu/ruralkg/substanceabuse/wikidataId,wikidataId,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,http://www.w3.org/2001/XMLSchema#string,23,direct
+http://sail.ua.edu/ruralkg/substanceabuse/year,year,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,http://www.w3.org/2001/XMLSchema#integer,23,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,http://www.w3.org/2001/XMLSchema#string,23,direct
+http://www.w3.org/2002/07/owl#sameAs,sameAs,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,,30,direct
+http://www.w3.org/2004/02/skos/core#exactMatch,exactMatch,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,,30,direct
+https://schema.org/name,name,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/Substance,http://www.w3.org/2001/XMLSchema#string,23,direct
+http://sail.ua.edu/ruralkg/substanceabuse/fromDataset,fromDataset,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/SubstanceRelatedIncident,http://www.w3.org/2001/XMLSchema#string,17,direct
+http://sail.ua.edu/ruralkg/substanceabuse/year,year,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/SubstanceRelatedIncident,http://www.w3.org/2001/XMLSchema#integer,17,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/SubstanceRelatedIncident,http://www.w3.org/2001/XMLSchema#string,17,direct
+https://schema.org/name,name,,Predicate,,http://sail.ua.edu/ruralkg/substanceabuse/SubstanceRelatedIncident,http://www.w3.org/2001/XMLSchema#string,17,direct
+http://purl.org/dc/terms/description,description,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthService,http://www.w3.org/2001/XMLSchema#string,176,direct
+http://purl.org/dc/terms/identifier,identifier,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthService,http://www.w3.org/2001/XMLSchema#string,176,direct
+http://sail.ua.edu/ruralkg/treatment/code,code,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthService,http://www.w3.org/2001/XMLSchema#string,176,direct
+http://sail.ua.edu/ruralkg/treatment/year,year,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthService,http://www.w3.org/2001/XMLSchema#integer,176,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthService,http://www.w3.org/2001/XMLSchema#string,176,direct
+https://schema.org/name,name,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthService,http://www.w3.org/2001/XMLSchema#string,176,direct
+http://purl.org/dc/terms/identifier,identifier,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthServiceCategory,http://www.w3.org/2001/XMLSchema#string,21,direct
+http://sail.ua.edu/ruralkg/treatment/code,code,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthServiceCategory,http://www.w3.org/2001/XMLSchema#string,21,direct
+http://sail.ua.edu/ruralkg/treatment/containsService,containsService,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthServiceCategory,http://sail.ua.edu/ruralkg/treatment/MentalHealthService,176,direct
+http://sail.ua.edu/ruralkg/treatment/year,year,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthServiceCategory,http://www.w3.org/2001/XMLSchema#integer,21,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthServiceCategory,http://www.w3.org/2001/XMLSchema#string,21,direct
+https://schema.org/name,name,,Predicate,,http://sail.ua.edu/ruralkg/treatment/MentalHealthServiceCategory,http://www.w3.org/2001/XMLSchema#string,21,direct
+http://sail.ua.edu/ruralkg/treatment/providesService,providesService,,Predicate,,http://sail.ua.edu/ruralkg/treatment/TreatmentProvider,http://sail.ua.edu/ruralkg/treatment/MentalHealthService,442841,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://sail.ua.edu/ruralkg/treatment/TreatmentProvider,http://www.w3.org/2001/XMLSchema#string,9037,direct
+http://www.w3.org/2004/02/skos/core#altLabel,altLabel,,Predicate,,http://sail.ua.edu/ruralkg/treatment/TreatmentProvider,http://www.w3.org/2001/XMLSchema#string,9037,direct
+https://schema.org/address,address,,Predicate,,http://sail.ua.edu/ruralkg/treatment/TreatmentProvider,http://www.w3.org/2001/XMLSchema#string,9037,direct
+https://schema.org/name,name,,Predicate,,http://sail.ua.edu/ruralkg/treatment/TreatmentProvider,http://www.w3.org/2001/XMLSchema#string,9037,direct
+https://schema.org/postalCode,postalCode,,Predicate,,http://sail.ua.edu/ruralkg/treatment/TreatmentProvider,http://www.w3.org/2001/XMLSchema#string,9037,direct
+https://schema.org/serviceLocation,serviceLocation,,Predicate,,http://sail.ua.edu/ruralkg/treatment/TreatmentProvider,,8114,direct
+https://schema.org/telephone,telephone,,Predicate,,http://sail.ua.edu/ruralkg/treatment/TreatmentProvider,,9037,direct
+http://purl.org/dc/terms/description,description,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSS,http://www.w3.org/2001/XMLSchema#string,324,direct
+http://purl.org/dc/terms/identifier,identifier,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSS,http://www.w3.org/2001/XMLSchema#string,324,direct
+http://sail.ua.edu/ruralkg/variable/code,code,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSS,http://www.w3.org/2001/XMLSchema#string,324,direct
+http://sail.ua.edu/ruralkg/variable/content,content,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSS,http://www.w3.org/2001/XMLSchema#string,324,direct
+http://sail.ua.edu/ruralkg/variable/fromDataset,fromDataset,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSS,http://www.w3.org/2001/XMLSchema#string,324,direct
+http://sail.ua.edu/ruralkg/variable/generatedDescription,generatedDescription,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSS,http://www.w3.org/2001/XMLSchema#string,324,direct
+http://sail.ua.edu/ruralkg/variable/hasAnswer,hasAnswer,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSS,http://sail.ua.edu/ruralkg/variable/BRFSSAnswer,2011,direct
+http://sail.ua.edu/ruralkg/variable/year,year,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSS,http://www.w3.org/2001/XMLSchema#integer,324,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSS,http://www.w3.org/2001/XMLSchema#string,324,direct
+http://sail.ua.edu/ruralkg/variable/answerCode,answerCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSSAnswer,http://www.w3.org/2001/XMLSchema#string,2011,direct
+http://sail.ua.edu/ruralkg/variable/answerContent,answerContent,,Predicate,,http://sail.ua.edu/ruralkg/variable/BRFSSAnswer,http://www.w3.org/2001/XMLSchema#string,2011,direct
+http://purl.org/dc/terms/description,description,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#string,1419,direct
+http://purl.org/dc/terms/identifier,identifier,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#string,1419,direct
+http://sail.ua.edu/ruralkg/variable/code,code,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#string,1419,direct
+http://sail.ua.edu/ruralkg/variable/content,content,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#string,1419,direct
+http://sail.ua.edu/ruralkg/variable/fromDataset,fromDataset,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#string,1419,direct
+http://sail.ua.edu/ruralkg/variable/generatedDescription,generatedDescription,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#string,1419,direct
+http://sail.ua.edu/ruralkg/variable/hasAnswer,hasAnswer,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://sail.ua.edu/ruralkg/variable/MEPSAnswer,6333,direct
+http://sail.ua.edu/ruralkg/variable/ontologyConfidence,ontologyConfidence,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#decimal,1341,direct
+http://sail.ua.edu/ruralkg/variable/ontologyPath,ontologyPath,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#string,1341,direct
+http://sail.ua.edu/ruralkg/variable/ontologyRationale,ontologyRationale,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#string,1332,direct
+http://sail.ua.edu/ruralkg/variable/year,year,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#integer,1419,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPS,http://www.w3.org/2001/XMLSchema#string,1419,direct
+http://sail.ua.edu/ruralkg/variable/answerCode,answerCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPSAnswer,http://www.w3.org/2001/XMLSchema#string,6336,direct
+http://sail.ua.edu/ruralkg/variable/answerContent,answerContent,,Predicate,,http://sail.ua.edu/ruralkg/variable/MEPSAnswer,http://www.w3.org/2001/XMLSchema#string,6336,direct
+http://purl.org/dc/terms/description,description,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRS,http://www.w3.org/2001/XMLSchema#string,469,direct
+http://purl.org/dc/terms/identifier,identifier,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRS,http://www.w3.org/2001/XMLSchema#string,469,direct
+http://sail.ua.edu/ruralkg/variable/code,code,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRS,http://www.w3.org/2001/XMLSchema#string,469,direct
+http://sail.ua.edu/ruralkg/variable/content,content,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRS,http://www.w3.org/2001/XMLSchema#string,469,direct
+http://sail.ua.edu/ruralkg/variable/correspondingPredicate,corresponding predicate,Links a RuralKG variable to the corresponding FBI NIBRS or NIEM predicate used by interoperable justice knowledge graphs.,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRS,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,264,direct
+http://sail.ua.edu/ruralkg/variable/fromDataset,fromDataset,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRS,http://www.w3.org/2001/XMLSchema#string,469,direct
+http://sail.ua.edu/ruralkg/variable/generatedDescription,generatedDescription,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRS,http://www.w3.org/2001/XMLSchema#string,469,direct
+http://sail.ua.edu/ruralkg/variable/hasAnswer,hasAnswer,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRS,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,2258,direct
+http://sail.ua.edu/ruralkg/variable/year,year,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRS,http://www.w3.org/2001/XMLSchema#integer,469,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRS,http://www.w3.org/2001/XMLSchema#string,469,direct
+http://fbi.gov/cjis/nibrs/2023.0/ArresteeArmedWithCode,ArresteeArmedWithCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,14,direct
+http://fbi.gov/cjis/nibrs/2023.0/ChargeUCRCode,ChargeUCRCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,126,direct
+http://fbi.gov/cjis/nibrs/2023.0/CriminalActivityCategoryCode,CriminalActivityCategoryCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,7,direct
+http://fbi.gov/cjis/nibrs/2023.0/IncidentExceptionalClearanceCode,IncidentExceptionalClearanceCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://fbi.gov/cjis/nibrs/2023.0/InjuryCategoryCode,InjuryCategoryCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,14,direct
+http://fbi.gov/cjis/nibrs/2023.0/LocationCategoryCode,LocationCategoryCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,44,direct
+http://fbi.gov/cjis/nibrs/2023.0/NIBRSBiasMotivationCode,NIBRSBiasMotivationCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,27,direct
+http://fbi.gov/cjis/nibrs/2023.0/OffenseAttemptedIndicator,OffenseAttemptedIndicator,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,6,direct
+http://fbi.gov/cjis/nibrs/2023.0/OffenseFactorCode,OffenseFactorCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,9,direct
+http://fbi.gov/cjis/nibrs/2023.0/OffenseUCRCode,OffenseUCRCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,168,direct
+http://fbi.gov/cjis/nibrs/2023.0/SubstanceUnitCode,SubstanceUnitCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,9,direct
+http://fbi.gov/cjis/nibrs/2023.0/VictimToSubjectRelationshipCode,VictimToSubjectRelationshipCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,4,direct
+http://release.niem.gov/niem/domains/jxdm/7.2/#ArrestSubjectCountCode,ArrestSubjectCountCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,8,direct
+http://release.niem.gov/niem/domains/jxdm/7.2/#DrugCategoryCode,DrugCategoryCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,16,direct
+http://release.niem.gov/niem/domains/jxdm/7.2/#ForceCategoryCode,ForceCategoryCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,12,direct
+http://release.niem.gov/niem/domains/jxdm/7.2/#ItemCategoryNIBRSPropertyCategoryCode,ItemCategoryNIBRSPropertyCategoryCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,61,direct
+http://release.niem.gov/niem/domains/jxdm/7.2/#ItemStatusCode,ItemStatusCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://release.niem.gov/niem/domains/jxdm/7.2/#PassagePointMethodCOde,PassagePointMethodCOde,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,6,direct
+http://release.niem.gov/niem/domains/jxdm/7.2/#PersonEthnicityCode,PersonEthnicityCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,24,direct
+http://release.niem.gov/niem/domains/jxdm/7.2/#PersonRaceCode,PersonRaceCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,24,direct
+http://release.niem.gov/niem/domains/jxdm/7.2/#PersonResidentCode,PersonResidentCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,16,direct
+http://release.niem.gov/niem/domains/jxdm/7.2/#PersonSexCode,PersonSexCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,24,direct
+http://release.niem.gov/niem/domains/jxdm/7.2/#VictimAggravatedAssaultHomicideFactorCode,VictimAggravatedAssaultHomicideFactorCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,112,direct
+http://release.niem.gov/niem/domains/jxdm/7.2/#VictimCategoryCode,VictimCategoryCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,32,direct
+http://sail.ua.edu/ruralkg/variable/answerCode,answerCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,2258,direct
+http://sail.ua.edu/ruralkg/variable/answerContent,answerContent,,Predicate,,http://sail.ua.edu/ruralkg/variable/NIBRSAnswer,http://www.w3.org/2001/XMLSchema#string,2258,direct
+http://purl.org/dc/terms/description,description,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUH,http://www.w3.org/2001/XMLSchema#string,2464,direct
+http://purl.org/dc/terms/identifier,identifier,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUH,http://www.w3.org/2001/XMLSchema#string,2464,direct
+http://sail.ua.edu/ruralkg/substanceabuse/mentionsSubstance,mentionsSubstance,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUH,http://sail.ua.edu/ruralkg/substanceabuse/Substance,1220,direct
+http://sail.ua.edu/ruralkg/variable/code,code,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUH,http://www.w3.org/2001/XMLSchema#string,2464,direct
+http://sail.ua.edu/ruralkg/variable/content,content,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUH,http://www.w3.org/2001/XMLSchema#string,2465,direct
+http://sail.ua.edu/ruralkg/variable/fromDataset,fromDataset,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUH,http://www.w3.org/2001/XMLSchema#string,2464,direct
+http://sail.ua.edu/ruralkg/variable/generatedDescription,generatedDescription,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUH,http://www.w3.org/2001/XMLSchema#string,2465,direct
+http://sail.ua.edu/ruralkg/variable/hasAnswer,hasAnswer,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUH,http://sail.ua.edu/ruralkg/variable/NSDUHAnswer,14923,direct
+http://sail.ua.edu/ruralkg/variable/year,year,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUH,http://www.w3.org/2001/XMLSchema#integer,2464,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUH,http://www.w3.org/2001/XMLSchema#string,2464,direct
+http://sail.ua.edu/ruralkg/variable/answerCode,answerCode,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUHAnswer,http://www.w3.org/2001/XMLSchema#string,14923,direct
+http://sail.ua.edu/ruralkg/variable/answerContent,answerContent,,Predicate,,http://sail.ua.edu/ruralkg/variable/NSDUHAnswer,http://www.w3.org/2001/XMLSchema#string,14923,direct
+http://sail.ua.edu/ruralkg/healthcare/hasVariable,hasVariable,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://sail.ua.edu/ruralkg/variable/MEPS,867,direct
+http://sail.ua.edu/ruralkg/justice/hasVariable,hasVariable,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://sail.ua.edu/ruralkg/variable/NIBRS,309,direct
+http://sail.ua.edu/ruralkg/publichealth/hasVariable,hasVariable,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://sail.ua.edu/ruralkg/variable/BRFSS,237,direct
+http://sail.ua.edu/ruralkg/publichealth/hasVariable,hasVariable,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://sail.ua.edu/ruralkg/variable/MEPS,456,direct
+http://sail.ua.edu/ruralkg/settlementtype/hasVariable,hasVariable,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://sail.ua.edu/ruralkg/variable/BRFSS,2,direct
+http://sail.ua.edu/ruralkg/settlementtype/hasVariable,hasVariable,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://sail.ua.edu/ruralkg/variable/MEPS,4,direct
+http://sail.ua.edu/ruralkg/substanceabuse/conceptType,conceptType,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2001/XMLSchema#string,39,direct
+http://sail.ua.edu/ruralkg/substanceabuse/domainCategory,domainCategory,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2001/XMLSchema#string,39,direct
+http://sail.ua.edu/ruralkg/substanceabuse/hasVariable,hasVariable,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://sail.ua.edu/ruralkg/variable/BRFSS,24,direct
+http://sail.ua.edu/ruralkg/substanceabuse/hasVariable,hasVariable,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://sail.ua.edu/ruralkg/variable/MEPS,14,direct
+http://sail.ua.edu/ruralkg/substanceabuse/hasVariable,hasVariable,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://sail.ua.edu/ruralkg/variable/NSDUH,2027,direct
+http://sail.ua.edu/ruralkg/substanceabuse/hierarchyLevel,hierarchyLevel,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2001/XMLSchema#integer,39,direct
+http://sail.ua.edu/ruralkg/variable/year,year,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2001/XMLSchema#integer,43,direct
+http://www.w3.org/2000/01/rdf-schema#comment,comment,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2001/XMLSchema#string,242,direct
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,isDefinedBy,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2002/07/owl#Ontology,118,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2001/XMLSchema#string,226,direct
+http://www.w3.org/2000/01/rdf-schema#subClassOf,subClassOf,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2000/01/rdf-schema#Class,235,direct
+http://www.w3.org/2000/01/rdf-schema#comment,comment,,Predicate,,http://www.w3.org/2002/07/owl#AnnotationProperty,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,isDefinedBy,,Predicate,,http://www.w3.org/2002/07/owl#AnnotationProperty,http://www.w3.org/2002/07/owl#Ontology,1,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://www.w3.org/2002/07/owl#AnnotationProperty,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://www.w3.org/2000/01/rdf-schema#comment,comment,,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://www.w3.org/2000/01/rdf-schema#domain,domain,,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2000/01/rdf-schema#Class,1,direct
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,isDefinedBy,,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2002/07/owl#Ontology,1,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://www.w3.org/2000/01/rdf-schema#range,range,,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,,1,direct
+http://purl.org/dc/terms/created,created,,Predicate,,http://www.w3.org/2002/07/owl#Ontology,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://purl.org/dc/terms/creator,creator,,Predicate,,http://www.w3.org/2002/07/owl#Ontology,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://purl.org/dc/terms/description,description,,Predicate,,http://www.w3.org/2002/07/owl#Ontology,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://purl.org/dc/terms/hasVersion,hasVersion,,Predicate,,http://www.w3.org/2002/07/owl#Ontology,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://purl.org/dc/terms/title,title,,Predicate,,http://www.w3.org/2002/07/owl#Ontology,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://www.w3.org/2000/01/rdf-schema#comment,comment,,Predicate,,http://www.w3.org/2002/07/owl#Ontology,http://www.w3.org/2001/XMLSchema#string,1,direct
+https://schema.org/alternateName,alternateName,,Predicate,,,,56,direct
+http://sail.ua.edu/ruralkg/property/cityPopulationRank,city population rank,RuralKG-derived integer population rank of a U.S. city. Attached as an annotation to the GNIS feature IRI for the city. Lower values indicate higher population.,Predicate,,,,30985,direct
+https://schema.org/longitude,longitude,,Predicate,,,,31002,direct
+https://schema.org/latitude,latitude,,Predicate,,,,31002,direct
+https://schema.org/containedInPlace,containedInPlace,,Predicate,,,,34246,direct

@@ -8,7 +8,7 @@ How to read this:
 - **only VoID**: in the served graph but missing from the curated file. **only curated**: in the curated file but not in the served graph (phantom, renamed, or not yet deployed).
 - **Edges only curated** over-reports: a curated predicate row holds `|`-joined source and target lists with no pairing, so it is expanded as every source × target combination, some of which the curators never meant (e.g. oard-kg `subject`). Use it to find candidates, not as a list of errors; VoID's per-edge rows give the real pairings with counts.
 - Description status per curated row: `match` (same text as the KG/ubergraph), `differs`, `curated-only` (entity is served but no machine source describes it — hand-written), `machine-only`, `not-in-void` (entity not served).
-- `manual_definitions.csv` holds the 3930 `curated-only` / `not-in-void` descriptions — the knowledge VoID cannot reproduce.
+- `manual_definitions.csv` holds the 3901 `curated-only` / `not-in-void` descriptions — the knowledge VoID cannot reproduce.
 - Class counts in the VoID files are instance counts (`void:entities`); predicate counts are triples per (source class, predicate, target) edge.
 - URIs below are shortened: `kg:` = the KG's own `https://purl.org/okn/frink/kg/{kg}/` namespace; `rdf:` = `http://www.w3.org/1999/02/22-rdf-syntax-ns#`, `rdfs:` = `http://www.w3.org/2000/01/rdf-schema#`, `xsd:` = `http://www.w3.org/2001/XMLSchema#`, `owl:` = `http://www.w3.org/2002/07/owl#`, `skos:` = `http://www.w3.org/2004/02/skos/core#`, `obo:` = `http://purl.obolibrary.org/obo/`, `biolink:` = `https://w3id.org/biolink/vocab/`, `schema:` = `http://schema.org/`, `dct:` = `http://purl.org/dc/terms/`. `comparison.json` has full URIs and uncapped lists.
 
@@ -42,7 +42,7 @@ Treat the structural diff for a stale KG with suspicion: VoID may describe a dif
 | bio101 | 127 / 105 | 118 | 96 | 381 / 382 | 0 | 1 | 0 / 0 | 52 | 307 | 31 | 0 | 97 |
 | biobricks-aopwiki | 24 / 24 | 0 | 0 | 59 / 62 | 0 | 3 | 0 / 0 | 32 | 4 | 31 | 8 | 3 |
 | biobricks-ice | 10 / 10 | 0 | 0 | 20 / 21 | 0 | 1 | 0 / 0 | 0 | 4 | 26 | 0 | 1 |
-| biobricks-mesh | 22 / 21 | 4 | 3 | 62 / 68 | 5 | 11 | 0 / 0 | 58 | 3 | 14 | 0 | 14 |
+| biobricks-mesh | 22 / 21 | 4 | 3 | 63 / 68 | 5 | 10 | 0 / 0 | 58 | 4 | 14 | 0 | 13 |
 | biobricks-pubchem-annotations | 1 / 1 | 0 | 0 | 5 / 6 | 0 | 1 | 0 / 0 | 0 | 0 | 6 | 0 | 1 |
 | biobricks-tox21 | 1 / 1 | 0 | 0 | 2 / 3 | 0 | 1 | 0 / 0 | 0 | 0 | 3 | 0 | 1 |
 | biobricks-toxcast | 7 / 7 | 0 | 0 | 10 / 11 | 0 | 1 | 0 / 0 | 0 | 4 | 13 | 0 | 1 |
@@ -50,13 +50,13 @@ Treat the structural diff for a stale KG with suspicion: VoID may describe a dif
 | biomarkerkg ⚠ stale | 7 / 7 | 0 | 0 | 12 / 12 | 10 | 10 | 0 / 0 | 0 | 0 | 9 | 0 | 10 |
 | climatemodelskg | 52 / 51 | 4 | 3 | 144 / 137 | 7 | 0 | 0 / 0 | 381 | 0 | 20 | 0 | 3 |
 | digcfdekg | 16 / 13 | 3 | 0 | 16 / 16 | 0 | 0 | 30 / 0 | 0 | 0 | 29 | 0 | 0 |
-| dreamkg ⚠ stale | 14 / 13 | 5 | 4 | 36 / 40 | 3 | 7 | 0 / 0 | 0 | 0 | 42 | 0 | 11 |
+| dreamkg ⚠ stale | 14 / 13 | 5 | 4 | 53 / 40 | 14 | 1 | 0 / 0 | 0 | 6 | 42 | 0 | 5 |
 | evoweb | 1 / 1 | 0 | 0 | 4 / 4 | 0 | 0 | 0 / 0 | 0 | 0 | 5 | 0 | 0 |
-| fiokg | 109 / 89 | 23 | 3 | 109 / 44 | 65 | 0 | 0 / 0 | 42 | 2 | 90 | 0 | 3 |
+| fiokg | 109 / 89 | 23 | 3 | 109 / 44 | 65 | 0 | 0 / 0 | 41 | 5 | 88 | 0 | 3 |
 | gene-expression-atlas-okn | 16 / 16 | 0 | 0 | 27 / 27 | 0 | 0 | 0 / 0 | 0 | 0 | 41 | 0 | 0 |
 | geoconnex | 79 / 79 | 0 | 0 | 88 / 88 | 0 | 0 | 0 / 0 | 0 | 0 | 336 | 0 | 0 |
 | glygenkg | 15 / 15 | 0 | 0 | 45 / 45 | 0 | 0 | 0 / 0 | 0 | 0 | 67 | 0 | 0 |
-| hydrologykg | 127 / 127 | 28 | 28 | 180 / 106 | 74 | 0 | 0 / 0 | 13 | 76 | 201 | 0 | 28 |
+| hydrologykg | 127 / 127 | 28 | 28 | 180 / 106 | 74 | 0 | 0 / 0 | 11 | 79 | 200 | 0 | 28 |
 | medical-device-kg | 36 / 66 | 1 | 31 | 163 / 315 | 0 | 152 | 0 / 0 | 0 | 0 | 388 | 0 | 183 |
 | nasa-gesdisc-kg | 10 / 10 | 0 | 0 | 41 / 41 | 0 | 0 | 5 / 3 | 0 | 0 | 51 | 0 | 0 |
 | ncipidkg | 7 / 6 | 1 | 0 | 20 / 20 | 0 | 0 | 16 / 16 | 0 | 45 | 39 | 0 | 0 |
@@ -69,14 +69,14 @@ Treat the structural diff for a stale KG with suspicion: VoID may describe a dif
 | prokn | 41 / 41 | 0 | 0 | 217 / 218 | 0 | 1 | 208 / 13 | 71 | 9 | 208 | 0 | 1 |
 | rdkg | 13 / 11 | 2 | 0 | 21 / 21 | 0 | 0 | 0 / 0 | 0 | 7 | 25 | 0 | 0 |
 | ruralkg | 20 / 244 | 3 | 227 | 84 / 86 | 2 | 4 | 0 / 0 | 1 | 16 | 145 | 0 | 231 |
-| sawgraph ⚠ stale | 416 / 194 | 239 | 17 | 266 / 146 | 121 | 1 | 0 / 0 | 65 | 30 | 246 | 0 | 17 |
+| sawgraph ⚠ stale | 416 / 194 | 239 | 17 | 266 / 146 | 121 | 1 | 0 / 0 | 63 | 42 | 236 | 0 | 17 |
 | scales | 31 / 34 | 2 | 5 | 288 / 293 | 4 | 9 | 0 / 0 | 572 | 29 | 16 | 0 | 8 |
 | securechainkg ⚠ stale | 898 / 22 | 876 | 0 | 49 / 42 | 7 | 0 | 0 / 0 | 0 | 0 | 109 | 0 | 0 |
-| sockg | 90 / 105 | 0 | 15 | 106 / 106 | 0 | 0 | 0 / 0 | 3 | 0 | 193 | 0 | 15 |
-| spatialkg ⚠ stale | 25 / 15 | 16 | 6 | 35 / 23 | 14 | 2 | 0 / 0 | 0 | 7 | 55 | 0 | 8 |
+| sockg | 90 / 105 | 0 | 15 | 109 / 106 | 3 | 0 | 0 / 0 | 3 | 0 | 193 | 0 | 15 |
+| spatialkg ⚠ stale | 25 / 15 | 16 | 6 | 53 / 23 | 30 | 0 | 0 / 0 | 0 | 9 | 55 | 0 | 6 |
 | spoke-genelab | 10 / 8 | 2 | 0 | 58 / 50 | 8 | 0 | 32 / 20 | 0 | 1 | 70 | 0 | 0 |
 | spoke-okn | 8 / 8 | 0 | 0 | 127 / 127 | 1 | 1 | 74 / 41 | 0 | 0 | 134 | 0 | 1 |
-| sudokn | 822 / 56 | 782 | 16 | 56 / 37 | 26 | 7 | 0 / 0 | 0 | 8 | 72 | 0 | 23 |
+| sudokn | 822 / 56 | 782 | 16 | 73 / 37 | 36 | 0 | 0 / 0 | 0 | 15 | 72 | 0 | 16 |
 | ufokn | 6 / 6 | 0 | 0 | 17 / 17 | 0 | 0 | 0 / 0 | 0 | 0 | 23 | 0 | 0 |
 | wildlifekn | 15 / 15 | 0 | 0 | 48 / 48 | 0 | 0 | 12 / 12 | 0 | 0 | 89 | 0 | 0 |
 
@@ -362,9 +362,8 @@ Curated row types: {'Class': 21, 'Predicate': 68}
 - `http://www.w3.org/ns/sparql-service-description#supportedLanguage`
 - `http://www.w3.org/ns/sparql-service-description#url`
 
-**Predicates only curated** (11)
+**Predicates only curated** (10)
 
-- `http://id.nlm.nih.gov/mesh/vocab#broader`
 - `dct:created`
 - `dct:creator`
 - `dct:date`
@@ -442,9 +441,10 @@ Curated row types: {'Class': 21, 'Predicate': 68}
 
 - `http://id.nlm.nih.gov/mesh/vocab#Descriptor` → `http://id.nlm.nih.gov/mesh/vocab#broaderDescriptor` → `http://id.nlm.nih.gov/mesh/vocab#Descriptor`
 
-**Descriptions that differ** (3)
+**Descriptions that differ** (4)
 
 - `http://id.nlm.nih.gov/mesh/vocab#altLabel`<br>curated: A property of Terms. A lexical variant for a Termâs prefLabel. meshv:altLabel is a subproperty of rdfs:label<br>KG: A property of Terms. A lexical variant for a Term’s prefLabel. meshv:altLabel is a subproperty of rdfs:label
+- `http://id.nlm.nih.gov/mesh/vocab#broader`<br>curated: A broader MeSH concept related to the subject.<br>KG: Declared in the schema but used in no triple or class axiom.
 - `http://id.nlm.nih.gov/mesh/vocab#parentTreeNumber`<br>curated: Relates one TreeNumber to another. Immediate âparentâ TreeNumber, meaning one level higher in the TreeNumber hierarchy. Example: D03.438.221 is a parent of D03.438.221.173.<br>KG: Relates one TreeNumber to another. Immediate “parent” TreeNumber, meaning one level higher in the TreeNumber hierarchy. Example: D03.438.221 is a parent of D03.438.221.173.
 - `http://id.nlm.nih.gov/mesh/vocab#previousIndexing`<br>curated: A property of Descriptors and Supplementary Concept Records. Free-text information referring to Descriptors or DescriptorQualifierPairs that were used to index the concept in MEDLINE before the Descri<br>KG: A property of Descriptors and Supplementary Concept Records. Free-text information referring to Descriptors or DescriptorQualifierPairs that were used to index the concept in MEDLINE before the Descri
 
@@ -902,20 +902,25 @@ Curated row types: {'Class': 13, 'Predicate': 40}
 - `schema:OpeningHoursSpecification`
 - `schema:Organization`
 
-**Predicates only in VoID** (3)
+**Predicates only in VoID** (14)
 
+- `schema:about`
+- `schema:abstract`
+- `schema:audience`
+- `schema:isAccessibleForFree`
+- `schema:itemReviewed`
+- `schema:review`
+- `schema:serviceChannel`
+- `schema:subjectOf`
+- `schema:suggestedAnswer`
+- `http://www.opengis.net/ont/geosparql#lat`
+- `http://www.opengis.net/ont/geosparql#long`
 - `rdfs:comment`
 - `rdfs:subClassOf`
 - `rdfs:subPropertyOf`
 
-**Predicates only curated** (7)
+**Predicates only curated** (1)
 
-- `schema:audienceType`
-- `schema:closes`
-- `schema:dayOfWeek`
-- `schema:hoursAvailable`
-- `schema:opens`
-- `schema:url`
 - `rdf:type`
 
 **(source class, predicate) only in VoID** (4)
@@ -929,6 +934,15 @@ Curated row types: {'Class': 13, 'Predicate': 40}
 
 - `schema:CategoryCode` → `schema:inCodeSet` → `owl:NamedIndividual`
 - `http://www.opengis.net/ont/geosparql#Geometry` → `http://www.opengis.net/ont/geosparql#asWKT` → `http://www.opengis.net/ont/geosparql#wktLiteral`
+
+**Descriptions that differ** (6)
+
+- `schema:audienceType`<br>curated: The target group associated with a given audience (e.g., veterans, car owners, musicians). Declared in the schema but not populated in the current release.<br>KG: Declared in the schema but used in no triple or class axiom.
+- `schema:closes`<br>curated: The closing hour of the place or service on the given day(s) of the week. Declared in the schema but not populated in the current release.<br>KG: Declared in the schema but used in no triple or class axiom.
+- `schema:dayOfWeek`<br>curated: The day of the week for which these opening hours are valid. Declared in the schema but not populated in the current release.<br>KG: Declared in the schema but used in no triple or class axiom.
+- `schema:hoursAvailable`<br>curated: The hours during which this service or contact is available. Declared in the schema but not populated in the current release.<br>KG: Declared in the schema but used in no triple or class axiom.
+- `schema:opens`<br>curated: The opening hour of the place or service on the given day(s) of the week. Declared in the schema but not populated in the current release.<br>KG: Declared in the schema but used in no triple or class axiom.
+- `schema:url`<br>curated: The URL of the item. Declared in the schema but not populated in the current release.<br>KG: Declared in the schema but used in no triple or class axiom.
 
 ## evoweb
 
@@ -1061,10 +1075,13 @@ Curated row types: {'Class': 89, 'Predicate': 48}
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_2` → `http://stko-kwg.geog.ucsb.edu/lod/ontology/spatialRelation` → `http://w3id.org/fio/v1/epa-frs#FRS-Facility`
 - … 3728 more (see comparison.json)
 
-**Descriptions that differ** (2)
+**Descriptions that differ** (5)
 
 - `http://w3id.org/fio/v1/epa-frs#MonitoringRecord`<br>curated: Monitoring Record for a facility<br>KG: A record that monitors a facility on an ongoing basis
 - `http://www.opengis.net/ont/geosparql#SpatialObject`<br>curated: Anything spatial (being or having a shape, position or an extent). Here the only specific type of the regions facilities are located in: counties, county subdivisions and Level 13 S2 cells; facilities<br>KG: Source: GeoSPARQL
+- `http://w3id.org/fio/v1/epa-frs#fromSystem`<br>curated: Links a record to the information system it originated from<br>KG: Also used inside class axioms, as owl:onProperty of 12 owl:Restrictions.
+- `http://w3id.org/fio/v1/epa-frs#ofInterestType`<br>curated: Links an environmental interest to its classification category<br>KG: Also used inside class axioms, as owl:onProperty of 18 owl:Restrictions.
+- `http://w3id.org/fio/v1/fio#ofIndustry`<br>curated: A relation between an entity and the industry it is classified under<br>KG: A relation between an entity and the industry it is classified under Also used inside class axioms, as owl:onProperty of 2 owl:Restrictions.
 
 ## gene-expression-atlas-okn
 
@@ -1344,7 +1361,7 @@ Curated row types: {'Class': 127, 'Predicate': 191}
 - `http://gwml2.org/def/gwml2#GW_Aquifer` → `http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains` → `owl:Thing`
 - … 4366 more (see comparison.json)
 
-**Descriptions that differ** (76)
+**Descriptions that differ** (79)
 
 - `obo:OBI_0200000`<br>curated: A planned process that produces output data from input data (OBI). Here the type of the six algorithms used to compute the dataset summaries.<br>KG: A planned process that produces output data from input data.
 - `http://purl.org/spatialai/stad/v2/core/DatasetDescription`<br>curated: The extended stad:DatasetDescription class for describing datasets.<br>KG: The extended stad:DatasetDescription class for describing datasets
@@ -1356,7 +1373,7 @@ Curated row types: {'Class': 127, 'Predicate': 191}
 - `http://www.opengis.net/ont/geosparql#Geometry`<br>curated: A coherent set of direct positions in space. The positions are held within a Spatial Reference System (SRS).<br>KG: Source: GeoSPARQL
 - `http://www.opengis.net/ont/geosparql#SpatialObject`<br>curated: Anything spatial (being or having a shape, position or an extent).<br>KG: Source: GeoSPARQL
 - `http://www.semanticweb.org/efive/AggregateIntervalVariable`<br>curated: The interval variable of interest for a :StatisticalSummary.<br>KG: The interval variable of interest for a :StatisticalSummary
-- … 66 more (see comparison.json)
+- … 69 more (see comparison.json)
 
 ## medical-device-kg
 
@@ -2510,7 +2527,7 @@ Curated row types: {'Class': 194, 'Predicate': 164}
 - `obo:BFO_0000040` → `owl:sameAs` → `obo:FOODON_00001678`
 - … 21070 more (see comparison.json)
 
-**Descriptions that differ** (30)
+**Descriptions that differ** (42)
 
 - `http://qudt.org/schema/qudt/QuantityKind`<br>curated: A Quantity Kind is any observable property that can be measured and quantified numerically.<br>KG: A <b>Quantity Kind</b> is any observable property that can be measured and quantified numerically. Familiar examples include physical properties such as length, mass, time, force, energy, power, elect
 - `http://qudt.org/schema/qudt/QuantityValue`<br>curated: A Quantity Value expresses the magnitude and kind of a quantity and is given by the product of a numerical value and a unit of measure.<br>KG: A <i>Quantity Value</i> expresses the magnitude and kind of a quantity and is given by the product of a numerical value <code>n</code> and a unit of measure <code>U</code>. The number multiplying the 
@@ -2522,7 +2539,7 @@ Curated row types: {'Class': 194, 'Predicate': 164}
 - `http://w3id.org/sawgraph/v1/us-wqp#PracticalQuantitationLimit`<br>curated: Practical Quantitation Limit (PQL). A subclass of coso:QuantitationLimit.<br>KG: Practical Quantitation Limit (PQL)
 - `http://w3id.org/sawgraph/v1/us-wqp#SampleDetectionLimit`<br>curated: Sample Detection Limit (SDL) - The MDL adjusted to reflect sample-specific actions such as dilution or use of smaller aliquot sizes, or to report results on a dry-weight basis. A subclass of coso:Dete<br>KG: Sample Detection Limit (SDL) - The MDL adjusted to reflect sample-specific actions such as dilution or use of smaller aliquot sizes, or to report results on a dry-weight basis.
 - `http://w3id.org/sawgraph/v1/us-wqp#TaxonGroup.FishNekton`<br>curated: Water Quality Portal taxon-group enumeration value for fish nekton; a subclass of wqp:Taxon used as the sample material type of a biological sample.<br>KG: North American Native Fishes Association Fish List - http://www.nanfa.org/checklist.shtml
-- … 20 more (see comparison.json)
+- … 32 more (see comparison.json)
 
 ## scales
 
@@ -2753,7 +2770,13 @@ Curated row types: {'Class': 105, 'Predicate': 106}
 - `https://idir.uta.edu/sockg-ontology#Sample`
 - `https://idir.uta.edu/sockg-ontology#SoilSample`
 
-**(source class, predicate) only in VoID** (339)
+**Predicates only in VoID** (3)
+
+- `http://purl.org/spatialai/spatial/spatial-full#spatiallyRelatedTo`
+- `http://stko-kwg.geog.ucsb.edu/lod/ontology/spatialRelation`
+- `https://idir.uta.edu/sockg-ontology#hasStandardDeviation`
+
+**(source class, predicate) only in VoID** (341)
 
 - `dct:BibliographicResource` → `dct:bibliographicCitation`
 - `dct:BibliographicResource` → `dct:creator`
@@ -2763,6 +2786,7 @@ Curated row types: {'Class': 105, 'Predicate': 106}
 - `http://qudt.org/schema/qudt/QuantityValue` → `http://qudt.org/schema/qudt/hasUnit`
 - `http://qudt.org/schema/qudt/QuantityValue` → `http://qudt.org/schema/qudt/numericValue`
 - `http://qudt.org/schema/qudt/QuantityValue` → `http://qudt.org/schema/qudt/standardUncertainty`
+- `http://qudt.org/schema/qudt/QuantityValue` → `https://idir.uta.edu/sockg-ontology#hasStandardDeviation`
 - `http://qudt.org/schema/qudt/QuantityValue` → `https://idir.uta.edu/sockg-ontology#isInterpolated`
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_0` → `http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains`
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_0` → `rdfs:label`
@@ -2773,22 +2797,22 @@ Curated row types: {'Class': 105, 'Predicate': 106}
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level13` → `http://purl.org/spatialai/spatial/spatial-full#connectedTo`
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level13` → `http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin`
 - `http://www.opengis.net/ont/geosparql#Geometry` → `http://www.opengis.net/ont/geosparql#asWKT`
+- `http://www.opengis.net/ont/geosparql#SpatialObject` → `http://purl.org/spatialai/spatial/spatial-full#spatiallyRelatedTo`
 - `owl:Class` → `rdfs:comment`
 - `owl:Class` → `rdfs:subClassOf`
 - `owl:Class` → `owl:disjointWith`
 - `owl:DatatypeProperty` → `rdfs:domain`
 - `owl:DatatypeProperty` → `rdfs:range`
-- `owl:ObjectProperty` → `rdfs:domain`
-- `owl:ObjectProperty` → `rdfs:label`
-- … 314 more (see comparison.json)
+- … 316 more (see comparison.json)
 
 **(source class, predicate) only curated** (1)
 
 - `http://www.opengis.net/ont/geosparql#Feature` → `http://www.opengis.net/ont/geosparql#hasGeometry`
 
-**Edges only in VoID** (212)
+**Edges only in VoID** (214)
 
 - `http://qudt.org/schema/qudt/QuantityValue` → `http://qudt.org/schema/qudt/hasUnit` → `http://qudt.org/schema/qudt/Unit`
+- `http://qudt.org/schema/qudt/QuantityValue` → `https://idir.uta.edu/sockg-ontology#hasStandardDeviation` → `http://qudt.org/schema/qudt/QuantityValue`
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_0` → `http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains` → `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_1`
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_0` → `http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains` → `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_2`
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_0` → `http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains` → `http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level13`
@@ -2802,6 +2826,7 @@ Curated row types: {'Class': 105, 'Predicate': 106}
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level13` → `http://purl.org/spatialai/spatial/spatial-full#connectedTo` → `https://idir.uta.edu/sockg-ontology#Location`
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level13` → `http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin` → `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_0`
 - `http://www.opengis.net/ont/geosparql#Geometry` → `http://www.opengis.net/ont/geosparql#asWKT` → `http://www.opengis.net/ont/geosparql#wktLiteral`
+- `http://www.opengis.net/ont/geosparql#SpatialObject` → `http://purl.org/spatialai/spatial/spatial-full#spatiallyRelatedTo` → `http://www.opengis.net/ont/geosparql#SpatialObject`
 - `owl:Class` → `rdfs:subClassOf` → `owl:Class`
 - `owl:Class` → `owl:disjointWith` → `owl:Class`
 - `owl:DatatypeProperty` → `rdfs:domain` → `owl:Class`
@@ -2811,9 +2836,7 @@ Curated row types: {'Class': 105, 'Predicate': 106}
 - `owl:ObjectProperty` → `rdfs:range` → `owl:Class`
 - `owl:ObjectProperty` → `rdfs:subPropertyOf` → `owl:ObjectProperty`
 - `owl:ObjectProperty` → `owl:equivalentProperty` → `owl:ObjectProperty`
-- `owl:ObjectProperty` → `owl:inverseOf` → `owl:ObjectProperty`
-- `https://idir.uta.edu/sockg-ontology#Amendment` → `https://idir.uta.edu/sockg-ontology#hasAmendmentType` → `https://idir.uta.edu/sockg-ontology#AmendmentType`
-- … 187 more (see comparison.json)
+- … 189 more (see comparison.json)
 
 **Edges only curated** (1)
 
@@ -2855,9 +2878,10 @@ Curated row types: {'Class': 15, 'Predicate': 55}
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level8`
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level9`
 
-**Predicates only in VoID** (14)
+**Predicates only in VoID** (30)
 
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/cellID`
+- `rdf:langRange`
 - `rdfs:comment`
 - `rdfs:domain`
 - `rdfs:isDefinedBy`
@@ -2865,19 +2889,25 @@ Curated row types: {'Class': 15, 'Predicate': 55}
 - `rdfs:seeAlso`
 - `rdfs:subClassOf`
 - `rdfs:subPropertyOf`
+- `xsd:length`
+- `xsd:maxExclusive`
+- `xsd:maxInclusive`
+- `xsd:maxLength`
+- `xsd:minExclusive`
+- `xsd:minInclusive`
+- `xsd:minLength`
+- `xsd:pattern`
+- `owl:backwardCompatibleWith`
+- `owl:bottomDataProperty`
+- `owl:bottomObjectProperty`
+- `owl:deprecated`
 - `owl:disjointWith`
 - `owl:equivalentClass`
 - `owl:equivalentProperty`
-- `owl:inverseOf`
-- `owl:versionInfo`
-- `http://www.w3.org/ns/prov#wasAttributedTo`
+- `owl:incompatibleWith`
+- … 5 more (see comparison.json)
 
-**Predicates only curated** (2)
-
-- `http://stko-kwg.geog.ucsb.edu/lod/ontology/sfCrosses`
-- `http://stko-kwg.geog.ucsb.edu/lod/ontology/sfEquals`
-
-**(source class, predicate) only in VoID** (184)
+**(source class, predicate) only in VoID** (197)
 
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion` → `http://purl.org/spatialai/spatial/spatial-full#connectedTo`
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion` → `http://stko-kwg.geog.ucsb.edu/lod/ontology/administrativePartOf`
@@ -2904,9 +2934,9 @@ Curated row types: {'Class': 15, 'Predicate': 55}
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell` → `http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin`
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell` → `http://www.opengis.net/ont/geosparql#defaultGeometry`
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell` → `http://www.opengis.net/ont/geosparql#hasGeometry`
-- … 159 more (see comparison.json)
+- … 172 more (see comparison.json)
 
-**Edges only in VoID** (647)
+**Edges only in VoID** (670)
 
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion` → `http://purl.org/spatialai/spatial/spatial-full#connectedTo` → `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion`
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion` → `http://purl.org/spatialai/spatial/spatial-full#connectedTo` → `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_1`
@@ -2933,9 +2963,9 @@ Curated row types: {'Class': 15, 'Predicate': 55}
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion` → `http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains` → `http://www.opengis.net/ont/geosparql#SpatialObject`
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion` → `http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains` → `owl:Thing`
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion` → `http://stko-kwg.geog.ucsb.edu/lod/ontology/sfOverlaps` → `http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell`
-- … 622 more (see comparison.json)
+- … 645 more (see comparison.json)
 
-**Descriptions that differ** (7)
+**Descriptions that differ** (9)
 
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion`<br>curated: Administrative regions as defined by the Global Administrative Area Database (GADM). The country node (administrativeRegion.USA) has this type only, with no level class.<br>KG: Administrative regoins as defined by the Global Administrative Area Database (GADM); see https://gadm.org/metadata.html
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_1`<br>curated: GADM level 1 administrative regions which are the highest level of division of a country, such as US states, Canadian provinces, or French departments. Each of the 51 states appears twice, as a KnowWh<br>KG: GADM level 1 administrative regions which are the highest level of division of a country, such as US states, Canadian provinces, or French departments.
@@ -2944,6 +2974,8 @@ Curated row types: {'Class': 15, 'Predicate': 55}
 - `http://www.opengis.net/ont/geosparql#Feature`<br>curated: A discrete spatial phenomenon in a universe of discourse.<br>KG: Source: GeoSPARQL
 - `http://www.opengis.net/ont/geosparql#Geometry`<br>curated: A coherent set of direct positions in space. The positions are held within a Spatial Reference System (SRS).<br>KG: Source: GeoSPARQL
 - `http://www.opengis.net/ont/geosparql#SpatialObject`<br>curated: Anything spatial (being or having a shape, position or an extent).<br>KG: Source: GeoSPARQL
+- `http://stko-kwg.geog.ucsb.edu/lod/ontology/sfCrosses`<br>curated: Indicates that two geographic features cross each other (DE-9IM pattern T*T****** for line/area). Declared in the schema but not populated in the current release.<br>KG: Declared in the schema but used in no triple or class axiom.
+- `http://stko-kwg.geog.ucsb.edu/lod/ontology/sfEquals`<br>curated: Indicates that two geographic features are spatially equal (DE-9IM pattern TFFFTFFFT). Declared in the schema but not populated in the current release.<br>KG: Declared in the schema but used in no triple or class axiom.
 
 ## spoke-genelab
 
@@ -3177,8 +3209,16 @@ Curated row types: {'Class': 56, 'NodeProperty': 20, 'Predicate': 27}
 - `https://spec.industrialontologies.org/ontology/supplychain/SupplyChain/GeospatialSite`
 - `https://spec.industrialontologies.org/ontology/supplychain/SupplyChain/Industry`
 
-**Predicates only in VoID** (26)
+**Predicates only in VoID** (36)
 
+- `http://asu.edu/semantics/SUDOKN/CityOf`
+- `http://asu.edu/semantics/SUDOKN/countryOf`
+- `http://asu.edu/semantics/SUDOKN/countyOf`
+- `http://asu.edu/semantics/SUDOKN/hasIntegerValue`
+- `http://asu.edu/semantics/SUDOKN/hasNAICSCodeValue`
+- `http://asu.edu/semantics/SUDOKN/hasNAICSTextValue`
+- `http://asu.edu/semantics/SUDOKN/hasName`
+- `http://asu.edu/semantics/SUDOKN/stateOf`
 - `dct:creator`
 - `dct:description`
 - `dct:license`
@@ -3196,30 +3236,14 @@ Curated row types: {'Class': 56, 'NodeProperty': 20, 'Predicate': 27}
 - `owl:imports`
 - `owl:intersectionOf`
 - `owl:inverseOf`
-- `owl:members`
-- `owl:versionIRI`
-- `skos:altLabel`
-- `skos:definition`
-- `skos:example`
-- `https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/adaptedFrom`
-- `https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/directSource`
-- `https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/explanatoryNote`
-- … 1 more (see comparison.json)
+- … 11 more (see comparison.json)
 
-**Predicates only curated** (7)
-
-- `http://asu.edu/semantics/SUDOKN/attestsTo`
-- `http://asu.edu/semantics/SUDOKN/hasFaxNumberValue`
-- `http://asu.edu/semantics/SUDOKN/hasManagementCapability`
-- `http://asu.edu/semantics/SUDOKN/hasNAICSClassifier`
-- `http://asu.edu/semantics/SUDOKN/hasPhoneNumberValue`
-- `http://asu.edu/semantics/SUDOKN/hasSpecialBusinessStatusClassifier`
-- `http://asu.edu/semantics/SUDOKN/locatedInCounty`
-
-**(source class, predicate) only in VoID** (67)
+**(source class, predicate) only in VoID** (69)
 
 - `http://asu.edu/semantics/SUDOKN/GeospatialLocation` → `http://asu.edu/semantics/SUDOKN/hasLatitudeValue`
 - `http://asu.edu/semantics/SUDOKN/GeospatialLocation` → `http://asu.edu/semantics/SUDOKN/hasLongitudeValue`
+- `http://asu.edu/semantics/SUDOKN/NAICSClassifier` → `http://asu.edu/semantics/SUDOKN/hasNAICSCodeValue`
+- `http://asu.edu/semantics/SUDOKN/NAICSClassifier` → `http://asu.edu/semantics/SUDOKN/hasNAICSTextValue`
 - `http://asu.edu/semantics/SUDOKN/VirtualLocationIdentifier` → `http://asu.edu/semantics/SUDOKN/hasVirtualLocationIdentifierValue`
 - `http://www.opengis.net/ont/geosparql#Feature` → `http://asu.edu/semantics/SUDOKN/hasLatitudeValue`
 - `http://www.opengis.net/ont/geosparql#Feature` → `http://asu.edu/semantics/SUDOKN/hasLongitudeValue`
@@ -3241,19 +3265,7 @@ Curated row types: {'Class': 56, 'NodeProperty': 20, 'Predicate': 27}
 - `owl:Class` → `owl:disjointWith`
 - `owl:Class` → `owl:intersectionOf`
 - `owl:Class` → `skos:altLabel`
-- `owl:Class` → `skos:definition`
-- `owl:Class` → `skos:example`
-- … 42 more (see comparison.json)
-
-**(source class, predicate) only curated** (7)
-
-- `http://asu.edu/semantics/SUDOKN/Certificate` → `http://asu.edu/semantics/SUDOKN/attestsTo`
-- `https://spec.industrialontologies.org/ontology/core/Core/Organization` → `http://asu.edu/semantics/SUDOKN/hasManagementCapability`
-- `https://spec.industrialontologies.org/ontology/core/Core/Organization` → `http://asu.edu/semantics/SUDOKN/hasNAICSClassifier`
-- `https://spec.industrialontologies.org/ontology/core/Core/Organization` → `http://asu.edu/semantics/SUDOKN/hasSpecialBusinessStatusClassifier`
-- `https://spec.industrialontologies.org/ontology/supplychain/SupplyChain/GeospatialSite` → `http://asu.edu/semantics/SUDOKN/hasFaxNumberValue`
-- `https://spec.industrialontologies.org/ontology/supplychain/SupplyChain/GeospatialSite` → `http://asu.edu/semantics/SUDOKN/hasPhoneNumberValue`
-- `https://spec.industrialontologies.org/ontology/supplychain/SupplyChain/GeospatialSite` → `http://asu.edu/semantics/SUDOKN/locatedInCounty`
+- … 44 more (see comparison.json)
 
 **Edges only in VoID** (852)
 
@@ -3284,9 +3296,8 @@ Curated row types: {'Class': 56, 'NodeProperty': 20, 'Predicate': 27}
 - `https://spec.industrialontologies.org/ontology/core/Core/Manufacturer` → `http://asu.edu/semantics/SUDOKN/hasCertificate` → `http://asu.edu/semantics/SUDOKN/AS9120Certificate`
 - … 827 more (see comparison.json)
 
-**Edges only curated** (12)
+**Edges only curated** (7)
 
-- `http://asu.edu/semantics/SUDOKN/Certificate` → `http://asu.edu/semantics/SUDOKN/attestsTo` → `https://spec.industrialontologies.org/ontology/core/Core/Capability`
 - `https://spec.industrialontologies.org/ontology/core/Core/Manufacturer` → `http://asu.edu/semantics/SUDOKN/hasCertificate` → `http://asu.edu/semantics/SUDOKN/Certificate`
 - `https://spec.industrialontologies.org/ontology/core/Core/Manufacturer` → `http://asu.edu/semantics/SUDOKN/hasMaterialCapability` → `http://asu.edu/semantics/SUDOKN/MaterialProcessingCapability`
 - `https://spec.industrialontologies.org/ontology/core/Core/Manufacturer` → `http://asu.edu/semantics/SUDOKN/hasOwnershipStatusClassifier` → `http://asu.edu/semantics/SUDOKN/OwnershipStatusClassifier`
@@ -3294,12 +3305,8 @@ Curated row types: {'Class': 56, 'NodeProperty': 20, 'Predicate': 27}
 - `https://spec.industrialontologies.org/ontology/core/Core/Manufacturer` → `http://asu.edu/semantics/SUDOKN/hasProcessCapability` → `http://asu.edu/semantics/SUDOKN/ManufacturingProcessCapability`
 - `https://spec.industrialontologies.org/ontology/core/Core/Manufacturer` → `http://asu.edu/semantics/SUDOKN/hasSecondaryNAICSClassifier` → `http://asu.edu/semantics/SUDOKN/NAICSClassifier`
 - `https://spec.industrialontologies.org/ontology/core/Core/Manufacturer` → `http://asu.edu/semantics/SUDOKN/suppliesToIndustry` → `https://spec.industrialontologies.org/ontology/supplychain/SupplyChain/Industry`
-- `https://spec.industrialontologies.org/ontology/core/Core/Organization` → `http://asu.edu/semantics/SUDOKN/hasManagementCapability` → `http://asu.edu/semantics/SUDOKN/QualityManagementCapability`
-- `https://spec.industrialontologies.org/ontology/core/Core/Organization` → `http://asu.edu/semantics/SUDOKN/hasNAICSClassifier` → `http://asu.edu/semantics/SUDOKN/NAICSClassifier`
-- `https://spec.industrialontologies.org/ontology/core/Core/Organization` → `http://asu.edu/semantics/SUDOKN/hasSpecialBusinessStatusClassifier` → `http://asu.edu/semantics/SUDOKN/SpecialBusinessStatusClassifier`
-- `https://spec.industrialontologies.org/ontology/supplychain/SupplyChain/GeospatialSite` → `http://asu.edu/semantics/SUDOKN/locatedInCounty` → `http://asu.edu/semantics/SUDOKN/County`
 
-**Descriptions that differ** (8)
+**Descriptions that differ** (15)
 
 - `http://asu.edu/semantics/SUDOKN/MachiningCapability`<br>curated: A capability to perform machining operations.<br>KG: A process where material is selectively removed from a workpiece using cutting tools to create specific dimensions and surface quality.
 - `http://asu.edu/semantics/SUDOKN/CastingCapability`<br>curated: A capability to perform casting operations.<br>KG: The process is where a liquid material, often molten metal poured or injected into a mold.
@@ -3309,6 +3316,9 @@ Curated row types: {'Class': 56, 'NodeProperty': 20, 'Predicate': 27}
 - `http://asu.edu/semantics/SUDOKN/JoiningCapability`<br>curated: A capability to join materials.<br>KG: A process where two or more materials are combined through methods such as welding, adhesive bonding, or mechanical fastening to form a single entity.
 - `http://asu.edu/semantics/SUDOKN/CNCMachiningCapability`<br>curated: A capability to perform CNC machining.<br>KG: A process that utilizes computer-controlled machine tools to remove material from a workpiece, following a pre-programmed path, to create precise parts.
 - `http://asu.edu/semantics/SUDOKN/AdditiveManufacturingCapability`<br>curated: A capability for additive manufacturing (3D printing).<br>KG: The process that creates three-dimensional objects by building them layer by layer from a digital model.
+- `http://asu.edu/semantics/SUDOKN/attestsTo`<br>curated: Links a certificate to the capability it attests to. Declared in the schema but not populated in the current release.<br>KG: Declared in the schema but used in no triple or class axiom.
+- `http://asu.edu/semantics/SUDOKN/hasManagementCapability`<br>curated: Links an organization to a quality management capability. Declared in the schema but not populated in the current release.<br>KG: Declared in the schema but used in no triple or class axiom.
+- … 5 more (see comparison.json)
 
 ## ufokn
 

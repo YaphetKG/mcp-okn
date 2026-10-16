@@ -1,457 +1,457 @@
-URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples
-http://asu.edu/semantics/SUDOKN/NAICSClassifier,NAICSClassifier,,Class,,,,13
-http://medicaldevice.com/ontology/CFRTitle21Section,CFRTitle21Section,,Class,,,,2842
-http://medicaldevice.com/ontology/CfrPart,CfrPart,,Class,,,,57
-http://medicaldevice.com/ontology/CliaWaivedAnalyte,CliaWaivedAnalyte,,Class,,,,152
-http://medicaldevice.com/ontology/DeNovoRecord,De Novo Authorization,,Class,,,,483
-http://medicaldevice.com/ontology/DeviceFDARecord,DeviceFDARecord,,Class,,,,12386
-http://medicaldevice.com/ontology/DeviceProblem,Device Problem,,Class,,,,52823
-http://medicaldevice.com/ontology/Facility,FDA-registered establishment/facility with a geocodable address,,Class,,,,9120
-http://medicaldevice.com/ontology/HumanitarianDeviceExemption,HumanitarianDeviceExemption,,Class,,,,1947
-http://medicaldevice.com/ontology/IVDHomeUseTest,IVDHomeUseTest,,Class,,,,53
-http://medicaldevice.com/ontology/K510Record,510(k) Submission,,Class,,,,175299
-http://medicaldevice.com/ontology/MAUDEReport,MAUDE Adverse Event Report,,Class,,,,15284
-http://medicaldevice.com/ontology/MDRStatistic,MDR Statistic,,Class,,,,12904
-http://medicaldevice.com/ontology/MammographyFacility,MQSA Certified Mammography Facility,,Class,,,,975
-http://medicaldevice.com/ontology/Manufacturer,Manufacturer / Organization,,Class,,,,53499
-http://medicaldevice.com/ontology/MedicalDevice,Medical Device,,Class,,,,4099
-http://medicaldevice.com/ontology/NAICSClassification,NAICS Industry Classification (US Census),,Class,,,,13
-http://medicaldevice.com/ontology/PMAChangeMemo,PMA Design Change / Supplement,,Class,,,,55136
-http://medicaldevice.com/ontology/PMARecord,PMA Submission,,Class,,,,56584
-http://medicaldevice.com/ontology/PatientOutcome,Patient Outcome,,Class,,,,46041
-http://medicaldevice.com/ontology/Postmarket522Study,FDA 522 Postmarket Surveillance Study,,Class,,,,353
-http://medicaldevice.com/ontology/ProductClassificationRecord,FDA Product Classification Code,,Class,,,,7071
-http://medicaldevice.com/ontology/ProductCode,FDA Product Code,,Class,,,,8014
-http://medicaldevice.com/ontology/ProductCodeNAICSMapping,"FDA Product Code to NAICS Crosswalk Assertion (inferred, with provenance)",,Class,,,,1589
-http://medicaldevice.com/ontology/Recall,Recall,,Class,,,,6843
-http://medicaldevice.com/ontology/RecallRecord,Device Recall Record,,Class,,,,39224
-http://medicaldevice.com/ontology/RecognizedConsensusStandard,RecognizedConsensusStandard,,Class,,,,49
-http://medicaldevice.com/ontology/RegistrationListingRecord,FDA Registration and Listing Record,,Class,,,,25132
-http://medicaldevice.com/ontology/RegulationNumber,Regulation Number,,Class,,,,2265
-http://medicaldevice.com/ontology/TPLCRecord,TPLC Device Record,,Class,,,,7034
-http://medicaldevice.com/ontology/XrayAssemblerRecord,XrayAssemblerRecord,,Class,,,,300823
-http://www.opengis.net/ont/geosparql#Feature,Feature,,Class,,,,9120
-http://www.opengis.net/ont/geosparql#Geometry,Geometry,,Class,,,,9120
-http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,Property,,Class,,,,264
-http://www.w3.org/2000/01/rdf-schema#Class,Class,,Class,,,,53
-https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,Manufacturer,,Class,,,,10432
-http://medicaldevice.com/ontology/naicsCode,six-digit NAICS code literal (cross-graph join key),,Predicate,,http://asu.edu/semantics/SUDOKN/NAICSClassifier,http://www.w3.org/2001/XMLSchema#string,13
-http://medicaldevice.com/ontology/naicsVersion,"NAICS taxonomy version, e.g. 2022",,Predicate,,http://asu.edu/semantics/SUDOKN/NAICSClassifier,http://www.w3.org/2001/XMLSchema#string,13
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://asu.edu/semantics/SUDOKN/NAICSClassifier,http://www.w3.org/2001/XMLSchema#string,13
-http://medicaldevice.com/ontology/authority,authority,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2842
-http://medicaldevice.com/ontology/inPart,inPart,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://medicaldevice.com/ontology/CfrPart,2842
-http://medicaldevice.com/ontology/partNumber,partNumber,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2842
-http://medicaldevice.com/ontology/partTitle,partTitle,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2842
-http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2842
-http://medicaldevice.com/ontology/sectionNumber,sectionNumber,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2842
-http://medicaldevice.com/ontology/sectionTitle,sectionTitle,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2842
-http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2842
-http://medicaldevice.com/ontology/sourceNote,sourceNote,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2699
-http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2842
-http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2842
-http://medicaldevice.com/ontology/text,text,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2829
-http://medicaldevice.com/ontology/authority,authority,,Predicate,,http://medicaldevice.com/ontology/CfrPart,http://www.w3.org/2001/XMLSchema#string,57
-http://medicaldevice.com/ontology/partNumber,partNumber,,Predicate,,http://medicaldevice.com/ontology/CfrPart,http://www.w3.org/2001/XMLSchema#string,57
-http://medicaldevice.com/ontology/partTitle,partTitle,,Predicate,,http://medicaldevice.com/ontology/CfrPart,http://www.w3.org/2001/XMLSchema#string,57
-http://medicaldevice.com/ontology/sourceNote,sourceNote,,Predicate,,http://medicaldevice.com/ontology/CfrPart,http://www.w3.org/2001/XMLSchema#string,52
-http://medicaldevice.com/ontology/analyteName,Analyte Name,,Predicate,,http://medicaldevice.com/ontology/CliaWaivedAnalyte,http://www.w3.org/2001/XMLSchema#string,152
-http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/CliaWaivedAnalyte,http://www.w3.org/2001/XMLSchema#string,152
-http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/CliaWaivedAnalyte,http://www.w3.org/2001/XMLSchema#string,152
-http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/CliaWaivedAnalyte,http://www.w3.org/2001/XMLSchema#string,152
-http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/CliaWaivedAnalyte,http://www.w3.org/2001/XMLSchema#string,152
-http://medicaldevice.com/ontology/advisoryCommittee,advisory committee,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,478
-http://medicaldevice.com/ontology/applicant,applicant,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,478
-http://medicaldevice.com/ontology/dateReceived,date received,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,483
-http://medicaldevice.com/ontology/deNovoNumber,De Novo number,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,483
-http://medicaldevice.com/ontology/decisionDate,decision date,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,483
-http://medicaldevice.com/ontology/decisionDescription,decision description,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,483
-http://medicaldevice.com/ontology/deviceName,device name,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,483
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://medicaldevice.com/ontology/Manufacturer,478
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,132
-http://medicaldevice.com/ontology/hasProductCode,has product code,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://medicaldevice.com/ontology/ProductCode,478
-http://medicaldevice.com/ontology/regulationNumber,regulation number,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,479
-http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,483
-http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,483
-http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,483
-http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,483
-http://medicaldevice.com/ontology/applicant,applicant,,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://www.w3.org/2001/XMLSchema#string,12386
-http://medicaldevice.com/ontology/decisionDate,decision date,,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://www.w3.org/2001/XMLSchema#string,12386
-http://medicaldevice.com/ontology/deviceName,device name,,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://www.w3.org/2001/XMLSchema#string,12386
-http://medicaldevice.com/ontology/documentNumber,document number (K / P / H / DEN),,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://www.w3.org/2001/XMLSchema#string,12386
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://medicaldevice.com/ontology/Manufacturer,12386
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,2085
-http://medicaldevice.com/ontology/pathway,regulatory pathway (510k / pma / hde / de_novo),,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://www.w3.org/2001/XMLSchema#string,12386
-http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://www.w3.org/2001/XMLSchema#string,12386
-http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://www.w3.org/2001/XMLSchema#string,12386
-http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://www.w3.org/2001/XMLSchema#string,12386
-http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://www.w3.org/2001/XMLSchema#string,12386
-http://medicaldevice.com/ontology/summaryUrl,URL to summary / PDF document,,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://www.w3.org/2001/XMLSchema#string,5279
-http://medicaldevice.com/ontology/eventCount,event count,,Predicate,,http://medicaldevice.com/ontology/DeviceProblem,http://www.w3.org/2001/XMLSchema#integer,52823
-http://medicaldevice.com/ontology/problemDescription,problem description,,Predicate,,http://medicaldevice.com/ontology/DeviceProblem,http://www.w3.org/2001/XMLSchema#string,52823
-http://medicaldevice.com/ontology/relatedTPLC,related TPLC product code record,,Predicate,,http://medicaldevice.com/ontology/DeviceProblem,http://medicaldevice.com/ontology/TPLCRecord,52823
-http://medicaldevice.com/ontology/reportCount,report count,,Predicate,,http://medicaldevice.com/ontology/DeviceProblem,http://www.w3.org/2001/XMLSchema#integer,52823
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://medicaldevice.com/ontology/DeviceProblem,http://www.w3.org/2001/XMLSchema#string,52823
-http://medicaldevice.com/ontology/establishmentName,establishment name,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9124
-http://medicaldevice.com/ontology/feiNumber,FDA establishment identifier (FEI),,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9120
-http://medicaldevice.com/ontology/geocodingConfidence,0.0-1.0 confidence score returned by the geocoder,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#decimal,9120
-http://medicaldevice.com/ontology/geocodingSource,"geocoding provider used, e.g. census / nominatim",,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9120
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/Facility,http://medicaldevice.com/ontology/Manufacturer,9123
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/Facility,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,3454
-http://medicaldevice.com/ontology/initialImporterFlag,initial importer flag (Y/N),,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9121
-http://medicaldevice.com/ontology/normalizedAddress,normalized single-line address used as the geocoding cache key,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9120
-http://medicaldevice.com/ontology/regExpiryDateYear,registration expiry year,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9120
-http://medicaldevice.com/ontology/registrationAddress,registration address,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9125
-http://medicaldevice.com/ontology/registrationNumber,FDA registration number,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9124
-http://medicaldevice.com/ontology/registrationStatus,registration status code,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9120
-http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,130225
-http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9120
-http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9124
-http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9120
-http://www.opengis.net/ont/geosparql#defaultGeometry,defaultGeometry,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.opengis.net/ont/geosparql#Geometry,9120
-http://www.opengis.net/ont/geosparql#hasGeometry,hasGeometry,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.opengis.net/ont/geosparql#Geometry,9120
-http://www.w3.org/2003/01/geo/wgs84_pos#lat,lat,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#decimal,9120
-http://www.w3.org/2003/01/geo/wgs84_pos#long,long,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#decimal,9120
-http://medicaldevice.com/ontology/advisoryCommittee,advisory committee,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947
-http://medicaldevice.com/ontology/applicant,applicant,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947
-http://medicaldevice.com/ontology/city,city,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947
-http://medicaldevice.com/ontology/dateReceived,date received,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947
-http://medicaldevice.com/ontology/decisionCode,decision code,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947
-http://medicaldevice.com/ontology/decisionDate,decision date,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947
-http://medicaldevice.com/ontology/docketNumber,docketNumber,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,90
-http://medicaldevice.com/ontology/fedRegNoticeDate,fedRegNoticeDate,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,37
-http://medicaldevice.com/ontology/genericName,generic name,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1902
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://medicaldevice.com/ontology/Manufacturer,1947
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,835
-http://medicaldevice.com/ontology/hdeNumber,HDE number,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947
-http://medicaldevice.com/ontology/productCode,product code,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1902
-http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947
-http://medicaldevice.com/ontology/reviewGranted,reviewGranted,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947
-http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947
-http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947
-http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947
-http://medicaldevice.com/ontology/state,state or province,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1838
-http://medicaldevice.com/ontology/supplementNumber,supplement number,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1870
-http://medicaldevice.com/ontology/supplementReason,PMA supplement reason,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1870
-http://medicaldevice.com/ontology/supplementType,supplementType,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1946
-http://medicaldevice.com/ontology/tradeName,trade name,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947
-http://medicaldevice.com/ontology/document,document,,Predicate,,http://medicaldevice.com/ontology/IVDHomeUseTest,http://www.w3.org/2001/XMLSchema#string,54
-http://medicaldevice.com/ontology/effectiveDate,effectiveDate,,Predicate,,http://medicaldevice.com/ontology/IVDHomeUseTest,http://www.w3.org/2001/XMLSchema#string,100
-http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/IVDHomeUseTest,http://www.w3.org/2001/XMLSchema#string,53
-http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/IVDHomeUseTest,http://www.w3.org/2001/XMLSchema#string,53
-http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/IVDHomeUseTest,http://www.w3.org/2001/XMLSchema#string,95
-http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/IVDHomeUseTest,http://www.w3.org/2001/XMLSchema#string,53
-http://medicaldevice.com/ontology/testName,IVD test name,,Predicate,,http://medicaldevice.com/ontology/IVDHomeUseTest,http://www.w3.org/2001/XMLSchema#string,147
-http://medicaldevice.com/ontology/testType,IVD test type,,Predicate,,http://medicaldevice.com/ontology/IVDHomeUseTest,http://www.w3.org/2001/XMLSchema#string,160
-http://medicaldevice.com/ontology/address,address,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299
-http://medicaldevice.com/ontology/advisoryCommittee,advisory committee,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,170644
-http://medicaldevice.com/ontology/advisoryCommitteeDescription,advisory committee description,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299
-http://medicaldevice.com/ontology/applicant,applicant,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299
-http://medicaldevice.com/ontology/city,city,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175177
-http://medicaldevice.com/ontology/clearanceType,510(k) clearance type,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299
-http://medicaldevice.com/ontology/country,country,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299
-http://medicaldevice.com/ontology/dateReceived,date received,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299
-http://medicaldevice.com/ontology/decisionCode,decision code,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299
-http://medicaldevice.com/ontology/decisionDate,decision date,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299
-http://medicaldevice.com/ontology/decisionDescription,decision description,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299
-http://medicaldevice.com/ontology/deviceName,device name,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299
-http://medicaldevice.com/ontology/expeditedReviewFlag,expedited review flag,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,28
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://medicaldevice.com/ontology/Manufacturer,175299
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/K510Record,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,36597
-http://medicaldevice.com/ontology/hasProductCode,has product code,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://medicaldevice.com/ontology/ProductCode,173860
-http://medicaldevice.com/ontology/k510Number,510(k) number,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299
-http://medicaldevice.com/ontology/postalCode,postalCode,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,171064
-http://medicaldevice.com/ontology/productCode,product code,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,173860
-http://medicaldevice.com/ontology/relatedTPLC,related TPLC product code record,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://medicaldevice.com/ontology/TPLCRecord,172092
-http://medicaldevice.com/ontology/relatedTPLC,related TPLC product code record,,Predicate,,http://medicaldevice.com/ontology/K510Record,,1768
-http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299
-http://medicaldevice.com/ontology/reviewAdvisoryCommittee,reviewAdvisoryCommittee,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299
-http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299
-http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299
-http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299
-http://medicaldevice.com/ontology/state,state or province,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,146254
-http://medicaldevice.com/ontology/statementOrSummary,510(k) statement or summary type,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,118924
-http://medicaldevice.com/ontology/thirdPartyReviewFlag,third party review flag,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299
-http://medicaldevice.com/ontology/dateOfEvent,date of event,,Predicate,,http://medicaldevice.com/ontology/MAUDEReport,http://www.w3.org/2001/XMLSchema#string,11276
-http://medicaldevice.com/ontology/dateReceived,date received,,Predicate,,http://medicaldevice.com/ontology/MAUDEReport,http://www.w3.org/2001/XMLSchema#string,15285
-http://medicaldevice.com/ontology/eventType,event type,,Predicate,,http://medicaldevice.com/ontology/MAUDEReport,http://www.w3.org/2001/XMLSchema#string,15279
-http://medicaldevice.com/ontology/involvesDevice,involves device,,Predicate,,http://medicaldevice.com/ontology/MAUDEReport,http://medicaldevice.com/ontology/MedicalDevice,15285
-http://medicaldevice.com/ontology/productCode,product code,,Predicate,,http://medicaldevice.com/ontology/MAUDEReport,http://www.w3.org/2001/XMLSchema#string,15277
-http://medicaldevice.com/ontology/eventCount,event count,,Predicate,,http://medicaldevice.com/ontology/MDRStatistic,http://www.w3.org/2001/XMLSchema#integer,13085
-http://medicaldevice.com/ontology/relatedTPLC,related TPLC product code record,,Predicate,,http://medicaldevice.com/ontology/MDRStatistic,http://medicaldevice.com/ontology/TPLCRecord,12904
-http://medicaldevice.com/ontology/reportCount,report count,,Predicate,,http://medicaldevice.com/ontology/MDRStatistic,http://www.w3.org/2001/XMLSchema#integer,13085
-http://medicaldevice.com/ontology/year,year,,Predicate,,http://medicaldevice.com/ontology/MDRStatistic,http://www.w3.org/2001/XMLSchema#integer,12904
-http://medicaldevice.com/ontology/city,city,,Predicate,,http://medicaldevice.com/ontology/MammographyFacility,http://www.w3.org/2001/XMLSchema#string,975
-http://medicaldevice.com/ontology/facilityName,facility name,,Predicate,,http://medicaldevice.com/ontology/MammographyFacility,http://www.w3.org/2001/XMLSchema#string,976
-http://medicaldevice.com/ontology/phone,phone number,,Predicate,,http://medicaldevice.com/ontology/MammographyFacility,http://www.w3.org/2001/XMLSchema#string,980
-http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/MammographyFacility,http://www.w3.org/2001/XMLSchema#string,975
-http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/MammographyFacility,http://www.w3.org/2001/XMLSchema#string,975
-http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/MammographyFacility,http://www.w3.org/2001/XMLSchema#string,1000
-http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/MammographyFacility,http://www.w3.org/2001/XMLSchema#string,975
-http://medicaldevice.com/ontology/state,state or province,,Predicate,,http://medicaldevice.com/ontology/MammographyFacility,http://www.w3.org/2001/XMLSchema#string,975
-http://medicaldevice.com/ontology/zip,zip,,Predicate,,http://medicaldevice.com/ontology/MammographyFacility,http://www.w3.org/2001/XMLSchema#string,975
-http://asu.edu/semantics/SUDOKN/hasNAICSClassifier,hasNAICSClassifier,,Predicate,,http://medicaldevice.com/ontology/Manufacturer,http://asu.edu/semantics/SUDOKN/NAICSClassifier,13972
-http://asu.edu/semantics/SUDOKN/hasNAICSClassifier,hasNAICSClassifier,,Predicate,,http://medicaldevice.com/ontology/Manufacturer,http://medicaldevice.com/ontology/NAICSClassification,13972
-http://medicaldevice.com/ontology/feiNumber,FDA establishment identifier (FEI),,Predicate,,http://medicaldevice.com/ontology/Manufacturer,http://www.w3.org/2001/XMLSchema#string,23964
-http://medicaldevice.com/ontology/hasNAICSClassification,has NAICS classification (domain: ex:ProductCode or ex:Manufacturer),,Predicate,,http://medicaldevice.com/ontology/Manufacturer,http://asu.edu/semantics/SUDOKN/NAICSClassifier,13972
-http://medicaldevice.com/ontology/hasNAICSClassification,has NAICS classification (domain: ex:ProductCode or ex:Manufacturer),,Predicate,,http://medicaldevice.com/ontology/Manufacturer,http://medicaldevice.com/ontology/NAICSClassification,13972
-http://medicaldevice.com/ontology/manufacturerName,manufacturer name,,Predicate,,http://medicaldevice.com/ontology/Manufacturer,http://www.w3.org/2001/XMLSchema#string,60599
-http://medicaldevice.com/ontology/label,label,,Predicate,,http://medicaldevice.com/ontology/MedicalDevice,http://www.w3.org/2001/XMLSchema#string,4128
-http://medicaldevice.com/ontology/naicsCode,six-digit NAICS code literal (cross-graph join key),,Predicate,,http://medicaldevice.com/ontology/NAICSClassification,http://www.w3.org/2001/XMLSchema#string,13
-http://medicaldevice.com/ontology/naicsVersion,"NAICS taxonomy version, e.g. 2022",,Predicate,,http://medicaldevice.com/ontology/NAICSClassification,http://www.w3.org/2001/XMLSchema#string,13
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://medicaldevice.com/ontology/NAICSClassification,http://www.w3.org/2001/XMLSchema#string,13
-http://medicaldevice.com/ontology/applicant,applicant,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136
-http://medicaldevice.com/ontology/dateReceived,date received,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136
-http://medicaldevice.com/ontology/decisionCode,decision code,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136
-http://medicaldevice.com/ontology/decisionDate,decision date,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://medicaldevice.com/ontology/Manufacturer,55136
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,26375
-http://medicaldevice.com/ontology/hasProductCode,has product code,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://medicaldevice.com/ontology/ProductClassificationRecord,54373
-http://medicaldevice.com/ontology/hasProductCode,has product code,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://medicaldevice.com/ontology/ProductCode,54386
-http://medicaldevice.com/ontology/pmaNumber,PMA number,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136
-http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136
-http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136
-http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136
-http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136
-http://medicaldevice.com/ontology/supplementNumber,supplement number,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136
-http://medicaldevice.com/ontology/supplementReason,PMA supplement reason,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,52150
-http://medicaldevice.com/ontology/supplementsPMA,supplements PMA,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://medicaldevice.com/ontology/PMARecord,52417
-http://medicaldevice.com/ontology/supplementsPMA,supplements PMA,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,,2719
-http://medicaldevice.com/ontology/tradeName,trade name,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136
-http://medicaldevice.com/ontology/address,address,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584
-http://medicaldevice.com/ontology/advisoryCommittee,advisory committee,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584
-http://medicaldevice.com/ontology/advisoryCommitteeDescription,advisory committee description,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584
-http://medicaldevice.com/ontology/applicant,applicant,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584
-http://medicaldevice.com/ontology/city,city,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56564
-http://medicaldevice.com/ontology/dateReceived,date received,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584
-http://medicaldevice.com/ontology/decisionCode,decision code,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584
-http://medicaldevice.com/ontology/decisionDate,decision date,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584
-http://medicaldevice.com/ontology/deviceClass,device class,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,55793
-http://medicaldevice.com/ontology/deviceName,device name,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584
-http://medicaldevice.com/ontology/expeditedReviewFlag,expedited review flag,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584
-http://medicaldevice.com/ontology/feiNumber,FDA establishment identifier (FEI),,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,915382
-http://medicaldevice.com/ontology/genericName,generic name,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,55817
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://medicaldevice.com/ontology/Manufacturer,56584
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/PMARecord,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,26950
-http://medicaldevice.com/ontology/hasProductCode,has product code,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://medicaldevice.com/ontology/ProductCode,55817
-http://medicaldevice.com/ontology/hasRegulationNumber,has regulation number,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://medicaldevice.com/ontology/RegulationNumber,16163
-http://medicaldevice.com/ontology/medicalSpecialtyDescription,medical specialty description,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,55793
-http://medicaldevice.com/ontology/pmaNumber,PMA number,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584
-http://medicaldevice.com/ontology/postalCode,postalCode,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56148
-http://medicaldevice.com/ontology/productCode,product code,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,55817
-http://medicaldevice.com/ontology/registrationNumber,FDA registration number,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,915646
-http://medicaldevice.com/ontology/regulationNumber,regulation number,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,16163
-http://medicaldevice.com/ontology/relatedTPLC,related TPLC product code record,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://medicaldevice.com/ontology/TPLCRecord,55777
-http://medicaldevice.com/ontology/relatedTPLC,related TPLC product code record,,Predicate,,http://medicaldevice.com/ontology/PMARecord,,40
-http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584
-http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584
-http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584
-http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584
-http://medicaldevice.com/ontology/state,state or province,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,53774
-http://medicaldevice.com/ontology/submissionType,submission type,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,53251
-http://medicaldevice.com/ontology/summary,summary,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,49921
-http://medicaldevice.com/ontology/supplementNumber,supplement number,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,55136
-http://medicaldevice.com/ontology/supplementReason,PMA supplement reason,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,52150
-http://medicaldevice.com/ontology/tradeName,trade name,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584
-http://medicaldevice.com/ontology/eventCount,event count,,Predicate,,http://medicaldevice.com/ontology/PatientOutcome,http://www.w3.org/2001/XMLSchema#integer,46041
-http://medicaldevice.com/ontology/relatedTPLC,related TPLC product code record,,Predicate,,http://medicaldevice.com/ontology/PatientOutcome,http://medicaldevice.com/ontology/TPLCRecord,46041
-http://medicaldevice.com/ontology/reportCount,report count,,Predicate,,http://medicaldevice.com/ontology/PatientOutcome,http://www.w3.org/2001/XMLSchema#integer,46041
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://medicaldevice.com/ontology/PatientOutcome,http://www.w3.org/2001/XMLSchema#string,46041
-http://medicaldevice.com/ontology/cId,cId,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353
-http://medicaldevice.com/ontology/dataSource,dataSource,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,167
-http://medicaldevice.com/ontology/dateCurrentPlanAccepted,dateCurrentPlanAccepted,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,169
-http://medicaldevice.com/ontology/dateOriginalPlanAccepted,dateOriginalPlanAccepted,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,352
-http://medicaldevice.com/ontology/detailUrl,detailUrl,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353
-http://medicaldevice.com/ontology/deviceName,device name,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353
-http://medicaldevice.com/ontology/manufacturer,manufacturer,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353
-http://medicaldevice.com/ontology/orderNumber,522 order number,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353
-http://medicaldevice.com/ontology/requirementNumber,requirementNumber,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353
-http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353
-http://medicaldevice.com/ontology/rootDocumentNumber,rootDocumentNumber,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353
-http://medicaldevice.com/ontology/sampleSize,sampleSize,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,67
-http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353
-http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353
-http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353
-http://medicaldevice.com/ontology/studyDesign,studyDesign,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,167
-http://medicaldevice.com/ontology/studyName,522 study name,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353
-http://medicaldevice.com/ontology/studyObjectives,studyObjectives,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,345
-http://medicaldevice.com/ontology/studyStatus,522 study status,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353
-http://medicaldevice.com/ontology/tId,tId,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353
-http://medicaldevice.com/ontology/definition,definition,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,2584
-http://medicaldevice.com/ontology/deviceClass,device class,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,7071
-http://medicaldevice.com/ontology/deviceName,device name,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,7071
-http://medicaldevice.com/ontology/gmpExemptFlag,GMP exempt flag (Y/N),,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,7071
-http://medicaldevice.com/ontology/hasNAICSClassification,has NAICS classification (domain: ex:ProductCode or ex:Manufacturer),,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://asu.edu/semantics/SUDOKN/NAICSClassifier,1589
-http://medicaldevice.com/ontology/hasNAICSClassification,has NAICS classification (domain: ex:ProductCode or ex:Manufacturer),,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://medicaldevice.com/ontology/NAICSClassification,1589
-http://medicaldevice.com/ontology/hasNAICSMapping,has NAICS crosswalk mapping (provenance-bearing),,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://medicaldevice.com/ontology/ProductCodeNAICSMapping,1589
-http://medicaldevice.com/ontology/implantFlag,implant flag (Y/N),,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,6857
-http://medicaldevice.com/ontology/lifeSustainSupportFlag,life sustain support flag (Y/N),,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,6857
-http://medicaldevice.com/ontology/medicalSpecialty,medical specialty code,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,6170
-http://medicaldevice.com/ontology/medicalSpecialtyDescription,medical specialty description,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,7071
-http://medicaldevice.com/ontology/productCode,product code,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,7071
-http://medicaldevice.com/ontology/regulationNumber,regulation number,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,6170
-http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,7071
-http://medicaldevice.com/ontology/reviewPanel,review panel,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,6857
-http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,7071
-http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,7071
-http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,7071
-http://medicaldevice.com/ontology/submissionTypeId,submission type ID,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,6857
-http://medicaldevice.com/ontology/summaryMalfunctionReporting,summary malfunction reporting (SMR) code,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,7071
-http://medicaldevice.com/ontology/thirdPartyFlag,third party review flag,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,6857
-http://medicaldevice.com/ontology/unclassifiedReason,unclassified reason,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,254
-http://medicaldevice.com/ontology/definition,definition,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,231
-http://medicaldevice.com/ontology/deviceClass,device class,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443
-http://medicaldevice.com/ontology/deviceName,device name,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443
-http://medicaldevice.com/ontology/gmpExemptFlag,GMP exempt flag (Y/N),,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443
-http://medicaldevice.com/ontology/hasNAICSClassification,has NAICS classification (domain: ex:ProductCode or ex:Manufacturer),,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://asu.edu/semantics/SUDOKN/NAICSClassifier,132
-http://medicaldevice.com/ontology/hasNAICSClassification,has NAICS classification (domain: ex:ProductCode or ex:Manufacturer),,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://medicaldevice.com/ontology/NAICSClassification,132
-http://medicaldevice.com/ontology/hasNAICSMapping,has NAICS crosswalk mapping (provenance-bearing),,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://medicaldevice.com/ontology/ProductCodeNAICSMapping,132
-http://medicaldevice.com/ontology/implantFlag,implant flag (Y/N),,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443
-http://medicaldevice.com/ontology/lifeSustainSupportFlag,life sustain support flag (Y/N),,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443
-http://medicaldevice.com/ontology/medicalSpecialty,medical specialty code,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,145
-http://medicaldevice.com/ontology/medicalSpecialtyDescription,medical specialty description,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443
-http://medicaldevice.com/ontology/productCode,product code,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,8014
-http://medicaldevice.com/ontology/regulationNumber,regulation number,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,145
-http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443
-http://medicaldevice.com/ontology/reviewPanel,review panel,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443
-http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443
-http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443
-http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443
-http://medicaldevice.com/ontology/submissionTypeId,submission type ID,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443
-http://medicaldevice.com/ontology/summaryMalfunctionReporting,summary malfunction reporting (SMR) code,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443
-http://medicaldevice.com/ontology/thirdPartyFlag,third party review flag,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443
-http://medicaldevice.com/ontology/unclassifiedReason,unclassified reason,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,3
-http://medicaldevice.com/ontology/assignedNAICS,NAICS code assigned by this crosswalk mapping,,Predicate,,http://medicaldevice.com/ontology/ProductCodeNAICSMapping,http://asu.edu/semantics/SUDOKN/NAICSClassifier,1589
-http://medicaldevice.com/ontology/assignedNAICS,NAICS code assigned by this crosswalk mapping,,Predicate,,http://medicaldevice.com/ontology/ProductCodeNAICSMapping,http://medicaldevice.com/ontology/NAICSClassification,1589
-http://medicaldevice.com/ontology/mappingConfidence,0.0-1.0 confidence score for this NAICS mapping,,Predicate,,http://medicaldevice.com/ontology/ProductCodeNAICSMapping,http://www.w3.org/2001/XMLSchema#decimal,1589
-http://medicaldevice.com/ontology/mappingMethod,how this NAICS mapping was derived: definition_match / llm_assisted / manual_review / unmapped,,Predicate,,http://medicaldevice.com/ontology/ProductCodeNAICSMapping,http://www.w3.org/2001/XMLSchema#string,1589
-http://medicaldevice.com/ontology/mappingReason,human-readable evidence/justification for this NAICS mapping,,Predicate,,http://medicaldevice.com/ontology/ProductCodeNAICSMapping,http://www.w3.org/2001/XMLSchema#string,1589
-http://medicaldevice.com/ontology/mappingReviewStatus,approved / manual_review,,Predicate,,http://medicaldevice.com/ontology/ProductCodeNAICSMapping,http://www.w3.org/2001/XMLSchema#string,1589
-http://medicaldevice.com/ontology/mappingSource,"provenance label, e.g. internal_crosswalk (never claims FDA supplied the NAICS code)",,Predicate,,http://medicaldevice.com/ontology/ProductCodeNAICSMapping,http://www.w3.org/2001/XMLSchema#string,1589
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/Recall,http://medicaldevice.com/ontology/Manufacturer,6843
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/Recall,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,4067
-http://medicaldevice.com/ontology/manufacturerName,manufacturer name,,Predicate,,http://medicaldevice.com/ontology/Recall,http://www.w3.org/2001/XMLSchema#string,6843
-http://medicaldevice.com/ontology/recallClass,recall class,,Predicate,,http://medicaldevice.com/ontology/Recall,http://www.w3.org/2001/XMLSchema#string,6843
-http://medicaldevice.com/ontology/recallDate,recall date,,Predicate,,http://medicaldevice.com/ontology/Recall,http://www.w3.org/2001/XMLSchema#string,6843
-http://medicaldevice.com/ontology/relatedTPLC,related TPLC product code record,,Predicate,,http://medicaldevice.com/ontology/Recall,http://medicaldevice.com/ontology/TPLCRecord,6843
-http://medicaldevice.com/ontology/centerClassificationDate,FDA center classification date,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39223
-http://medicaldevice.com/ontology/city,city,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39222
-http://medicaldevice.com/ontology/codeInfo,lot / model / serial code info,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39188
-http://medicaldevice.com/ontology/country,country,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39219
-http://medicaldevice.com/ontology/distributionPattern,distribution pattern,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39223
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://medicaldevice.com/ontology/Manufacturer,39224
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,20913
-http://medicaldevice.com/ontology/initialFirmNotification,initial firm notification method,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,38835
-http://medicaldevice.com/ontology/postalCode,postalCode,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224
-http://medicaldevice.com/ontology/productDescription,product description,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39223
-http://medicaldevice.com/ontology/productQuantity,product quantity involved in recall,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,38368
-http://medicaldevice.com/ontology/reasonForRecall,reason for recall,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39175
-http://medicaldevice.com/ontology/recallClassification,recall classification (Class I/II/III),,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224
-http://medicaldevice.com/ontology/recallEventId,recall event ID,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224
-http://medicaldevice.com/ontology/recallInitiationDate,recall initiation date,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224
-http://medicaldevice.com/ontology/recallNumber,recall number,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39223
-http://medicaldevice.com/ontology/recallStatus,recall status,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224
-http://medicaldevice.com/ontology/recallingFirm,recalling firm name,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224
-http://medicaldevice.com/ontology/recallingFirmAddress,recalling firm address,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224
-http://medicaldevice.com/ontology/reportDate,report date,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224
-http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224
-http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224
-http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224
-http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224
-http://medicaldevice.com/ontology/state,state or province,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,37640
-http://medicaldevice.com/ontology/summary,summary,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,935
-http://medicaldevice.com/ontology/terminationDate,recall termination date,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,25426
-http://medicaldevice.com/ontology/voluntaryMandated,voluntary or mandated,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39214
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224
-http://medicaldevice.com/ontology/recognitionNumber,FDA recognition number,,Predicate,,http://medicaldevice.com/ontology/RecognizedConsensusStandard,http://www.w3.org/2001/XMLSchema#string,49
-http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/RecognizedConsensusStandard,http://www.w3.org/2001/XMLSchema#string,49
-http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/RecognizedConsensusStandard,http://www.w3.org/2001/XMLSchema#string,49
-http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/RecognizedConsensusStandard,http://www.w3.org/2001/XMLSchema#string,49
-http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/RecognizedConsensusStandard,http://www.w3.org/2001/XMLSchema#string,1774
-http://medicaldevice.com/ontology/establishmentName,establishment name,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,25145
-http://medicaldevice.com/ontology/feiNumber,FDA establishment identifier (FEI),,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,25132
-http://medicaldevice.com/ontology/geocodingConfidence,0.0-1.0 confidence score returned by the geocoder,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#decimal,9120
-http://medicaldevice.com/ontology/geocodingSource,"geocoding provider used, e.g. census / nominatim",,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,9120
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://medicaldevice.com/ontology/Manufacturer,25142
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,11314
-http://medicaldevice.com/ontology/initialImporterFlag,initial importer flag (Y/N),,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,25133
-http://medicaldevice.com/ontology/normalizedAddress,normalized single-line address used as the geocoding cache key,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,9120
-http://medicaldevice.com/ontology/regExpiryDateYear,registration expiry year,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,25132
-http://medicaldevice.com/ontology/registrationAddress,registration address,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,25145
-http://medicaldevice.com/ontology/registrationNumber,FDA registration number,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,25146
-http://medicaldevice.com/ontology/registrationStatus,registration status code,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,25132
-http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,310345
-http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,25132
-http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,25146
-http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,25132
-http://www.opengis.net/ont/geosparql#defaultGeometry,defaultGeometry,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.opengis.net/ont/geosparql#Geometry,9120
-http://www.opengis.net/ont/geosparql#hasGeometry,hasGeometry,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.opengis.net/ont/geosparql#Geometry,9120
-http://www.w3.org/2003/01/geo/wgs84_pos#lat,lat,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#decimal,9120
-http://www.w3.org/2003/01/geo/wgs84_pos#long,long,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#decimal,9120
-http://medicaldevice.com/ontology/regulationNumber,regulation number,,Predicate,,http://medicaldevice.com/ontology/RegulationNumber,http://www.w3.org/2001/XMLSchema#string,2265
-http://medicaldevice.com/ontology/definition,definition,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://www.w3.org/2001/XMLSchema#string,2549
-http://medicaldevice.com/ontology/deviceClass,device class,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://www.w3.org/2001/XMLSchema#string,7034
-http://medicaldevice.com/ontology/hasDeviceProblem,has device problem,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://medicaldevice.com/ontology/DeviceProblem,52823
-http://medicaldevice.com/ontology/hasPatientOutcome,has patient outcome,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://medicaldevice.com/ontology/PatientOutcome,46041
-http://medicaldevice.com/ontology/hasProductCode,has product code,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://medicaldevice.com/ontology/ProductCode,7034
-http://medicaldevice.com/ontology/hasRecall,has recall,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://medicaldevice.com/ontology/Recall,6843
-http://medicaldevice.com/ontology/hasRegulationNumber,has regulation number,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://medicaldevice.com/ontology/RegulationNumber,6145
-http://medicaldevice.com/ontology/hasYearlyTrend,has yearly trend,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://medicaldevice.com/ontology/MDRStatistic,12904
-http://medicaldevice.com/ontology/productCode,product code,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://www.w3.org/2001/XMLSchema#string,7034
-http://medicaldevice.com/ontology/regulationDescription,regulation description,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://www.w3.org/2001/XMLSchema#string,5918
-http://medicaldevice.com/ontology/regulationNumber,regulation number,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://www.w3.org/2001/XMLSchema#string,6145
-http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://www.w3.org/2001/XMLSchema#string,7034
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://www.w3.org/2001/XMLSchema#string,7034
-http://medicaldevice.com/ontology/address,address,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300346
-http://medicaldevice.com/ontology/assemblerId,assemblerId,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300823
-http://medicaldevice.com/ontology/city,city,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300786
-http://medicaldevice.com/ontology/equipmentType,equipmentType,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300547
-http://medicaldevice.com/ontology/installed,installed,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300823
-http://medicaldevice.com/ontology/name,name,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300823
-http://medicaldevice.com/ontology/phone,phone number,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,295402
-http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300823
-http://medicaldevice.com/ontology/room,room,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,286473
-http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300823
-http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300823
-http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300823
-http://medicaldevice.com/ontology/state,state or province,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300538
-http://medicaldevice.com/ontology/use1,use1,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300341
-http://medicaldevice.com/ontology/use2,use2,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,177214
-http://medicaldevice.com/ontology/use3,use3,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,152484
-http://medicaldevice.com/ontology/use4,use4,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,143292
-http://medicaldevice.com/ontology/zip,zip,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300533
-http://medicaldevice.com/ontology/establishmentName,establishment name,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9124
-http://medicaldevice.com/ontology/feiNumber,FDA establishment identifier (FEI),,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9120
-http://medicaldevice.com/ontology/geocodingConfidence,0.0-1.0 confidence score returned by the geocoder,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#decimal,9120
-http://medicaldevice.com/ontology/geocodingSource,"geocoding provider used, e.g. census / nominatim",,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9120
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://medicaldevice.com/ontology/Manufacturer,9123
-http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,3454
-http://medicaldevice.com/ontology/initialImporterFlag,initial importer flag (Y/N),,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9121
-http://medicaldevice.com/ontology/normalizedAddress,normalized single-line address used as the geocoding cache key,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9120
-http://medicaldevice.com/ontology/regExpiryDateYear,registration expiry year,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9120
-http://medicaldevice.com/ontology/registrationAddress,registration address,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9125
-http://medicaldevice.com/ontology/registrationNumber,FDA registration number,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9124
-http://medicaldevice.com/ontology/registrationStatus,registration status code,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9120
-http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,130225
-http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9120
-http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9124
-http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9120
-http://www.opengis.net/ont/geosparql#defaultGeometry,defaultGeometry,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.opengis.net/ont/geosparql#Geometry,9120
-http://www.opengis.net/ont/geosparql#hasGeometry,hasGeometry,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.opengis.net/ont/geosparql#Geometry,9120
-http://www.w3.org/2003/01/geo/wgs84_pos#lat,lat,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#decimal,9120
-http://www.w3.org/2003/01/geo/wgs84_pos#long,long,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#decimal,9120
-http://www.opengis.net/ont/geosparql#asWKT,asWKT,,Predicate,,http://www.opengis.net/ont/geosparql#Geometry,http://www.opengis.net/ont/geosparql#wktLiteral,9120
-http://www.w3.org/2000/01/rdf-schema#domain,domain,,Predicate,,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,http://www.w3.org/2000/01/rdf-schema#Class,34
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,http://www.w3.org/2001/XMLSchema#string,264
-http://www.w3.org/2000/01/rdf-schema#range,range,,Predicate,,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,http://www.w3.org/2000/01/rdf-schema#Class,53
-http://www.w3.org/2000/01/rdf-schema#range,range,,Predicate,,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,,4
-http://www.w3.org/2000/01/rdf-schema#comment,comment,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2001/XMLSchema#string,1
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2001/XMLSchema#string,53
-http://www.w3.org/2000/01/rdf-schema#subClassOf,subClassOf,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2000/01/rdf-schema#Class,27
-http://asu.edu/semantics/SUDOKN/hasNAICSClassifier,hasNAICSClassifier,,Predicate,,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,http://asu.edu/semantics/SUDOKN/NAICSClassifier,13972
-http://asu.edu/semantics/SUDOKN/hasNAICSClassifier,hasNAICSClassifier,,Predicate,,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,http://medicaldevice.com/ontology/NAICSClassification,13972
-http://medicaldevice.com/ontology/feiNumber,FDA establishment identifier (FEI),,Predicate,,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,http://www.w3.org/2001/XMLSchema#string,10432
-http://medicaldevice.com/ontology/hasNAICSClassification,has NAICS classification (domain: ex:ProductCode or ex:Manufacturer),,Predicate,,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,http://asu.edu/semantics/SUDOKN/NAICSClassifier,13972
-http://medicaldevice.com/ontology/hasNAICSClassification,has NAICS classification (domain: ex:ProductCode or ex:Manufacturer),,Predicate,,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,http://medicaldevice.com/ontology/NAICSClassification,13972
-http://medicaldevice.com/ontology/manufacturerName,manufacturer name,,Predicate,,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,http://www.w3.org/2001/XMLSchema#string,13823
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples,Pattern
+http://asu.edu/semantics/SUDOKN/NAICSClassifier,NAICSClassifier,,Class,,,,13,
+http://medicaldevice.com/ontology/CFRTitle21Section,CFRTitle21Section,,Class,,,,2842,
+http://medicaldevice.com/ontology/CfrPart,CfrPart,,Class,,,,57,
+http://medicaldevice.com/ontology/CliaWaivedAnalyte,CliaWaivedAnalyte,,Class,,,,152,
+http://medicaldevice.com/ontology/DeNovoRecord,De Novo Authorization,,Class,,,,483,
+http://medicaldevice.com/ontology/DeviceFDARecord,DeviceFDARecord,,Class,,,,12386,
+http://medicaldevice.com/ontology/DeviceProblem,Device Problem,,Class,,,,52823,
+http://medicaldevice.com/ontology/Facility,FDA-registered establishment/facility with a geocodable address,,Class,,,,9120,
+http://medicaldevice.com/ontology/HumanitarianDeviceExemption,HumanitarianDeviceExemption,,Class,,,,1947,
+http://medicaldevice.com/ontology/IVDHomeUseTest,IVDHomeUseTest,,Class,,,,53,
+http://medicaldevice.com/ontology/K510Record,510(k) Submission,,Class,,,,175299,
+http://medicaldevice.com/ontology/MAUDEReport,MAUDE Adverse Event Report,,Class,,,,15284,
+http://medicaldevice.com/ontology/MDRStatistic,MDR Statistic,,Class,,,,12904,
+http://medicaldevice.com/ontology/MammographyFacility,MQSA Certified Mammography Facility,,Class,,,,975,
+http://medicaldevice.com/ontology/Manufacturer,Manufacturer / Organization,,Class,,,,53499,
+http://medicaldevice.com/ontology/MedicalDevice,Medical Device,,Class,,,,4099,
+http://medicaldevice.com/ontology/NAICSClassification,NAICS Industry Classification (US Census),,Class,,,,13,
+http://medicaldevice.com/ontology/PMAChangeMemo,PMA Design Change / Supplement,,Class,,,,55136,
+http://medicaldevice.com/ontology/PMARecord,PMA Submission,,Class,,,,56584,
+http://medicaldevice.com/ontology/PatientOutcome,Patient Outcome,,Class,,,,46041,
+http://medicaldevice.com/ontology/Postmarket522Study,FDA 522 Postmarket Surveillance Study,,Class,,,,353,
+http://medicaldevice.com/ontology/ProductClassificationRecord,FDA Product Classification Code,,Class,,,,7071,
+http://medicaldevice.com/ontology/ProductCode,FDA Product Code,,Class,,,,8014,
+http://medicaldevice.com/ontology/ProductCodeNAICSMapping,"FDA Product Code to NAICS Crosswalk Assertion (inferred, with provenance)",,Class,,,,1589,
+http://medicaldevice.com/ontology/Recall,Recall,,Class,,,,6843,
+http://medicaldevice.com/ontology/RecallRecord,Device Recall Record,,Class,,,,39224,
+http://medicaldevice.com/ontology/RecognizedConsensusStandard,RecognizedConsensusStandard,,Class,,,,49,
+http://medicaldevice.com/ontology/RegistrationListingRecord,FDA Registration and Listing Record,,Class,,,,25132,
+http://medicaldevice.com/ontology/RegulationNumber,Regulation Number,,Class,,,,2265,
+http://medicaldevice.com/ontology/TPLCRecord,TPLC Device Record,,Class,,,,7034,
+http://medicaldevice.com/ontology/XrayAssemblerRecord,XrayAssemblerRecord,,Class,,,,300823,
+http://www.opengis.net/ont/geosparql#Feature,Feature,,Class,,,,9120,
+http://www.opengis.net/ont/geosparql#Geometry,Geometry,,Class,,,,9120,
+http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,Property,,Class,,,,264,
+http://www.w3.org/2000/01/rdf-schema#Class,Class,,Class,,,,53,
+https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,Manufacturer,,Class,,,,10432,
+http://medicaldevice.com/ontology/naicsCode,six-digit NAICS code literal (cross-graph join key),,Predicate,,http://asu.edu/semantics/SUDOKN/NAICSClassifier,http://www.w3.org/2001/XMLSchema#string,13,direct
+http://medicaldevice.com/ontology/naicsVersion,"NAICS taxonomy version, e.g. 2022",,Predicate,,http://asu.edu/semantics/SUDOKN/NAICSClassifier,http://www.w3.org/2001/XMLSchema#string,13,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://asu.edu/semantics/SUDOKN/NAICSClassifier,http://www.w3.org/2001/XMLSchema#string,13,direct
+http://medicaldevice.com/ontology/authority,authority,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2842,direct
+http://medicaldevice.com/ontology/inPart,inPart,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://medicaldevice.com/ontology/CfrPart,2842,direct
+http://medicaldevice.com/ontology/partNumber,partNumber,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2842,direct
+http://medicaldevice.com/ontology/partTitle,partTitle,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2842,direct
+http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2842,direct
+http://medicaldevice.com/ontology/sectionNumber,sectionNumber,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2842,direct
+http://medicaldevice.com/ontology/sectionTitle,sectionTitle,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2842,direct
+http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2842,direct
+http://medicaldevice.com/ontology/sourceNote,sourceNote,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2699,direct
+http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2842,direct
+http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2842,direct
+http://medicaldevice.com/ontology/text,text,,Predicate,,http://medicaldevice.com/ontology/CFRTitle21Section,http://www.w3.org/2001/XMLSchema#string,2829,direct
+http://medicaldevice.com/ontology/authority,authority,,Predicate,,http://medicaldevice.com/ontology/CfrPart,http://www.w3.org/2001/XMLSchema#string,57,direct
+http://medicaldevice.com/ontology/partNumber,partNumber,,Predicate,,http://medicaldevice.com/ontology/CfrPart,http://www.w3.org/2001/XMLSchema#string,57,direct
+http://medicaldevice.com/ontology/partTitle,partTitle,,Predicate,,http://medicaldevice.com/ontology/CfrPart,http://www.w3.org/2001/XMLSchema#string,57,direct
+http://medicaldevice.com/ontology/sourceNote,sourceNote,,Predicate,,http://medicaldevice.com/ontology/CfrPart,http://www.w3.org/2001/XMLSchema#string,52,direct
+http://medicaldevice.com/ontology/analyteName,Analyte Name,,Predicate,,http://medicaldevice.com/ontology/CliaWaivedAnalyte,http://www.w3.org/2001/XMLSchema#string,152,direct
+http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/CliaWaivedAnalyte,http://www.w3.org/2001/XMLSchema#string,152,direct
+http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/CliaWaivedAnalyte,http://www.w3.org/2001/XMLSchema#string,152,direct
+http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/CliaWaivedAnalyte,http://www.w3.org/2001/XMLSchema#string,152,direct
+http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/CliaWaivedAnalyte,http://www.w3.org/2001/XMLSchema#string,152,direct
+http://medicaldevice.com/ontology/advisoryCommittee,advisory committee,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,478,direct
+http://medicaldevice.com/ontology/applicant,applicant,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,478,direct
+http://medicaldevice.com/ontology/dateReceived,date received,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,483,direct
+http://medicaldevice.com/ontology/deNovoNumber,De Novo number,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,483,direct
+http://medicaldevice.com/ontology/decisionDate,decision date,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,483,direct
+http://medicaldevice.com/ontology/decisionDescription,decision description,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,483,direct
+http://medicaldevice.com/ontology/deviceName,device name,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,483,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://medicaldevice.com/ontology/Manufacturer,478,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,132,direct
+http://medicaldevice.com/ontology/hasProductCode,has product code,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://medicaldevice.com/ontology/ProductCode,478,direct
+http://medicaldevice.com/ontology/regulationNumber,regulation number,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,479,direct
+http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,483,direct
+http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,483,direct
+http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,483,direct
+http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/DeNovoRecord,http://www.w3.org/2001/XMLSchema#string,483,direct
+http://medicaldevice.com/ontology/applicant,applicant,,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://www.w3.org/2001/XMLSchema#string,12386,direct
+http://medicaldevice.com/ontology/decisionDate,decision date,,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://www.w3.org/2001/XMLSchema#string,12386,direct
+http://medicaldevice.com/ontology/deviceName,device name,,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://www.w3.org/2001/XMLSchema#string,12386,direct
+http://medicaldevice.com/ontology/documentNumber,document number (K / P / H / DEN),,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://www.w3.org/2001/XMLSchema#string,12386,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://medicaldevice.com/ontology/Manufacturer,12386,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,2085,direct
+http://medicaldevice.com/ontology/pathway,regulatory pathway (510k / pma / hde / de_novo),,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://www.w3.org/2001/XMLSchema#string,12386,direct
+http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://www.w3.org/2001/XMLSchema#string,12386,direct
+http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://www.w3.org/2001/XMLSchema#string,12386,direct
+http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://www.w3.org/2001/XMLSchema#string,12386,direct
+http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://www.w3.org/2001/XMLSchema#string,12386,direct
+http://medicaldevice.com/ontology/summaryUrl,URL to summary / PDF document,,Predicate,,http://medicaldevice.com/ontology/DeviceFDARecord,http://www.w3.org/2001/XMLSchema#string,5279,direct
+http://medicaldevice.com/ontology/eventCount,event count,,Predicate,,http://medicaldevice.com/ontology/DeviceProblem,http://www.w3.org/2001/XMLSchema#integer,52823,direct
+http://medicaldevice.com/ontology/problemDescription,problem description,,Predicate,,http://medicaldevice.com/ontology/DeviceProblem,http://www.w3.org/2001/XMLSchema#string,52823,direct
+http://medicaldevice.com/ontology/relatedTPLC,related TPLC product code record,,Predicate,,http://medicaldevice.com/ontology/DeviceProblem,http://medicaldevice.com/ontology/TPLCRecord,52823,direct
+http://medicaldevice.com/ontology/reportCount,report count,,Predicate,,http://medicaldevice.com/ontology/DeviceProblem,http://www.w3.org/2001/XMLSchema#integer,52823,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://medicaldevice.com/ontology/DeviceProblem,http://www.w3.org/2001/XMLSchema#string,52823,direct
+http://medicaldevice.com/ontology/establishmentName,establishment name,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9124,direct
+http://medicaldevice.com/ontology/feiNumber,FDA establishment identifier (FEI),,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9120,direct
+http://medicaldevice.com/ontology/geocodingConfidence,0.0-1.0 confidence score returned by the geocoder,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#decimal,9120,direct
+http://medicaldevice.com/ontology/geocodingSource,"geocoding provider used, e.g. census / nominatim",,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9120,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/Facility,http://medicaldevice.com/ontology/Manufacturer,9123,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/Facility,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,3454,direct
+http://medicaldevice.com/ontology/initialImporterFlag,initial importer flag (Y/N),,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9121,direct
+http://medicaldevice.com/ontology/normalizedAddress,normalized single-line address used as the geocoding cache key,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9120,direct
+http://medicaldevice.com/ontology/regExpiryDateYear,registration expiry year,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9120,direct
+http://medicaldevice.com/ontology/registrationAddress,registration address,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9125,direct
+http://medicaldevice.com/ontology/registrationNumber,FDA registration number,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9124,direct
+http://medicaldevice.com/ontology/registrationStatus,registration status code,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9120,direct
+http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,130225,direct
+http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9120,direct
+http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9124,direct
+http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#string,9120,direct
+http://www.opengis.net/ont/geosparql#defaultGeometry,defaultGeometry,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.opengis.net/ont/geosparql#Geometry,9120,direct
+http://www.opengis.net/ont/geosparql#hasGeometry,hasGeometry,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.opengis.net/ont/geosparql#Geometry,9120,direct
+http://www.w3.org/2003/01/geo/wgs84_pos#lat,lat,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#decimal,9120,direct
+http://www.w3.org/2003/01/geo/wgs84_pos#long,long,,Predicate,,http://medicaldevice.com/ontology/Facility,http://www.w3.org/2001/XMLSchema#decimal,9120,direct
+http://medicaldevice.com/ontology/advisoryCommittee,advisory committee,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947,direct
+http://medicaldevice.com/ontology/applicant,applicant,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947,direct
+http://medicaldevice.com/ontology/city,city,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947,direct
+http://medicaldevice.com/ontology/dateReceived,date received,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947,direct
+http://medicaldevice.com/ontology/decisionCode,decision code,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947,direct
+http://medicaldevice.com/ontology/decisionDate,decision date,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947,direct
+http://medicaldevice.com/ontology/docketNumber,docketNumber,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,90,direct
+http://medicaldevice.com/ontology/fedRegNoticeDate,fedRegNoticeDate,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,37,direct
+http://medicaldevice.com/ontology/genericName,generic name,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1902,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://medicaldevice.com/ontology/Manufacturer,1947,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,835,direct
+http://medicaldevice.com/ontology/hdeNumber,HDE number,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947,direct
+http://medicaldevice.com/ontology/productCode,product code,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1902,direct
+http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947,direct
+http://medicaldevice.com/ontology/reviewGranted,reviewGranted,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947,direct
+http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947,direct
+http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947,direct
+http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947,direct
+http://medicaldevice.com/ontology/state,state or province,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1838,direct
+http://medicaldevice.com/ontology/supplementNumber,supplement number,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1870,direct
+http://medicaldevice.com/ontology/supplementReason,PMA supplement reason,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1870,direct
+http://medicaldevice.com/ontology/supplementType,supplementType,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1946,direct
+http://medicaldevice.com/ontology/tradeName,trade name,,Predicate,,http://medicaldevice.com/ontology/HumanitarianDeviceExemption,http://www.w3.org/2001/XMLSchema#string,1947,direct
+http://medicaldevice.com/ontology/document,document,,Predicate,,http://medicaldevice.com/ontology/IVDHomeUseTest,http://www.w3.org/2001/XMLSchema#string,54,direct
+http://medicaldevice.com/ontology/effectiveDate,effectiveDate,,Predicate,,http://medicaldevice.com/ontology/IVDHomeUseTest,http://www.w3.org/2001/XMLSchema#string,100,direct
+http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/IVDHomeUseTest,http://www.w3.org/2001/XMLSchema#string,53,direct
+http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/IVDHomeUseTest,http://www.w3.org/2001/XMLSchema#string,53,direct
+http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/IVDHomeUseTest,http://www.w3.org/2001/XMLSchema#string,95,direct
+http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/IVDHomeUseTest,http://www.w3.org/2001/XMLSchema#string,53,direct
+http://medicaldevice.com/ontology/testName,IVD test name,,Predicate,,http://medicaldevice.com/ontology/IVDHomeUseTest,http://www.w3.org/2001/XMLSchema#string,147,direct
+http://medicaldevice.com/ontology/testType,IVD test type,,Predicate,,http://medicaldevice.com/ontology/IVDHomeUseTest,http://www.w3.org/2001/XMLSchema#string,160,direct
+http://medicaldevice.com/ontology/address,address,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299,direct
+http://medicaldevice.com/ontology/advisoryCommittee,advisory committee,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,170644,direct
+http://medicaldevice.com/ontology/advisoryCommitteeDescription,advisory committee description,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299,direct
+http://medicaldevice.com/ontology/applicant,applicant,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299,direct
+http://medicaldevice.com/ontology/city,city,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175177,direct
+http://medicaldevice.com/ontology/clearanceType,510(k) clearance type,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299,direct
+http://medicaldevice.com/ontology/country,country,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299,direct
+http://medicaldevice.com/ontology/dateReceived,date received,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299,direct
+http://medicaldevice.com/ontology/decisionCode,decision code,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299,direct
+http://medicaldevice.com/ontology/decisionDate,decision date,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299,direct
+http://medicaldevice.com/ontology/decisionDescription,decision description,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299,direct
+http://medicaldevice.com/ontology/deviceName,device name,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299,direct
+http://medicaldevice.com/ontology/expeditedReviewFlag,expedited review flag,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,28,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://medicaldevice.com/ontology/Manufacturer,175299,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/K510Record,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,36597,direct
+http://medicaldevice.com/ontology/hasProductCode,has product code,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://medicaldevice.com/ontology/ProductCode,173860,direct
+http://medicaldevice.com/ontology/k510Number,510(k) number,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299,direct
+http://medicaldevice.com/ontology/postalCode,postalCode,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,171064,direct
+http://medicaldevice.com/ontology/productCode,product code,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,173860,direct
+http://medicaldevice.com/ontology/relatedTPLC,related TPLC product code record,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://medicaldevice.com/ontology/TPLCRecord,172092,direct
+http://medicaldevice.com/ontology/relatedTPLC,related TPLC product code record,,Predicate,,http://medicaldevice.com/ontology/K510Record,,1768,direct
+http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299,direct
+http://medicaldevice.com/ontology/reviewAdvisoryCommittee,reviewAdvisoryCommittee,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299,direct
+http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299,direct
+http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299,direct
+http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299,direct
+http://medicaldevice.com/ontology/state,state or province,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,146254,direct
+http://medicaldevice.com/ontology/statementOrSummary,510(k) statement or summary type,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,118924,direct
+http://medicaldevice.com/ontology/thirdPartyReviewFlag,third party review flag,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://medicaldevice.com/ontology/K510Record,http://www.w3.org/2001/XMLSchema#string,175299,direct
+http://medicaldevice.com/ontology/dateOfEvent,date of event,,Predicate,,http://medicaldevice.com/ontology/MAUDEReport,http://www.w3.org/2001/XMLSchema#string,11276,direct
+http://medicaldevice.com/ontology/dateReceived,date received,,Predicate,,http://medicaldevice.com/ontology/MAUDEReport,http://www.w3.org/2001/XMLSchema#string,15285,direct
+http://medicaldevice.com/ontology/eventType,event type,,Predicate,,http://medicaldevice.com/ontology/MAUDEReport,http://www.w3.org/2001/XMLSchema#string,15279,direct
+http://medicaldevice.com/ontology/involvesDevice,involves device,,Predicate,,http://medicaldevice.com/ontology/MAUDEReport,http://medicaldevice.com/ontology/MedicalDevice,15285,direct
+http://medicaldevice.com/ontology/productCode,product code,,Predicate,,http://medicaldevice.com/ontology/MAUDEReport,http://www.w3.org/2001/XMLSchema#string,15277,direct
+http://medicaldevice.com/ontology/eventCount,event count,,Predicate,,http://medicaldevice.com/ontology/MDRStatistic,http://www.w3.org/2001/XMLSchema#integer,13085,direct
+http://medicaldevice.com/ontology/relatedTPLC,related TPLC product code record,,Predicate,,http://medicaldevice.com/ontology/MDRStatistic,http://medicaldevice.com/ontology/TPLCRecord,12904,direct
+http://medicaldevice.com/ontology/reportCount,report count,,Predicate,,http://medicaldevice.com/ontology/MDRStatistic,http://www.w3.org/2001/XMLSchema#integer,13085,direct
+http://medicaldevice.com/ontology/year,year,,Predicate,,http://medicaldevice.com/ontology/MDRStatistic,http://www.w3.org/2001/XMLSchema#integer,12904,direct
+http://medicaldevice.com/ontology/city,city,,Predicate,,http://medicaldevice.com/ontology/MammographyFacility,http://www.w3.org/2001/XMLSchema#string,975,direct
+http://medicaldevice.com/ontology/facilityName,facility name,,Predicate,,http://medicaldevice.com/ontology/MammographyFacility,http://www.w3.org/2001/XMLSchema#string,976,direct
+http://medicaldevice.com/ontology/phone,phone number,,Predicate,,http://medicaldevice.com/ontology/MammographyFacility,http://www.w3.org/2001/XMLSchema#string,980,direct
+http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/MammographyFacility,http://www.w3.org/2001/XMLSchema#string,975,direct
+http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/MammographyFacility,http://www.w3.org/2001/XMLSchema#string,975,direct
+http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/MammographyFacility,http://www.w3.org/2001/XMLSchema#string,1000,direct
+http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/MammographyFacility,http://www.w3.org/2001/XMLSchema#string,975,direct
+http://medicaldevice.com/ontology/state,state or province,,Predicate,,http://medicaldevice.com/ontology/MammographyFacility,http://www.w3.org/2001/XMLSchema#string,975,direct
+http://medicaldevice.com/ontology/zip,zip,,Predicate,,http://medicaldevice.com/ontology/MammographyFacility,http://www.w3.org/2001/XMLSchema#string,975,direct
+http://asu.edu/semantics/SUDOKN/hasNAICSClassifier,hasNAICSClassifier,,Predicate,,http://medicaldevice.com/ontology/Manufacturer,http://asu.edu/semantics/SUDOKN/NAICSClassifier,13972,direct
+http://asu.edu/semantics/SUDOKN/hasNAICSClassifier,hasNAICSClassifier,,Predicate,,http://medicaldevice.com/ontology/Manufacturer,http://medicaldevice.com/ontology/NAICSClassification,13972,direct
+http://medicaldevice.com/ontology/feiNumber,FDA establishment identifier (FEI),,Predicate,,http://medicaldevice.com/ontology/Manufacturer,http://www.w3.org/2001/XMLSchema#string,23964,direct
+http://medicaldevice.com/ontology/hasNAICSClassification,has NAICS classification (domain: ex:ProductCode or ex:Manufacturer),,Predicate,,http://medicaldevice.com/ontology/Manufacturer,http://asu.edu/semantics/SUDOKN/NAICSClassifier,13972,direct
+http://medicaldevice.com/ontology/hasNAICSClassification,has NAICS classification (domain: ex:ProductCode or ex:Manufacturer),,Predicate,,http://medicaldevice.com/ontology/Manufacturer,http://medicaldevice.com/ontology/NAICSClassification,13972,direct
+http://medicaldevice.com/ontology/manufacturerName,manufacturer name,,Predicate,,http://medicaldevice.com/ontology/Manufacturer,http://www.w3.org/2001/XMLSchema#string,60599,direct
+http://medicaldevice.com/ontology/label,label,,Predicate,,http://medicaldevice.com/ontology/MedicalDevice,http://www.w3.org/2001/XMLSchema#string,4128,direct
+http://medicaldevice.com/ontology/naicsCode,six-digit NAICS code literal (cross-graph join key),,Predicate,,http://medicaldevice.com/ontology/NAICSClassification,http://www.w3.org/2001/XMLSchema#string,13,direct
+http://medicaldevice.com/ontology/naicsVersion,"NAICS taxonomy version, e.g. 2022",,Predicate,,http://medicaldevice.com/ontology/NAICSClassification,http://www.w3.org/2001/XMLSchema#string,13,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://medicaldevice.com/ontology/NAICSClassification,http://www.w3.org/2001/XMLSchema#string,13,direct
+http://medicaldevice.com/ontology/applicant,applicant,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136,direct
+http://medicaldevice.com/ontology/dateReceived,date received,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136,direct
+http://medicaldevice.com/ontology/decisionCode,decision code,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136,direct
+http://medicaldevice.com/ontology/decisionDate,decision date,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://medicaldevice.com/ontology/Manufacturer,55136,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,26375,direct
+http://medicaldevice.com/ontology/hasProductCode,has product code,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://medicaldevice.com/ontology/ProductClassificationRecord,54373,direct
+http://medicaldevice.com/ontology/hasProductCode,has product code,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://medicaldevice.com/ontology/ProductCode,54386,direct
+http://medicaldevice.com/ontology/pmaNumber,PMA number,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136,direct
+http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136,direct
+http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136,direct
+http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136,direct
+http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136,direct
+http://medicaldevice.com/ontology/supplementNumber,supplement number,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136,direct
+http://medicaldevice.com/ontology/supplementReason,PMA supplement reason,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,52150,direct
+http://medicaldevice.com/ontology/supplementsPMA,supplements PMA,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://medicaldevice.com/ontology/PMARecord,52417,direct
+http://medicaldevice.com/ontology/supplementsPMA,supplements PMA,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,,2719,direct
+http://medicaldevice.com/ontology/tradeName,trade name,,Predicate,,http://medicaldevice.com/ontology/PMAChangeMemo,http://www.w3.org/2001/XMLSchema#string,55136,direct
+http://medicaldevice.com/ontology/address,address,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584,direct
+http://medicaldevice.com/ontology/advisoryCommittee,advisory committee,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584,direct
+http://medicaldevice.com/ontology/advisoryCommitteeDescription,advisory committee description,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584,direct
+http://medicaldevice.com/ontology/applicant,applicant,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584,direct
+http://medicaldevice.com/ontology/city,city,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56564,direct
+http://medicaldevice.com/ontology/dateReceived,date received,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584,direct
+http://medicaldevice.com/ontology/decisionCode,decision code,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584,direct
+http://medicaldevice.com/ontology/decisionDate,decision date,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584,direct
+http://medicaldevice.com/ontology/deviceClass,device class,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,55793,direct
+http://medicaldevice.com/ontology/deviceName,device name,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584,direct
+http://medicaldevice.com/ontology/expeditedReviewFlag,expedited review flag,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584,direct
+http://medicaldevice.com/ontology/feiNumber,FDA establishment identifier (FEI),,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,915382,direct
+http://medicaldevice.com/ontology/genericName,generic name,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,55817,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://medicaldevice.com/ontology/Manufacturer,56584,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/PMARecord,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,26950,direct
+http://medicaldevice.com/ontology/hasProductCode,has product code,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://medicaldevice.com/ontology/ProductCode,55817,direct
+http://medicaldevice.com/ontology/hasRegulationNumber,has regulation number,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://medicaldevice.com/ontology/RegulationNumber,16163,direct
+http://medicaldevice.com/ontology/medicalSpecialtyDescription,medical specialty description,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,55793,direct
+http://medicaldevice.com/ontology/pmaNumber,PMA number,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584,direct
+http://medicaldevice.com/ontology/postalCode,postalCode,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56148,direct
+http://medicaldevice.com/ontology/productCode,product code,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,55817,direct
+http://medicaldevice.com/ontology/registrationNumber,FDA registration number,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,915646,direct
+http://medicaldevice.com/ontology/regulationNumber,regulation number,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,16163,direct
+http://medicaldevice.com/ontology/relatedTPLC,related TPLC product code record,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://medicaldevice.com/ontology/TPLCRecord,55777,direct
+http://medicaldevice.com/ontology/relatedTPLC,related TPLC product code record,,Predicate,,http://medicaldevice.com/ontology/PMARecord,,40,direct
+http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584,direct
+http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584,direct
+http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584,direct
+http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584,direct
+http://medicaldevice.com/ontology/state,state or province,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,53774,direct
+http://medicaldevice.com/ontology/submissionType,submission type,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,53251,direct
+http://medicaldevice.com/ontology/summary,summary,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,49921,direct
+http://medicaldevice.com/ontology/supplementNumber,supplement number,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,55136,direct
+http://medicaldevice.com/ontology/supplementReason,PMA supplement reason,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,52150,direct
+http://medicaldevice.com/ontology/tradeName,trade name,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://medicaldevice.com/ontology/PMARecord,http://www.w3.org/2001/XMLSchema#string,56584,direct
+http://medicaldevice.com/ontology/eventCount,event count,,Predicate,,http://medicaldevice.com/ontology/PatientOutcome,http://www.w3.org/2001/XMLSchema#integer,46041,direct
+http://medicaldevice.com/ontology/relatedTPLC,related TPLC product code record,,Predicate,,http://medicaldevice.com/ontology/PatientOutcome,http://medicaldevice.com/ontology/TPLCRecord,46041,direct
+http://medicaldevice.com/ontology/reportCount,report count,,Predicate,,http://medicaldevice.com/ontology/PatientOutcome,http://www.w3.org/2001/XMLSchema#integer,46041,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://medicaldevice.com/ontology/PatientOutcome,http://www.w3.org/2001/XMLSchema#string,46041,direct
+http://medicaldevice.com/ontology/cId,cId,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353,direct
+http://medicaldevice.com/ontology/dataSource,dataSource,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,167,direct
+http://medicaldevice.com/ontology/dateCurrentPlanAccepted,dateCurrentPlanAccepted,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,169,direct
+http://medicaldevice.com/ontology/dateOriginalPlanAccepted,dateOriginalPlanAccepted,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,352,direct
+http://medicaldevice.com/ontology/detailUrl,detailUrl,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353,direct
+http://medicaldevice.com/ontology/deviceName,device name,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353,direct
+http://medicaldevice.com/ontology/manufacturer,manufacturer,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353,direct
+http://medicaldevice.com/ontology/orderNumber,522 order number,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353,direct
+http://medicaldevice.com/ontology/requirementNumber,requirementNumber,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353,direct
+http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353,direct
+http://medicaldevice.com/ontology/rootDocumentNumber,rootDocumentNumber,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353,direct
+http://medicaldevice.com/ontology/sampleSize,sampleSize,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,67,direct
+http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353,direct
+http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353,direct
+http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353,direct
+http://medicaldevice.com/ontology/studyDesign,studyDesign,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,167,direct
+http://medicaldevice.com/ontology/studyName,522 study name,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353,direct
+http://medicaldevice.com/ontology/studyObjectives,studyObjectives,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,345,direct
+http://medicaldevice.com/ontology/studyStatus,522 study status,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353,direct
+http://medicaldevice.com/ontology/tId,tId,,Predicate,,http://medicaldevice.com/ontology/Postmarket522Study,http://www.w3.org/2001/XMLSchema#string,353,direct
+http://medicaldevice.com/ontology/definition,definition,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,2584,direct
+http://medicaldevice.com/ontology/deviceClass,device class,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,7071,direct
+http://medicaldevice.com/ontology/deviceName,device name,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,7071,direct
+http://medicaldevice.com/ontology/gmpExemptFlag,GMP exempt flag (Y/N),,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,7071,direct
+http://medicaldevice.com/ontology/hasNAICSClassification,has NAICS classification (domain: ex:ProductCode or ex:Manufacturer),,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://asu.edu/semantics/SUDOKN/NAICSClassifier,1589,direct
+http://medicaldevice.com/ontology/hasNAICSClassification,has NAICS classification (domain: ex:ProductCode or ex:Manufacturer),,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://medicaldevice.com/ontology/NAICSClassification,1589,direct
+http://medicaldevice.com/ontology/hasNAICSMapping,has NAICS crosswalk mapping (provenance-bearing),,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://medicaldevice.com/ontology/ProductCodeNAICSMapping,1589,direct
+http://medicaldevice.com/ontology/implantFlag,implant flag (Y/N),,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,6857,direct
+http://medicaldevice.com/ontology/lifeSustainSupportFlag,life sustain support flag (Y/N),,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,6857,direct
+http://medicaldevice.com/ontology/medicalSpecialty,medical specialty code,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,6170,direct
+http://medicaldevice.com/ontology/medicalSpecialtyDescription,medical specialty description,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,7071,direct
+http://medicaldevice.com/ontology/productCode,product code,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,7071,direct
+http://medicaldevice.com/ontology/regulationNumber,regulation number,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,6170,direct
+http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,7071,direct
+http://medicaldevice.com/ontology/reviewPanel,review panel,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,6857,direct
+http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,7071,direct
+http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,7071,direct
+http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,7071,direct
+http://medicaldevice.com/ontology/submissionTypeId,submission type ID,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,6857,direct
+http://medicaldevice.com/ontology/summaryMalfunctionReporting,summary malfunction reporting (SMR) code,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,7071,direct
+http://medicaldevice.com/ontology/thirdPartyFlag,third party review flag,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,6857,direct
+http://medicaldevice.com/ontology/unclassifiedReason,unclassified reason,,Predicate,,http://medicaldevice.com/ontology/ProductClassificationRecord,http://www.w3.org/2001/XMLSchema#string,254,direct
+http://medicaldevice.com/ontology/definition,definition,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,231,direct
+http://medicaldevice.com/ontology/deviceClass,device class,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443,direct
+http://medicaldevice.com/ontology/deviceName,device name,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443,direct
+http://medicaldevice.com/ontology/gmpExemptFlag,GMP exempt flag (Y/N),,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443,direct
+http://medicaldevice.com/ontology/hasNAICSClassification,has NAICS classification (domain: ex:ProductCode or ex:Manufacturer),,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://asu.edu/semantics/SUDOKN/NAICSClassifier,132,direct
+http://medicaldevice.com/ontology/hasNAICSClassification,has NAICS classification (domain: ex:ProductCode or ex:Manufacturer),,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://medicaldevice.com/ontology/NAICSClassification,132,direct
+http://medicaldevice.com/ontology/hasNAICSMapping,has NAICS crosswalk mapping (provenance-bearing),,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://medicaldevice.com/ontology/ProductCodeNAICSMapping,132,direct
+http://medicaldevice.com/ontology/implantFlag,implant flag (Y/N),,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443,direct
+http://medicaldevice.com/ontology/lifeSustainSupportFlag,life sustain support flag (Y/N),,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443,direct
+http://medicaldevice.com/ontology/medicalSpecialty,medical specialty code,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,145,direct
+http://medicaldevice.com/ontology/medicalSpecialtyDescription,medical specialty description,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443,direct
+http://medicaldevice.com/ontology/productCode,product code,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,8014,direct
+http://medicaldevice.com/ontology/regulationNumber,regulation number,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,145,direct
+http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443,direct
+http://medicaldevice.com/ontology/reviewPanel,review panel,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443,direct
+http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443,direct
+http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443,direct
+http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443,direct
+http://medicaldevice.com/ontology/submissionTypeId,submission type ID,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443,direct
+http://medicaldevice.com/ontology/summaryMalfunctionReporting,summary malfunction reporting (SMR) code,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443,direct
+http://medicaldevice.com/ontology/thirdPartyFlag,third party review flag,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,443,direct
+http://medicaldevice.com/ontology/unclassifiedReason,unclassified reason,,Predicate,,http://medicaldevice.com/ontology/ProductCode,http://www.w3.org/2001/XMLSchema#string,3,direct
+http://medicaldevice.com/ontology/assignedNAICS,NAICS code assigned by this crosswalk mapping,,Predicate,,http://medicaldevice.com/ontology/ProductCodeNAICSMapping,http://asu.edu/semantics/SUDOKN/NAICSClassifier,1589,direct
+http://medicaldevice.com/ontology/assignedNAICS,NAICS code assigned by this crosswalk mapping,,Predicate,,http://medicaldevice.com/ontology/ProductCodeNAICSMapping,http://medicaldevice.com/ontology/NAICSClassification,1589,direct
+http://medicaldevice.com/ontology/mappingConfidence,0.0-1.0 confidence score for this NAICS mapping,,Predicate,,http://medicaldevice.com/ontology/ProductCodeNAICSMapping,http://www.w3.org/2001/XMLSchema#decimal,1589,direct
+http://medicaldevice.com/ontology/mappingMethod,how this NAICS mapping was derived: definition_match / llm_assisted / manual_review / unmapped,,Predicate,,http://medicaldevice.com/ontology/ProductCodeNAICSMapping,http://www.w3.org/2001/XMLSchema#string,1589,direct
+http://medicaldevice.com/ontology/mappingReason,human-readable evidence/justification for this NAICS mapping,,Predicate,,http://medicaldevice.com/ontology/ProductCodeNAICSMapping,http://www.w3.org/2001/XMLSchema#string,1589,direct
+http://medicaldevice.com/ontology/mappingReviewStatus,approved / manual_review,,Predicate,,http://medicaldevice.com/ontology/ProductCodeNAICSMapping,http://www.w3.org/2001/XMLSchema#string,1589,direct
+http://medicaldevice.com/ontology/mappingSource,"provenance label, e.g. internal_crosswalk (never claims FDA supplied the NAICS code)",,Predicate,,http://medicaldevice.com/ontology/ProductCodeNAICSMapping,http://www.w3.org/2001/XMLSchema#string,1589,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/Recall,http://medicaldevice.com/ontology/Manufacturer,6843,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/Recall,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,4067,direct
+http://medicaldevice.com/ontology/manufacturerName,manufacturer name,,Predicate,,http://medicaldevice.com/ontology/Recall,http://www.w3.org/2001/XMLSchema#string,6843,direct
+http://medicaldevice.com/ontology/recallClass,recall class,,Predicate,,http://medicaldevice.com/ontology/Recall,http://www.w3.org/2001/XMLSchema#string,6843,direct
+http://medicaldevice.com/ontology/recallDate,recall date,,Predicate,,http://medicaldevice.com/ontology/Recall,http://www.w3.org/2001/XMLSchema#string,6843,direct
+http://medicaldevice.com/ontology/relatedTPLC,related TPLC product code record,,Predicate,,http://medicaldevice.com/ontology/Recall,http://medicaldevice.com/ontology/TPLCRecord,6843,direct
+http://medicaldevice.com/ontology/centerClassificationDate,FDA center classification date,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39223,direct
+http://medicaldevice.com/ontology/city,city,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39222,direct
+http://medicaldevice.com/ontology/codeInfo,lot / model / serial code info,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39188,direct
+http://medicaldevice.com/ontology/country,country,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39219,direct
+http://medicaldevice.com/ontology/distributionPattern,distribution pattern,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39223,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://medicaldevice.com/ontology/Manufacturer,39224,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,20913,direct
+http://medicaldevice.com/ontology/initialFirmNotification,initial firm notification method,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,38835,direct
+http://medicaldevice.com/ontology/postalCode,postalCode,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224,direct
+http://medicaldevice.com/ontology/productDescription,product description,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39223,direct
+http://medicaldevice.com/ontology/productQuantity,product quantity involved in recall,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,38368,direct
+http://medicaldevice.com/ontology/reasonForRecall,reason for recall,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39175,direct
+http://medicaldevice.com/ontology/recallClassification,recall classification (Class I/II/III),,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224,direct
+http://medicaldevice.com/ontology/recallEventId,recall event ID,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224,direct
+http://medicaldevice.com/ontology/recallInitiationDate,recall initiation date,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224,direct
+http://medicaldevice.com/ontology/recallNumber,recall number,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39223,direct
+http://medicaldevice.com/ontology/recallStatus,recall status,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224,direct
+http://medicaldevice.com/ontology/recallingFirm,recalling firm name,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224,direct
+http://medicaldevice.com/ontology/recallingFirmAddress,recalling firm address,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224,direct
+http://medicaldevice.com/ontology/reportDate,report date,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224,direct
+http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224,direct
+http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224,direct
+http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224,direct
+http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224,direct
+http://medicaldevice.com/ontology/state,state or province,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,37640,direct
+http://medicaldevice.com/ontology/summary,summary,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,935,direct
+http://medicaldevice.com/ontology/terminationDate,recall termination date,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,25426,direct
+http://medicaldevice.com/ontology/voluntaryMandated,voluntary or mandated,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39214,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://medicaldevice.com/ontology/RecallRecord,http://www.w3.org/2001/XMLSchema#string,39224,direct
+http://medicaldevice.com/ontology/recognitionNumber,FDA recognition number,,Predicate,,http://medicaldevice.com/ontology/RecognizedConsensusStandard,http://www.w3.org/2001/XMLSchema#string,49,direct
+http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/RecognizedConsensusStandard,http://www.w3.org/2001/XMLSchema#string,49,direct
+http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/RecognizedConsensusStandard,http://www.w3.org/2001/XMLSchema#string,49,direct
+http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/RecognizedConsensusStandard,http://www.w3.org/2001/XMLSchema#string,49,direct
+http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/RecognizedConsensusStandard,http://www.w3.org/2001/XMLSchema#string,1774,direct
+http://medicaldevice.com/ontology/establishmentName,establishment name,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,25145,direct
+http://medicaldevice.com/ontology/feiNumber,FDA establishment identifier (FEI),,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,25132,direct
+http://medicaldevice.com/ontology/geocodingConfidence,0.0-1.0 confidence score returned by the geocoder,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#decimal,9120,direct
+http://medicaldevice.com/ontology/geocodingSource,"geocoding provider used, e.g. census / nominatim",,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,9120,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://medicaldevice.com/ontology/Manufacturer,25142,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,11314,direct
+http://medicaldevice.com/ontology/initialImporterFlag,initial importer flag (Y/N),,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,25133,direct
+http://medicaldevice.com/ontology/normalizedAddress,normalized single-line address used as the geocoding cache key,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,9120,direct
+http://medicaldevice.com/ontology/regExpiryDateYear,registration expiry year,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,25132,direct
+http://medicaldevice.com/ontology/registrationAddress,registration address,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,25145,direct
+http://medicaldevice.com/ontology/registrationNumber,FDA registration number,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,25146,direct
+http://medicaldevice.com/ontology/registrationStatus,registration status code,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,25132,direct
+http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,310345,direct
+http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,25132,direct
+http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,25146,direct
+http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#string,25132,direct
+http://www.opengis.net/ont/geosparql#defaultGeometry,defaultGeometry,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.opengis.net/ont/geosparql#Geometry,9120,direct
+http://www.opengis.net/ont/geosparql#hasGeometry,hasGeometry,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.opengis.net/ont/geosparql#Geometry,9120,direct
+http://www.w3.org/2003/01/geo/wgs84_pos#lat,lat,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#decimal,9120,direct
+http://www.w3.org/2003/01/geo/wgs84_pos#long,long,,Predicate,,http://medicaldevice.com/ontology/RegistrationListingRecord,http://www.w3.org/2001/XMLSchema#decimal,9120,direct
+http://medicaldevice.com/ontology/regulationNumber,regulation number,,Predicate,,http://medicaldevice.com/ontology/RegulationNumber,http://www.w3.org/2001/XMLSchema#string,2265,direct
+http://medicaldevice.com/ontology/definition,definition,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://www.w3.org/2001/XMLSchema#string,2549,direct
+http://medicaldevice.com/ontology/deviceClass,device class,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://www.w3.org/2001/XMLSchema#string,7034,direct
+http://medicaldevice.com/ontology/hasDeviceProblem,has device problem,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://medicaldevice.com/ontology/DeviceProblem,52823,direct
+http://medicaldevice.com/ontology/hasPatientOutcome,has patient outcome,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://medicaldevice.com/ontology/PatientOutcome,46041,direct
+http://medicaldevice.com/ontology/hasProductCode,has product code,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://medicaldevice.com/ontology/ProductCode,7034,direct
+http://medicaldevice.com/ontology/hasRecall,has recall,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://medicaldevice.com/ontology/Recall,6843,direct
+http://medicaldevice.com/ontology/hasRegulationNumber,has regulation number,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://medicaldevice.com/ontology/RegulationNumber,6145,direct
+http://medicaldevice.com/ontology/hasYearlyTrend,has yearly trend,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://medicaldevice.com/ontology/MDRStatistic,12904,direct
+http://medicaldevice.com/ontology/productCode,product code,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://www.w3.org/2001/XMLSchema#string,7034,direct
+http://medicaldevice.com/ontology/regulationDescription,regulation description,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://www.w3.org/2001/XMLSchema#string,5918,direct
+http://medicaldevice.com/ontology/regulationNumber,regulation number,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://www.w3.org/2001/XMLSchema#string,6145,direct
+http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://www.w3.org/2001/XMLSchema#string,7034,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://medicaldevice.com/ontology/TPLCRecord,http://www.w3.org/2001/XMLSchema#string,7034,direct
+http://medicaldevice.com/ontology/address,address,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300346,direct
+http://medicaldevice.com/ontology/assemblerId,assemblerId,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300823,direct
+http://medicaldevice.com/ontology/city,city,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300786,direct
+http://medicaldevice.com/ontology/equipmentType,equipmentType,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300547,direct
+http://medicaldevice.com/ontology/installed,installed,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300823,direct
+http://medicaldevice.com/ontology/name,name,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300823,direct
+http://medicaldevice.com/ontology/phone,phone number,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,295402,direct
+http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300823,direct
+http://medicaldevice.com/ontology/room,room,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,286473,direct
+http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300823,direct
+http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300823,direct
+http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300823,direct
+http://medicaldevice.com/ontology/state,state or province,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300538,direct
+http://medicaldevice.com/ontology/use1,use1,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300341,direct
+http://medicaldevice.com/ontology/use2,use2,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,177214,direct
+http://medicaldevice.com/ontology/use3,use3,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,152484,direct
+http://medicaldevice.com/ontology/use4,use4,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,143292,direct
+http://medicaldevice.com/ontology/zip,zip,,Predicate,,http://medicaldevice.com/ontology/XrayAssemblerRecord,http://www.w3.org/2001/XMLSchema#string,300533,direct
+http://medicaldevice.com/ontology/establishmentName,establishment name,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9124,direct
+http://medicaldevice.com/ontology/feiNumber,FDA establishment identifier (FEI),,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9120,direct
+http://medicaldevice.com/ontology/geocodingConfidence,0.0-1.0 confidence score returned by the geocoder,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#decimal,9120,direct
+http://medicaldevice.com/ontology/geocodingSource,"geocoding provider used, e.g. census / nominatim",,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9120,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://medicaldevice.com/ontology/Manufacturer,9123,direct
+http://medicaldevice.com/ontology/hasManufacturer,has manufacturer,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,3454,direct
+http://medicaldevice.com/ontology/initialImporterFlag,initial importer flag (Y/N),,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9121,direct
+http://medicaldevice.com/ontology/normalizedAddress,normalized single-line address used as the geocoding cache key,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9120,direct
+http://medicaldevice.com/ontology/regExpiryDateYear,registration expiry year,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9120,direct
+http://medicaldevice.com/ontology/registrationAddress,registration address,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9125,direct
+http://medicaldevice.com/ontology/registrationNumber,FDA registration number,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9124,direct
+http://medicaldevice.com/ontology/registrationStatus,registration status code,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9120,direct
+http://medicaldevice.com/ontology/retrievedAt,timestamp when record was retrieved,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,130225,direct
+http://medicaldevice.com/ontology/sourceDataset,source dataset,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9120,direct
+http://medicaldevice.com/ontology/sourceRecordId,source record ID (original FDA identifier),,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9124,direct
+http://medicaldevice.com/ontology/sourceUrl,source URL,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#string,9120,direct
+http://www.opengis.net/ont/geosparql#defaultGeometry,defaultGeometry,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.opengis.net/ont/geosparql#Geometry,9120,direct
+http://www.opengis.net/ont/geosparql#hasGeometry,hasGeometry,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.opengis.net/ont/geosparql#Geometry,9120,direct
+http://www.w3.org/2003/01/geo/wgs84_pos#lat,lat,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#decimal,9120,direct
+http://www.w3.org/2003/01/geo/wgs84_pos#long,long,,Predicate,,http://www.opengis.net/ont/geosparql#Feature,http://www.w3.org/2001/XMLSchema#decimal,9120,direct
+http://www.opengis.net/ont/geosparql#asWKT,asWKT,,Predicate,,http://www.opengis.net/ont/geosparql#Geometry,http://www.opengis.net/ont/geosparql#wktLiteral,9120,direct
+http://www.w3.org/2000/01/rdf-schema#domain,domain,,Predicate,,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,http://www.w3.org/2000/01/rdf-schema#Class,34,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,http://www.w3.org/2001/XMLSchema#string,264,direct
+http://www.w3.org/2000/01/rdf-schema#range,range,,Predicate,,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,http://www.w3.org/2000/01/rdf-schema#Class,53,direct
+http://www.w3.org/2000/01/rdf-schema#range,range,,Predicate,,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,,4,direct
+http://www.w3.org/2000/01/rdf-schema#comment,comment,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2001/XMLSchema#string,53,direct
+http://www.w3.org/2000/01/rdf-schema#subClassOf,subClassOf,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2000/01/rdf-schema#Class,27,direct
+http://asu.edu/semantics/SUDOKN/hasNAICSClassifier,hasNAICSClassifier,,Predicate,,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,http://asu.edu/semantics/SUDOKN/NAICSClassifier,13972,direct
+http://asu.edu/semantics/SUDOKN/hasNAICSClassifier,hasNAICSClassifier,,Predicate,,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,http://medicaldevice.com/ontology/NAICSClassification,13972,direct
+http://medicaldevice.com/ontology/feiNumber,FDA establishment identifier (FEI),,Predicate,,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,http://www.w3.org/2001/XMLSchema#string,10432,direct
+http://medicaldevice.com/ontology/hasNAICSClassification,has NAICS classification (domain: ex:ProductCode or ex:Manufacturer),,Predicate,,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,http://asu.edu/semantics/SUDOKN/NAICSClassifier,13972,direct
+http://medicaldevice.com/ontology/hasNAICSClassification,has NAICS classification (domain: ex:ProductCode or ex:Manufacturer),,Predicate,,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,http://medicaldevice.com/ontology/NAICSClassification,13972,direct
+http://medicaldevice.com/ontology/manufacturerName,manufacturer name,,Predicate,,https://spec.industrialontologies.org/ontology/core/Core/Manufacturer,http://www.w3.org/2001/XMLSchema#string,13823,direct

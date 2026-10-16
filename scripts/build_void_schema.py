@@ -2,7 +2,8 @@
 
 Writes one ``<kg>_entities.csv`` per KG into ``metadata/void_entities/`` with the
 columns ``URI, Label, Description, Type, EdgePropertyOf, SourceClass, TargetClass,
-Triples`` (see :mod:`mcp_okn.void_schema` for how each is derived), then compares
+Triples, Pattern`` (see :mod:`mcp_okn.void_schema` for how each is derived; Pattern
+is how a predicate is stored — direct / reified / axiom / declared), then compares
 every written file against the curated ``sbl-sdsc/mcp-proto-okn`` file of the same
 KG and writes:
 
@@ -12,7 +13,8 @@ KG and writes:
   source (the hand-written knowledge the VoID files cannot reproduce);
 * ``build_notes.json``       — per-KG build notes, skips and failures.
 
-Nothing reads these files yet — this is an exploration of VoID as a schema source.
+``get_schema`` reads them only when ``MCP_OKN_ENTITY_METADATA_BASE`` points here
+(see :mod:`mcp_okn.schema`); by default it reads the curated files.
 
 Usage:
     uv run python scripts/build_void_schema.py --kg spoke-genelab    # one KG (repeatable)

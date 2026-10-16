@@ -1,93 +1,93 @@
-URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples
-http://www.w3.org/2002/07/owl#ObjectProperty,ObjectProperty,,Class,,,,7
-http://www.w3.org/2002/07/owl#Ontology,Ontology,,Class,,,,1
-https://w3id.org/biolink/vocab/AnatomicalEntity,AnatomicalEntity,,Class,,,,96
-https://w3id.org/biolink/vocab/BiologicalProcess,BiologicalProcess,,Class,,,,153
-https://w3id.org/biolink/vocab/ChemicalEntity,ChemicalEntity,,Class,,,,21
-https://w3id.org/biolink/vocab/ChemicalExposure,ChemicalExposure,,Class,,,,474
-https://w3id.org/biolink/vocab/Disease,Disease,,Class,,,,26106
-https://w3id.org/biolink/vocab/Drug,Drug,,Class,,,,16875
-https://w3id.org/biolink/vocab/ExposureEvent,ExposureEvent,,Class,,,,14
-https://w3id.org/biolink/vocab/Gene,Gene,,Class,,,,9326
-https://w3id.org/biolink/vocab/PhenotypicFeature,PhenotypicFeature,,Class,,,,11709
-https://w3id.org/biolink/vocab/SequenceVariant,SequenceVariant,,Class,,,,7367
-https://w3id.org/biolink/vocab/Treatment,Treatment,,Class,,,,227
-http://www.w3.org/2000/01/rdf-schema#comment,comment,,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2001/XMLSchema#string,7
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2001/XMLSchema#string,7
-http://www.w3.org/2000/01/rdf-schema#comment,comment,,Predicate,,http://www.w3.org/2002/07/owl#Ontology,http://www.w3.org/2001/XMLSchema#string,1
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://www.w3.org/2002/07/owl#Ontology,http://www.w3.org/2001/XMLSchema#string,1
-http://www.w3.org/2002/07/owl#versionInfo,versionInfo,,Predicate,,http://www.w3.org/2002/07/owl#Ontology,http://www.w3.org/2001/XMLSchema#string,1
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/AnatomicalEntity,http://www.w3.org/2001/XMLSchema#string,96
-http://www.w3.org/2004/02/skos/core#prefLabel,prefLabel,,Predicate,,https://w3id.org/biolink/vocab/AnatomicalEntity,http://www.w3.org/2001/XMLSchema#string,96
-https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/AnatomicalEntity,http://www.w3.org/2001/XMLSchema#string,96
-https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/AnatomicalEntity,http://www.w3.org/2001/XMLSchema#string,96
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/BiologicalProcess,http://www.w3.org/2001/XMLSchema#string,153
-http://www.w3.org/2004/02/skos/core#prefLabel,prefLabel,,Predicate,,https://w3id.org/biolink/vocab/BiologicalProcess,http://www.w3.org/2001/XMLSchema#string,153
-https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/BiologicalProcess,http://www.w3.org/2001/XMLSchema#string,153
-https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/BiologicalProcess,http://www.w3.org/2001/XMLSchema#string,153
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/ChemicalEntity,http://www.w3.org/2001/XMLSchema#string,21
-http://www.w3.org/2004/02/skos/core#prefLabel,prefLabel,,Predicate,,https://w3id.org/biolink/vocab/ChemicalEntity,http://www.w3.org/2001/XMLSchema#string,21
-https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/ChemicalEntity,http://www.w3.org/2001/XMLSchema#string,21
-https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/ChemicalEntity,http://www.w3.org/2001/XMLSchema#string,21
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/ChemicalExposure,http://www.w3.org/2001/XMLSchema#string,474
-http://www.w3.org/2004/02/skos/core#prefLabel,prefLabel,,Predicate,,https://w3id.org/biolink/vocab/ChemicalExposure,http://www.w3.org/2001/XMLSchema#string,474
-https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/ChemicalExposure,http://www.w3.org/2001/XMLSchema#string,474
-https://w3id.org/biolink/vocab/contributes_to,contributes_to,,Predicate,,https://w3id.org/biolink/vocab/ChemicalExposure,https://w3id.org/biolink/vocab/Disease,2304
-https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/ChemicalExposure,http://www.w3.org/2001/XMLSchema#string,474
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/Disease,http://www.w3.org/2001/XMLSchema#string,26106
-http://www.w3.org/2004/02/skos/core#prefLabel,prefLabel,,Predicate,,https://w3id.org/biolink/vocab/Disease,http://www.w3.org/2001/XMLSchema#string,26106
-https://w3id.org/biolink/vocab/associated_with,associated_with,,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/Treatment,14
-https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/Disease,http://www.w3.org/2001/XMLSchema#string,26106
-https://w3id.org/biolink/vocab/contraindicated_for,contraindicated_for,,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/Drug,30674
-https://w3id.org/biolink/vocab/contributes_to,contributes_to,,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/ChemicalExposure,2304
-https://w3id.org/biolink/vocab/contributes_to,contributes_to,,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/Gene,14
-https://w3id.org/biolink/vocab/disease_has_location,disease_has_location,,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/AnatomicalEntity,65
-https://w3id.org/biolink/vocab/disease_has_location,disease_has_location,,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/BiologicalProcess,2
-https://w3id.org/biolink/vocab/gene_associated_with_condition,Gene Associated With Condition,Relates a gene to a disease condition,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/AnatomicalEntity,3
-https://w3id.org/biolink/vocab/gene_associated_with_condition,Gene Associated With Condition,Relates a gene to a disease condition,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/BiologicalProcess,14
-https://w3id.org/biolink/vocab/gene_associated_with_condition,Gene Associated With Condition,Relates a gene to a disease condition,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/ChemicalEntity,1
-https://w3id.org/biolink/vocab/gene_associated_with_condition,Gene Associated With Condition,Relates a gene to a disease condition,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/Gene,14
-https://w3id.org/biolink/vocab/genetic_association,genetic_association,,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/Gene,546
-https://w3id.org/biolink/vocab/has_mode_of_inheritance,has_mode_of_inheritance,,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/PhenotypicFeature,5216
-https://w3id.org/biolink/vocab/has_onset,has_onset,,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/PhenotypicFeature,11548
-https://w3id.org/biolink/vocab/has_phenotype,Has Phenotype,Relates a disease to its associated phenotypes,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/Disease,52
-https://w3id.org/biolink/vocab/has_phenotype,Has Phenotype,Relates a disease to its associated phenotypes,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/PhenotypicFeature,328753
-https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/Disease,http://www.w3.org/2001/XMLSchema#string,26106
-https://w3id.org/biolink/vocab/prevented_by,prevented_by,,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/Treatment,74
-https://w3id.org/biolink/vocab/related_to,Related To,General association between entities,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/AnatomicalEntity,34
-https://w3id.org/biolink/vocab/related_to,Related To,General association between entities,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/BiologicalProcess,150
-https://w3id.org/biolink/vocab/related_to,Related To,General association between entities,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/ChemicalEntity,20
-https://w3id.org/biolink/vocab/related_to,Related To,General association between entities,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/Disease,64584
-https://w3id.org/biolink/vocab/related_to,Related To,General association between entities,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/ExposureEvent,19
-https://w3id.org/biolink/vocab/related_to,Related To,General association between entities,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/Gene,80437
-https://w3id.org/biolink/vocab/subclass_of,Subclass Of,Indicates hierarchical relationship between diseases,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/Disease,142047
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/Drug,http://www.w3.org/2001/XMLSchema#string,16875
-http://www.w3.org/2004/02/skos/core#prefLabel,prefLabel,,Predicate,,https://w3id.org/biolink/vocab/Drug,http://www.w3.org/2001/XMLSchema#string,16875
-https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/Drug,http://www.w3.org/2001/XMLSchema#string,16875
-https://w3id.org/biolink/vocab/contraindicated_for,contraindicated_for,,Predicate,,https://w3id.org/biolink/vocab/Drug,https://w3id.org/biolink/vocab/Disease,30674
-https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/Drug,http://www.w3.org/2001/XMLSchema#string,16875
-https://w3id.org/biolink/vocab/treats,Treats,Relates a drug to the disease it treats,Predicate,,https://w3id.org/biolink/vocab/Drug,https://w3id.org/biolink/vocab/Disease,38588
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/ExposureEvent,http://www.w3.org/2001/XMLSchema#string,14
-http://www.w3.org/2004/02/skos/core#prefLabel,prefLabel,,Predicate,,https://w3id.org/biolink/vocab/ExposureEvent,http://www.w3.org/2001/XMLSchema#string,14
-https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/ExposureEvent,http://www.w3.org/2001/XMLSchema#string,14
-https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/ExposureEvent,http://www.w3.org/2001/XMLSchema#string,14
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/Gene,http://www.w3.org/2001/XMLSchema#string,9326
-http://www.w3.org/2004/02/skos/core#prefLabel,prefLabel,,Predicate,,https://w3id.org/biolink/vocab/Gene,http://www.w3.org/2001/XMLSchema#string,9326
-https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/Gene,http://www.w3.org/2001/XMLSchema#string,9326
-https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/Gene,http://www.w3.org/2001/XMLSchema#string,9326
-https://w3id.org/biolink/vocab/related_to,Related To,General association between entities,Predicate,,https://w3id.org/biolink/vocab/Gene,https://w3id.org/biolink/vocab/Disease,80335
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeature,http://www.w3.org/2001/XMLSchema#string,11709
-http://www.w3.org/2004/02/skos/core#prefLabel,prefLabel,,Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeature,http://www.w3.org/2001/XMLSchema#string,11709
-https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeature,http://www.w3.org/2001/XMLSchema#string,11709
-https://w3id.org/biolink/vocab/has_phenotype,Has Phenotype,Relates a disease to its associated phenotypes,Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeature,https://w3id.org/biolink/vocab/Disease,151304
-https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeature,http://www.w3.org/2001/XMLSchema#string,11709
-https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/SequenceVariant,http://www.w3.org/2001/XMLSchema#string,7367
-https://w3id.org/biolink/vocab/causes_condition,Causes Condition,Relates a variant to the disease it causes,Predicate,,https://w3id.org/biolink/vocab/SequenceVariant,https://w3id.org/biolink/vocab/Disease,7971
-https://w3id.org/biolink/vocab/has_gene,Has Gene,Relates a variant to its gene,Predicate,,https://w3id.org/biolink/vocab/SequenceVariant,https://w3id.org/biolink/vocab/Gene,7397
-https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/SequenceVariant,http://www.w3.org/2001/XMLSchema#string,7367
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/Treatment,http://www.w3.org/2001/XMLSchema#string,227
-http://www.w3.org/2004/02/skos/core#prefLabel,prefLabel,,Predicate,,https://w3id.org/biolink/vocab/Treatment,http://www.w3.org/2001/XMLSchema#string,227
-https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/Treatment,http://www.w3.org/2001/XMLSchema#string,227
-https://w3id.org/biolink/vocab/contraindicated_for,contraindicated_for,,Predicate,,https://w3id.org/biolink/vocab/Treatment,https://w3id.org/biolink/vocab/Disease,3
-https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/Treatment,http://www.w3.org/2001/XMLSchema#string,227
-https://w3id.org/biolink/vocab/treats,Treats,Relates a drug to the disease it treats,Predicate,,https://w3id.org/biolink/vocab/Treatment,https://w3id.org/biolink/vocab/Disease,455
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples,Pattern
+http://www.w3.org/2002/07/owl#ObjectProperty,ObjectProperty,,Class,,,,7,
+http://www.w3.org/2002/07/owl#Ontology,Ontology,,Class,,,,1,
+https://w3id.org/biolink/vocab/AnatomicalEntity,AnatomicalEntity,,Class,,,,96,
+https://w3id.org/biolink/vocab/BiologicalProcess,BiologicalProcess,,Class,,,,153,
+https://w3id.org/biolink/vocab/ChemicalEntity,ChemicalEntity,,Class,,,,21,
+https://w3id.org/biolink/vocab/ChemicalExposure,ChemicalExposure,,Class,,,,474,
+https://w3id.org/biolink/vocab/Disease,Disease,,Class,,,,26106,
+https://w3id.org/biolink/vocab/Drug,Drug,,Class,,,,16875,
+https://w3id.org/biolink/vocab/ExposureEvent,ExposureEvent,,Class,,,,14,
+https://w3id.org/biolink/vocab/Gene,Gene,,Class,,,,9326,
+https://w3id.org/biolink/vocab/PhenotypicFeature,PhenotypicFeature,,Class,,,,11709,
+https://w3id.org/biolink/vocab/SequenceVariant,SequenceVariant,,Class,,,,7367,
+https://w3id.org/biolink/vocab/Treatment,Treatment,,Class,,,,227,
+http://www.w3.org/2000/01/rdf-schema#comment,comment,,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2001/XMLSchema#string,7,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2001/XMLSchema#string,7,direct
+http://www.w3.org/2000/01/rdf-schema#comment,comment,,Predicate,,http://www.w3.org/2002/07/owl#Ontology,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://www.w3.org/2002/07/owl#Ontology,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://www.w3.org/2002/07/owl#versionInfo,versionInfo,,Predicate,,http://www.w3.org/2002/07/owl#Ontology,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/AnatomicalEntity,http://www.w3.org/2001/XMLSchema#string,96,direct
+http://www.w3.org/2004/02/skos/core#prefLabel,prefLabel,,Predicate,,https://w3id.org/biolink/vocab/AnatomicalEntity,http://www.w3.org/2001/XMLSchema#string,96,direct
+https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/AnatomicalEntity,http://www.w3.org/2001/XMLSchema#string,96,direct
+https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/AnatomicalEntity,http://www.w3.org/2001/XMLSchema#string,96,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/BiologicalProcess,http://www.w3.org/2001/XMLSchema#string,153,direct
+http://www.w3.org/2004/02/skos/core#prefLabel,prefLabel,,Predicate,,https://w3id.org/biolink/vocab/BiologicalProcess,http://www.w3.org/2001/XMLSchema#string,153,direct
+https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/BiologicalProcess,http://www.w3.org/2001/XMLSchema#string,153,direct
+https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/BiologicalProcess,http://www.w3.org/2001/XMLSchema#string,153,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/ChemicalEntity,http://www.w3.org/2001/XMLSchema#string,21,direct
+http://www.w3.org/2004/02/skos/core#prefLabel,prefLabel,,Predicate,,https://w3id.org/biolink/vocab/ChemicalEntity,http://www.w3.org/2001/XMLSchema#string,21,direct
+https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/ChemicalEntity,http://www.w3.org/2001/XMLSchema#string,21,direct
+https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/ChemicalEntity,http://www.w3.org/2001/XMLSchema#string,21,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/ChemicalExposure,http://www.w3.org/2001/XMLSchema#string,474,direct
+http://www.w3.org/2004/02/skos/core#prefLabel,prefLabel,,Predicate,,https://w3id.org/biolink/vocab/ChemicalExposure,http://www.w3.org/2001/XMLSchema#string,474,direct
+https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/ChemicalExposure,http://www.w3.org/2001/XMLSchema#string,474,direct
+https://w3id.org/biolink/vocab/contributes_to,contributes_to,,Predicate,,https://w3id.org/biolink/vocab/ChemicalExposure,https://w3id.org/biolink/vocab/Disease,2304,direct
+https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/ChemicalExposure,http://www.w3.org/2001/XMLSchema#string,474,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/Disease,http://www.w3.org/2001/XMLSchema#string,26106,direct
+http://www.w3.org/2004/02/skos/core#prefLabel,prefLabel,,Predicate,,https://w3id.org/biolink/vocab/Disease,http://www.w3.org/2001/XMLSchema#string,26106,direct
+https://w3id.org/biolink/vocab/associated_with,associated_with,,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/Treatment,14,direct
+https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/Disease,http://www.w3.org/2001/XMLSchema#string,26106,direct
+https://w3id.org/biolink/vocab/contraindicated_for,contraindicated_for,,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/Drug,30674,direct
+https://w3id.org/biolink/vocab/contributes_to,contributes_to,,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/ChemicalExposure,2304,direct
+https://w3id.org/biolink/vocab/contributes_to,contributes_to,,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/Gene,14,direct
+https://w3id.org/biolink/vocab/disease_has_location,disease_has_location,,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/AnatomicalEntity,65,direct
+https://w3id.org/biolink/vocab/disease_has_location,disease_has_location,,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/BiologicalProcess,2,direct
+https://w3id.org/biolink/vocab/gene_associated_with_condition,Gene Associated With Condition,Relates a gene to a disease condition,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/AnatomicalEntity,3,direct
+https://w3id.org/biolink/vocab/gene_associated_with_condition,Gene Associated With Condition,Relates a gene to a disease condition,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/BiologicalProcess,14,direct
+https://w3id.org/biolink/vocab/gene_associated_with_condition,Gene Associated With Condition,Relates a gene to a disease condition,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/ChemicalEntity,1,direct
+https://w3id.org/biolink/vocab/gene_associated_with_condition,Gene Associated With Condition,Relates a gene to a disease condition,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/Gene,14,direct
+https://w3id.org/biolink/vocab/genetic_association,genetic_association,,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/Gene,546,direct
+https://w3id.org/biolink/vocab/has_mode_of_inheritance,has_mode_of_inheritance,,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/PhenotypicFeature,5216,direct
+https://w3id.org/biolink/vocab/has_onset,has_onset,,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/PhenotypicFeature,11548,direct
+https://w3id.org/biolink/vocab/has_phenotype,Has Phenotype,Relates a disease to its associated phenotypes,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/Disease,52,direct
+https://w3id.org/biolink/vocab/has_phenotype,Has Phenotype,Relates a disease to its associated phenotypes,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/PhenotypicFeature,328753,direct
+https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/Disease,http://www.w3.org/2001/XMLSchema#string,26106,direct
+https://w3id.org/biolink/vocab/prevented_by,prevented_by,,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/Treatment,74,direct
+https://w3id.org/biolink/vocab/related_to,Related To,General association between entities,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/AnatomicalEntity,34,direct
+https://w3id.org/biolink/vocab/related_to,Related To,General association between entities,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/BiologicalProcess,150,direct
+https://w3id.org/biolink/vocab/related_to,Related To,General association between entities,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/ChemicalEntity,20,direct
+https://w3id.org/biolink/vocab/related_to,Related To,General association between entities,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/Disease,64584,direct
+https://w3id.org/biolink/vocab/related_to,Related To,General association between entities,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/ExposureEvent,19,direct
+https://w3id.org/biolink/vocab/related_to,Related To,General association between entities,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/Gene,80437,direct
+https://w3id.org/biolink/vocab/subclass_of,Subclass Of,Indicates hierarchical relationship between diseases,Predicate,,https://w3id.org/biolink/vocab/Disease,https://w3id.org/biolink/vocab/Disease,142047,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/Drug,http://www.w3.org/2001/XMLSchema#string,16875,direct
+http://www.w3.org/2004/02/skos/core#prefLabel,prefLabel,,Predicate,,https://w3id.org/biolink/vocab/Drug,http://www.w3.org/2001/XMLSchema#string,16875,direct
+https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/Drug,http://www.w3.org/2001/XMLSchema#string,16875,direct
+https://w3id.org/biolink/vocab/contraindicated_for,contraindicated_for,,Predicate,,https://w3id.org/biolink/vocab/Drug,https://w3id.org/biolink/vocab/Disease,30674,direct
+https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/Drug,http://www.w3.org/2001/XMLSchema#string,16875,direct
+https://w3id.org/biolink/vocab/treats,Treats,Relates a drug to the disease it treats,Predicate,,https://w3id.org/biolink/vocab/Drug,https://w3id.org/biolink/vocab/Disease,38588,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/ExposureEvent,http://www.w3.org/2001/XMLSchema#string,14,direct
+http://www.w3.org/2004/02/skos/core#prefLabel,prefLabel,,Predicate,,https://w3id.org/biolink/vocab/ExposureEvent,http://www.w3.org/2001/XMLSchema#string,14,direct
+https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/ExposureEvent,http://www.w3.org/2001/XMLSchema#string,14,direct
+https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/ExposureEvent,http://www.w3.org/2001/XMLSchema#string,14,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/Gene,http://www.w3.org/2001/XMLSchema#string,9326,direct
+http://www.w3.org/2004/02/skos/core#prefLabel,prefLabel,,Predicate,,https://w3id.org/biolink/vocab/Gene,http://www.w3.org/2001/XMLSchema#string,9326,direct
+https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/Gene,http://www.w3.org/2001/XMLSchema#string,9326,direct
+https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/Gene,http://www.w3.org/2001/XMLSchema#string,9326,direct
+https://w3id.org/biolink/vocab/related_to,Related To,General association between entities,Predicate,,https://w3id.org/biolink/vocab/Gene,https://w3id.org/biolink/vocab/Disease,80335,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeature,http://www.w3.org/2001/XMLSchema#string,11709,direct
+http://www.w3.org/2004/02/skos/core#prefLabel,prefLabel,,Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeature,http://www.w3.org/2001/XMLSchema#string,11709,direct
+https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeature,http://www.w3.org/2001/XMLSchema#string,11709,direct
+https://w3id.org/biolink/vocab/has_phenotype,Has Phenotype,Relates a disease to its associated phenotypes,Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeature,https://w3id.org/biolink/vocab/Disease,151304,direct
+https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeature,http://www.w3.org/2001/XMLSchema#string,11709,direct
+https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/SequenceVariant,http://www.w3.org/2001/XMLSchema#string,7367,direct
+https://w3id.org/biolink/vocab/causes_condition,Causes Condition,Relates a variant to the disease it causes,Predicate,,https://w3id.org/biolink/vocab/SequenceVariant,https://w3id.org/biolink/vocab/Disease,7971,direct
+https://w3id.org/biolink/vocab/has_gene,Has Gene,Relates a variant to its gene,Predicate,,https://w3id.org/biolink/vocab/SequenceVariant,https://w3id.org/biolink/vocab/Gene,7397,direct
+https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/SequenceVariant,http://www.w3.org/2001/XMLSchema#string,7367,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/Treatment,http://www.w3.org/2001/XMLSchema#string,227,direct
+http://www.w3.org/2004/02/skos/core#prefLabel,prefLabel,,Predicate,,https://w3id.org/biolink/vocab/Treatment,http://www.w3.org/2001/XMLSchema#string,227,direct
+https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/Treatment,http://www.w3.org/2001/XMLSchema#string,227,direct
+https://w3id.org/biolink/vocab/contraindicated_for,contraindicated_for,,Predicate,,https://w3id.org/biolink/vocab/Treatment,https://w3id.org/biolink/vocab/Disease,3,direct
+https://w3id.org/biolink/vocab/id,id,,Predicate,,https://w3id.org/biolink/vocab/Treatment,http://www.w3.org/2001/XMLSchema#string,227,direct
+https://w3id.org/biolink/vocab/treats,Treats,Relates a drug to the disease it treats,Predicate,,https://w3id.org/biolink/vocab/Treatment,https://w3id.org/biolink/vocab/Disease,455,direct
