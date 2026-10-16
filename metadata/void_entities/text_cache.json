@@ -15324,6 +15324,420 @@
   "https://www.opengis.net/def/schema/hy_features/hyf/realizedCatchment": null,
   "https://www.opengis.net/def/schema/hy_features/hyf/upstreamFlowPath": null
  },
+ "release": {
+  "http://w3id.org/coso/v1/contaminoso#AggregateContaminantMeasurement": {
+   "description": "The result of an observation about contaminant(s) that is an aggregate measurement. This can be a spatial, temporal or contaminant aggregate.",
+   "label": "Aggregate Contaminant Measurement",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#AirSample": {
+   "description": "",
+   "label": "Air Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#AnalysisMethod": {
+   "description": "The analysis method used to identify the contaminant.",
+   "label": "Analysis Method",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#AnimalBloodSample": {
+   "description": "",
+   "label": "Animal Blood Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#AnimalMaterialSample": {
+   "description": "",
+   "label": "Animal Material Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#AnimalMilkSample": {
+   "description": "",
+   "label": "Animal Milk Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#AnimalOrganSample": {
+   "description": "",
+   "label": "Animal Organ Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#AnimalTissueSample": {
+   "description": "",
+   "label": "Animal Tissue Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#BiotaSample": {
+   "description": "",
+   "label": "Biota Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#ContaminantAbsoluteQuantityKind": {
+   "description": "A type of contaminant quantity that is an absolute amount, such as a mass or volume.",
+   "label": "Contaminant Absolute Quantity Kind",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#ContaminantConcentrationQuantityKind": {
+   "description": "A type of contaminant quantity that is a concentration measurement.",
+   "label": "Contaminant Concentration Quantity Kind",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#ContaminantMeasurement": {
+   "description": "The result of an observation about a contaminant or contaminants.",
+   "label": "Contaminant Measurement",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#ContaminantObservation": {
+   "description": "An observation of a contaminant.",
+   "label": "Contaminant Observation",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#ContaminantRelativeMeasurement": {
+   "description": "The result of an observation about a contaminant that is a relative measurement.",
+   "label": "Contaminant Relative Measurement",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#ContaminantRelativeQuantityKind": {
+   "description": "A type of contaminant quantity that is a relative amount, such as a concentration.",
+   "label": "Contaminant Relative Quantity Kind",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#ContaminantSampleObservation": {
+   "description": "An observation of a contaminant that was sampled from the environment.",
+   "label": "Contaminant Sample Observation",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#ContaminantVolumeQuantityKind": {
+   "description": "A type of contaminant quantity that is a volume measurement.",
+   "label": "Contaminant Volume Quantity Kind",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#ContaminationProperty": {
+   "description": "An observable quality of a feature related to its contamination.",
+   "label": "Contamination Property",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#DetectQuantityValue": {
+   "description": "A Quantity Value that represents a quantified detection of the contaminant.",
+   "label": "Quantified Detect Quantity Value",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#DetectionLimit": {
+   "description": "The lowest concentration of a substance that can be reliably detected as present with a reasonable degree of confidence.",
+   "label": "Detection Limit",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#DrinkingWaterSample": {
+   "description": "",
+   "label": "Drinking Water Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#Feature": {
+   "description": "The discrete spatial phenomenon that is the target of the observation.",
+   "label": "Feature",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#FeatureType": {
+   "description": "A category applied to differentiate discrete spatial phenomenon.",
+   "label": "Feature Type",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#FilteredWaterSample": {
+   "description": "",
+   "label": "Filtered Water Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#GroundWaterSample": {
+   "description": "",
+   "label": "Ground Water Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#MaterialSample": {
+   "description": "A physical, tangible sample.",
+   "label": "Material Sample",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#NonDetectQuantityValue": {
+   "description": "A Quantity Value that represents a non-detection of the contaminant. No numeric value is specified.",
+   "label": "Non-Detect Quantity Value",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#NonQuantifiedQuantityValue": {
+   "description": "A Quantity Value that represents a non-detection or a non-quantified detection of the contaminant. No numeric value is specified.",
+   "label": "Non-Quantified Quantity Value",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#ObservationAnnotation": {
+   "description": "Metadata that qualifies an observation",
+   "label": "Observation Annotation",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#PlantAbovegroundSample": {
+   "description": "",
+   "label": "Plant Aboveground Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#PlantMaterialSample": {
+   "description": "",
+   "label": "Plant Material Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#PlantUndergroundSample": {
+   "description": "",
+   "label": "Plant underground Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#Point": {
+   "description": "The point location at which an observation occurred.",
+   "label": "Point",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#QuantitationLimit": {
+   "description": "The lowest concentration of a substance that can be reliably measured with acceptable precision and accuracy.",
+   "label": "Quantitation Limit",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#QuantityValue": {
+   "description": "A Quantity Value expresses the magnitude and kind of a quantity as a product of a numerical value or enumerated value and a unit of measure.",
+   "label": "Quantity Value",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#RawWaterSample": {
+   "description": "",
+   "label": "Raw Water Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#ResultQualifier": {
+   "description": "Something that qualifies the result, such as quality control assessment, limitation on the precision or minimum detectable amount.",
+   "label": "Result Qualifier",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#SampleAnnotation": {
+   "description": "Metadata that qualifies a sample",
+   "label": "Sample Annotation",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#SampleMaterialType": {
+   "description": "The type of material that was sampled",
+   "label": "Sample Material Type",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#SamplePoint": {
+   "description": "The point location at which a sample observation occurred.",
+   "label": "Sample Point",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#SampledFeature": {
+   "description": "The discrete spatial phenomenon that is the target of a sample observation.",
+   "label": "Sampled Feature",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#SedimentSample": {
+   "description": "",
+   "label": "Sediment Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#SingleContaminantMeasurement": {
+   "description": "The result of an observation about a contaminant that is a single measurement, i.e. a single contaminant at one location from one sample.",
+   "label": "Single Contaminant Measurement",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#SoilSample": {
+   "description": "",
+   "label": "Soil Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#SolidMaterialSample": {
+   "description": "",
+   "label": "Solid Material Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#SolidWasteSample": {
+   "description": "",
+   "label": "Solid Waste Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#Substance": {
+   "description": "Any organic or inorganic substance of a particular molecular identity, including any combination of these substances occurring in whole or in part as a result of a chemical reaction or occurring in nature, and any element or uncombined radical.",
+   "label": "Substance",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#SubstanceCollection": {
+   "description": "A collection of more than one substances.",
+   "label": "Substance Collection",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#SurfaceWaterSample": {
+   "description": "",
+   "label": "Surface Water Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#TreatedWaterSample": {
+   "description": "",
+   "label": "Treated Water Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#WasteWaterSample": {
+   "description": "",
+   "label": "Waste Water Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#WaterSample": {
+   "description": "",
+   "label": "Water Sample",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#WaterSampleBySource": {
+   "description": "",
+   "label": "Water Sample by Source",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#WaterSampleByTreatment": {
+   "description": "",
+   "label": "Water Sample by Treatment",
+   "source": ""
+  },
+  "http://w3id.org/coso/v1/contaminoso#analyzedSample": {
+   "description": "A relation between an observation of a contaminant and the sample that was analyzed.",
+   "label": "analyzed sample",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#casNumber": {
+   "description": "The cas number of the substance.",
+   "label": "cas number",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#fromSamplePoint": {
+   "description": "A relation between a physical material sample and the location where the sample was taken.",
+   "label": "from sample point",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#hasAnyFeatureOfInterest": {
+   "description": "A relation between an observation of a contaminant and a feature it is the subject of. There are no specific scale or cardinality constraints that limit the feature.",
+   "label": "has any feature of interest",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#hasFeatureOfInterest": {
+   "description": "A relation between an observation of a contaminant and a feature it is the subject of.",
+   "label": "has feature of interest",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#hasMember": null,
+  "http://w3id.org/coso/v1/contaminoso#hasResult": {
+   "description": "A relation between an observation of a contaminant and the measurement that is the result of the observation.",
+   "label": "has result",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#hasResultQualifier": {
+   "description": "A relation between measured result and metadata that qualifies the result.",
+   "label": "has result qualifier",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#isSampleOf": {
+   "description": "A relation between a physcial material sample and the geographic feature the sample was taken from.",
+   "label": "is sample of",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#measurementUnit": {
+   "description": "The unit of measurement the describes the result.",
+   "label": "measurement unit",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#measurementValue": {
+   "description": "The numeric value or enumerated value that quantifies or qualifies the result.",
+   "label": "measurement value",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#observationAnnotation": {
+   "description": "A relation between an observation of a contaminant and additional metadata about the observation.",
+   "label": "observation annotation",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#observedAtPoint": {
+   "description": "A relation between an observation of a contaminant and the point that the observation applies to.",
+   "label": "observed at point",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#observedAtReleasePoint": {
+   "description": "A relation between an observation of a contaminant that was released and the point where the observation was made and where the release occurred.",
+   "label": "observed at release point",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#observedAtSamplePoint": {
+   "description": "A relation between an observation of a contaminant from a material sample and the point where the sample was taken.",
+   "label": "observed at sample point",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#observedProperty": {
+   "description": "A relation between an observation and the type of contamination property being observed.",
+   "label": "observed property",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#observedTime": {
+   "description": "The time at which the contaminant was observed in the environment.",
+   "label": "observed time",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#ofDSSToxSubstance": {
+   "description": "A relation between an entity and a chemical substance as identified by DSSTox",
+   "label": "of DSSTox Substance",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#ofDatasetSubstance": {
+   "description": "A relation between an entity and a chemical substance as identified in a dataset specific controlled vocabulary",
+   "label": "of Dataset Substance",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#ofFeatureType": {
+   "description": "A relation between a feature and a controlled vocabulary term that describes the type of feature",
+   "label": "of feature type",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#ofSubstance": {
+   "description": "A relation between an observation of a contaminant and the substance or substances being observed.",
+   "label": "of substance",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#pointFromFeature": {
+   "description": "A relation between a point location and the larger geospatial feature it is a part of.",
+   "label": "point from feature",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#releaseFeature": {
+   "description": "A relation between an observation of a contaminant that was released and the feature where it was released.",
+   "label": "release feature",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#resultAnnotation": {
+   "description": "A relation between a result and additional metadata about the result.",
+   "label": "result annotation",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#sampleAnnotation": {
+   "description": "A relation between a material sample and additional metadata about the sample.",
+   "label": "sample annotation",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#sampleFeatureType": null,
+  "http://w3id.org/coso/v1/contaminoso#sampleOfMaterialType": {
+   "description": "A relation between a material sample and the type of material.",
+   "label": "sample of material type",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#sampledFeature": {
+   "description": "A relation between an observation of a contaminant from a sample and the feature that was sampled.",
+   "label": "sampled feature",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#substanceID": {
+   "description": "The unique identifier for the substance.",
+   "label": "substance identifier",
+   "source": "ContaminOSO v1"
+  },
+  "http://w3id.org/coso/v1/contaminoso#usedAnalysisMethod": {
+   "description": "A relation between an observation of a contaminant and the analysis method that was used to perform the observation.",
+   "label": "used analysis method",
+   "source": "ContaminOSO v1"
+  }
+ },
  "vocab": {
   "http://purl.org/dc/elements/1.1/license": null,
   "http://purl.org/dc/elements/1.1/member": null,

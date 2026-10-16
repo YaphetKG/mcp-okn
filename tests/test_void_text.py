@@ -357,3 +357,57 @@ def test_curated_short_name_parent_matches_by_local_name():
     row = _row(SG + "log2fc", parent=de)
     vt.fill_records([row], index, {})
     assert row["Description"] == "Fold change."
+
+
+COSO = "http://w3id.org/coso/v1/contaminoso#"
+
+
+def test_ontology_release_supersedes_curated_text_and_keeps_usage_notes():
+    # Shapes from sawgraph and ContaminOSO v1 (2026-10-16): the release renamed
+    # DetectQuantityValue; usedAnalysisMethod's curated "not populated" sentence
+    # and sampleOfMaterialType's axiom note are data facts and must survive.
+    declared = "Declared in the schema but not populated in the current release."
+    axiom = "Also used inside class axioms, as owl:onProperty of 129 owl:Restrictions."
+    index = vt.curated_index(
+        _curated(
+            (
+                COSO + "DetectQuantityValue",
+                "Detect Quantity Value",
+                "Old.",
+                "Class",
+                "",
+            ),
+            (
+                COSO + "usedAnalysisMethod",
+                "used analysis method",
+                "Old.",
+                "Predicate",
+                "",
+            ),
+            (COSO + "AirSample", "Air Sample", "An air sample.", "Class", ""),
+        )
+    )
+    rows = [
+        _row(COSO + "DetectQuantityValue", "Class", "Detect Quantity Value", "Old."),
+        _row(COSO + "usedAnalysisMethod", desc=f"Old. {declared}"),
+        _row(COSO + "sampleOfMaterialType", desc=f"Old. {axiom}"),
+        _row(COSO + "AirSample", "Class", "Air Sample", "An air sample."),
+    ]
+    release = {
+        COSO + "DetectQuantityValue": vt.TextHit(
+            "Quantified Detect Quantity Value", "A quantified detection.", "ContaminOSO"
+        ),
+        COSO + "usedAnalysisMethod": vt.TextHit("used analysis method", "Uses.", "C"),
+        COSO + "sampleOfMaterialType": vt.TextHit("", "Of material type.", "C"),
+        # The release labels the sample classes but does not describe them.
+        COSO + "AirSample": vt.TextHit("Air sample", "", "C"),
+    }
+    rep = vt.fill_records(rows, index, {}, release)
+    assert [(r["Label"], r["Description"]) for r in rows] == [
+        ("Quantified Detect Quantity Value", "A quantified detection."),
+        ("used analysis method", f"Uses. {declared}"),
+        ("sampleOfMaterialType", f"Of material type. {axiom}"),
+        ("Air sample", "An air sample."),
+    ]
+    assert rep.sources == {"release": 3, "curated": 1}
+    assert rep.labels["release"] == 3

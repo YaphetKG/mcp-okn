@@ -3,6 +3,9 @@
 :mod:`mcp_okn.void_schema` writes each row's text from the KG's own graph (and
 ubergraph for OBO terms). This module fills what is still missing, in order:
 
+0. **The KG's own ontology release**, for vocabularies whose maintainers publish a
+   newer release than the curated files describe (ContaminOSO for the SAWGraph
+   graphs). Where the release has a label or description it wins, untagged.
 1. **Curated text** from the ``sbl-sdsc/mcp-proto-okn`` file of the same KG,
    matched by URI, kind (Class / Predicate) and, for edge properties, the parent
    relationship. It is the primary source and replaces machine text.
@@ -47,7 +50,9 @@ from .void_schema import (
 USAGE_NOTE_RE = re.compile(
     r"\s*((?:Used only|Also used) inside class axioms, as owl:onProperty of [\d,]+ "
     r"owl:Restrictions?(?:; never asserted as a direct triple)?\."
-    r"|Declared in the schema but used in no triple or class axiom\.)\s*$"
+    r"|Declared in the schema but used in no triple or class axiom\."
+    # The curated proto-okn files' own wording for the same fact (sawgraph).
+    r"|Declared in the schema but not populated in the current release\.)\s*$"
 )
 
 #: Phrases showing a curated description already states how the predicate is used,
@@ -204,15 +209,28 @@ def fill_records(
     records: list[dict[str, str]],
     index: dict[tuple[str, ...], tuple[str, str]],
     hits: dict[str, TextHit],
+    release: dict[str, TextHit] | None = None,
 ) -> FillReport:
-    """Fill each record's Label/Description in place (see the module docstring)."""
+    """Fill each record's Label/Description in place (see the module docstring).
+
+    ``release`` is text from the current release of the KG's own ontology
+    (ContaminOSO for the SAWGraph graphs). It supersedes the curated text, which
+    was written against an earlier release, wherever the release has text.
+    """
     report = FillReport()
+    release = release or {}
     for r in records:
         cur_label, cur_desc = _curated_for(r, index)
         text, note = split_note(r["Description"])
         hit = hits.get(r["URI"])
+        rel = release.get(r["URI"])
+        if rel:
+            cur_label = rel.label or cur_label
 
-        if cur_desc:
+        if rel and rel.description:
+            r["Description"] = join_text(rel.description, note)
+            report.sources["release"] += 1
+        elif cur_desc:
             ours, theirs = (
                 _RESTRICTION_COUNT.search(note),
                 _RESTRICTION_COUNT.search(cur_desc),
@@ -249,7 +267,7 @@ def fill_records(
             report.labels["existing"] += 1
         elif cur_label:
             r["Label"] = cur_label
-            report.labels["curated"] += 1
+            report.labels["release" if rel and rel.label else "curated"] += 1
         elif r["Label"] and r["Label"] != fallback:
             report.labels["existing"] += 1
         elif hit and hit.label:

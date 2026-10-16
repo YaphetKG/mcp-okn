@@ -1,6 +1,8 @@
 """Fill Label/Description in metadata/void_entities/*_entities.csv (see mcp_okn.void_text).
 
-Order per row: the curated proto-okn text, else the text already there (the KG's
+Order per row: the KG's own ontology release where it supersedes the curated files
+(``RELEASES``: ContaminOSO for the SAWGraph graphs), else the curated proto-okn
+text, else the text already there (the KG's
 own, or ubergraph's), else another ontology — the vocabulary's own published
 document, the federation graph that defines the term, OLS, or for SUDOKN's NAICS
 industry classes the U.S. Census Bureau's NAICS definitions — tagged
@@ -139,6 +141,26 @@ VOCABS: dict[str, tuple[str, list[str]]] = {
     ),
 }
 
+#: Ontology releases that supersede the curated proto-okn text for their terms, in
+#: the KGs built on them: namespace → (name, KGs, module documents). The modules
+#: are read together, since an extension defines terms the core lacks.
+#: ContaminOSO v1 (core modified 2026-04-20): the core changes DetectQuantityValue
+#: ("Quantified Detect Quantity Value"); the DSSTox extension defines
+#: ofDSSToxSubstance / ofDatasetSubstance; the material-sample extension gives
+#: the sample classes labels but no descriptions, so their curated text stays.
+_COSO = "https://raw.githubusercontent.com/SAWGraph/contaminoso/refs/heads/main/v1/"
+RELEASES: dict[str, tuple[str, frozenset[str], list[str]]] = {
+    "http://w3id.org/coso/v1/contaminoso#": (
+        "ContaminOSO v1",
+        frozenset({"sawgraph", "fiokg", "hydrologykg", "spatialkg"}),
+        [
+            _COSO + "contaminoso_core.ttl",
+            _COSO + "contaminoso_dsstox_ext.ttl",
+            _COSO + "contaminoso_materialSample_ext.ttl",
+        ],
+    ),
+}
+
 #: Census Bureau NAICS definitions, newest first. SUDOKN uses NAICS 2022 (16 of its
 #: codes exist only there, none only in 2017); 11 SUDOKN codes were dropped in 2017
 #: and need the 2012 definitions, which Census publishes only behind a search page
@@ -177,9 +199,52 @@ async def vocab_text(
     namespace: str, uris: list[str], client: httpx.AsyncClient
 ) -> dict[str, vt.TextHit]:
     """Text for ``uris`` from the vocabulary's own document (parsed with rdflib)."""
+    name, urls = VOCABS[namespace]
+    graph = None
+    for url in urls:
+        graph = await _parse_doc(url, name, client)
+        if graph is not None:
+            break
+    return {} if graph is None else _graph_text(graph, uris, name)
+
+
+async def release_text(
+    namespace: str, uris: list[str], client: httpx.AsyncClient
+) -> dict[str, vt.TextHit]:
+    """Text for ``uris`` from every module document of an ontology release."""
+    import rdflib
+
+    name, _kgs, urls = RELEASES[namespace]
+    graph = rdflib.Graph()
+    for url in urls:
+        module = await _parse_doc(url, name, client)
+        if module is None:
+            return {}  # a partial release would silently fall back to curated text
+        graph += module
+    return _graph_text(graph, uris, name)
+
+
+async def _parse_doc(url: str, name: str, client: httpx.AsyncClient) -> Any:
+    """One RDF document parsed with rdflib, or None if it cannot be fetched or read."""
     import rdflib  # transitive dependency (sparql-to-mermaid); only this script uses it
 
-    name, urls = VOCABS[namespace]
+    try:
+        resp = await client.get(url, headers={"Accept": _ACCEPT})
+        resp.raise_for_status()
+        ctype = resp.headers.get("content-type", "").split(";")[0].strip()
+        fmt = _FORMATS.get(ctype) or ("turtle" if url.endswith(".ttl") else "xml")
+        graph = rdflib.Graph()
+        graph.parse(data=resp.content, format=fmt)
+        return graph
+    except Exception as exc:  # any fetch or parse failure
+        print(f"  {name}: {url} unusable ({type(exc).__name__})")
+        return None
+
+
+def _graph_text(graph: Any, uris: list[str], name: str) -> dict[str, vt.TextHit]:
+    """The English label and description of each of ``uris`` in ``graph``."""
+    import rdflib
+
     labels = [
         rdflib.URIRef(p) for p in (*vs.LABEL_PREDICATES, *vt.EXTRA_LABEL_PREDICATES)
     ]
@@ -191,20 +256,6 @@ async def vocab_text(
             *VOCAB_DESCRIPTION_PREDICATES,
         )
     ]
-    graph = None
-    for url in urls:
-        try:
-            resp = await client.get(url, headers={"Accept": _ACCEPT})
-            ctype = resp.headers.get("content-type", "").split(";")[0].strip()
-            fmt = _FORMATS.get(ctype) or ("turtle" if url.endswith(".ttl") else "xml")
-            graph = rdflib.Graph()
-            graph.parse(data=resp.content, format=fmt)
-            break
-        except Exception as exc:  # any fetch or parse failure: try the next URL
-            print(f"  {name}: {url} unusable ({type(exc).__name__})")
-            graph = None
-    if graph is None:
-        return {}
 
     def first(subject: Any, preds: list[Any]) -> str:
         for p in preds:
@@ -419,6 +470,38 @@ async def resolve(
     return out
 
 
+async def resolve_releases(
+    files: dict[str, tuple[list[str], list[dict[str, str]]]],
+    cache: dict[str, Any],
+    refresh: bool,
+    client: httpx.AsyncClient,
+) -> dict[str, dict[str, vt.TextHit]]:
+    """Per KG, ``{uri: TextHit}`` from the ontology releases in :data:`RELEASES`."""
+    release_cache = {} if refresh else cache.setdefault("release", {})
+    out: dict[str, dict[str, vt.TextHit]] = {}
+    for ns, (name, kgs, _urls) in sorted(RELEASES.items()):
+        used = {
+            kg: {r["URI"] for r in records if r["URI"].startswith(ns)}
+            for kg, (_header, records) in files.items()
+            if kg in kgs
+        }
+        todo = sorted({u for us in used.values() for u in us} - set(release_cache))
+        if todo:
+            print(f"  release {name}: {len(todo)} term(s)")
+            hits = await release_text(ns, todo, client)
+            if not hits:
+                print(f"  release {name}: unavailable, curated text kept")
+                continue  # don't cache a failed fetch as "no text"
+            for u in todo:
+                release_cache[u] = _hit_to_json(hits.get(u))
+        for kg, us in used.items():
+            out.setdefault(kg, {}).update(
+                {u: vt.TextHit(**release_cache[u]) for u in us if release_cache.get(u)}
+            )
+    cache["release"] = release_cache
+    return out
+
+
 def _read(path: Path) -> tuple[list[str], list[dict[str, str]]]:
     with path.open(newline="") as fh:
         reader = csv.DictReader(fh)
@@ -437,14 +520,16 @@ def _report(out: Path, reports: dict[str, vt.FillReport], cap: int = 40) -> None
     lines = [
         "# Label / description fill",
         "",
-        "Generated by `scripts/fill_void_text.py`. Per row: curated proto-okn text, "
+        "Generated by `scripts/fill_void_text.py`. Per row: the KG's own ontology "
+        "release where one supersedes the curated files (ContaminOSO v1 for the "
+        "SAWGraph graphs), else curated proto-okn text, "
         "else the KG's own text already present, else another ontology or graph "
         "(tagged `(source: …)` in the description), else left empty. Counts are "
         "rows; a URI repeats once per source/target pair.",
         "",
-        "| KG | rows | curated | existing | other ontology | unfilled "
-        "| labels: curated / existing / ontology / local name |",
-        "|---|---|---|---|---|---|---|",
+        "| KG | rows | release | curated | existing | other ontology | unfilled "
+        "| labels: release / curated / existing / ontology / local name |",
+        "|---|---|---|---|---|---|---|---|",
     ]
     totals: Counter[str] = Counter()
     for kg, rep in sorted(reports.items()):
@@ -453,13 +538,16 @@ def _report(out: Path, reports: dict[str, vt.FillReport], cap: int = 40) -> None
         totals.update(s)
         totals["rows"] += rows
         lines.append(
-            f"| {kg} | {rows:,} | {s['curated']:,} | {s['existing']:,} | "
-            f"{s['ontology']:,} | {s['unfilled']:,} | {lab['curated']:,} / "
+            f"| {kg} | {rows:,} | {s['release']:,} | {s['curated']:,} | "
+            f"{s['existing']:,} | "
+            f"{s['ontology']:,} | {s['unfilled']:,} | {lab['release']:,} / "
+            f"{lab['curated']:,} / "
             f"{lab['existing']:,} / {lab['ontology']:,} / {lab['local name']:,} |"
         )
         unfilled_all += [{"KG": kg, **u} for u in vt.dedupe_unfilled(rep.unfilled)]
     lines.append(
-        f"| **total** | {totals['rows']:,} | {totals['curated']:,} | "
+        f"| **total** | {totals['rows']:,} | {totals['release']:,} | "
+        f"{totals['curated']:,} | "
         f"{totals['existing']:,} | {totals['ontology']:,} | {totals['unfilled']:,} | |"
     )
     mismatches = [m for rep in reports.values() for m in rep.count_mismatches]
@@ -522,10 +610,13 @@ async def fill_all(
             needed[kg] = vt.needs_lookup(files[kg][1], indexes[kg])
         print(f"lookups needed: {sum(map(len, needed.values())):,} (KG, URI) pairs")
         hits = await resolve(needed, cache, refresh, client)
+        releases = await resolve_releases(files, cache, refresh, client)
 
     reports = {}
     for kg, (header, records) in files.items():
-        reports[kg] = vt.fill_records(records, indexes[kg], hits.get(kg, {}))
+        reports[kg] = vt.fill_records(
+            records, indexes[kg], hits.get(kg, {}), releases.get(kg)
+        )
         _write(out / f"{kg}{SUFFIX}", header, records)
     cache_path.write_text(json.dumps(cache, indent=1, sort_keys=True) + "\n")
     if not kgs:
