@@ -1404,6 +1404,38 @@ async def infer_edge_labels(
     return edges
 
 
+_ARROW = re.compile(r"^  (\S+) --> (\S+)(?: : (.*))?$")
+
+
+def _merge_parallel(relationships: list[str]) -> list[str]:
+    """One labelled arrow per (source, target): labels joined, first position kept.
+
+    spoke-genelab's Assay reaches Anatomy by INVESTIGATED_ASiA, material_id_1 and
+    material_id_2; three parallel arrows overlap their labels when rendered.
+    Unlabelled arrows (the hops into and out of an edge class) are kept as is.
+    """
+    merged: dict[tuple[str, str], list[str]] = {}
+    order: list[tuple[str, str] | str] = []
+    for line in relationships:
+        m = _ARROW.match(line)
+        if not m or m.group(3) is None:
+            if line not in order:
+                order.append(line)
+            continue
+        key = (m.group(1), m.group(2))
+        if key not in merged:
+            merged[key] = []
+            order.append(key)
+        if m.group(3) not in merged[key]:
+            merged[key].append(m.group(3))
+    return [
+        item
+        if isinstance(item, str)
+        else f"  {item[0]} --> {item[1]} : " + ", ".join(merged[item])
+        for item in order
+    ]
+
+
 def build_mermaid_diagram(
     shortname: str,
     schema: dict[str, Any],
@@ -1516,6 +1548,7 @@ def build_mermaid_diagram(
             undrawn.append(_clean_edge_label(label))
 
     lines = ["classDiagram", "  direction TB"]
+    relationships = _merge_parallel(relationships)
     for cid, members in declared.items():
         if members:
             lines.append(f"  class {cid} {{")

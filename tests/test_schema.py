@@ -666,3 +666,19 @@ URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples,Patter
         assert absent not in diagram
     assert schema_mod._is_void_metadata(meta)
     assert not schema_mod._is_void_metadata(_parse(EDGE_CSV))  # curated: old path
+
+
+def test_parallel_arrows_merge_into_one_labelled_arrow():
+    lines = [
+        "  Assay --> Anatomy : INVESTIGATED_ASiA",
+        "  Assay --> EDGE",
+        "  Assay --> Anatomy : material_id_1",
+        "  Assay --> Anatomy : material_id_1",
+        "  Gene --> Gene : IS_ORTHOLOG",
+        "  Assay --> EDGE",
+    ]
+    assert schema_mod._merge_parallel(lines) == [
+        "  Assay --> Anatomy : INVESTIGATED_ASiA, material_id_1",
+        "  Assay --> EDGE",
+        "  Gene --> Gene : IS_ORTHOLOG",
+    ]
