@@ -1404,7 +1404,62 @@ async def infer_edge_labels(
     return edges
 
 
+#: Vocabularies whose classes describe how a schema is encoded (owl:Class,
+#: owl:Restriction, owl:ObjectProperty, …), not what it is about.
+_META_NAMESPACES = (
+    "http://www.w3.org/2002/07/owl#",
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "http://www.w3.org/2000/01/rdf-schema#",
+)
+
+#: Above this many node classes a diagram keeps only the most-connected ones:
+#: bio101 rendered 246 classes in one 36,000 px row.
+MAX_DIAGRAM_CLASSES = 60
+
 _ARROW = re.compile(r"^  (\S+) --> (\S+)(?: : (.*))?$")
+
+
+def _cap_classes(
+    declared: dict[str, list[str]],
+    relationships: list[str],
+    edge_class_ids: list[str],
+    limit: int,
+) -> tuple[dict[str, list[str]], list[str], list[str]]:
+    """Keep the ``limit`` most-connected node classes; drop arrows to the rest.
+
+    Degree counts every arrow end (an edge class counts as a link between its two
+    endpoints); ties keep declaration order. Edge classes survive only while both
+    their endpoints do. Returns ``(declared, relationships, omitted node classes)``.
+    """
+    nodes = [c for c in declared if c not in edge_class_ids]
+    if len(nodes) <= limit:
+        return declared, relationships, []
+    degree = dict.fromkeys(nodes, 0)
+    for line in relationships:
+        m = _ARROW.match(line)
+        if m:
+            for end in m.group(1, 2):
+                if end in degree:
+                    degree[end] += 1
+    order = {c: i for i, c in enumerate(nodes)}
+    keep = set(sorted(nodes, key=lambda c: (-degree[c], order[c]))[:limit])
+    ends: dict[str, set[str]] = {e: set() for e in edge_class_ids}
+    for line in relationships:
+        m = _ARROW.match(line)
+        if m:
+            a, b = m.group(1, 2)
+            if a in ends:
+                ends[a].add(b)
+            if b in ends:
+                ends[b].add(a)
+    keep |= {e for e in edge_class_ids if ends[e] and ends[e] <= keep}
+    kept_rel = []
+    for line in relationships:
+        m = _ARROW.match(line)
+        if not m or set(m.group(1, 2)) <= keep:
+            kept_rel.append(line)
+    omitted = [c for c in nodes if c not in keep]
+    return {c: m for c, m in declared.items() if c in keep}, kept_rel, omitted
 
 
 def _merge_parallel(relationships: list[str]) -> list[str]:
@@ -1440,6 +1495,8 @@ def build_mermaid_diagram(
     shortname: str,
     schema: dict[str, Any],
     inferred_edges: list[tuple[str, str, str]] | None = None,
+    max_classes: int = MAX_DIAGRAM_CLASSES,
+    info: dict[str, Any] | None = None,
 ) -> str:
     """Render a KG's schema as a Mermaid ``classDiagram`` (deterministic).
 
@@ -1451,6 +1508,12 @@ def build_mermaid_diagram(
     graph's domain/range) are drawn as labeled arrows for KGs whose curated
     metadata lacks endpoints. Predicates that remain without endpoints are listed
     as ``%%`` comments rather than guessed at.
+
+    OWL/RDF/RDFS classes (owl:Class, owl:Restriction, …) and every arrow touching
+    them are left out, as are classes that only those arrows reached (bio101's
+    ``*-Constant`` value classes). Above ``max_classes`` node classes, only the
+    most-connected are drawn; ``info`` (if given) receives the totals and the
+    omitted class names.
     """
     classes_tbl = schema.get("classes", {})
     predicates_tbl = schema.get("predicates", {})
@@ -1462,19 +1525,38 @@ def build_mermaid_diagram(
     undrawn: list[str] = []
     edge_class_ids: list[str] = []  # intermediary classes (styled distinctly)
 
-    def ensure_class(label: str) -> str:
-        cid = _mermaid_id(label)
-        declared.setdefault(cid, [])
-        return cid
-
     # Node classes (column layout: [uri, label, ...] for metadata, [uri] for probe).
     cls_cols = classes_tbl.get("columns", [])
     label_idx = cls_cols.index("label") if "label" in cls_cols else None
+    meta_ids: set[str] = set()
+    class_names = []
     for row in classes_tbl.get("data", []):
         if not row:
             continue
         label = row[label_idx] if label_idx is not None and len(row) > label_idx else ""
-        ensure_class(label or _local_name(row[0]))
+        name = label or _local_name(row[0])
+        if str(row[0]).startswith(_META_NAMESPACES):
+            meta_ids.add(_mermaid_id(name))
+        else:
+            class_names.append(name)
+    touched_by_meta: set[str] = set()
+
+    def ensure_class(label: str) -> str:
+        cid = _mermaid_id(label)
+        if cid not in meta_ids:
+            declared.setdefault(cid, [])
+        return cid
+
+    def arrow(src: str, tgt: str, label: str = "") -> None:
+        s_id, t_id = _mermaid_id(src), _mermaid_id(tgt)
+        if s_id in meta_ids or t_id in meta_ids:
+            touched_by_meta.update({s_id, t_id} - meta_ids)
+            return
+        ensure_class(src), ensure_class(tgt)
+        relationships.append(f"  {s_id} --> {t_id}" + (f" : {label}" if label else ""))
+
+    for name in class_names:
+        ensure_class(name)
 
     # Node properties become members of their owning class.
     np_cols = node_props_tbl.get("columns", [])
@@ -1486,7 +1568,7 @@ def build_mermaid_diagram(
             continue
         owner = row[np_class] if len(row) > np_class else ""
         name = row[np_label] if len(row) > np_label else ""
-        if not owner or not name:
+        if not owner or not name or _mermaid_id(owner) in meta_ids:
             continue
         cid = ensure_class(owner)
         desc = row[np_desc] if np_desc is not None and len(row) > np_desc else ""
@@ -1495,10 +1577,10 @@ def build_mermaid_diagram(
             declared[cid].append(member)
 
     # Edge predicates with properties → intermediary classes.
-    for rel_label, info in edge_properties.items():
+    for rel_label, edge_info in edge_properties.items():
         edge_id = _mermaid_id(rel_label)
         members = []
-        for prop in info.get("properties", []):
+        for prop in edge_info.get("properties", []):
             mtype = _member_type(prop.get("description", ""))
             member = f"{mtype} {_mermaid_id(prop.get('label', ''))}".strip()
             if member and member not in members:
@@ -1506,7 +1588,7 @@ def build_mermaid_diagram(
         declared[edge_id] = members
         if edge_id not in edge_class_ids:
             edge_class_ids.append(edge_id)
-        src, tgt = info.get("source_class", ""), info.get("target_class", "")
+        src, tgt = edge_info.get("source_class", ""), edge_info.get("target_class", "")
         if src:
             relationships.append(f"  {ensure_class(src)} --> {edge_id}")
         if tgt:
@@ -1516,9 +1598,7 @@ def build_mermaid_diagram(
     # endpoints). Their predicate labels are excluded from the "undrawn" list.
     inferred_labels: set[str] = set()
     for src, pred, tgt in inferred_edges or []:
-        relationships.append(
-            f"  {ensure_class(src)} --> {ensure_class(tgt)} : {_clean_edge_label(pred)}"
-        )
+        arrow(src, tgt, _clean_edge_label(pred))
         inferred_labels.add(pred)
 
     # Plain predicates (no edge properties) with source/target → labeled arrows.
@@ -1541,14 +1621,32 @@ def build_mermaid_diagram(
         src = row[p_src] if p_src is not None and len(row) > p_src else ""
         tgt = row[p_tgt] if p_tgt is not None and len(row) > p_tgt else ""
         if src and tgt:
-            relationships.append(
-                f"  {ensure_class(src)} --> {ensure_class(tgt)} : {_clean_edge_label(label)}"
-            )
+            arrow(src, tgt, _clean_edge_label(label))
         elif label not in inferred_labels:
             undrawn.append(_clean_edge_label(label))
 
-    lines = ["classDiagram", "  direction TB"]
     relationships = _merge_parallel(relationships)
+    in_arrows: set[str] = set()
+    for line in relationships:
+        m = _ARROW.match(line)
+        if m:
+            in_arrows.update(m.group(1, 2))
+    # Classes only OWL constructs pointed at, with nothing else to show.
+    for cid in touched_by_meta:
+        if cid in declared and not declared[cid] and cid not in in_arrows:
+            del declared[cid]
+    declared, relationships, omitted = _cap_classes(
+        declared, relationships, edge_class_ids, max_classes
+    )
+    if info is not None:
+        node_total = len([c for c in declared if c not in edge_class_ids]) + len(
+            omitted
+        )
+        info.update(classes_total=node_total, classes_drawn=node_total - len(omitted))
+        if omitted:
+            info["omitted_classes"] = omitted
+
+    lines = ["classDiagram", "  direction TB"]
     for cid, members in declared.items():
         if members:
             lines.append(f"  class {cid} {{")
@@ -1578,6 +1676,12 @@ def build_mermaid_diagram(
     lines += [f"  style {cid} {_EDGE_CLASS_STYLE}" for cid in edge_class_ids]
     lines += [f"  style {lid} {style}" for lid, _, style in legend]
 
+    if omitted:
+        lines.append(
+            f"  %% Showing the {max_classes} most-connected of "
+            f"{max_classes + len(omitted)} classes; omitted:"
+        )
+        lines += [f"  %%   - {c}" for c in omitted]
     if undrawn:
         lines.append("  %% Predicates without source/target metadata (not drawn):")
         lines += [f"  %%   - {p}" for p in undrawn]
@@ -1708,5 +1812,16 @@ async def visualize_schema(shortname: str) -> dict[str, Any]:
     if metadata and _is_void_metadata(metadata):
         schema = diagram_schema(shortname, metadata)
     inferred = await infer_edge_labels(shortname, schema)
-    diagram = build_mermaid_diagram(shortname, schema, inferred_edges=inferred)
-    return {"shortname": shortname, "mermaid": diagram}
+    info: dict[str, Any] = {}
+    diagram = build_mermaid_diagram(
+        shortname, schema, inferred_edges=inferred, info=info
+    )
+    result = {"shortname": shortname, "mermaid": diagram}
+    if info.get("omitted_classes"):
+        result["note"] = (
+            f"Large schema: drawing the {info['classes_drawn']} most-connected of "
+            f"{info['classes_total']} classes ({len(info['omitted_classes'])} omitted, "
+            "listed as comments at the end of the diagram). Use get_schema for the "
+            "full list."
+        )
+    return result

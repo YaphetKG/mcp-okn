@@ -682,3 +682,61 @@ def test_parallel_arrows_merge_into_one_labelled_arrow():
         "  Assay --> EDGE",
         "  Gene --> Gene : IS_ORTHOLOG",
     ]
+
+
+def test_diagram_leaves_out_owl_structure_and_value_classes_it_alone_reached():
+    """bio101 shapes: OWL constructs, a has-value-only *-Constant, a domain relation."""
+    owl = "http://www.w3.org/2002/07/owl#"
+    aura = "http://www.projecthalo.com/aura#"
+    schema = {
+        "classes": {
+            "columns": ["uri", "label"],
+            "data": [
+                [owl + "Restriction", "OWL_restriction"],
+                [owl + "Class", "OWL_class"],
+                [aura + "Size-Constant", "Size-Constant"],
+                [aura + "Solution", "Solution"],
+                [aura + "Substance", "Substance"],
+            ],
+        },
+        "predicates": {
+            "columns": ["uri", "label", "source_class", "target_class"],
+            "data": [
+                [owl + "hasValue", "has value", "OWL_restriction", "Size-Constant"],
+                [owl + "onClass", "on class", "OWL_restriction", "OWL_class"],
+                [aura + "has-solute", "has solute", "Solution", "Substance"],
+            ],
+        },
+        "node_properties": {
+            "columns": ["uri", "label", "description", "type", "class"],
+            "data": [
+                [aura + "d", "description", "(string)", "NodeProperty", "OWL_class"]
+            ],
+        },
+    }
+    diagram = build_mermaid_diagram("bio101", schema)
+    assert "Solution --> Substance : has solute" in diagram
+    for absent in ("OWL_restriction", "OWL_class", "Size_Constant", "has value"):
+        assert absent not in diagram
+
+
+def test_large_diagram_keeps_the_most_connected_classes():
+    hub = [["u:Hub", "Hub"]]
+    leaves = [[f"u:L{i}", f"L{i}"] for i in range(8)]
+    lonely = [[f"u:X{i}", f"X{i}"] for i in range(4)]
+    schema = {
+        "classes": {"columns": ["uri", "label"], "data": hub + leaves + lonely},
+        "predicates": {
+            "columns": ["uri", "label", "source_class", "target_class"],
+            "data": [[f"u:p{i}", f"p{i}", "Hub", f"L{i}"] for i in range(8)],
+        },
+    }
+    info: dict = {}
+    diagram = build_mermaid_diagram("demo", schema, max_classes=6, info=info)
+    assert info["classes_total"] == 13 and info["classes_drawn"] == 6
+    assert info["omitted_classes"] == ["L5", "L6", "L7", "X0", "X1", "X2", "X3"]
+    assert "Hub --> L4 : p4" in diagram and "L5" not in diagram.split("%% Showing")[0]
+    assert "%% Showing the 6 most-connected of 13 classes; omitted:" in diagram
+    small: dict = {}
+    build_mermaid_diagram("demo", schema, info=small)  # default limit: all drawn
+    assert "omitted_classes" not in small

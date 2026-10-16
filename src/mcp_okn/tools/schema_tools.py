@@ -79,7 +79,10 @@ async def visualize_schema(shortname: str, scope: str | None = None) -> dict[str
     metadata names predicates but not their endpoints (e.g. `sawgraph`), edges
     are recovered from the graph's `rdfs:domain`/`rdfs:range`, scoped to the
     curated classes; any predicate still without endpoints is listed as a `%%`
-    comment rather than guessed at.
+    comment rather than guessed at. OWL/RDF constructs (owl:Class,
+    owl:Restriction, …) are left out. A schema with more than 60 classes is
+    drawn as its 60 most-connected classes, with a `note` in the result and the
+    omitted classes listed as `%%` comments; use `get_schema` for the full list.
 
     Args:
         shortname: The KG shortname (e.g. `spoke-genelab`), as returned by
