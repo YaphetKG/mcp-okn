@@ -4,12 +4,14 @@ from __future__ import annotations
 
 from typing import Any
 
-from .. import schema, session
+from .. import schema, schema_view, session
 from ..app import mcp
 
 
 @mcp.tool()
-async def get_schema(shortname: str, compact: bool = True) -> dict[str, Any]:
+async def get_schema(
+    shortname: str, compact: bool = True, match: str | None = None
+) -> dict[str, Any]:
     """Get the schema (classes, predicates, edge/node properties) for one KG.
 
     Call this BEFORE writing a `sparql_query` for a KG, to learn its specific
@@ -23,6 +25,14 @@ async def get_schema(shortname: str, compact: bool = True) -> dict[str, Any]:
         compact: If True (default), return the compact schema. Set False to also
             include an `edge_property_summary` highlighting relationships that
             carry edge properties (with ready-to-use reification query templates).
+        match: Optional search term. Returns only the classes, predicates and
+            properties whose IRI, label or description contains it (case-
+            insensitive; separate alternatives with `|`, e.g.
+            `"prevalence|population"`), with full detail, plus the classes they
+            connect. Use it when the overview was trimmed to fit (`schema_view`
+            says so) or to find where a concept lives before writing SPARQL —
+            it reads the schema metadata, so it is instant, unlike scanning the
+            live graph's predicates.
 
     Returns:
         `{"shortname": ..., "schema": {"classes", "predicates",
@@ -40,6 +50,12 @@ async def get_schema(shortname: str, compact: bool = True) -> dict[str, Any]:
         KGs with domain rules the schema alone does not convey (e.g.
         `spoke-genelab`), also includes `usage_notes` with `guidance` prose and a
         reusable `query_snippet`.
+
+        The reply is kept under about 40,000 characters so clients deliver it
+        whole. When the full schema is larger, detail is trimmed (repeated
+        sections, then descriptions, then the smallest rows) and `schema_view`
+        lists what was trimmed and how many rows were left out; call again with
+        `match` for the rest.
     """
     result = await schema.get_schema(shortname, compact=compact)
     notes = schema.usage_notes(shortname)
@@ -63,7 +79,9 @@ async def get_schema(shortname: str, compact: bool = True) -> dict[str, Any]:
             "often attached via rdfs:seeAlso / owl:sameAs / skos:exactMatch rather "
             "than a domain predicate."
         )
-    return result
+    if match and match.strip():
+        result = schema_view.match_schema(result, match)
+    return schema_view.fit_to_budget(result, shortname)
 
 
 @mcp.tool()

@@ -856,6 +856,11 @@ async def fetch_entity_metadata(
     return metadata
 
 
+def _class_word(cls: str) -> str:
+    """A class's local name when it is an IRI, else the label as given."""
+    return _local_name(cls) if cls.startswith(("http://", "https://")) else cls
+
+
 def _generate_query_template(
     shortname: str,
     relationship_label: str,
@@ -872,8 +877,10 @@ def _generate_query_template(
     and variables come from the property URI's local name, not its display
     label, which may be prose ("Activity Sources").
     """
-    source_var = _sparql_var(source_class) or "source"
-    target_var = _sparql_var(target_class) or "target"
+    # VoID-built files give classes as IRIs; name the variable after the local
+    # name (?disease), not the whole IRI (?httpsw3idorgbiolinkvocabdisease).
+    source_var = _sparql_var(_class_word(source_class)) or "source"
+    target_var = _sparql_var(_class_word(target_class)) or "target"
     if source_var == target_var:
         source_var, target_var = f"{source_var}_1", f"{target_var}_2"
     schema_ns = _SCHEMA_NS.format(shortname=shortname)
