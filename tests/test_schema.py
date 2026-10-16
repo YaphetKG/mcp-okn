@@ -1,6 +1,4 @@
-import csv
-from io import StringIO
-
+import httpx
 import pytest
 
 import mcp_okn.schema as schema_mod
@@ -11,33 +9,15 @@ from mcp_okn.schema import (
     _should_exclude_uri,
     build_mermaid_diagram,
     infer_edge_labels,
+    parse_entity_metadata,
     usage_notes,
+    void_is_stale,
 )
 
 
-def _parse(csv_text: str) -> dict[str, dict[str, str]]:
-    """Mirror fetch_entity_metadata's CSV parsing (without the network)."""
-    metadata: dict[str, dict[str, str]] = {}
-    for row in csv.DictReader(StringIO(csv_text)):
-        uri = (row.get("URI") or "").strip()
-        if not uri:
-            continue
-        edge_property_of = (row.get("EdgePropertyOf") or "").strip()
-        if uri in metadata and edge_property_of:
-            existing = metadata[uri].get("edge_property_of", "")
-            metadata[uri]["edge_property_of"] = (
-                f"{existing};{edge_property_of}" if existing else edge_property_of
-            )
-        else:
-            metadata[uri] = {
-                "label": (row.get("Label") or "").strip(),
-                "description": (row.get("Description") or "").strip(),
-                "type": (row.get("Type") or "").strip(),
-                "edge_property_of": edge_property_of,
-                "source_class": (row.get("SourceClass") or "").strip(),
-                "target_class": (row.get("TargetClass") or "").strip(),
-            }
-    return metadata
+def _parse(csv_text: str) -> dict[str, dict]:
+    """fetch_entity_metadata's CSV parsing, without the network."""
+    return parse_entity_metadata(csv_text)
 
 
 SIMPLE_CSV = """\
@@ -91,7 +71,9 @@ def test_build_schema_edge_properties_and_template():
     # The generated template uses RDF reification scoped to the KG schema NS.
     tmpl = edge["query_template"]
     assert "rdf:subject" in tmpl
-    assert "schema:MEASURED_EXPR" in tmpl
+    # The relationship's own IRI, not schema:<label> in the KG's purl namespace
+    # (wildlifekn's https://wildlife.proto-okn.net/kg/OBSERVED_AT was mis-templated).
+    assert "rdf:predicate <https://ex.org/schema/MEASURED_EXPR>" in tmpl
     assert "purl.org/okn/frink/kg/demo/schema/" in tmpl
 
 
@@ -423,3 +405,181 @@ async def test_probe_schema_propagates_a_failed_probe(monkeypatch):
     )
     with pytest.raises(RuntimeError, match="endpoint said no"):
         await schema_mod._probe_schema("demo")
+
+
+# ── VoID-built entity files (metadata/void_entities) ─────────────────────────
+
+SG = "https://purl.org/okn/frink/kg/spoke-genelab/schema/"
+DE = SG + "MEASURED_DIFFERENTIAL_EXPRESSION_ASmMG"
+STMT = "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+XSD = "http://www.w3.org/2001/XMLSchema#"
+
+#: Trimmed from metadata/void_entities/spoke-genelab_entities.csv (2026-10-15).
+VOID_CSV = f"""\
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples
+{SG}Assay,Assay,,Class,,,,13146
+{DE},DE,,Predicate,,http://purl.obolibrary.org/obo/OBI_0000070,https://w3id.org/biolink/vocab/Gene,50208066
+{SG}taxonomy,taxonomy,,Predicate,,{SG}Study,,212
+{SG}name,name,,Predicate,,{SG}Study,{XSD}string,10
+{SG}name,name,,Predicate,,{SG}Mission,{XSD}string,40
+{SG}name,name,,Predicate,,{SG}Gene,{XSD}string,30
+{SG}name,name,,Predicate,,{SG}Assay,{XSD}string,20
+{SG}name,name,,Predicate,,{SG}Organism,{XSD}string,5
+{SG}log2fc,log2fc,,Predicate,{DE},{STMT},{XSD}double,50208066
+{SG}log2fc,log2fc,,Predicate,{DE},{STMT},{XSD}string,2
+"""
+
+
+def test_parse_void_layout_rolls_pairs_up_per_uri():
+    meta = parse_entity_metadata(VOID_CSV)
+    name = meta[SG + "name"]
+    assert name["triples"] == 105
+    assert (name["source_class"], name["target_class"]) == (
+        SG + "Mission",
+        XSD + "string",
+    )
+    assert [p[2] for p in name["pairs"]] == [40, 30, 20, 10, 5]
+    assert meta[SG + "Assay"]["triples"] == 13146
+
+
+def test_void_edge_property_rows_become_edge_properties_with_iri_parent():
+    meta = parse_entity_metadata(VOID_CSV)
+    log2fc = meta[SG + "log2fc"]
+    assert log2fc["type"] == "EdgeProperty"
+    assert log2fc["edge_property_of"] == DE  # deduplicated across datatype rows
+    schema = _build_schema_from_metadata("spoke-genelab", meta, compact=True)
+    edge = schema["edge_properties"]["MEASURED_DIFFERENTIAL_EXPRESSION_ASmMG"]
+    assert [p["label"] for p in edge["properties"]] == ["log2fc"]
+    assert (
+        "rdf:predicate schema:MEASURED_DIFFERENTIAL_EXPRESSION_ASmMG"
+        in (edge["query_template"])
+    )
+    preds = schema["predicates"]
+    flag = preds["columns"].index("has_edge_properties")
+    (de_row,) = [r for r in preds["data"] if r[0] == DE]
+    assert de_row[flag] is True
+
+
+def test_void_rollup_adds_counts_and_extra_pairs():
+    schema = _build_schema_from_metadata(
+        "spoke-genelab", parse_entity_metadata(VOID_CSV), compact=True
+    )
+    assert schema["classes"]["columns"][-1] == "instances"
+    preds = schema["predicates"]
+    cols = preds["columns"]
+    assert cols[-2:] == ["triples", "other_pairs"]
+    rows = {r[0]: dict(zip(cols, r, strict=True)) for r in preds["data"]}
+    assert rows[SG + "name"]["triples"] == 105
+    assert rows[SG + "name"]["other_pairs"] == (
+        "Gene → string (30); Assay → string (20); Study → string (10); +1 more"
+    )
+    assert rows[SG + "taxonomy"]["other_pairs"] == ""
+
+
+def test_curated_layout_output_has_no_new_columns():
+    schema = _build_schema_from_metadata("demo", _parse(EDGE_CSV), compact=True)
+    assert schema["classes"]["columns"] == ["uri", "label", "description", "type"]
+    assert schema["predicates"]["columns"][-1] == "has_edge_properties"
+
+
+@pytest.mark.parametrize(
+    ("fresh", "stale"),
+    [
+        (None, False),
+        ({"matches": True}, False),
+        ({"matches": None, "void_triples": 5, "served_triples": None}, False),
+        # sawgraph 2026-10-15: 279 triples of 161M — use it.
+        (
+            {"matches": False, "void_triples": 161265076, "served_triples": 161264797},
+            False,
+        ),
+        # biomarkerkg 2026-10-14: VoID describes another release.
+        ({"matches": False, "void_triples": 1820793, "served_triples": 1215057}, True),
+        ({"matches": False, "void_triples": 95913, "served_triples": 0}, True),
+    ],
+)
+def test_void_is_stale(fresh, stale):
+    assert void_is_stale(fresh) is stale
+
+
+CURATED_CSV = "URI,Label,Description,Type\nhttps://ex.org/C,C,curated,Class\n"
+
+
+@pytest.fixture
+def curated_client():
+    """An httpx client that serves CURATED_CSV for every curated-file URL."""
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        assert str(request.url).startswith(schema_mod.ENTITY_METADATA_BASE)
+        return httpx.Response(200, text=CURATED_CSV)
+
+    return httpx.AsyncClient(transport=httpx.MockTransport(handler))
+
+
+async def test_override_dir_used_then_curated_fallback(tmp_path, curated_client):
+    (tmp_path / "fresh_entities.csv").write_text(VOID_CSV)
+    (tmp_path / "stale_entities.csv").write_text(VOID_CSV)
+    (tmp_path / "build_notes.json").write_text(
+        '{"freshness": {"stale": {"matches": false, "void_triples": 100,'
+        ' "served_triples": 50}}}'
+    )
+    schema_mod._notes_cache.clear()
+    got = {}
+    for kg in ("fresh", "stale", "absent"):
+        meta = await schema_mod.fetch_entity_metadata(
+            kg, client=curated_client, refresh=True, override=str(tmp_path)
+        )
+        got[kg] = (schema_mod.metadata_source(kg), len(meta))
+    assert got["fresh"] == (str(tmp_path), len(parse_entity_metadata(VOID_CSV)))
+    assert got["stale"] == (schema_mod.ENTITY_METADATA_BASE, 1)
+    assert got["absent"] == (schema_mod.ENTITY_METADATA_BASE, 1)
+
+
+def test_edge_property_of_on_a_node_class_stays_a_predicate():
+    """oard-kg: result-node properties, not reified-edge properties (no rdf:predicate)."""
+    bl = "https://w3id.org/biolink/vocab/"
+    meta = parse_entity_metadata(
+        "URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass\n"
+        f"{bl}has_study_results,hsr,,Predicate,,{bl}Study,{bl}LogOddsAnalysisResult\n"
+        f"{bl}log_odds_ratio,lor,,Predicate,{bl}has_study_results,"
+        f"{bl}LogOddsAnalysisResult,\n"
+    )
+    assert meta[bl + "log_odds_ratio"]["type"] == "Predicate"
+    assert meta[bl + "log_odds_ratio"]["edge_property_of"] == ""
+    schema = _build_schema_from_metadata("oard-kg", meta, compact=True)
+    assert schema["edge_properties"] == {}
+
+
+#: Shapes from the curated wildlifekn and scales files (2026-10-15).
+MIXED_CSV = """\
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass
+https://ex.org/OBSERVED_AT,OBSERVED_AT,Seen at.,Predicate,,https://ex.org/Bird,https://ex.org/Location
+https://ex.org/OBSERVED_AT,OBSERVED_AT,Seen at.,Predicate,,https://ex.org/Frog,https://ex.org/Location
+https://ex.org/date,date,Observation date.,EdgeProperty,OBSERVED_AT,,
+https://ex.org/date,date,Date of an observation.,NodeProperty,,https://ex.org/Observation,
+https://ex.org/Arrest,Arrest,An arrest.,Class,,,
+https://ex.org/Arrest,Arrest,Has arrest.,Predicate,,https://ex.org/Person,https://ex.org/Arrest
+"""
+
+
+def test_uri_with_several_kinds_keeps_each():
+    schema = _build_schema_from_metadata("demo", _parse(MIXED_CSV), compact=True)
+    classes = [r[0] for r in schema["classes"]["data"]]
+    preds = [r[0] for r in schema["predicates"]["data"]]
+    assert "https://ex.org/Arrest" in classes and "https://ex.org/Arrest" in preds
+    edge = schema["edge_properties"]["OBSERVED_AT"]
+    assert [p["label"] for p in edge["properties"]] == ["date"]
+    node = schema["node_properties"]["data"]
+    assert [(r[0], r[-1]) for r in node] == [
+        ("https://ex.org/date", "https://ex.org/Observation")
+    ]
+
+
+def test_curated_repeats_keep_last_row_primary_and_list_the_rest():
+    schema = _build_schema_from_metadata("demo", _parse(MIXED_CSV), compact=True)
+    cols = schema["predicates"]["columns"]
+    assert "triples" not in cols  # no counts in a curated file
+    rows = {r[0]: dict(zip(cols, r, strict=True)) for r in schema["predicates"]["data"]}
+    obs = rows["https://ex.org/OBSERVED_AT"]
+    assert obs["source_class"] == "https://ex.org/Frog"
+    assert obs["other_pairs"] == "Bird → Location"

@@ -5,6 +5,10 @@ properties, node properties) published in the ``sbl-sdsc/mcp-proto-okn`` repo.
 When no curated metadata exists we fall back to probing the federation endpoint
 for the distinct classes and predicates used in the KG's named graph.
 
+Set ``MCP_OKN_ENTITY_METADATA_BASE`` to a URL or directory of ``<kg>_entities.csv``
+files (e.g. the VoID-built ``metadata/void_entities``) to read those first; a KG the
+override lacks or whose VoID is stale falls back to the curated file.
+
 The shortnames are the same ones used as federation named graphs
 (``https://purl.org/okn/frink/kg/{shortname}``), so the curated CSVs port over
 directly from the proto-okn server.
@@ -14,8 +18,11 @@ from __future__ import annotations
 
 import asyncio
 import csv
+import json
+import os
 import re
 from io import StringIO
+from pathlib import Path
 from typing import Any
 
 import httpx
@@ -30,6 +37,22 @@ from .sparql import SparqlError, named_graph, run_sparql
 ENTITY_METADATA_BASE = (
     "https://raw.githubusercontent.com/sbl-sdsc/mcp-proto-okn/main/metadata/entities"
 )
+
+#: Optional override: a URL or local directory of ``<kg>_entities.csv`` files (e.g.
+#: ``metadata/void_entities``, built by ``scripts/build_void_schema.py``). A KG the
+#: override lacks, or whose VoID is stale per the override's ``build_notes.json``,
+#: falls back to :data:`ENTITY_METADATA_BASE`.
+ENTITY_METADATA_OVERRIDE = os.environ.get("MCP_OKN_ENTITY_METADATA_BASE", "").strip()
+
+_RDF_STATEMENT = "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+
+#: Largest relative VoID-vs-served triple-count gap at which an override file is
+#: still used. The 2026-10-15 small drifts (dreamkg, sawgraph, securechainkg) are
+#: under 0.001%; the stale releases (biomarkerkg, nikg, spatialkg, maudekg) are >1%.
+STALE_VOID_TOLERANCE = 0.001
+
+#: Source/target pairs listed per predicate besides the top one.
+MAX_EXTRA_PAIRS = 3
 
 #: Provenance / dataset-summary vocabularies (VOID and friends) that some upstream
 #: ``*_entities.csv`` files now embed as schema rows. These describe the dataset
@@ -515,65 +538,204 @@ _NODE_CLASS_STYLE = "fill:#BBDEFB,stroke:#1565C0,color:#000"
 _EDGE_CLASS_STYLE = "fill:#FFE0B2,stroke:#E65100,color:#000"
 
 # Process-lifetime cache of parsed entity metadata, keyed by shortname.
-_metadata_cache: dict[str, dict[str, dict[str, str]]] = {}
+_metadata_cache: dict[str, dict[str, dict[str, Any]]] = {}
+
+
+def parse_entity_metadata(content: str) -> dict[str, dict[str, Any]]:
+    """Parse an ``*_entities.csv`` into ``{uri: {label, description, type, …}}``.
+
+    Reads both layouts. The curated proto-okn files have one row per URI and types
+    Class / Predicate / EdgeProperty / NodeProperty. The VoID-built files add a
+    ``Triples`` column and repeat a predicate once per (source, target) pair; those
+    rows are collected into ``pairs``. The primary pair (``source_class`` /
+    ``target_class``) is the largest when counts exist; otherwise it is the LAST row,
+    as the previous last-row-wins read chose, and the others follow in file order.
+    Curated files repeat URIs too (one row per domain/range, e.g. 47 in
+    climatemodelskg); that read kept only one of them.
+
+    One URI can also carry several kinds: scales' ``jxdm#Arrest`` is a Class and a
+    Predicate, wildlifekn's ``date`` an EdgeProperty and a NodeProperty. The first
+    kind seen is the entry; the others ride along in its ``also`` list, so neither
+    is lost (the old read kept only the last row, dropping the Class and erasing
+    ``date``'s edge parent).
+
+    A row with ``EdgePropertyOf`` is an edge property when its Type says so or when
+    it sits on a reified statement (SourceClass ``rdf:Statement`` or empty) — the
+    VoID files, and several curated ones (pankgraph, ncipidkg, prokn), type those
+    Predicate and name the parent by IRI. oard-kg's rows name a result-node class
+    instead: they are plain properties of that node, with no ``rdf:predicate`` for
+    a reification template to match, so they stay predicates. Parents accumulate
+    semicolon-separated and deduplicated.
+    """
+    by_uri: dict[str, dict[str, dict[str, Any]]] = {}
+    for row in csv.DictReader(StringIO(content)):
+        uri = (row.get("URI") or "").strip()
+        if not uri or _is_provenance_uri(uri):
+            continue
+        edge_property_of = (row.get("EdgePropertyOf") or "").strip()
+        source = (row.get("SourceClass") or "").strip()
+        target = (row.get("TargetClass") or "").strip()
+        row_type = (row.get("Type") or "").strip()
+        if edge_property_of and source not in ("", _RDF_STATEMENT):
+            if row_type.lower() != "edgeproperty":
+                edge_property_of = ""
+        elif edge_property_of:
+            row_type = "EdgeProperty"
+        raw_triples = (row.get("Triples") or "").strip()
+        triples = int(raw_triples) if raw_triples.isdigit() else None
+        label = (row.get("Label") or "").strip()
+        description = (row.get("Description") or "").strip()
+
+        kinds = by_uri.setdefault(uri, {})
+        entry = kinds.get(row_type.lower())
+        if entry is None:
+            entry = kinds[row_type.lower()] = {
+                "label": label,
+                "description": description,
+                "type": row_type,
+                "edge_property_of": "",
+                "source_class": source,
+                "target_class": target,
+                "pairs": [],
+            }
+        elif not edge_property_of:
+            # Last row wins, as before; a repeated edge-property row only adds a
+            # parent (its per-relationship description is not the property's own).
+            entry["label"] = label or entry["label"]
+            entry["description"] = description or entry["description"]
+        if edge_property_of:
+            # A single edge-property URI can belong to several relationships
+            # (e.g. adj_p_value on both EXPRESSION and ABUNDANCE). Accumulate
+            # the parents semicolon-separated so the join below finds them all.
+            parents = [p for p in entry["edge_property_of"].split(";") if p]
+            if edge_property_of not in parents:
+                parents.append(edge_property_of)
+            entry["edge_property_of"] = ";".join(parents)
+        if source or target or triples is not None:
+            entry["pairs"].append((source, target, triples))
+
+    metadata: dict[str, dict[str, Any]] = {}
+    for uri, kinds in by_uri.items():
+        entries = list(kinds.values())
+        for entry in entries:
+            _set_primary_pair(entry)
+        metadata[uri] = entries[0]
+        if len(entries) > 1:
+            entries[0]["also"] = entries[1:]
+    return metadata
+
+
+def _set_primary_pair(entry: dict[str, Any]) -> None:
+    """Order ``pairs`` primary-first and copy the primary into source/target."""
+    pairs = entry["pairs"]
+    if not pairs:
+        entry["triples"] = None
+        return
+    counts = [n for _s, _t, n in pairs]
+    if None in counts:
+        entry["triples"] = None
+        pairs.insert(0, pairs.pop())
+    else:
+        entry["triples"] = sum(c or 0 for c in counts)
+        pairs.sort(key=lambda p: -(p[2] or 0))
+    entry["source_class"], entry["target_class"] = pairs[0][0], pairs[0][1]
+
+
+#: Parsed ``build_notes.json`` per override base.
+_notes_cache: dict[str, dict[str, Any]] = {}
+
+
+async def _read_notes(base: str, client: httpx.AsyncClient) -> dict[str, Any]:
+    """The override's ``build_notes.json`` (freshness per KG), or ``{}``."""
+    if base not in _notes_cache:
+        text = None
+        try:
+            if base.startswith(("http://", "https://")):
+                resp = await client.get(f"{base}/build_notes.json")
+                text = resp.text if resp.status_code == 200 else None
+            else:
+                path = Path(base) / "build_notes.json"
+                text = path.read_text() if path.exists() else None
+            _notes_cache[base] = json.loads(text) if text else {}
+        except (OSError, ValueError, httpx.HTTPError):
+            _notes_cache[base] = {}
+    return _notes_cache[base]
+
+
+def void_is_stale(freshness: dict[str, Any] | None) -> bool:
+    """True when VoID and the served graph differ by more than the tolerance."""
+    if not freshness or freshness.get("matches") is not False:
+        return False
+    void, served = freshness.get("void_triples"), freshness.get("served_triples")
+    if not isinstance(void, int) or not void or not isinstance(served, int):
+        return True
+    return bool(abs(void - served) / void > STALE_VOID_TOLERANCE)
+
+
+async def _read_csv(base: str, shortname: str, client: httpx.AsyncClient) -> str | None:
+    """One ``<kg>_entities.csv`` from a URL base or a local directory."""
+    name = f"{shortname}_entities.csv"
+    if not base.startswith(("http://", "https://")):
+        path = Path(base) / name
+        return path.read_text() if path.exists() else None
+    try:
+        resp = await client.get(f"{base}/{name}")
+    except httpx.HTTPError:
+        return None
+    return resp.text if resp.status_code == 200 else None
+
+
+#: The base each cached KG's metadata was loaded from.
+_metadata_source: dict[str, str] = {}
+
+
+def metadata_source(shortname: str) -> str | None:
+    """Where :func:`fetch_entity_metadata` loaded a KG's metadata from, if anywhere."""
+    return _metadata_source.get(shortname)
 
 
 async def fetch_entity_metadata(
     shortname: str,
     client: httpx.AsyncClient | None = None,
     refresh: bool = False,
-) -> dict[str, dict[str, str]]:
-    """Fetch and parse the curated entity metadata CSV for a KG (cached).
+    override: str | None = None,
+) -> dict[str, dict[str, Any]]:
+    """Fetch and parse the entity metadata CSV for a KG (cached).
 
-    Returns a dict mapping each URI to ``{label, description, type,
-    edge_property_of, source_class, target_class}``. Returns an empty dict when
-    no curated CSV exists for the KG (the caller then falls back to probing).
+    Reads :data:`ENTITY_METADATA_OVERRIDE` (or ``override``) first when set, then
+    the curated proto-okn file. Returns an empty dict when neither has the KG (the
+    caller then falls back to probing). See :func:`parse_entity_metadata`.
     """
     if shortname in _metadata_cache and not refresh:
         return _metadata_cache[shortname]
 
-    url = f"{ENTITY_METADATA_BASE}/{shortname}_entities.csv"
+    override = ENTITY_METADATA_OVERRIDE if override is None else override
     owns = client is None
     if client is None:
         client = httpx.AsyncClient(timeout=30.0)
+    content, used = None, None
     try:
-        resp = await client.get(url)
-        if resp.status_code != 200:
-            _metadata_cache[shortname] = {}
-            return {}
-        content = resp.text
-    except httpx.HTTPError:
-        _metadata_cache[shortname] = {}
-        return {}
+        bases = []
+        if override:
+            notes = await _read_notes(override, client)
+            if not void_is_stale(notes.get("freshness", {}).get(shortname)):
+                bases.append(override)
+        bases.append(ENTITY_METADATA_BASE)
+        for base in bases:
+            content = await _read_csv(base, shortname, client)
+            if content is not None:
+                used = base
+                break
     finally:
         if owns:
             await client.aclose()
 
-    metadata: dict[str, dict[str, str]] = {}
-    for row in csv.DictReader(StringIO(content)):
-        uri = (row.get("URI") or "").strip()
-        if not uri or _is_provenance_uri(uri):
-            continue
-        edge_property_of = (row.get("EdgePropertyOf") or "").strip()
-        if uri in metadata and edge_property_of:
-            # A single edge-property URI can belong to several relationships
-            # (e.g. adj_p_value on both EXPRESSION and ABUNDANCE). Accumulate
-            # the parents semicolon-separated so the join below finds them all.
-            existing = metadata[uri].get("edge_property_of", "")
-            metadata[uri]["edge_property_of"] = (
-                f"{existing};{edge_property_of}" if existing else edge_property_of
-            )
-        else:
-            metadata[uri] = {
-                "label": (row.get("Label") or "").strip(),
-                "description": (row.get("Description") or "").strip(),
-                "type": (row.get("Type") or "").strip(),
-                "edge_property_of": edge_property_of,
-                "source_class": (row.get("SourceClass") or "").strip(),
-                "target_class": (row.get("TargetClass") or "").strip(),
-            }
-
+    metadata = parse_entity_metadata(content) if content is not None else {}
     _metadata_cache[shortname] = metadata
+    if used:
+        _metadata_source[shortname] = used
+    else:
+        _metadata_source.pop(shortname, None)
     return metadata
 
 
@@ -583,6 +745,7 @@ def _generate_query_template(
     source_class: str,
     target_class: str,
     properties: list[dict[str, Any]],
+    relationship_uri: str = "",
 ) -> str:
     """Generate a SPARQL template for a reified relationship with edge properties.
 
@@ -597,6 +760,11 @@ def _generate_query_template(
     if source_var == target_var:
         source_var, target_var = f"{source_var}_1", f"{target_var}_2"
     schema_ns = _SCHEMA_NS.format(shortname=shortname)
+    rel_pred = (
+        f"<{relationship_uri}>"
+        if relationship_uri and not relationship_uri.startswith(schema_ns)
+        else f"schema:{relationship_label}"
+    )
 
     prop_selects: list[str] = []
     prop_patterns: list[str] = []
@@ -621,7 +789,7 @@ def _generate_query_template(
         "WHERE {\n"
         f"  GRAPH <{named_graph(shortname)}> {{\n"
         f"    ?stmt rdf:subject ?{source_var} ;\n"
-        f"          rdf:predicate schema:{relationship_label} ;\n"
+        f"          rdf:predicate {rel_pred} ;\n"
         f"          rdf:object ?{target_var} .\n"
         "    # Edge properties are sparse: keep OPTIONAL except on ones you filter by.\n"
         f"{chr(10).join(prop_patterns)}\n"
@@ -635,16 +803,34 @@ def _sparql_var(name: str) -> str:
     return re.sub(r"[^A-Za-z0-9_]", "", name.replace(" ", "_")).lower()
 
 
+def _pair_summary(pairs: list[tuple[str, str, int | None]]) -> str:
+    """The pairs after the top one, by local name: ``A → B (12); … (+N more)``."""
+    rest = pairs[1:]
+    parts = [
+        f"{_local_name(s) or '?'} → {_local_name(t) or '?'}"
+        + (f" ({n:,})" if n is not None else "")
+        for s, t, n in rest[:MAX_EXTRA_PAIRS]
+    ]
+    if len(rest) > MAX_EXTRA_PAIRS:
+        parts.append(f"+{len(rest) - MAX_EXTRA_PAIRS} more")
+    return "; ".join(parts)
+
+
 def _build_schema_from_metadata(
-    shortname: str, entity_metadata: dict[str, dict[str, str]], compact: bool
+    shortname: str, entity_metadata: dict[str, dict[str, Any]], compact: bool
 ) -> dict[str, Any]:
     """Build the schema response from curated entity metadata."""
-    classes: list[dict[str, str]] = []
+    classes: list[dict[str, Any]] = []
     predicates: list[dict[str, Any]] = []
     edge_properties_dict: dict[str, list[dict[str, str]]] = {}
     node_properties: list[dict[str, str]] = []
 
-    for uri, meta in entity_metadata.items():
+    entries = [
+        (uri, m)
+        for uri, meta in entity_metadata.items()
+        for m in (meta, *meta.get("also", ()))
+    ]
+    for uri, meta in entries:
         entity_type = (meta.get("type") or "").lower()
         if entity_type == "class":
             classes.append(
@@ -653,6 +839,7 @@ def _build_schema_from_metadata(
                     "label": meta.get("label", ""),
                     "description": meta.get("description", ""),
                     "type": meta.get("type", ""),
+                    "instances": meta.get("triples"),
                 }
             )
         elif entity_type == "predicate":
@@ -667,6 +854,8 @@ def _build_schema_from_metadata(
                     "source_class": meta.get("source_class", ""),
                     "target_class": meta.get("target_class", ""),
                     "has_edge_properties": False,
+                    "triples": meta.get("triples"),
+                    "other_pairs": _pair_summary(meta.get("pairs") or []),
                 }
             )
         elif entity_type == "edgeproperty":
@@ -691,18 +880,16 @@ def _build_schema_from_metadata(
                 }
             )
 
-    # Flag predicates that carry edge properties (match on short name).
-    for pred in predicates:
-        if pred["short_name"] in edge_properties_dict:
-            pred["has_edge_properties"] = True
-
+    # Edge-property parents are short names (curated files) or IRIs (VoID files).
     edge_properties_output: dict[str, Any] = {}
-    for relationship_label, props in edge_properties_dict.items():
+    for parent, props in edge_properties_dict.items():
         rel = next(
-            (p for p in predicates if p["short_name"] == relationship_label), None
+            (p for p in predicates if parent in (p["short_name"], p["uri"])), None
         )
         if rel is None:
             continue
+        rel["has_edge_properties"] = True
+        relationship_label = _local_name(parent) if parent == rel["uri"] else parent
         edge_properties_output[relationship_label] = {
             "uri": rel["uri"],
             "label": relationship_label,
@@ -716,39 +903,38 @@ def _build_schema_from_metadata(
                 rel["source_class"],
                 rel["target_class"],
                 props,
+                relationship_uri=rel["uri"],
             ),
         }
 
+    # Counts and extra source/target pairs exist only in the VoID-built files; the
+    # columns appear only then, so curated-file output is unchanged.
+    class_cols = ["uri", "label", "description", "type"]
+    if any(c["instances"] is not None for c in classes):
+        class_cols.append("instances")
+    pred_cols = [
+        "uri",
+        "label",
+        "description",
+        "type",
+        "source_class",
+        "target_class",
+        "has_edge_properties",
+    ]
+    if any(p["triples"] is not None for p in predicates):
+        pred_cols.append("triples")
+    if any(p["other_pairs"] for p in predicates):
+        pred_cols.append("other_pairs")
+
     result: dict[str, Any] = {
         "classes": {
-            "columns": ["uri", "label", "description", "type"],
-            "data": [
-                [c["uri"], c["label"], c["description"], c["type"]] for c in classes
-            ],
+            "columns": class_cols,
+            "data": [[c[k] for k in class_cols] for c in classes],
             "count": len(classes),
         },
         "predicates": {
-            "columns": [
-                "uri",
-                "label",
-                "description",
-                "type",
-                "source_class",
-                "target_class",
-                "has_edge_properties",
-            ],
-            "data": [
-                [
-                    p["uri"],
-                    p["label"],
-                    p["description"],
-                    p["type"],
-                    p["source_class"],
-                    p["target_class"],
-                    p["has_edge_properties"],
-                ]
-                for p in predicates
-            ],
+            "columns": pred_cols,
+            "data": [[p[k] for k in pred_cols] for p in predicates],
             "count": len(predicates),
         },
         "edge_properties": edge_properties_output,
@@ -911,7 +1097,12 @@ async def get_schema(shortname: str, compact: bool = True) -> dict[str, Any]:
     else:
         schema = await _probe_schema(shortname)
 
-    return {"shortname": shortname, "schema": schema}
+    result: dict[str, Any] = {"shortname": shortname, "schema": schema}
+    source = metadata_source(shortname)
+    if ENTITY_METADATA_OVERRIDE and source:
+        # Testing aid: say whether the override or the curated fallback answered.
+        result["metadata_source"] = source
+    return result
 
 
 # ── Mermaid class-diagram generation ─────────────────────────────────────────
