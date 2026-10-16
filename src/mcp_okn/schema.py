@@ -1333,6 +1333,10 @@ def _mermaid_id(name: str) -> str:
     if name.startswith(("http://", "https://")):
         name = _local_name(name)
     ident = re.sub(r"\W+", "_", name or "").strip("_")
+    # Mermaid 12 turns `style <id>` into a CSS class selector, which may not start
+    # with a digit (prokn's SNOMED class http://snomed.info/id/276239002).
+    if ident[:1].isdigit():
+        ident = f"n_{ident}"
     return ident or "Node"
 
 
@@ -1352,10 +1356,14 @@ def _member_type(description: str) -> str:
 
 
 def _clean_edge_label(label: str) -> str:
-    """Strip characters that would break a Mermaid relationship label."""
-    return re.sub(
-        r"\s+", " ", (label or "").replace("|", " ").replace("\n", " ")
-    ).strip()
+    """Strip characters that would break a Mermaid relationship label.
+
+    A colon ends the label in Mermaid 12 (``geo:hasGeometry`` failed geoconnex,
+    hydrologykg, nikg, sockg and spatialkg), so it becomes the entity ``#58;``,
+    which Mermaid draws as ``:``.
+    """
+    text = (label or "").replace("|", " ").replace("\n", " ").replace(":", "#58;")
+    return re.sub(r"\s+", " ", text).strip()
 
 
 def _col(table: dict[str, Any], name: str) -> int | None:
@@ -1459,15 +1467,27 @@ async def infer_edge_labels(
 
 #: Vocabularies whose classes describe how a schema is encoded (owl:Class,
 #: owl:Restriction, owl:ObjectProperty, …), not what it is about.
-_META_NAMESPACES = (
-    "http://www.w3.org/2002/07/owl#",
-    "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "http://www.w3.org/2000/01/rdf-schema#",
+_META_NAMESPACES = tuple(
+    scheme + ns
+    for ns in (
+        "www.w3.org/2002/07/owl#",
+        "www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "www.w3.org/2000/01/rdf-schema#",
+    )
+    # prokn types 1,436 nodes https://www.w3.org/2002/07/owl#Class (wrong scheme).
+    for scheme in ("http://", "https://")
 )
 
 #: Above this many node classes a diagram keeps only the most-connected ones:
 #: bio101 rendered 246 classes in one 36,000 px row.
 MAX_DIAGRAM_CLASSES = 60
+#: …and at most this many arrows between them: sawgraph's 60 most-connected classes
+#: still had 1,741 arrows (overlapping FoodOn material types), which Mermaid 12
+#: could not lay out in three minutes.
+MAX_DIAGRAM_ARROWS = 100
+#: Labels shown on one merged arrow; the rest become "+N more" (hydrologykg packed
+#: a 498-character label of spatial predicates onto one arrow).
+MAX_ARROW_LABELS = 4
 
 _ARROW = re.compile(r"^  (\S+) --> (\S+)(?: : (.*))?$")
 
@@ -1477,15 +1497,17 @@ def _cap_classes(
     relationships: list[str],
     edge_class_ids: list[str],
     limit: int,
+    max_arrows: int = MAX_DIAGRAM_ARROWS,
 ) -> tuple[dict[str, list[str]], list[str], list[str]]:
-    """Keep the ``limit`` most-connected node classes; drop arrows to the rest.
+    """Keep the most-connected node classes within both limits; drop the rest.
 
-    Degree counts every arrow end (an edge class counts as a link between its two
-    endpoints); ties keep declaration order. Edge classes survive only while both
-    their endpoints do. Returns ``(declared, relationships, omitted node classes)``.
+    Classes are taken in order of degree (every arrow end counts; ties keep
+    declaration order) while at most ``limit`` classes and ``max_arrows`` arrows
+    among them result. Edge classes survive only while both their endpoints do.
+    Returns ``(declared, relationships, omitted node classes)``.
     """
     nodes = [c for c in declared if c not in edge_class_ids]
-    if len(nodes) <= limit:
+    if len(nodes) <= limit and len(relationships) <= max_arrows:
         return declared, relationships, []
     degree = dict.fromkeys(nodes, 0)
     for line in relationships:
@@ -1495,7 +1517,33 @@ def _cap_classes(
                 if end in degree:
                     degree[end] += 1
     order = {c: i for i, c in enumerate(nodes)}
-    keep = set(sorted(nodes, key=lambda c: (-degree[c], order[c]))[:limit])
+    ranked = sorted(nodes, key=lambda c: (-degree[c], order[c]))
+    # Links between node classes: a plain arrow is one, and so is a relationship
+    # drawn through an edge class (source --> edge --> target). Counting the two
+    # hops separately let prokn's 65 edge classes use up the whole budget.
+    edge_set = set(edge_class_ids)
+    ends_of: dict[str, list[str]] = {e: [] for e in edge_class_ids}
+    links: list[tuple[str, str]] = []
+    for line in relationships:
+        m = _ARROW.match(line)
+        if not m:
+            continue
+        a, b = m.group(1, 2)
+        if a in edge_set:
+            ends_of[a].append(b)
+        elif b in edge_set:
+            ends_of[b].append(a)
+        else:
+            links.append((a, b))
+    links += [(e[0], e[1]) for e in ends_of.values() if len(e) == 2]
+    keep: set[str] = set()
+    for cand in ranked:
+        if len(keep) >= limit:
+            break
+        trial = keep | {cand}
+        if keep and sum(1 for a, b in links if a in trial and b in trial) > max_arrows:
+            continue
+        keep = trial
     ends: dict[str, set[str]] = {e: set() for e in edge_class_ids}
     for line in relationships:
         m = _ARROW.match(line)
@@ -1518,6 +1566,8 @@ def _cap_classes(
 def _merge_parallel(relationships: list[str]) -> list[str]:
     """One labelled arrow per (source, target): labels joined, first position kept.
 
+    At most :data:`MAX_ARROW_LABELS` labels are shown, then ``+N more``.
+
     spoke-genelab's Assay reaches Anatomy by INVESTIGATED_ASiA, material_id_1 and
     material_id_2; three parallel arrows overlap their labels when rendered.
     Unlabelled arrows (the hops into and out of an edge class) are kept as is.
@@ -1536,10 +1586,16 @@ def _merge_parallel(relationships: list[str]) -> list[str]:
             order.append(key)
         if m.group(3) not in merged[key]:
             merged[key].append(m.group(3))
+
+    def joined(labels: list[str]) -> str:
+        shown = ", ".join(labels[:MAX_ARROW_LABELS])
+        extra = len(labels) - MAX_ARROW_LABELS
+        return f"{shown}, +{extra} more" if extra > 0 else shown
+
     return [
         item
         if isinstance(item, str)
-        else f"  {item[0]} --> {item[1]} : " + ", ".join(merged[item])
+        else f"  {item[0]} --> {item[1]} : " + joined(merged[item])
         for item in order
     ]
 
@@ -1550,6 +1606,7 @@ def build_mermaid_diagram(
     inferred_edges: list[tuple[str, str, str]] | None = None,
     max_classes: int = MAX_DIAGRAM_CLASSES,
     info: dict[str, Any] | None = None,
+    max_arrows: int = MAX_DIAGRAM_ARROWS,
 ) -> str:
     """Render a KG's schema as a Mermaid ``classDiagram`` (deterministic).
 
@@ -1583,11 +1640,15 @@ def build_mermaid_diagram(
     label_idx = cls_cols.index("label") if "label" in cls_cols else None
     meta_ids: set[str] = set()
     class_names = []
+    #: Class IRI -> its label, so an endpoint given as an IRI (some curated rows,
+    #: all VoID rows) lands on the same box as one given as the label.
+    iri_label: dict[str, str] = {}
     for row in classes_tbl.get("data", []):
         if not row:
             continue
         label = row[label_idx] if label_idx is not None and len(row) > label_idx else ""
         name = label or _local_name(row[0])
+        iri_label[str(row[0])] = name
         if str(row[0]).startswith(_META_NAMESPACES):
             meta_ids.add(_mermaid_id(name))
         else:
@@ -1595,13 +1656,14 @@ def build_mermaid_diagram(
     touched_by_meta: set[str] = set()
 
     def ensure_class(label: str) -> str:
-        cid = _mermaid_id(label)
+        cid = _mermaid_id(iri_label.get(label, label))
         if cid not in meta_ids:
             declared.setdefault(cid, [])
         return cid
 
     def arrow(src: str, tgt: str, label: str = "") -> None:
-        s_id, t_id = _mermaid_id(src), _mermaid_id(tgt)
+        s_id = _mermaid_id(iri_label.get(src, src))
+        t_id = _mermaid_id(iri_label.get(tgt, tgt))
         if s_id in meta_ids or t_id in meta_ids:
             touched_by_meta.update({s_id, t_id} - meta_ids)
             return
@@ -1621,7 +1683,11 @@ def build_mermaid_diagram(
             continue
         owner = row[np_class] if len(row) > np_class else ""
         name = row[np_label] if len(row) > np_label else ""
-        if not owner or not name or _mermaid_id(owner) in meta_ids:
+        if (
+            not owner
+            or not name
+            or _mermaid_id(iri_label.get(owner, owner)) in meta_ids
+        ):
             continue
         cid = ensure_class(owner)
         desc = row[np_desc] if np_desc is not None and len(row) > np_desc else ""
@@ -1689,7 +1755,7 @@ def build_mermaid_diagram(
         if cid in declared and not declared[cid] and cid not in in_arrows:
             del declared[cid]
     declared, relationships, omitted = _cap_classes(
-        declared, relationships, edge_class_ids, max_classes
+        declared, relationships, edge_class_ids, max_classes, max_arrows
     )
     if info is not None:
         node_total = len([c for c in declared if c not in edge_class_ids]) + len(
@@ -1730,9 +1796,10 @@ def build_mermaid_diagram(
     lines += [f"  style {lid} {style}" for lid, _, style in legend]
 
     if omitted:
+        drawn = len([c for c in declared if c not in edge_class_ids])
         lines.append(
-            f"  %% Showing the {max_classes} most-connected of "
-            f"{max_classes + len(omitted)} classes; omitted:"
+            f"  %% Showing the {drawn} most-connected of "
+            f"{drawn + len(omitted)} classes; omitted:"
         )
         lines += [f"  %%   - {c}" for c in omitted]
     if undrawn:
@@ -1823,10 +1890,13 @@ def diagram_schema(
                         if tgt.startswith(_LITERAL_TYPES):
                             desc = f"({_local_name(tgt)})"
             props.append({**prop, "description": desc})
+        src, tgt = info.get("source_class", ""), info.get("target_class", "")
         edges[rel] = {
             **info,
-            "source_class": name(info.get("source_class", "")),
-            "target_class": name(info.get("target_class", "")),
+            # A literal-typed end (prokn's wasAttributedTo -> xsd:string) is a
+            # value, not a class box.
+            "source_class": "" if src.startswith(_LITERAL_TYPES) else name(src),
+            "target_class": "" if tgt.startswith(_LITERAL_TYPES) else name(tgt),
             "properties": props,
         }
     edge_rel_uris = {info.get("uri") for info in edges.values()}
@@ -1870,7 +1940,12 @@ async def visualize_schema(shortname: str) -> dict[str, Any]:
         shortname, schema, inferred_edges=inferred, info=info
     )
     result = {"shortname": shortname, "mermaid": diagram}
-    if info.get("omitted_classes"):
+    if not info.get("classes_total") and not schema.get("edge_properties"):
+        result["note"] = (
+            "No classes to draw: the schema lists none with source/target "
+            "information. Use get_schema."
+        )
+    elif info.get("omitted_classes"):
         result["note"] = (
             f"Large schema: drawing the {info['classes_drawn']} most-connected of "
             f"{info['classes_total']} classes ({len(info['omitted_classes'])} omitted, "

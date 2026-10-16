@@ -104,7 +104,6 @@ async def render_all(targets: list[str], out: Path, fmt: str, version: str) -> i
         if browser is None:
             print("No Chromium: run `playwright install chromium` or install Chrome")
             return 2
-        page = await browser.new_page(viewport={"width": 1600, "height": 1200})
         for target in targets:
             try:
                 name, source, note = await _diagram_for(target)
@@ -112,10 +111,19 @@ async def render_all(targets: list[str], out: Path, fmt: str, version: str) -> i
                 print(f"FAIL  {target}: {exc}")
                 failed += 1
                 continue
+            # A fresh page per diagram: set_content keeps the old window, so the
+            # previous diagram's window.result would end the wait immediately.
+            page = await browser.new_page(viewport={"width": 1600, "height": 1200})
             await page.set_content(page_html(source, version))
-            await page.wait_for_function(
-                "window.result !== undefined", timeout=RENDER_TIMEOUT_MS
-            )
+            try:
+                await page.wait_for_function(
+                    "window.result !== undefined", timeout=RENDER_TIMEOUT_MS
+                )
+            except PlaywrightError:
+                print(f"FAIL  {name}: not drawn within {RENDER_TIMEOUT_MS // 1000} s")
+                failed += 1
+                await page.close()
+                continue
             result = await page.evaluate("window.result")
             if result.startswith("LOAD-FAILED"):
                 print(f"Mermaid {version} could not be loaded from jsDelivr: {result}")
@@ -124,13 +132,20 @@ async def render_all(targets: list[str], out: Path, fmt: str, version: str) -> i
             if result != "ok":
                 print(f"FAIL  {name}: {result}")
                 failed += 1
+                await page.close()
                 continue
-            stats: dict[str, Any] = await page.evaluate(
+            stats: dict[str, Any] | None = await page.evaluate(
                 """(() => { const s = document.querySelector('#out svg');
+                    if (!s) return null;
                     const b = s.getBBox();
                     return {w: Math.round(b.width), h: Math.round(b.height),
                             nodes: s.querySelectorAll('g.node').length}; })()"""
             )
+            if stats is None:
+                print(f"FAIL  {name}: Mermaid reported success but drew no SVG")
+                failed += 1
+                await page.close()
+                continue
             (out / f"{name}.mmd").write_text(
                 source if source.endswith("\n") else source + "\n"
             )
@@ -153,6 +168,7 @@ async def render_all(targets: list[str], out: Path, fmt: str, version: str) -> i
             )
             if note:
                 print(f"      note: {note}")
+            await page.close()
         await browser.close()
     return 1 if failed else 0
 

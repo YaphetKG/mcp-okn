@@ -755,3 +755,71 @@ def test_large_diagram_keeps_the_most_connected_classes():
     small: dict = {}
     build_mermaid_diagram("demo", schema, info=small)  # default limit: all drawn
     assert "omitted_classes" not in small
+
+
+def test_endpoint_iris_resolve_to_class_labels_and_ids_never_start_with_a_digit():
+    """prokn: class snomed 276239002 is labelled Therapy, but some rows name it by IRI."""
+    therapy = "http://snomed.info/id/276239002"
+    schema = {
+        "classes": {
+            "columns": ["uri", "label"],
+            "data": [[therapy, "Therapy"], ["https://ex.org/Gene", "Gene"]],
+        },
+        "predicates": {
+            "columns": ["uri", "label", "source_class", "target_class"],
+            "data": [["https://ex.org/treats", "treats", therapy, "Gene"]],
+        },
+    }
+    diagram = build_mermaid_diagram("prokn", schema)
+    assert "Therapy --> Gene : treats" in diagram
+    assert "276239002" not in diagram
+    assert schema_mod._mermaid_id("276239002") == "n_276239002"
+    assert schema_mod._mermaid_id("http://snomed.info/id/276239002") == "n_276239002"
+
+
+def test_colons_in_arrow_labels_become_entities():
+    """geo:hasGeometry broke Mermaid 12 parsing in five KGs; #58; draws as ':'."""
+    assert schema_mod._clean_edge_label("geo:hasGeometry") == "geo#58;hasGeometry"
+    schema = {
+        "classes": {"columns": ["uri", "label"], "data": []},
+        "predicates": {
+            "columns": ["uri", "label", "source_class", "target_class"],
+            "data": [["u:g", "geo:hasGeometry", "Feature", "Geometry"]],
+        },
+    }
+    assert "Feature --> Geometry : geo#58;hasGeometry" in build_mermaid_diagram(
+        "x", schema
+    )
+
+
+def test_dense_diagram_is_capped_by_arrows_too():
+    """sawgraph: 60 classes still meant 1,741 arrows; the arrow limit trims classes."""
+    names = [f"C{i}" for i in range(10)]
+    schema = {
+        "classes": {
+            "columns": ["uri", "label"],
+            "data": [[f"u:{n}", n] for n in names],
+        },
+        "predicates": {
+            "columns": ["uri", "label", "source_class", "target_class"],
+            "data": [
+                [f"u:{a}{b}", f"{a}to{b}", a, b] for a in names for b in names if a != b
+            ],
+        },
+    }
+    info: dict = {}
+    diagram = schema_mod.build_mermaid_diagram("demo", schema, info=info)  # 90 arrows
+    assert "omitted_classes" not in info
+    capped: dict = {}
+    diagram = build_mermaid_diagram("demo", schema, info=capped, max_arrows=20)
+    arrows = [
+        line for line in diagram.splitlines() if " --> " in line and "%%" not in line
+    ]
+    assert len(arrows) <= 20 and capped["classes_drawn"] == 5  # 5 classes -> 20 arrows
+
+
+def test_merged_arrow_shows_four_labels_then_a_count():
+    lines = [f"  Feature --> Feature : p{i}" for i in range(7)]
+    assert schema_mod._merge_parallel(lines) == [
+        "  Feature --> Feature : p0, p1, p2, p3, +3 more"
+    ]
