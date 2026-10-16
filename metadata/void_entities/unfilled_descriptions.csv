@@ -194,13 +194,13 @@ hydrologykg,http://www.w3.org/2004/02/skos/core#description,Predicate,,descripti
 hydrologykg,https://www.opengis.net/def/schema/hy_features/hyf/encompassingCatchment,Predicate,,encompassingCatchment
 hydrologykg,https://www.opengis.net/def/schema/hy_features/hyf/realizedCatchment,Predicate,,realizedCatchment
 hydrologykg,https://www.opengis.net/def/schema/hy_features/hyf/upstreamFlowPath,Predicate,,upstreamFlowPath
-maudekg,http://medicaldevice.com/ontology/MAUDEReport,Class,,MAUDEReport
-maudekg,http://medicaldevice.com/ontology/MedicalDevice,Class,,MedicalDevice
-maudekg,http://medicaldevice.com/ontology/dateOfEvent,Predicate,,dateOfEvent
-maudekg,http://medicaldevice.com/ontology/dateReceived,Predicate,,dateReceived
-maudekg,http://medicaldevice.com/ontology/eventType,Predicate,,eventType
-maudekg,http://medicaldevice.com/ontology/involvesDevice,Predicate,,involvesDevice
-maudekg,http://medicaldevice.com/ontology/productCode,Predicate,,productCode
+maudekg,http://medicaldevice.com/ontology/MAUDEReport,Class,,MAUDE Adverse Event Report
+maudekg,http://medicaldevice.com/ontology/MedicalDevice,Class,,Medical Device
+maudekg,http://medicaldevice.com/ontology/dateOfEvent,Predicate,,date of event
+maudekg,http://medicaldevice.com/ontology/dateReceived,Predicate,,date received
+maudekg,http://medicaldevice.com/ontology/eventType,Predicate,,event type
+maudekg,http://medicaldevice.com/ontology/involvesDevice,Predicate,,involves device
+maudekg,http://medicaldevice.com/ontology/productCode,Predicate,,product code
 maudekg,http://medicaldevice.com/ontology/label,Predicate,,label
 nikg,http://www.opengis.net/ont/sf#Point,Class,,Point
 nikg,http://www.opengis.net/ont/geosparql#asWKT,Predicate,,asWKT
@@ -209,7 +209,7 @@ phaseskg,http://protege.stanford.edu/plugins/owl/protege#defaultLanguage,Predica
 phaseskg,http://purl.obolibrary.org/obo/IAO_0000426,Predicate,,first order logic expression
 phaseskg,http://purl.obolibrary.org/obo/PHASES_0002010,Predicate,,GERO
 phaseskg,http://www.geneontology.org/formats/oboInOwl#SubsetProperty,Predicate,,subset_property
-phaseskg,http://www.geneontology.org/formats/oboInOwl#SynonymTypeProperty,Predicate,,SynonymTypeProperty
+phaseskg,http://www.geneontology.org/formats/oboInOwl#SynonymTypeProperty,Predicate,,synonym_type_property
 sawgraph,http://purl.obolibrary.org/obo/FOODON_00001093,Class,,cereal grain food product
 sawgraph,http://purl.obolibrary.org/obo/FOODON_00001134,Class,,bovine meat food product
 sawgraph,http://purl.obolibrary.org/obo/FOODON_00001173,Class,,plant seed food product
@@ -280,15 +280,15 @@ sawgraph,http://purl.obolibrary.org/obo/FOODON_03420147,Class,,"animal carcass (
 sawgraph,http://purl.obolibrary.org/obo/FOODON_03420238,Class,,"root, tuber or bulb"
 sawgraph,http://purl.obolibrary.org/obo/FOODON_03420239,Class,,"root, tuber or bulb, with peel"
 sawgraph,http://purl.org/spatialai/stad/v2/core/DataValue,Class,,DataValue
-sawgraph,http://purl.org/spatialai/stad/v2/core/Datapoint,Class,,Datapoint
-sawgraph,http://purl.org/spatialai/stad/v2/core/QualityKind,Class,,QualityKind
+sawgraph,http://purl.org/spatialai/stad/v2/core/Datapoint,Class,,stad:Datapoint
+sawgraph,http://purl.org/spatialai/stad/v2/core/QualityKind,Class,,stad:QualityKind
 sawgraph,http://purl.org/spatialai/stad/v2/core/Quantity,Class,,Quantity
 sawgraph,http://purl.org/spatialai/stad/v2/core/SingleData,Class,,SingleData
 sawgraph,http://purl.org/spatialai/stad/v2/core/StatisticalAggregateData,Class,,StatisticalAggregateData
 sawgraph,http://purl.org/spatialai/stad/v2/core/StatisticalQuantityKind,Class,,StatisticalQuantityKind
 sawgraph,http://www.w3.org/1999/02/22-rdf-syntax-ns#ObjectProperty,Class,,ObjectProperty
 sawgraph,http://qudt.org/schema/qudt/latexDefinition,Predicate,,latex definition
-sawgraph,http://qudt.org/schema/qudt/dbpediaMatch,Predicate,,dbpediaMatch
+sawgraph,http://qudt.org/schema/qudt/dbpediaMatch,Predicate,,dbpedia match
 sawgraph,http://qudt.org/schema/qudt/deprecated,Predicate,,deprecated
 sawgraph,http://purl.obolibrary.org/obo/IAO_0000600,Predicate,,elucidation
 sawgraph,http://purl.org/dc/terms/updated,Predicate,,updated
@@ -297,9 +297,9 @@ sawgraph,http://www.geneontology.org/formats/oboInOwl#default-namespace,Predicat
 sawgraph,http://purl.org/spatialai/stad/v2/core/hasTransformationKind,Predicate,,hasTransformationKind
 sawgraph,http://qudt.org/schema/qudt/cardinality,Predicate,,cardinality
 sawgraph,http://qudt.org/schema/qudt/conversionOffset,Predicate,,conversion offset
-sawgraph,http://qudt.org/schema/qudt/enumeratedValue,Predicate,,enumeratedValue
+sawgraph,http://qudt.org/schema/qudt/enumeratedValue,Predicate,,enumerated value
 sawgraph,http://qudt.org/schema/qudt/hasQuantity,Predicate,,has quantity
-sawgraph,http://qudt.org/schema/qudt/unitFor,Predicate,,unitFor
+sawgraph,http://qudt.org/schema/qudt/unitFor,Predicate,,unit for
 sawgraph,http://stko-kwg.geog.ucsb.edu/lod/ontology/administrativePartOf,Predicate,,administrativePartOf
 sawgraph,http://stko-kwg.geog.ucsb.edu/lod/ontology/sfCrosses,Predicate,,sfCrosses (kwg)
 sawgraph,http://stko-kwg.geog.ucsb.edu/lod/ontology/sfEquals,Predicate,,sfEquals (kwg)
@@ -328,7 +328,7 @@ sawgraph,http://www.w3.org/2001/XMLSchema#minExclusive,Predicate,,minExclusive
 sawgraph,http://www.w3.org/2001/XMLSchema#minInclusive,Predicate,,minInclusive
 sawgraph,http://www.w3.org/2001/XMLSchema#minLength,Predicate,,minLength
 sawgraph,http://www.w3.org/2001/XMLSchema#pattern,Predicate,,pattern
-securechainkg,http://asu.edu/semantics/SUDOKN/ABSProcessingCapability,Class,,ABSProcessingCapability
+securechainkg,http://asu.edu/semantics/SUDOKN/ABSProcessingCapability,Class,,ABS
 securechainkg,http://asu.edu/semantics/SUDOKN/AS9000,Class,,AS9000
 securechainkg,http://asu.edu/semantics/SUDOKN/AS9003,Class,,AS9003
 securechainkg,http://asu.edu/semantics/SUDOKN/AS9100,Class,,AS9100
@@ -337,84 +337,84 @@ securechainkg,http://asu.edu/semantics/SUDOKN/AS9120,Class,,AS9120
 securechainkg,http://asu.edu/semantics/SUDOKN/ASME,Class,,ASME
 securechainkg,http://asu.edu/semantics/SUDOKN/AWSWelder,Class,,AWSWelder
 securechainkg,http://asu.edu/semantics/SUDOKN/AbrasiveMachiningCapability,Class,,AbrasiveMachiningCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/AcetalProcessingCapability,Class,,AcetalProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/AcetronProcessingCapability,Class,,AcetronProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/AcrylicProcessingCapability,Class,,AcrylicProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/AerospaceIndustry,Class,,AerospaceIndustry
+securechainkg,http://asu.edu/semantics/SUDOKN/AcetalProcessingCapability,Class,,Acetal
+securechainkg,http://asu.edu/semantics/SUDOKN/AcetronProcessingCapability,Class,,Acetron
+securechainkg,http://asu.edu/semantics/SUDOKN/AcrylicProcessingCapability,Class,,Acrylic
+securechainkg,http://asu.edu/semantics/SUDOKN/AerospaceIndustry,Class,,Aerospace
 securechainkg,http://asu.edu/semantics/SUDOKN/AerospaceQuality,Class,,AerospaceQuality
 securechainkg,http://asu.edu/semantics/SUDOKN/AgeQuenchHardeningCapability,Class,,AgeQuenchHardeningCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/AgricultureIndustry,Class,,AgricultureIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/AlloyProcessingCapability,Class,,AlloyProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/AlloySteelProcessingCapability,Class,,AlloySteelProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/AluminumProcessingCapability,Class,,AluminumProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/ApparelIndustry,Class,,ApparelIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/AudioAndVisualIndustry,Class,,AudioAndVisualIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/AutomotiveIndustry,Class,,AutomotiveIndustry
+securechainkg,http://asu.edu/semantics/SUDOKN/AgricultureIndustry,Class,,Agriculture
+securechainkg,http://asu.edu/semantics/SUDOKN/AlloyProcessingCapability,Class,,Alloy
+securechainkg,http://asu.edu/semantics/SUDOKN/AlloySteelProcessingCapability,Class,,Alloy Steel
+securechainkg,http://asu.edu/semantics/SUDOKN/AluminumProcessingCapability,Class,,Aluminum
+securechainkg,http://asu.edu/semantics/SUDOKN/ApparelIndustry,Class,,Apparel
+securechainkg,http://asu.edu/semantics/SUDOKN/AudioAndVisualIndustry,Class,,Audio And Visual
+securechainkg,http://asu.edu/semantics/SUDOKN/AutomotiveIndustry,Class,,Automotive
 securechainkg,http://asu.edu/semantics/SUDOKN/BABA,Class,,BABA
-securechainkg,http://asu.edu/semantics/SUDOKN/BabbitProcessingCapability,Class,,BabbitProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/BerylliumProcessingCapability,Class,,BerylliumProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/BeverageIndustry,Class,,BeverageIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/BlueTempSteelProcessingCapability,Class,,BlueTempSteelProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/BrassProcessingCapability,Class,,BrassProcessingCapability
+securechainkg,http://asu.edu/semantics/SUDOKN/BabbitProcessingCapability,Class,,Babbit
+securechainkg,http://asu.edu/semantics/SUDOKN/BerylliumProcessingCapability,Class,,Beryllium
+securechainkg,http://asu.edu/semantics/SUDOKN/BeverageIndustry,Class,,Beverage
+securechainkg,http://asu.edu/semantics/SUDOKN/BlueTempSteelProcessingCapability,Class,,Blue Temp Steel
+securechainkg,http://asu.edu/semantics/SUDOKN/BrassProcessingCapability,Class,,Brass
 securechainkg,http://asu.edu/semantics/SUDOKN/BritishRetailConsortium,Class,,BritishRetailConsortium
-securechainkg,http://asu.edu/semantics/SUDOKN/BronzeProcessingCapability,Class,,BronzeProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/BusinessEquipmentIndustry,Class,,BusinessEquipmentIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/CPVCProcessingCapability,Class,,CPVCProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/CTFEProcessingCapability,Class,,CTFEProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/CarbideProcessingCapability,Class,,CarbideProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/CarbonFiberProcessingCapability,Class,,CarbonFiberProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/CarbonProcessingCapability,Class,,CarbonProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/CastSteelProcessingCapability,Class,,CastSteelProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/CeramicProcessingCapability,Class,,CeramicProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/ChemicalAndPetrochemicalIndustry,Class,,ChemicalAndPetrochemicalIndustry
+securechainkg,http://asu.edu/semantics/SUDOKN/BronzeProcessingCapability,Class,,Bronze
+securechainkg,http://asu.edu/semantics/SUDOKN/BusinessEquipmentIndustry,Class,,Business Equipment
+securechainkg,http://asu.edu/semantics/SUDOKN/CPVCProcessingCapability,Class,,CPVC
+securechainkg,http://asu.edu/semantics/SUDOKN/CTFEProcessingCapability,Class,,CTFE
+securechainkg,http://asu.edu/semantics/SUDOKN/CarbideProcessingCapability,Class,,Carbide
+securechainkg,http://asu.edu/semantics/SUDOKN/CarbonFiberProcessingCapability,Class,,Carbon Fiber
+securechainkg,http://asu.edu/semantics/SUDOKN/CarbonProcessingCapability,Class,,Carbon
+securechainkg,http://asu.edu/semantics/SUDOKN/CastSteelProcessingCapability,Class,,Cast Steel
+securechainkg,http://asu.edu/semantics/SUDOKN/CeramicProcessingCapability,Class,,Ceramic
+securechainkg,http://asu.edu/semantics/SUDOKN/ChemicalAndPetrochemicalIndustry,Class,,Chemical And Petrochemical
 securechainkg,http://asu.edu/semantics/SUDOKN/ChemicalProcessingCapability,Class,,ChemicalProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/ChemicalsProcessingCapability,Class,,ChemicalsProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/ChromiumProcessingCapability,Class,,ChromiumProcessingCapability
+securechainkg,http://asu.edu/semantics/SUDOKN/ChemicalsProcessingCapability,Class,,Chemicals
+securechainkg,http://asu.edu/semantics/SUDOKN/ChromiumProcessingCapability,Class,,Chromium
 securechainkg,http://asu.edu/semantics/SUDOKN/ClyindricalGrindingCapability,Class,,ClyindricalGrindingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/CoalIndustry,Class,,CoalIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/CobaltProcessingCapability,Class,,CobaltProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/ColdRolledSteelProcessingCapability,Class,,ColdRolledSteelProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/CommunicationAndElectronicPowerUtilitiesIndustry,Class,,CommunicationAndElectronicPowerUtilitiesIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/CommunicationsIndustry,Class,,CommunicationsIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/CompositeProcessingCapability,Class,,CompositeProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/ComputerIndustry,Class,,ComputerIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/ConcreteProcessingCapability,Class,,ConcreteProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/ConstructionIndustry,Class,,ConstructionIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/ConsumerGoodsIndustry,Class,,ConsumerGoodsIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/CopperProcessingCapability,Class,,CopperProcessingCapability
+securechainkg,http://asu.edu/semantics/SUDOKN/CoalIndustry,Class,,Coal
+securechainkg,http://asu.edu/semantics/SUDOKN/CobaltProcessingCapability,Class,,Cobalt
+securechainkg,http://asu.edu/semantics/SUDOKN/ColdRolledSteelProcessingCapability,Class,,Cold Rolled Steel
+securechainkg,http://asu.edu/semantics/SUDOKN/CommunicationAndElectronicPowerUtilitiesIndustry,Class,,Communication And Electronic Power Utilities
+securechainkg,http://asu.edu/semantics/SUDOKN/CommunicationsIndustry,Class,,Communications
+securechainkg,http://asu.edu/semantics/SUDOKN/CompositeProcessingCapability,Class,,Composite
+securechainkg,http://asu.edu/semantics/SUDOKN/ComputerIndustry,Class,,Computer
+securechainkg,http://asu.edu/semantics/SUDOKN/ConcreteProcessingCapability,Class,,Concrete
+securechainkg,http://asu.edu/semantics/SUDOKN/ConstructionIndustry,Class,,Construction
+securechainkg,http://asu.edu/semantics/SUDOKN/ConsumerGoodsIndustry,Class,,Consumer Goods
+securechainkg,http://asu.edu/semantics/SUDOKN/CopperProcessingCapability,Class,,Copper
 securechainkg,http://asu.edu/semantics/SUDOKN/CuttoLengthTubingCapability,Class,,CuttoLengthTubingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/DefenseIndustry,Class,,DefenseIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/DelrinProcessingCapability,Class,,DelrinProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/EducationIndustry,Class,,EducationIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/ElectricAutomotiveIndustry,Class,,ElectricAutomotiveIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/ElectronicProductIndustry,Class,,ElectronicProductIndustry
+securechainkg,http://asu.edu/semantics/SUDOKN/DefenseIndustry,Class,,Defense
+securechainkg,http://asu.edu/semantics/SUDOKN/DelrinProcessingCapability,Class,,Delrin
+securechainkg,http://asu.edu/semantics/SUDOKN/EducationIndustry,Class,,Education
+securechainkg,http://asu.edu/semantics/SUDOKN/ElectricAutomotiveIndustry,Class,,Electric Automotive
+securechainkg,http://asu.edu/semantics/SUDOKN/ElectronicProductIndustry,Class,,Electronic Product
 securechainkg,http://asu.edu/semantics/SUDOKN/ElectroplatingCapability,Class,,ElectroplatingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/EnergyIndustry,Class,,EnergyIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/EntertainmentAndMediaIndustry,Class,,EntertainmentAndMediaIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/ErtalyteProcessingCapability,Class,,ErtalyteProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/ExoticMaterialProcessingCapability,Class,,ExoticMaterialProcessingCapability
+securechainkg,http://asu.edu/semantics/SUDOKN/EnergyIndustry,Class,,Energy
+securechainkg,http://asu.edu/semantics/SUDOKN/EntertainmentAndMediaIndustry,Class,,Entertainment And Media
+securechainkg,http://asu.edu/semantics/SUDOKN/ErtalyteProcessingCapability,Class,,Ertalyte
+securechainkg,http://asu.edu/semantics/SUDOKN/ExoticMaterialProcessingCapability,Class,,Exotic Material
 securechainkg,http://asu.edu/semantics/SUDOKN/FDA,Class,,FDA
 securechainkg,http://asu.edu/semantics/SUDOKN/FDA21CFRPart820,Class,,FDA21CFRPart820
 securechainkg,http://asu.edu/semantics/SUDOKN/FDAGMP,Class,,FDAGMP
 securechainkg,http://asu.edu/semantics/SUDOKN/FDAPMA,Class,,FDAPMA
-securechainkg,http://asu.edu/semantics/SUDOKN/FiberGlassProcessingCapability,Class,,FiberGlassProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/FiberProcessingCapability,Class,,FiberProcessingCapability
+securechainkg,http://asu.edu/semantics/SUDOKN/FiberGlassProcessingCapability,Class,,Fiber Glass
+securechainkg,http://asu.edu/semantics/SUDOKN/FiberProcessingCapability,Class,,Fiber
 securechainkg,http://asu.edu/semantics/SUDOKN/FiveAxisMachiningCapability,Class,,FiveAxisMachiningCapability
 securechainkg,http://asu.edu/semantics/SUDOKN/Flux-CoredArcWeldingCapability,Class,,Flux-CoredArcWeldingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/FoamProcessingCapability,Class,,FoamProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/FoodIndustry,Class,,FoodIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/FurnitureIndustry,Class,,FurnitureIndustry
+securechainkg,http://asu.edu/semantics/SUDOKN/FoamProcessingCapability,Class,,Foam
+securechainkg,http://asu.edu/semantics/SUDOKN/FoodIndustry,Class,,Food
+securechainkg,http://asu.edu/semantics/SUDOKN/FurnitureIndustry,Class,,Furniture
 securechainkg,http://asu.edu/semantics/SUDOKN/GasWedlingCapability,Class,,GasWedlingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/GlassProcessingCapability,Class,,GlassProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/GovernmentIndustry,Class,,GovernmentIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/GraphiteProcessingCapability,Class,,GraphiteProcessingCapability
+securechainkg,http://asu.edu/semantics/SUDOKN/GlassProcessingCapability,Class,,Glass
+securechainkg,http://asu.edu/semantics/SUDOKN/GovernmentIndustry,Class,,Government
+securechainkg,http://asu.edu/semantics/SUDOKN/GraphiteProcessingCapability,Class,,Graphite
 securechainkg,http://asu.edu/semantics/SUDOKN/HACCP,Class,,HACCP
-securechainkg,http://asu.edu/semantics/SUDOKN/HDPEProcessingCapability,Class,,HDPEProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/HardwareAndDevicesIndustry,Class,,HardwareAndDevicesIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/HastelloyProcessingCapability,Class,,HastelloyProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/HaynesProcessingCapability,Class,,HaynesProcessingCapability
+securechainkg,http://asu.edu/semantics/SUDOKN/HDPEProcessingCapability,Class,,HDPE
+securechainkg,http://asu.edu/semantics/SUDOKN/HardwareAndDevicesIndustry,Class,,Hardware And Devices
+securechainkg,http://asu.edu/semantics/SUDOKN/HastelloyProcessingCapability,Class,,Hastelloy
+securechainkg,http://asu.edu/semantics/SUDOKN/HaynesProcessingCapability,Class,,Haynes
 securechainkg,http://asu.edu/semantics/SUDOKN/HealthcareIndustry,Class,,HealthcareIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/HighTechIndustry,Class,,HighTechIndustry
+securechainkg,http://asu.edu/semantics/SUDOKN/HighTechIndustry,Class,,High Tech
 securechainkg,http://asu.edu/semantics/SUDOKN/IATF,Class,,IATF
 securechainkg,http://asu.edu/semantics/SUDOKN/IATF16949,Class,,IATF16949
 securechainkg,http://asu.edu/semantics/SUDOKN/ID-ODGrindingCapability,Class,,ID-ODGrindingCapability
@@ -430,422 +430,132 @@ securechainkg,http://asu.edu/semantics/SUDOKN/ISO9000,Class,,ISO9000
 securechainkg,http://asu.edu/semantics/SUDOKN/ISO9001,Class,,ISO9001
 securechainkg,http://asu.edu/semantics/SUDOKN/ISOQuality,Class,,ISOQuality
 securechainkg,http://asu.edu/semantics/SUDOKN/ITAR,Class,,ITAR
-securechainkg,http://asu.edu/semantics/SUDOKN/InconelProcessingCapability,Class,,InconelProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/InformationTechnologyIndustry,Class,,InformationTechnologyIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/InvarProcessingCapability,Class,,InvarProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/IronProcessingCapability,Class,,IronProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/KaptonProcessingCapability,Class,,KaptonProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/KevlarProcessingCapability,Class,,KevlarProcessingCapability
+securechainkg,http://asu.edu/semantics/SUDOKN/InconelProcessingCapability,Class,,Inconel
+securechainkg,http://asu.edu/semantics/SUDOKN/InformationTechnologyIndustry,Class,,Information Technology
+securechainkg,http://asu.edu/semantics/SUDOKN/InvarProcessingCapability,Class,,Invar
+securechainkg,http://asu.edu/semantics/SUDOKN/IronProcessingCapability,Class,,Iron
+securechainkg,http://asu.edu/semantics/SUDOKN/KaptonProcessingCapability,Class,,Kapton
+securechainkg,http://asu.edu/semantics/SUDOKN/KevlarProcessingCapability,Class,,Kevlar
 securechainkg,http://asu.edu/semantics/SUDOKN/KosherApproved,Class,,KosherApproved
-securechainkg,http://asu.edu/semantics/SUDOKN/KovarProcessingCapability,Class,,KovarProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/LDPEProcessingCapability,Class,,LDPEProcessingCapability
+securechainkg,http://asu.edu/semantics/SUDOKN/KovarProcessingCapability,Class,,Kovar
+securechainkg,http://asu.edu/semantics/SUDOKN/LDPEProcessingCapability,Class,,LDPE
 securechainkg,http://asu.edu/semantics/SUDOKN/LEED,Class,,LEED
-securechainkg,http://asu.edu/semantics/SUDOKN/LeadProcessingCapability,Class,,LeadProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/LexanProcessingCapability,Class,,LexanProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/LowAlloySteelLeadProcessingCapability,Class,,LowAlloySteelLeadProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/LuciteProcessingCapability,Class,,LuciteProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/MachineryAndEquipmentIndustry,Class,,MachineryAndEquipmentIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/MagnesiumAlloyProcessingCapability,Class,,MagnesiumAlloyProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/ManMadeFiberProcessingCapability,Class,,ManMadeFiberProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/MarineAndShipbuildingIndustry,Class,,MarineAndShipbuildingIndustry
+securechainkg,http://asu.edu/semantics/SUDOKN/LeadProcessingCapability,Class,,Lead
+securechainkg,http://asu.edu/semantics/SUDOKN/LexanProcessingCapability,Class,,Lexan
+securechainkg,http://asu.edu/semantics/SUDOKN/LowAlloySteelLeadProcessingCapability,Class,,Low Alloy Steel Lead
+securechainkg,http://asu.edu/semantics/SUDOKN/LuciteProcessingCapability,Class,,Lucite
+securechainkg,http://asu.edu/semantics/SUDOKN/MachineryAndEquipmentIndustry,Class,,Machinery And Equipment
+securechainkg,http://asu.edu/semantics/SUDOKN/MagnesiumAlloyProcessingCapability,Class,,Magnesium Alloy
+securechainkg,http://asu.edu/semantics/SUDOKN/ManMadeFiberProcessingCapability,Class,,Man Made Fiber
+securechainkg,http://asu.edu/semantics/SUDOKN/MarineAndShipbuildingIndustry,Class,,Marine And Shipbuilding
 securechainkg,http://asu.edu/semantics/SUDOKN/MechanicalCapability,Class,,MechanicalCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/MedicalDevicesIndustry,Class,,MedicalDevicesIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/MetalProcessingCapability,Class,,MetalProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/MetalProductionIndustry,Class,,MetalProductionIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/MilitaryIndustry,Class,,MilitaryIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/MiningIndustry,Class,,MiningIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/MolybdenumProcessingCapability,Class,,MolybdenumProcessingCapability
+securechainkg,http://asu.edu/semantics/SUDOKN/MedicalDevicesIndustry,Class,,Medical Devices
+securechainkg,http://asu.edu/semantics/SUDOKN/MetalProcessingCapability,Class,,Metal
+securechainkg,http://asu.edu/semantics/SUDOKN/MetalProductionIndustry,Class,,Metal Production
+securechainkg,http://asu.edu/semantics/SUDOKN/MilitaryIndustry,Class,,Military
+securechainkg,http://asu.edu/semantics/SUDOKN/MiningIndustry,Class,,Mining
+securechainkg,http://asu.edu/semantics/SUDOKN/MolybdenumProcessingCapability,Class,,Molybdenum
 securechainkg,http://asu.edu/semantics/SUDOKN/NADCAP,Class,,NADCAP
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311111.0,Class,,NAICS311111.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311119.0,Class,,NAICS311119.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311225.0,Class,,NAICS311225.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311340.0,Class,,NAICS311340.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311412.0,Class,,NAICS311412.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311421.0,Class,,NAICS311421.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311422.0,Class,,NAICS311422.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311423.0,Class,,NAICS311423.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311511.0,Class,,NAICS311511.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311514.0,Class,,NAICS311514.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311520.0,Class,,NAICS311520.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311611.0,Class,,NAICS311611.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311612.0,Class,,NAICS311612.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311613.0,Class,,NAICS311613.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311710.0,Class,,NAICS311710.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311812.0,Class,,NAICS311812.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311813.0,Class,,NAICS311813.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311821.0,Class,,NAICS311821.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311830.0,Class,,NAICS311830.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311919.0,Class,,NAICS311919.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311920.0,Class,,NAICS311920.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311941.0,Class,,NAICS311941.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311942.0,Class,,NAICS311942.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS311999.0,Class,,NAICS311999.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS312111.0,Class,,NAICS312111.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS312112.0,Class,,NAICS312112.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS312113.0,Class,,NAICS312113.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS312120.0,Class,,NAICS312120.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS312130.0,Class,,NAICS312130.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS312140.0,Class,,NAICS312140.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS313110.0,Class,,NAICS313110.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS313210.0,Class,,NAICS313210.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS313310.0,Class,,NAICS313310.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS314110.0,Class,,NAICS314110.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS314120.0,Class,,NAICS314120.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS314910.0,Class,,NAICS314910.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS314994.0,Class,,NAICS314994.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS314999.0,Class,,NAICS314999.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS315120.0,Class,,NAICS315120.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS315250.0,Class,,NAICS315250.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS315990.0,Class,,NAICS315990.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS316110.0,Class,,NAICS316110.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS316210.0,Class,,NAICS316210.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS316990.0,Class,,NAICS316990.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS321113.0,Class,,NAICS321113.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS321114.0,Class,,NAICS321114.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS321215.0,Class,,NAICS321215.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS321911.0,Class,,NAICS321911.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS321912.0,Class,,NAICS321912.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS321918.0,Class,,NAICS321918.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS321920.0,Class,,NAICS321920.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS321991.0,Class,,NAICS321991.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS321992.0,Class,,NAICS321992.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS321999.0,Class,,NAICS321999.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS322110.0,Class,,NAICS322110.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS322120.0,Class,,NAICS322120.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS322130.0,Class,,NAICS322130.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS322211.0,Class,,NAICS322211.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS322219.0,Class,,NAICS322219.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS322220.0,Class,,NAICS322220.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS322230.0,Class,,NAICS322230.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS322291.0,Class,,NAICS322291.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS322299.0,Class,,NAICS322299.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS323111.0,Class,,NAICS323111.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS323113.0,Class,,NAICS323113.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS323117.0,Class,,NAICS323117.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS323120.0,Class,,NAICS323120.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS324110.0,Class,,NAICS324110.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS324121.0,Class,,NAICS324121.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS324122.0,Class,,NAICS324122.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS324191.0,Class,,NAICS324191.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325110.0,Class,,NAICS325110.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325120.0,Class,,NAICS325120.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325180.0,Class,,NAICS325180.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325199.0,Class,,NAICS325199.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325211.0,Class,,NAICS325211.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325311.0,Class,,NAICS325311.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325312.0,Class,,NAICS325312.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325314.0,Class,,NAICS325314.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325315.0,Class,,NAICS325315.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325320.0,Class,,NAICS325320.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325411.0,Class,,NAICS325411.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325412.0,Class,,NAICS325412.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325413.0,Class,,NAICS325413.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325414.0,Class,,NAICS325414.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325510.0,Class,,NAICS325510.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325520.0,Class,,NAICS325520.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325611.0,Class,,NAICS325611.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325612.0,Class,,NAICS325612.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325620.0,Class,,NAICS325620.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325910.0,Class,,NAICS325910.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325920.0,Class,,NAICS325920.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325992.0,Class,,NAICS325992.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS325998.0,Class,,NAICS325998.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS326111.0,Class,,NAICS326111.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS326112.0,Class,,NAICS326112.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS326121.0,Class,,NAICS326121.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS326122.0,Class,,NAICS326122.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS326130.0,Class,,NAICS326130.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS326150.0,Class,,NAICS326150.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS326160.0,Class,,NAICS326160.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS326199.0,Class,,NAICS326199.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS326211.0,Class,,NAICS326211.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS326220.0,Class,,NAICS326220.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS326299.0,Class,,NAICS326299.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS327110.0,Class,,NAICS327110.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS327120.0,Class,,NAICS327120.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS327211.0,Class,,NAICS327211.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS327212.0,Class,,NAICS327212.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS327213.0,Class,,NAICS327213.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS327215.0,Class,,NAICS327215.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS327310.0,Class,,NAICS327310.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS327320.0,Class,,NAICS327320.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS327331.0,Class,,NAICS327331.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS327332.0,Class,,NAICS327332.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS327390.0,Class,,NAICS327390.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS327420.0,Class,,NAICS327420.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS327910.0,Class,,NAICS327910.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS327991.0,Class,,NAICS327991.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS327992.0,Class,,NAICS327992.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS327993.0,Class,,NAICS327993.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS327999.0,Class,,NAICS327999.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS331110.0,Class,,NAICS331110.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS331210.0,Class,,NAICS331210.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS331222.0,Class,,NAICS331222.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS331313.0,Class,,NAICS331313.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS331318.0,Class,,NAICS331318.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS331410.0,Class,,NAICS331410.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS331420.0,Class,,NAICS331420.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS331491.0,Class,,NAICS331491.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS331492.0,Class,,NAICS331492.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS331511.0,Class,,NAICS331511.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS331512.0,Class,,NAICS331512.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS331524.0,Class,,NAICS331524.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS331529.0,Class,,NAICS331529.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332111.0,Class,,NAICS332111.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332112.0,Class,,NAICS332112.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332114.0,Class,,NAICS332114.0
 securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332115.0,Class,,NAICS332115.0
 securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332116.0,Class,,NAICS332116.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332117.0,Class,,NAICS332117.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332119.0,Class,,NAICS332119.0
 securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332211.0,Class,,NAICS332211.0
 securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332212.0,Class,,NAICS332212.0
 securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332213.0,Class,,NAICS332213.0
 securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332214.0,Class,,NAICS332214.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332215.0,Class,,NAICS332215.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332216.0,Class,,NAICS332216.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332311.0,Class,,NAICS332311.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332312.0,Class,,NAICS332312.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332313.0,Class,,NAICS332313.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332321.0,Class,,NAICS332321.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332322.0,Class,,NAICS332322.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332323.0,Class,,NAICS332323.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332410.0,Class,,NAICS332410.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332420.0,Class,,NAICS332420.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332431.0,Class,,NAICS332431.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332439.0,Class,,NAICS332439.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332510.0,Class,,NAICS332510.0
 securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332611.0,Class,,NAICS332611.0
 securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332612.0,Class,,NAICS332612.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332613.0,Class,,NAICS332613.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332618.0,Class,,NAICS332618.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332710.0,Class,,NAICS332710.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332721.0,Class,,NAICS332721.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332722.0,Class,,NAICS332722.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332811.0,Class,,NAICS332811.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332812.0,Class,,NAICS332812.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332813.0,Class,,NAICS332813.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332911.0,Class,,NAICS332911.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332912.0,Class,,NAICS332912.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332913.0,Class,,NAICS332913.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332919.0,Class,,NAICS332919.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332991.0,Class,,NAICS332991.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332992.0,Class,,NAICS332992.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332994.0,Class,,NAICS332994.0
 securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332995.0,Class,,NAICS332995.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332996.0,Class,,NAICS332996.0
 securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332997.0,Class,,NAICS332997.0
 securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332998.0,Class,,NAICS332998.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS332999.0,Class,,NAICS332999.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333111.0,Class,,NAICS333111.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333112.0,Class,,NAICS333112.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333120.0,Class,,NAICS333120.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333131.0,Class,,NAICS333131.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333132.0,Class,,NAICS333132.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333241.0,Class,,NAICS333241.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333242.0,Class,,NAICS333242.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333243.0,Class,,NAICS333243.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333248.0,Class,,NAICS333248.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333310.0,Class,,NAICS333310.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333413.0,Class,,NAICS333413.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333414.0,Class,,NAICS333414.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333415.0,Class,,NAICS333415.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333511.0,Class,,NAICS333511.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333514.0,Class,,NAICS333514.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333515.0,Class,,NAICS333515.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333517.0,Class,,NAICS333517.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333519.0,Class,,NAICS333519.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333611.0,Class,,NAICS333611.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333618.0,Class,,NAICS333618.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333912.0,Class,,NAICS333912.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333914.0,Class,,NAICS333914.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333922.0,Class,,NAICS333922.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333923.0,Class,,NAICS333923.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333924.0,Class,,NAICS333924.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333991.0,Class,,NAICS333991.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333992.0,Class,,NAICS333992.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333993.0,Class,,NAICS333993.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333994.0,Class,,NAICS333994.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333996.0,Class,,NAICS333996.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS333998.0,Class,,NAICS333998.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334111.0,Class,,NAICS334111.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334112.0,Class,,NAICS334112.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334118.0,Class,,NAICS334118.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334210.0,Class,,NAICS334210.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334220.0,Class,,NAICS334220.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334290.0,Class,,NAICS334290.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334310.0,Class,,NAICS334310.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334412.0,Class,,NAICS334412.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334413.0,Class,,NAICS334413.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334416.0,Class,,NAICS334416.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334417.0,Class,,NAICS334417.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334418.0,Class,,NAICS334418.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334419.0,Class,,NAICS334419.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334510.0,Class,,NAICS334510.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334511.0,Class,,NAICS334511.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334512.0,Class,,NAICS334512.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334513.0,Class,,NAICS334513.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334514.0,Class,,NAICS334514.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334515.0,Class,,NAICS334515.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334516.0,Class,,NAICS334516.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334519.0,Class,,NAICS334519.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS334610.0,Class,,NAICS334610.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS335131.0,Class,,NAICS335131.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS335132.0,Class,,NAICS335132.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS335139.0,Class,,NAICS335139.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS335210.0,Class,,NAICS335210.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS335220.0,Class,,NAICS335220.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS335311.0,Class,,NAICS335311.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS335312.0,Class,,NAICS335312.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS335313.0,Class,,NAICS335313.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS335314.0,Class,,NAICS335314.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS335910.0,Class,,NAICS335910.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS335921.0,Class,,NAICS335921.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS335929.0,Class,,NAICS335929.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS335931.0,Class,,NAICS335931.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS335932.0,Class,,NAICS335932.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS335991.0,Class,,NAICS335991.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS335999.0,Class,,NAICS335999.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336110.0,Class,,NAICS336110.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336120.0,Class,,NAICS336120.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336211.0,Class,,NAICS336211.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336212.0,Class,,NAICS336212.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336214.0,Class,,NAICS336214.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336310.0,Class,,NAICS336310.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336320.0,Class,,NAICS336320.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336330.0,Class,,NAICS336330.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336340.0,Class,,NAICS336340.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336350.0,Class,,NAICS336350.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336360.0,Class,,NAICS336360.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336370.0,Class,,NAICS336370.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336390.0,Class,,NAICS336390.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336411.0,Class,,NAICS336411.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336412.0,Class,,NAICS336412.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336413.0,Class,,NAICS336413.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336414.0,Class,,NAICS336414.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336415.0,Class,,NAICS336415.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336419.0,Class,,NAICS336419.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336510.0,Class,,NAICS336510.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336611.0,Class,,NAICS336611.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336612.0,Class,,NAICS336612.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336991.0,Class,,NAICS336991.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336992.0,Class,,NAICS336992.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS336999.0,Class,,NAICS336999.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS337110.0,Class,,NAICS337110.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS337121.0,Class,,NAICS337121.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS337122.0,Class,,NAICS337122.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS337126.0,Class,,NAICS337126.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS337127.0,Class,,NAICS337127.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS337211.0,Class,,NAICS337211.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS337212.0,Class,,NAICS337212.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS337214.0,Class,,NAICS337214.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS337215.0,Class,,NAICS337215.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS337910.0,Class,,NAICS337910.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS337920.0,Class,,NAICS337920.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS339112.0,Class,,NAICS339112.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS339113.0,Class,,NAICS339113.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS339114.0,Class,,NAICS339114.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS339115.0,Class,,NAICS339115.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS339116.0,Class,,NAICS339116.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS339910.0,Class,,NAICS339910.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS339920.0,Class,,NAICS339920.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS339930.0,Class,,NAICS339930.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS339940.0,Class,,NAICS339940.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS339950.0,Class,,NAICS339950.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS339991.0,Class,,NAICS339991.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS339992.0,Class,,NAICS339992.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS339994.0,Class,,NAICS339994.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS339995.0,Class,,NAICS339995.0
-securechainkg,http://asu.edu/semantics/SUDOKN/NAICS339999.0,Class,,NAICS339999.0
 securechainkg,http://asu.edu/semantics/SUDOKN/NIST,Class,,NIST
 securechainkg,http://asu.edu/semantics/SUDOKN/NIST800171,Class,,NIST800171
-securechainkg,http://asu.edu/semantics/SUDOKN/NaturalFiberProcessingCapability,Class,,NaturalFiberProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/NickelProcessingCapability,Class,,NickelProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/NorylProcessingCapability,Class,,NorylProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/NuclearEnergyIndustry,Class,,NuclearEnergyIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/NylonProcessingCapability,Class,,NylonProcessingCapability
+securechainkg,http://asu.edu/semantics/SUDOKN/NaturalFiberProcessingCapability,Class,,Natural Fiber
+securechainkg,http://asu.edu/semantics/SUDOKN/NickelProcessingCapability,Class,,Nickel
+securechainkg,http://asu.edu/semantics/SUDOKN/NorylProcessingCapability,Class,,Noryl
+securechainkg,http://asu.edu/semantics/SUDOKN/NuclearEnergyIndustry,Class,,Nuclear Energy
+securechainkg,http://asu.edu/semantics/SUDOKN/NylonProcessingCapability,Class,,Nylon
 securechainkg,http://asu.edu/semantics/SUDOKN/OHSAS18001,Class,,OHSAS18001
 securechainkg,http://asu.edu/semantics/SUDOKN/OccupationalHealthAndSafety,Class,,OccupationalHealthAndSafety
-securechainkg,http://asu.edu/semantics/SUDOKN/OffshoreWindEnergyIndustry,Class,,OffshoreWindEnergyIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/OilAndGasIndustry,Class,,OilAndGasIndustry
+securechainkg,http://asu.edu/semantics/SUDOKN/OffshoreWindEnergyIndustry,Class,,Offshore Wind Energy
+securechainkg,http://asu.edu/semantics/SUDOKN/OilAndGasIndustry,Class,,Oil And Gas
 securechainkg,http://asu.edu/semantics/SUDOKN/Oxy-FuelCuttingCapability,Class,,Oxy-FuelCuttingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/PETProcessingCapability,Class,,PETProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/PPSProcessingCapability,Class,,PPSProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/PVCProcessingCapability,Class,,PVCProcessingCapability
+securechainkg,http://asu.edu/semantics/SUDOKN/PETProcessingCapability,Class,,PET
+securechainkg,http://asu.edu/semantics/SUDOKN/PPSProcessingCapability,Class,,PPS
+securechainkg,http://asu.edu/semantics/SUDOKN/PVCProcessingCapability,Class,,PVC
 securechainkg,http://asu.edu/semantics/SUDOKN/PaintingCapability,Class,,PaintingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/PalladiumProcessingCapability,Class,,PalladiumProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/PaperIndustry,Class,,PaperIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/PaperboardProductsIndustry,Class,,PaperboardProductsIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/PeekProcessingCapability,Class,,PeekProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/PharmaceuticalIndustry,Class,,PharmaceuticalIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/PhosphorBronzeProcessingCapability,Class,,PhosphorBronzeProcessingCapability
+securechainkg,http://asu.edu/semantics/SUDOKN/PalladiumProcessingCapability,Class,,Palladium
+securechainkg,http://asu.edu/semantics/SUDOKN/PaperIndustry,Class,,Paper
+securechainkg,http://asu.edu/semantics/SUDOKN/PaperboardProductsIndustry,Class,,Paperboard Products
+securechainkg,http://asu.edu/semantics/SUDOKN/PeekProcessingCapability,Class,,Peek
+securechainkg,http://asu.edu/semantics/SUDOKN/PharmaceuticalIndustry,Class,,Pharmaceutical
+securechainkg,http://asu.edu/semantics/SUDOKN/PhosphorBronzeProcessingCapability,Class,,Phosphor Bronze
 securechainkg,http://asu.edu/semantics/SUDOKN/PhotochemicalMachiningCapability,Class,,PhotochemicalMachiningCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/PlasticAndRubberIndustry,Class,,PlasticAndRubberIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/PlasticProcessingCapability,Class,,PlasticProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/PlatinumProcessingCapability,Class,,PlatinumProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/PlexiglasProcessingCapability,Class,,PlexiglasProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/PolycarbonateProcessingCapability,Class,,PolycarbonateProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/PolyethyleneProcessingCapability,Class,,PolyethyleneProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/PolysulfoneProcessingCapability,Class,,PolysulfoneProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/PolywoodProcessingCapability,Class,,PolywoodProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/PrintingAndInformationIndustry,Class,,PrintingAndInformationIndustry
+securechainkg,http://asu.edu/semantics/SUDOKN/PlasticAndRubberIndustry,Class,,Plastic And Rubber
+securechainkg,http://asu.edu/semantics/SUDOKN/PlasticProcessingCapability,Class,,Plastic
+securechainkg,http://asu.edu/semantics/SUDOKN/PlatinumProcessingCapability,Class,,Platinum
+securechainkg,http://asu.edu/semantics/SUDOKN/PlexiglasProcessingCapability,Class,,Plexiglas
+securechainkg,http://asu.edu/semantics/SUDOKN/PolycarbonateProcessingCapability,Class,,Polycarbonate
+securechainkg,http://asu.edu/semantics/SUDOKN/PolyethyleneProcessingCapability,Class,,Polyethylene
+securechainkg,http://asu.edu/semantics/SUDOKN/PolysulfoneProcessingCapability,Class,,Polysulfone
+securechainkg,http://asu.edu/semantics/SUDOKN/PolywoodProcessingCapability,Class,,Polywood
+securechainkg,http://asu.edu/semantics/SUDOKN/PrintingAndInformationIndustry,Class,,Printing And Information
 securechainkg,http://asu.edu/semantics/SUDOKN/Professional,Class,,Professional
 securechainkg,http://asu.edu/semantics/SUDOKN/QS9000,Class,,QS9000
 securechainkg,http://asu.edu/semantics/SUDOKN/QSQuality,Class,,QSQuality
 securechainkg,http://asu.edu/semantics/SUDOKN/Quality,Class,,Quality
-securechainkg,http://asu.edu/semantics/SUDOKN/RadelProcessingCapability,Class,,RadelProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/RecyclingIndustry,Class,,RecyclingIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/RenewableEnergyIndustry,Class,,RenewableEnergyIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/RestaurantIndustry,Class,,RestaurantIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/RetailIndustry,Class,,RetailIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/RoboticInAutomotiveIndustry,Class,,RoboticInAutomotiveIndustry
+securechainkg,http://asu.edu/semantics/SUDOKN/RadelProcessingCapability,Class,,Radel
+securechainkg,http://asu.edu/semantics/SUDOKN/RecyclingIndustry,Class,,Recycling
+securechainkg,http://asu.edu/semantics/SUDOKN/RenewableEnergyIndustry,Class,,Renewable Energy
+securechainkg,http://asu.edu/semantics/SUDOKN/RestaurantIndustry,Class,,Restaurant
+securechainkg,http://asu.edu/semantics/SUDOKN/RetailIndustry,Class,,Retail
+securechainkg,http://asu.edu/semantics/SUDOKN/RoboticInAutomotiveIndustry,Class,,Robotic In Automotive
 securechainkg,http://asu.edu/semantics/SUDOKN/RubberInjectionmMoldingCapability,Class,,RubberInjectionmMoldingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/RubberProcessingCapability,Class,,RubberProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/RytonProcessingCapability,Class,,RytonProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/SemiconductorIndustry,Class,,SemiconductorIndustry
+securechainkg,http://asu.edu/semantics/SUDOKN/RubberProcessingCapability,Class,,Rubber
+securechainkg,http://asu.edu/semantics/SUDOKN/RytonProcessingCapability,Class,,Ryton
+securechainkg,http://asu.edu/semantics/SUDOKN/SemiconductorIndustry,Class,,Semiconductor
 securechainkg,http://asu.edu/semantics/SUDOKN/SevenAxisMachiningCapability,Class,,SevenAxisMachiningCapability
 securechainkg,http://asu.edu/semantics/SUDOKN/SheetMetalProcessingCapability,Class,,SheetMetalProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/SiliconeProcessingCapability,Class,,SiliconeProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/SilverProcessingCapability,Class,,SilverProcessingCapability
+securechainkg,http://asu.edu/semantics/SUDOKN/SiliconeProcessingCapability,Class,,Silicone
+securechainkg,http://asu.edu/semantics/SUDOKN/SilverProcessingCapability,Class,,Silver
 securechainkg,http://asu.edu/semantics/SUDOKN/Single-PointCuttingCapability,Class,,Single-PointCuttingCapability
 securechainkg,http://asu.edu/semantics/SUDOKN/SlittingCapabilityCapability,Class,,SlittingCapabilityCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/SolarPowerIndustry,Class,,SolarPowerIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/SportsAndLeisureIndustry,Class,,SportsAndLeisureIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/StainlessSteelProcessingCapability,Class,,StainlessSteelProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/SteelProcessingCapability,Class,,SteelProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/SuperAlloyProcessingCapability,Class,,SuperAlloyProcessingCapability
+securechainkg,http://asu.edu/semantics/SUDOKN/SolarPowerIndustry,Class,,Solar Power
+securechainkg,http://asu.edu/semantics/SUDOKN/SportsAndLeisureIndustry,Class,,Sports And Leisure
+securechainkg,http://asu.edu/semantics/SUDOKN/StainlessSteelProcessingCapability,Class,,Stainless Steel
+securechainkg,http://asu.edu/semantics/SUDOKN/SteelProcessingCapability,Class,,Steel
+securechainkg,http://asu.edu/semantics/SUDOKN/SuperAlloyProcessingCapability,Class,,Super Alloy
 securechainkg,http://asu.edu/semantics/SUDOKN/TL9000,Class,,TL9000
 securechainkg,http://asu.edu/semantics/SUDOKN/TLQuality,Class,,TLQuality
-securechainkg,http://asu.edu/semantics/SUDOKN/TantalumProcessingCapability,Class,,TantalumProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/TechtronProcessingCapability,Class,,TechtronProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/TeflonProcessingCapability,Class,,TeflonProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/TelecommunicationsIndustry,Class,,TelecommunicationsIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/TextilesIndustry,Class,,TextilesIndustry
+securechainkg,http://asu.edu/semantics/SUDOKN/TantalumProcessingCapability,Class,,Tantalum
+securechainkg,http://asu.edu/semantics/SUDOKN/TechtronProcessingCapability,Class,,Techtron
+securechainkg,http://asu.edu/semantics/SUDOKN/TeflonProcessingCapability,Class,,Teflon
+securechainkg,http://asu.edu/semantics/SUDOKN/TelecommunicationsIndustry,Class,,Telecommunications
+securechainkg,http://asu.edu/semantics/SUDOKN/TextilesIndustry,Class,,Textiles
 securechainkg,http://asu.edu/semantics/SUDOKN/ThermalJoiningCapability,Class,,ThermalJoiningCapability
 securechainkg,http://asu.edu/semantics/SUDOKN/ThermaweldingCapability,Class,,ThermaweldingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/TitaniumProcessingCapability,Class,,TitaniumProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/ToolAndDieIndustry,Class,,ToolAndDieIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/TorlonProcessingCapability,Class,,TorlonProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/TransportationIndustry,Class,,TransportationIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/TuffakProcessingCapability,Class,,TuffakProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/TungstenProcessingCapability,Class,,TungstenProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/UHMWProcessingCapability,Class,,UHMWProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/UrethaneProcessingCapability,Class,,UrethaneProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/UtilitiesIndustry,Class,,UtilitiesIndustry
+securechainkg,http://asu.edu/semantics/SUDOKN/TitaniumProcessingCapability,Class,,Titanium
+securechainkg,http://asu.edu/semantics/SUDOKN/ToolAndDieIndustry,Class,,Tool And Die
+securechainkg,http://asu.edu/semantics/SUDOKN/TorlonProcessingCapability,Class,,Torlon
+securechainkg,http://asu.edu/semantics/SUDOKN/TransportationIndustry,Class,,Transportation
+securechainkg,http://asu.edu/semantics/SUDOKN/TuffakProcessingCapability,Class,,Tuffak
+securechainkg,http://asu.edu/semantics/SUDOKN/TungstenProcessingCapability,Class,,Tungsten
+securechainkg,http://asu.edu/semantics/SUDOKN/UHMWProcessingCapability,Class,,UHMW
+securechainkg,http://asu.edu/semantics/SUDOKN/UrethaneProcessingCapability,Class,,Urethane
+securechainkg,http://asu.edu/semantics/SUDOKN/UtilitiesIndustry,Class,,Utilities
 securechainkg,http://asu.edu/semantics/SUDOKN/VDA,Class,,VDA
-securechainkg,http://asu.edu/semantics/SUDOKN/VespelProcessingCapability,Class,,VespelProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/WarehousingAndStorageIndustry,Class,,WarehousingAndStorageIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/WaspaloyProcessingCapability,Class,,WaspaloyProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/WaterAndSewerUtilitiesIndustry,Class,,WaterAndSewerUtilitiesIndustry
+securechainkg,http://asu.edu/semantics/SUDOKN/VespelProcessingCapability,Class,,Vespel
+securechainkg,http://asu.edu/semantics/SUDOKN/WarehousingAndStorageIndustry,Class,,Warehousing And Storage
+securechainkg,http://asu.edu/semantics/SUDOKN/WaspaloyProcessingCapability,Class,,Waspaloy
+securechainkg,http://asu.edu/semantics/SUDOKN/WaterAndSewerUtilitiesIndustry,Class,,Water And Sewer Utilities
 securechainkg,http://asu.edu/semantics/SUDOKN/WaveSoldeingCapability,Class,,WaveSoldeingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/WindEnergyIndustry,Class,,WindEnergyIndustry
+securechainkg,http://asu.edu/semantics/SUDOKN/WindEnergyIndustry,Class,,Wind Energy
 securechainkg,http://asu.edu/semantics/SUDOKN/WireDawingCapability,Class,,WireDawingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/WoodProcessingCapability,Class,,WoodProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/WoodProductManufacturingIndustry,Class,,WoodProductManufacturingIndustry
-securechainkg,http://asu.edu/semantics/SUDOKN/ZeluxProcessingCapability,Class,,ZeluxProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/ZincAlloyProcessingCapability,Class,,ZincAlloyProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/ZirconProcessingCapability,Class,,ZirconProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/ZytelProcessingCapability,Class,,ZytelProcessingCapability
+securechainkg,http://asu.edu/semantics/SUDOKN/WoodProcessingCapability,Class,,Wood
+securechainkg,http://asu.edu/semantics/SUDOKN/WoodProductManufacturingIndustry,Class,,Wood Product Manufacturing
+securechainkg,http://asu.edu/semantics/SUDOKN/ZeluxProcessingCapability,Class,,Zelux
+securechainkg,http://asu.edu/semantics/SUDOKN/ZincAlloyProcessingCapability,Class,,Zinc Alloy
+securechainkg,http://asu.edu/semantics/SUDOKN/ZirconProcessingCapability,Class,,Zircon
+securechainkg,http://asu.edu/semantics/SUDOKN/ZytelProcessingCapability,Class,,Zytel
 securechainkg,http://asu.edu/semantics/SUDOKN/aerospaceIndustry,Class,,aerospaceIndustry
 securechainkg,http://asu.edu/semantics/SUDOKN/apparelIndustry,Class,,apparelIndustry
 securechainkg,http://asu.edu/semantics/SUDOKN/beverageIndustry,Class,,beverageIndustry
@@ -886,7 +596,7 @@ securechainkg,http://asu.edu/semantics/SUDOKN/transportationIndustry,Class,,tran
 securechainkg,http://asu.edu/semantics/SUDOKN/waterandsewerutilitiesIndustry,Class,,waterandsewerutilitiesIndustry
 securechainkg,http://asu.edu/semantics/SUDOKN/watertreatmentandmanagementIndustry,Class,,watertreatmentandmanagementIndustry
 securechainkg,http://asu.edu/semantics/SUDOKN/zincalloyProcessingCapability,Class,,zincalloyProcessingCapability
-securechainkg,http://asu.edu/semantics/SUDOKN/hasNAICSCodeValue,Predicate,,hasNAICSCodeValue
+securechainkg,http://asu.edu/semantics/SUDOKN/hasNAICSCodeValue,Predicate,,has NAICS code value
 sockg,http://purl.org/spatialai/spatial/spatial-full#spatiallyRelatedTo,Predicate,,topological connection (spatial contact) (sawgraph)
 sockg,http://stko-kwg.geog.ucsb.edu/lod/ontology/spatialRelation,Predicate,,spatial relation (kwg)
 sockg,https://idir.uta.edu/sockg-ontology#hasStandardDeviation,Predicate,,hasStandardDeviation
@@ -1027,75 +737,6 @@ sudokn,http://asu.edu/semantics/SUDOKN/MilitaryIndustry,Class,,Military
 sudokn,http://asu.edu/semantics/SUDOKN/MiningIndustry,Class,,Mining
 sudokn,http://asu.edu/semantics/SUDOKN/MolybdenumProcessingCapability,Class,,Molybdenum
 sudokn,http://asu.edu/semantics/SUDOKN/NADCAPCertificate,Class,,NADCAP
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS111,Class,,NAICS 111
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS221,Class,,NAICS 221
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS236,Class,,NAICS 236
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS237,Class,,NAICS 237
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS238,Class,,NAICS 238
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS311,Class,,NAICS 311
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS312,Class,,NAICS 312
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS313,Class,,NAICS 313
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS314,Class,,NAICS 314
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS315,Class,,NAICS 315
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS316,Class,,NAICS 316
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS321,Class,,NAICS 321
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS322,Class,,NAICS 322
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS3231,Class,,NAICS 3231
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS325,Class,,NAICS 325
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS326,Class,,NAICS 326
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS327,Class,,NAICS 327
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332111,Class,,NAICS 332111
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332112,Class,,NAICS 332112
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332114,Class,,NAICS 332114
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332117,Class,,NAICS 332117
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332119,Class,,NAICS 332119
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332215,Class,,NAICS 332215
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332216,Class,,NAICS 332216
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332311,Class,,NAICS 332311
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332312,Class,,NAICS 332312
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332313,Class,,NAICS 332313
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332321,Class,,NAICS 332321
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332322,Class,,NAICS 332322
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332323,Class,,NAICS 332323
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332410,Class,,NAICS 332410
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332420,Class,,NAICS 332420
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332431,Class,,NAICS 332431
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332439,Class,,NAICS 332439
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332510,Class,,NAICS 332510
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332613,Class,,NAICS 332613
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332618,Class,,NAICS 332618
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332710,Class,,NAICS 332710
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332721,Class,,NAICS 332721
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332722,Class,,NAICS 332722
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332811,Class,,NAICS 332811
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332812,Class,,NAICS 332812
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332813,Class,,NAICS 332813
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332911,Class,,NAICS 332911
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332912,Class,,NAICS 332912
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332913,Class,,NAICS 332913
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332919,Class,,NAICS 332919
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332991,Class,,NAICS 332991
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332992,Class,,NAICS 332992
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332993,Class,,NAICS 332993
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332994,Class,,NAICS 332994
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332996,Class,,NAICS 332996
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS332999,Class,,NAICS 332999
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS423,Class,,NAICS 423
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS424,Class,,NAICS 424
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS444,Class,,NAICS 444
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS481,Class,,NAICS 481
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS483,Class,,NAICS 483
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS484,Class,,NAICS 484
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS487,Class,,NAICS 487
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS491110,Class,,NAICS 491110
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS517,Class,,NAICS 517
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS541,Class,,NAICS 541
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS562,Class,,NAICS 562
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS611,Class,,NAICS 611
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS622,Class,,NAICS 622
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS811,Class,,NAICS 811
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS927110,Class,,NAICS 927110
-sudokn,http://asu.edu/semantics/SUDOKN/NAICS9281,Class,,NAICS 9281
 sudokn,http://asu.edu/semantics/SUDOKN/NIST800171Certificate,Class,,NIST 800171
 sudokn,http://asu.edu/semantics/SUDOKN/NISTCertificate,Class,,NIST
 sudokn,http://asu.edu/semantics/SUDOKN/NativeAmericanOwned,Class,,Native American Owned
@@ -1216,44 +857,44 @@ ubergraph,http://n2o.neo/custom/cell_set_label,Predicate,,cell_set_label
 ubergraph,http://n2o.neo/custom/cell_set_preferred_alias,Predicate,,cell_set_preferred_alias
 ubergraph,http://n2o.neo/custom/node_metadata,Predicate,,node_metadata
 ubergraph,http://n2o.neo/custom/original_label,Predicate,,original_label
-ubergraph,http://purl.obolibrary.org/obo/CLM_0010005,Predicate,,CLM_0010005
+ubergraph,http://purl.obolibrary.org/obo/CLM_0010005,Predicate,,cluster id
 ubergraph,http://purl.obolibrary.org/obo/PCL_0010051,Predicate,,cell_type_rank
 ubergraph,http://purl.obolibrary.org/obo/PCL_0010059,Predicate,,cluster id
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CCF_acronym_freq,Predicate,,CCF_acronym_freq
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CCF_broad_freq,Predicate,,CCF_broad_freq
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CTX_cluster_id,Predicate,,CTX_cluster_id
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CTX_cluster_label,Predicate,,CTX_cluster_label
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CTX_neighborhood_id,Predicate,,CTX_neighborhood_id
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CTX_neighborhood_label,Predicate,,CTX_neighborhood_label
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CTX_size,Predicate,,CTX_size
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CTX_subclass_id,Predicate,,CTX_subclass_id
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CTX_subclass_label,Predicate,,CTX_subclass_label
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CTX_supertype_id,Predicate,,CTX_supertype_id
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CTX_supertype_label,Predicate,,CTX_supertype_label
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CCF_acronym_freq,Predicate,,CCF acronym freq
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CCF_broad_freq,Predicate,,CCF broad freq
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CTX_cluster_id,Predicate,,CTX cluster id
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CTX_cluster_label,Predicate,,CTX cluster label
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CTX_neighborhood_id,Predicate,,CTX neighborhood id
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CTX_neighborhood_label,Predicate,,CTX neighborhood label
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CTX_size,Predicate,,CTX size
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CTX_subclass_id,Predicate,,CTX subclass id
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CTX_subclass_label,Predicate,,CTX subclass label
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CTX_supertype_id,Predicate,,CTX supertype id
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#CTX_supertype_label,Predicate,,CTX supertype label
 ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#Dark,Predicate,,Dark
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#F,Predicate,,F
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#F,Predicate,,Female
 ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#Glial,Predicate,,Glial
 ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#Light,Predicate,,Light
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#M,Predicate,,M
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#M,Predicate,,Male
 ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#Neuronal,Predicate,,Neuronal
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#anatomical_annotation,Predicate,,anatomical_annotation
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#cluster_TF_markers_combo,Predicate,,cluster_TF_markers_combo
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#cluster_markers_combo,Predicate,,cluster_markers_combo
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#cluster_markers_combo__within_subclass_,Predicate,,cluster_markers_combo__within_subclass_
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#merfish_markers_combo,Predicate,,merfish_markers_combo
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#multiome_size,Predicate,,multiome_size
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#anatomical_annotation,Predicate,,anatomical annotation
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#cluster_TF_markers_combo,Predicate,,cluster TF markers combo
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#cluster_markers_combo,Predicate,,cluster markers combo
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#cluster_markers_combo__within_subclass_,Predicate,,cluster markers combo (within subclass)
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#merfish_markers_combo,Predicate,,merfish markers combo
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#multiome_size,Predicate,,multiome size
 ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#neighborhood,Predicate,,neighborhood
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#np_markers,Predicate,,np_markers
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#nt_markers,Predicate,,nt_markers
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#nt_type_combo_label,Predicate,,nt_type_combo_label
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#nt_type_label,Predicate,,nt_type_label
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#np_markers,Predicate,,np markers
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#nt_markers,Predicate,,nt markers
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#nt_type_combo_label,Predicate,,nt type combo label
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#nt_type_label,Predicate,,nt type label
 ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#sex_bias,Predicate,,sex_bias
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#subclass_markers_combo,Predicate,,subclass_markers_combo
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#subclass_tf_markers_combo,Predicate,,subclass_tf_markers_combo
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#supertype_markers_combo,Predicate,,supertype_markers_combo
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#supertype_markers_combo__within_subclass_,Predicate,,supertype_markers_combo__within_subclass_
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#v2_size,Predicate,,v2_size
-ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#v3_size,Predicate,,v3_size
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#subclass_markers_combo,Predicate,,subclass markers combo
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#subclass_tf_markers_combo,Predicate,,subclass tf markers combo
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#supertype_markers_combo,Predicate,,supertype markers combo
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#supertype_markers_combo__within_subclass_,Predicate,,supertype markers combo (within_subclass)
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#v2_size,Predicate,,v2 size
+ubergraph,https://purl.brain-bican.org/taxonomy/CCN20230722#v3_size,Predicate,,v3 size
 ubergraph,http://purl.obolibrary.org/obo/PCL_0010052,Predicate,,cell_types_count
 ubergraph,http://purl.obolibrary.org/obo/PCL_0010053,Predicate,,cell_subclasses_count
 ubergraph,http://purl.obolibrary.org/obo/PCL_0010054,Predicate,,cell_classes_count
@@ -1272,8 +913,8 @@ ubergraph,http://reasoner.renci.org/vocab/normalizedSubClassInformationContent,P
 ubergraph,http://reasoner.renci.org/vocab/referenceCount,Predicate,,referenceCount
 ubergraph,http://www.geneontology.org/formats/oboInOwl#hasScope,Predicate,,has_scope
 ubergraph,http://www.geneontology.org/formats/oboInOwl#is_class_level,Predicate,,is_class_level
-ubergraph,http://www.geneontology.org/formats/oboInOwl#is_metadata_tag,Predicate,,is_metadata_tag
-ubergraph,http://purl.obolibrary.org/obo/CLM_0010002,Predicate,,CLM_0010002
+ubergraph,http://www.geneontology.org/formats/oboInOwl#is_metadata_tag,Predicate,,OIO_is_metadata_tag
+ubergraph,http://purl.obolibrary.org/obo/CLM_0010002,Predicate,,cell ratio
 ubergraph,http://purl.obolibrary.org/obo/IAO_0010000,Predicate,,has axiom label
 ubergraph,http://purl.obolibrary.org/obo/NCIT_P379,Predicate,,Definition_Reviewer_Name
 ubergraph,http://purl.obolibrary.org/obo/NCIT_P380,Predicate,,Definition_Review_Date
@@ -1339,24 +980,24 @@ ubergraph,http://www.geneontology.org/formats/oboInOwl#url,Predicate,,url
 ubergraph,http://www.geneontology.org/formats/oboInOwl#version,Predicate,,version
 ubergraph,https://w3id.org/sssom/mapping_justification,Predicate,,mapping_justification
 ubergraph,https://w3id.org/sssom/mapping_provider,Predicate,,mapping_provider
-ubergraph,http://purl.obolibrary.org/obo/BFO_0000052,Predicate,,BFO_0000052
-ubergraph,http://purl.obolibrary.org/obo/BFO_0000056,Predicate,,BFO_0000056
-ubergraph,http://purl.obolibrary.org/obo/BFO_0000057,Predicate,,BFO_0000057
-ubergraph,http://purl.obolibrary.org/obo/BFO_0000068,Predicate,,BFO_0000068
-ubergraph,http://purl.obolibrary.org/obo/BFO_0000085,Predicate,,BFO_0000085
+ubergraph,http://purl.obolibrary.org/obo/BFO_0000052,Predicate,,inheres in
+ubergraph,http://purl.obolibrary.org/obo/BFO_0000056,Predicate,,participates in at some time
+ubergraph,http://purl.obolibrary.org/obo/BFO_0000057,Predicate,,has participant
+ubergraph,http://purl.obolibrary.org/obo/BFO_0000068,Predicate,,begins to exist during
+ubergraph,http://purl.obolibrary.org/obo/BFO_0000085,Predicate,,has function at some time
 ubergraph,http://purl.obolibrary.org/obo/BFO_0000087,Predicate,,BFO_0000087
-ubergraph,http://purl.obolibrary.org/obo/BFO_0000110,Predicate,,BFO_0000110
+ubergraph,http://purl.obolibrary.org/obo/BFO_0000110,Predicate,,has continuant part at all times
 ubergraph,http://purl.obolibrary.org/obo/BFO_0000137,Predicate,,BFO_0000137
-ubergraph,http://purl.obolibrary.org/obo/BFO_0000174,Predicate,,BFO_0000174
-ubergraph,http://purl.obolibrary.org/obo/BFO_0000175,Predicate,,BFO_0000175
-ubergraph,http://purl.obolibrary.org/obo/BFO_0000178,Predicate,,BFO_0000178
+ubergraph,http://purl.obolibrary.org/obo/BFO_0000174,Predicate,,has proper continuant part at some time
+ubergraph,http://purl.obolibrary.org/obo/BFO_0000175,Predicate,,proper part of continuant at some time
+ubergraph,http://purl.obolibrary.org/obo/BFO_0000178,Predicate,,has continuant part at some time
 ubergraph,http://purl.obolibrary.org/obo/BSPO_0001113,Predicate,,preaxialmost part of
 ubergraph,http://purl.obolibrary.org/obo/BSPO_0001115,Predicate,,postaxialmost part of
 ubergraph,http://purl.obolibrary.org/obo/BSPO_0015002,Predicate,,follows axis
 ubergraph,http://purl.obolibrary.org/obo/BSPO_0015003,Predicate,,has axis
-ubergraph,http://purl.obolibrary.org/obo/CLM_0010001,Predicate,,CLM_0010001
-ubergraph,http://purl.obolibrary.org/obo/CLM_0010003,Predicate,,CLM_0010003
-ubergraph,http://purl.obolibrary.org/obo/CLM_0010004,Predicate,,CLM_0010004
+ubergraph,http://purl.obolibrary.org/obo/CLM_0010001,Predicate,,some soma located in
+ubergraph,http://purl.obolibrary.org/obo/CLM_0010003,Predicate,,has marker set
+ubergraph,http://purl.obolibrary.org/obo/CLM_0010004,Predicate,,recall
 ubergraph,http://purl.obolibrary.org/obo/CL_4030044,Predicate,,has_not_completed
 ubergraph,http://purl.obolibrary.org/obo/CL_4030045,Predicate,,lacks_part
 ubergraph,http://purl.obolibrary.org/obo/CL_4030046,Predicate,,lacks_plasma_membrane_part
@@ -1367,8 +1008,8 @@ ubergraph,http://purl.obolibrary.org/obo/GOREL_0000501,Predicate,,occurs_at
 ubergraph,http://purl.obolibrary.org/obo/GOREL_0002003,Predicate,,results in distribution of
 ubergraph,http://purl.obolibrary.org/obo/GOREL_0002004,Predicate,,results in fission of
 ubergraph,http://purl.obolibrary.org/obo/GOREL_0012006,Predicate,,results in maintenance of
-ubergraph,http://purl.obolibrary.org/obo/HANCESTRO_0308,Predicate,,HANCESTRO_0308
-ubergraph,http://purl.obolibrary.org/obo/HAO#_attached_to,Predicate,,_attached_to
+ubergraph,http://purl.obolibrary.org/obo/HANCESTRO_0308,Predicate,,hasCountryOfOrigin
+ubergraph,http://purl.obolibrary.org/obo/HAO#_attached_to,Predicate,,attached_to
 ubergraph,http://purl.obolibrary.org/obo/IAO_0000039,Predicate,,has measurement unit label
 ubergraph,http://purl.obolibrary.org/obo/IAO_0000601,Predicate,,has associated axiom(nl)
 ubergraph,http://purl.obolibrary.org/obo/IAO_0000602,Predicate,,has associated axiom(fol)
@@ -1389,8 +1030,8 @@ ubergraph,http://purl.obolibrary.org/obo/NCIT_P352,Predicate,,Tolerable_Level
 ubergraph,http://purl.obolibrary.org/obo/NCIT_P358,Predicate,,Nutrient
 ubergraph,http://purl.obolibrary.org/obo/NCIT_P359,Predicate,,Micronutrient
 ubergraph,http://purl.obolibrary.org/obo/NCIT_P360,Predicate,,Macronutrient
-ubergraph,http://purl.obolibrary.org/obo/OArCS#_gives_rise,Predicate,,_gives_rise
-ubergraph,http://purl.obolibrary.org/obo/OBO_REL_0000004,Predicate,,OBO_REL_0000004
+ubergraph,http://purl.obolibrary.org/obo/OArCS#_gives_rise,Predicate,,gives_rise_to
+ubergraph,http://purl.obolibrary.org/obo/OBO_REL_0000004,Predicate,,integral_part_of
 ubergraph,http://purl.obolibrary.org/obo/PCL_0000100,Predicate,,synonym
 ubergraph,http://purl.obolibrary.org/obo/PCL_0010058,Predicate,,has nsforest marker
 ubergraph,http://purl.obolibrary.org/obo/PCL_0010062,Predicate,,fbeta_confidence_score
@@ -1444,7 +1085,7 @@ ubergraph,http://purl.obolibrary.org/obo/UBPROP_0000201,Predicate,,source atlas
 ubergraph,http://purl.obolibrary.org/obo/UBPROP_0000202,Predicate,,fma_set_term
 ubergraph,http://purl.obolibrary.org/obo/UPHENO_0000001,Predicate,,has phenotype affecting
 ubergraph,http://purl.obolibrary.org/obo/bspo#parallel_to,Predicate,,parallel_to
-ubergraph,http://purl.obolibrary.org/obo/chmo#non-mining_synonym,Predicate,,non-mining_synonym
+ubergraph,http://purl.obolibrary.org/obo/chmo#non-mining_synonym,Predicate,,Non-mining synonym
 ubergraph,http://purl.obolibrary.org/obo/dcterms_creator,Predicate,,dcterms_creator
 ubergraph,http://purl.obolibrary.org/obo/emapa#develops_from,Predicate,,develops_from
 ubergraph,http://purl.obolibrary.org/obo/emapa#ends_at,Predicate,,ends_at
@@ -1533,7 +1174,7 @@ ubergraph,https://w3id.org/chemrof/mass,Predicate,,mass
 ubergraph,https://w3id.org/chemrof/monoisotopic_mass,Predicate,,monoisotopic_mass
 ubergraph,https://w3id.org/chemrof/smiles_string,Predicate,,smiles_string
 ubergraph,https://w3id.org/chemrof/wurcs_representation,Predicate,,wurcs_representation
-ubergraph,https://w3id.org/semapv/vocab/crossSpeciesExactMatch,Predicate,,crossSpeciesExactMatch
+ubergraph,https://w3id.org/semapv/vocab/crossSpeciesExactMatch,Predicate,,cross-species exact match
 ubergraph,http://purl.obolibrary.org/obo/fypo#usage,Predicate,,usage
 ubergraph,https://purl.brain-bican.org/taxonomy/annotations,Predicate,,annotations
 ubergraph,https://purl.brain-bican.org/taxonomy/author_name,Predicate,,author_name
@@ -1577,7 +1218,7 @@ ubergraph,http://www.w3.org/2001/XMLSchema#maxInclusive,Predicate,,maxInclusive
 ubergraph,http://www.w3.org/2001/XMLSchema#minInclusive,Predicate,,minInclusive
 ubergraph,http://www.w3.org/2001/XMLSchema#maxExclusive,Predicate,,maxExclusive
 ubergraph,http://geneontology.org/foo/applies-pattern,Predicate,,applies-pattern
-ubergraph,http://purl.obolibrary.org/obo/BFO_0000070,Predicate,,BFO_0000070
+ubergraph,http://purl.obolibrary.org/obo/BFO_0000070,Predicate,,specifically depends on at all times
 ubergraph,http://purl.obolibrary.org/obo/BSPO_0000095,Predicate,,anatomical relation
 ubergraph,http://purl.obolibrary.org/obo/BSPO_0000101,Predicate,,obsolete surrounds
 ubergraph,http://purl.obolibrary.org/obo/BSPO_0000103,Predicate,,vicinity of
@@ -1725,7 +1366,7 @@ ubergraph,http://purl.obolibrary.org/obo/mondo#NON_HUMAN,Predicate,,A synonym th
 ubergraph,http://purl.obolibrary.org/obo/mondo#has_exclusion_reason,Predicate,,has exclusion reason
 ubergraph,http://purl.obolibrary.org/obo/mondo#has_onset,Predicate,,has onset
 ubergraph,http://purl.obolibrary.org/obo/mondo#may_be_merged_into,Predicate,,may_be_merged_into
-ubergraph,http://purl.obolibrary.org/obo/mpath#part_of,Predicate,,part_of
+ubergraph,http://purl.obolibrary.org/obo/mpath#part_of,Predicate,,part of
 ubergraph,http://purl.obolibrary.org/obo/nbo#has-input,Predicate,,has-input
 ubergraph,http://purl.obolibrary.org/obo/nbo#qualifier,Predicate,,qualifier
 ubergraph,http://purl.obolibrary.org/obo/nbo.owl#synonymtype,Predicate,,synonymtype
@@ -1742,7 +1383,7 @@ ubergraph,http://purl.obolibrary.org/obo/ncbitaxon#synonym,Predicate,,synonym
 ubergraph,http://purl.obolibrary.org/obo/ncbitaxon#teleomorph,Predicate,,teleomorph
 ubergraph,http://purl.obolibrary.org/obo/ncit#oncotree_slim,Predicate,,oncotree_slim
 ubergraph,http://purl.obolibrary.org/obo/pr#has_constituent_monomer,Predicate,,has_constituent_monomer
-ubergraph,http://purl.obolibrary.org/obo/ro/subsets#ro-eco,Predicate,,ro-eco
+ubergraph,http://purl.obolibrary.org/obo/ro/subsets#ro-eco,Predicate,,eco subset
 ubergraph,http://purl.obolibrary.org/obo/so#AAMOD,Predicate,,amino acid modification
 ubergraph,http://purl.obolibrary.org/obo/so#AGR,Predicate,,Alliance of Genome Resources
 ubergraph,http://purl.obolibrary.org/obo/so#BS,Predicate,,biosapiens

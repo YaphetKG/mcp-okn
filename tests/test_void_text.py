@@ -274,3 +274,29 @@ def test_curated_id_only_label_does_not_replace_a_real_label():
     ]
     assert vt.id_only_label("MMO 0000000", "http://purl.obolibrary.org/obo/MMO_0000000")
     assert not vt.id_only_label("Automotive Industry", SUD + "AutomotiveIndustry")
+
+
+def test_naics_code_and_census_definition():
+    assert vt.naics_code(SUD + "NAICS311111.0") == "311111"
+    assert vt.naics_code(SUD + "NAICS111") == "111"
+    assert vt.naics_code(SUD + "NAICSCode") is None
+    hit = vt.naics_hit(
+        "111",
+        "Crop ProductionT",
+        "Industries in the Crop Production subsector grow crops.\n\nThe industries "
+        "are grouped by production activity.\n\nIllustrative Examples:\n\nFarms\n",
+        "2022",
+    )
+    assert hit.label == "NAICS 111: Crop Production"
+    assert hit.description == (
+        "NAICS 111: Crop Production. Industries in the Crop Production subsector grow "
+        "crops. The industries are grouped by production activity."
+    )
+    assert hit.source == "U.S. Census Bureau, NAICS 2022"
+    cut = vt.naics_hit(
+        "311111",
+        "Dog and Cat Food Manufacturing",
+        "Makes pet food.\n\nCross-References. Establishments--",
+        "2022",
+    )
+    assert cut.description.endswith("Makes pet food.")

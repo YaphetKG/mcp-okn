@@ -2,7 +2,8 @@
 
 Order per row: the curated proto-okn text, else the text already there (the KG's
 own, or ubergraph's), else another ontology — the vocabulary's own published
-document, the federation graph that defines the term, or OLS — tagged
+document, the federation graph that defines the term, OLS, or for SUDOKN's NAICS
+industry classes the U.S. Census Bureau's NAICS definitions — tagged
 ``(source: …)``. Anything else stays empty and is listed in ``TEXT_FILL.md`` and
 ``unfilled_descriptions.csv``.
 
@@ -21,7 +22,11 @@ from __future__ import annotations
 import argparse
 import asyncio
 import csv
+import io
 import json
+import re
+import xml.etree.ElementTree as ET
+import zipfile
 from collections import Counter
 from pathlib import Path
 from typing import Any
@@ -113,6 +118,15 @@ VOCABS: dict[str, tuple[str, list[str]]] = {
     ),
 }
 
+#: Census Bureau NAICS definitions, newest first. SUDOKN uses NAICS 2022 (16 of its
+#: codes exist only there, none only in 2017); 11 SUDOKN codes were dropped in 2017
+#: and need the 2012 definitions, which Census publishes only behind a search page
+#: that refuses scripted requests, so those stay unfilled.
+CENSUS_NAICS = {
+    "2022": "https://www.census.gov/naics/2022NAICS/2022_NAICS_Descriptions.xlsx",
+    "2017": "https://www.census.gov/naics/2017NAICS/2017_NAICS_Descriptions.xlsx",
+}
+
 #: Vocabulary-specific description predicates: LinkML describes its own terms with
 #: linkml:description, not rdfs:comment.
 VOCAB_DESCRIPTION_PREDICATES = ("https://w3id.org/linkml/description",)
@@ -190,6 +204,60 @@ async def vocab_text(
             out[u] = vt.TextHit(
                 label=label, description=desc, source=name if desc else ""
             )
+    return out
+
+
+_XLSX = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
+
+
+def read_xlsx_rows(data: bytes) -> list[dict[str, str]]:
+    """The first sheet of an .xlsx as ``{column letter: text}`` rows (stdlib only)."""
+    book = zipfile.ZipFile(io.BytesIO(data))
+    shared: list[str] = []
+    if "xl/sharedStrings.xml" in book.namelist():
+        for si in ET.fromstring(book.read("xl/sharedStrings.xml")).iter(f"{_XLSX}si"):
+            shared.append("".join(t.text or "" for t in si.iter(f"{_XLSX}t")))
+    rows = []
+    for row in ET.fromstring(book.read("xl/worksheets/sheet1.xml")).iter(f"{_XLSX}row"):
+        cells = {}
+        for c in row.iter(f"{_XLSX}c"):
+            col = re.match(r"[A-Z]+", c.get("r", "")).group(0)  # type: ignore[union-attr]
+            v = c.find(f"{_XLSX}v")
+            if c.get("t") == "s" and v is not None and v.text:
+                cells[col] = shared[int(v.text)]
+            elif c.get("t") == "inlineStr":
+                cells[col] = "".join(t.text or "" for t in c.iter(f"{_XLSX}t"))
+            else:
+                cells[col] = v.text if v is not None and v.text else ""
+        rows.append(cells)
+    return rows
+
+
+async def census_naics_text(
+    uris: list[str], client: httpx.AsyncClient
+) -> dict[str, vt.TextHit]:
+    """Census definitions for SUDOKN NAICS IRIs, from the newest edition that has them."""
+    editions: dict[str, dict[str, tuple[str, str]]] = {}
+    for edition, url in CENSUS_NAICS.items():
+        resp = await client.get(url)
+        if resp.status_code != 200:
+            print(f"  Census NAICS {edition}: HTTP {resp.status_code}")
+            continue
+        rows = read_xlsx_rows(resp.content)
+        editions[edition] = {
+            re.sub(r"\.0$", "", r.get("A", "").strip()): (
+                r.get("B", ""),
+                r.get("C", ""),
+            )
+            for r in rows[1:]
+        }
+    out = {}
+    for u in uris:
+        code = vt.naics_code(u)
+        for edition, table in editions.items():
+            if code and code in table:
+                out[u] = vt.naics_hit(code, *table[code], edition)
+                break
     return out
 
 
@@ -295,7 +363,17 @@ async def resolve(
             for u in rest:
                 ols_cache[u] = _hit_to_json(hits.get(u))
 
-    cache.update(vocab=vocab_cache, federation=fed_cache, ols=ols_cache)
+    naics_cache = {} if refresh else cache.setdefault("census_naics", {})
+    naics_todo = [u for u in all_uris if vt.naics_code(u) and u not in naics_cache]
+    if naics_todo:
+        print(f"  Census NAICS: {len(naics_todo)} code(s)")
+        hits = await census_naics_text(naics_todo, client)
+        for u in naics_todo:
+            naics_cache[u] = _hit_to_json(hits.get(u))
+
+    cache.update(
+        vocab=vocab_cache, federation=fed_cache, ols=ols_cache, census_naics=naics_cache
+    )
     out: dict[str, dict[str, vt.TextHit]] = {}
     for kg, uris in needed.items():
         own = {u: vs.kg_iri(kg) for u in uris}
@@ -306,10 +384,12 @@ async def resolve(
         for u in uris:
             voc = vocab_cache.get(u)
             ols = ols_cache.get(u)
+            naics = naics_cache.get(u)
             merged = _merge(
                 vt.TextHit(**voc) if voc else None,
                 fed.get(u),
                 vt.TextHit(**ols) if ols else None,
+                vt.TextHit(**naics) if naics else None,
             )
             if merged:
                 per[u] = merged

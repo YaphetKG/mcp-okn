@@ -63,6 +63,13 @@ EXTRA_DESCRIPTION_PREDICATES = (
     "https://schema.org/description",
 )
 
+#: SUDOKN names NAICS industries ``…/SUDOKN/NAICS311111.0`` (and ``NAICS111``).
+NAICS_IRI = re.compile(r"^http://asu\.edu/semantics/SUDOKN/NAICS(\d{2,6})(?:\.0)?$")
+
+#: Census marks a title "T" when the US, Canada and Mexico define it the same way.
+_NAICS_TRILATERAL = re.compile(r"(?<=[a-z)])T$")
+_NAICS_SECTIONS = re.compile(r"\b(?:Illustrative Examples|Cross-References)\b")
+
 OLS_API = "https://www.ebi.ac.uk/ols4/api"
 #: OLS keeps relations and annotation properties apart from classes.
 OLS_KINDS = ("terms", "properties", "individuals")
@@ -244,6 +251,28 @@ def dedupe_unfilled(rows: Iterable[dict[str, str]]) -> list[dict[str, str]]:
             seen.add(key)
             out.append(r)
     return out
+
+
+def naics_code(uri: str) -> str | None:
+    """The NAICS code a SUDOKN IRI names, or None."""
+    m = NAICS_IRI.match(uri)
+    return m.group(1) if m else None
+
+
+def naics_hit(code: str, title: str, description: str, edition: str) -> TextHit:
+    """Census title + definition for one NAICS code.
+
+    Keeps the definition paragraphs, not the "Illustrative Examples" and
+    "Cross-References" lists that follow them, and drops the trailing "T" marker.
+    """
+    title = _NAICS_TRILATERAL.sub("", (title or "").strip())
+    definition = _clean(_NAICS_SECTIONS.split(description or "", maxsplit=1)[0])
+    text = f"NAICS {code}: {title}." + (f" {definition}" if definition else "")
+    return TextHit(
+        label=f"NAICS {code}: {title}",
+        description=text,
+        source=f"U.S. Census Bureau, NAICS {edition}",
+    )
 
 
 # ------------------------------------------------------------------ live lookups
