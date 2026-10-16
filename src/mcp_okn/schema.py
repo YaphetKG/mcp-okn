@@ -813,6 +813,132 @@ def _generate_query_template(
     )
 
 
+#: What each ``Pattern`` value means for the query, shown once per pattern present.
+#: Plain ``direct`` needs no note. Each is scoped to its own predicates: guidance is
+#: an instruction to the model, so it must not read as a rule for the whole KG.
+PATTERN_GUIDANCE = {
+    "direct;reified": (
+        "Stored twice, one-to-one: as a direct triple `?s <p> ?o` AND as an "
+        "rdf:Statement (rdf:subject / rdf:predicate / rdf:object). Use the direct "
+        "triple to traverse or test the link; use the relationship's "
+        "edge_properties query_template only to read or filter its edge "
+        "properties, which exist only on the statement."
+    ),
+    "reified": (
+        "Stored ONLY as rdf:Statements: `?s <p> ?o` returns nothing. Use the "
+        "relationship's edge_properties query_template."
+    ),
+    "axiom": (
+        "Never asserted as a triple: `?s <p> ?o` returns nothing. These appear only "
+        "as owl:onProperty of OWL restrictions inside class definitions. Read one "
+        "with query_template (substitute the predicate); each row is a class-level "
+        "statement (every <subject> has some <filler> via <p>), not an instance link."
+    ),
+    "direct;axiom": (
+        "Asserted as triples AND used in OWL class definitions: `?s <p> ?o` returns "
+        "the asserted links; the axiom query_template returns the class-level "
+        "restrictions."
+    ),
+    "declared": (
+        "Declared in the schema but used in no triple or class axiom: any query on "
+        "these returns nothing."
+    ),
+}
+
+
+#: The one-line form of PATTERN_GUIDANCE shown on each edge_properties entry.
+_EDGE_USAGE = {
+    "direct;reified": (
+        "Also a direct triple: use `?s <{uri}> ?o` unless you need edge properties."
+    ),
+    "reified": "Only reified: `?s <{uri}> ?o` returns nothing; use this template.",
+}
+
+
+def _axiom_query_template(shortname: str, predicate: str) -> str:
+    """Read the OWL restrictions on one predicate: one row per restriction.
+
+    Two shapes cover 8,153 of 8,163 restrictions on the 28 axiom-only predicates of
+    bio101, phaseskg, sawgraph, hydrologykg and fiokg (2026-10-16): the restriction
+    sits in a named class's own definition (``rdfs:subClassOf`` or, OBO-style,
+    ``owl:equivalentClass``, through nested ``owl:intersectionOf`` lists), or it is
+    nested in another restriction's filler, where the named classes beside it in
+    that inner intersection are its subject (bio101: Process ⊑ ∃has-participant.
+    (NADH ⊓ ∃has-oxidized-form.NAD-Plus)). Fillers are usually intersections, so
+    their named members (and ``unionOf`` alternatives) are unpacked; literal
+    ``owl:hasValue`` fillers (bio101's ``"*green"``) are kept, and cardinalities go
+    in ``?constraints`` (a plain ``owl:maxCardinality 1`` has no filler at all).
+    ``GROUP_CONCAT`` takes ``STR()``: QLever silently drops IRI values from it.
+    """
+    return (
+        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+        "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n\n"
+        "# One row per restriction: the named classes it describes, its filler(s)\n"
+        '# (named classes or literal values) and any cardinality, each " | "-joined.\n'
+        'SELECT ?r (GROUP_CONCAT(DISTINCT STR(?subject); SEPARATOR=" | ") AS ?subjects)\n'
+        '       (GROUP_CONCAT(DISTINCT STR(?filler); SEPARATOR=" | ") AS ?fillers)\n'
+        '       (GROUP_CONCAT(DISTINCT ?card; SEPARATOR=" | ") AS ?constraints)\n'
+        "WHERE {\n"
+        f"  GRAPH <{named_graph(shortname)}> {{\n"
+        f"    ?r owl:onProperty <{predicate}> .\n"
+        "    { # in a named class's own definition\n"
+        "      ?subject (rdfs:subClassOf|owl:equivalentClass)/"
+        "(owl:intersectionOf/rdf:rest*/rdf:first)* ?r .\n"
+        "    } UNION { # nested in another restriction's filler\n"
+        "      ?outer owl:someValuesFrom ?inner .\n"
+        "      ?inner owl:intersectionOf/rdf:rest*/rdf:first ?r , ?subject .\n"
+        "    }\n"
+        "    FILTER(isIRI(?subject))\n"
+        "    OPTIONAL {\n"
+        "      ?r owl:someValuesFrom|owl:allValuesFrom|owl:onClass|owl:hasValue"
+        "|owl:onDataRange ?f .\n"
+        "      ?f ((owl:intersectionOf|owl:unionOf)/rdf:rest*/rdf:first)* ?filler .\n"
+        "      FILTER(!isBlank(?filler))\n"
+        "    }\n"
+        "    OPTIONAL {\n"
+        "      ?r ?cp ?n .\n"
+        "      FILTER(?cp IN (owl:cardinality, owl:minCardinality, owl:maxCardinality,\n"
+        "                     owl:qualifiedCardinality, owl:minQualifiedCardinality,\n"
+        "                     owl:maxQualifiedCardinality))\n"
+        '      BIND(CONCAT(STRAFTER(STR(?cp), "#"), " ", STR(?n)) AS ?card)\n'
+        "    }\n"
+        "  }\n"
+        "}\n"
+        "GROUP BY ?r"
+    )
+
+
+def _pattern_guidance(
+    shortname: str,
+    predicates: list[dict[str, Any]],
+    collapsed: list[str],
+) -> dict[str, Any]:
+    """``{pattern: {guidance, count, …}}`` for each non-``direct`` pattern present."""
+    by_pattern: dict[str, list[str]] = {}
+    for p in predicates:
+        if p["pattern"] and p["pattern"] != "direct":
+            by_pattern.setdefault(p["pattern"], []).append(p["uri"])
+    for uri in collapsed:
+        by_pattern.setdefault("declared", []).append(uri)
+    out: dict[str, Any] = {}
+    for pattern, uris in by_pattern.items():
+        entry: dict[str, Any] = {
+            "guidance": PATTERN_GUIDANCE.get(pattern, ""),
+            "count": len(uris),
+        }
+        if pattern == "reified" or (pattern == "declared" and collapsed):
+            entry["predicates"] = uris
+        if "axiom" in pattern:
+            entry["query_template"] = _axiom_query_template(shortname, uris[0])
+            if usage_notes(shortname):
+                entry["guidance"] += " See usage_notes for this KG's own rules."
+        if pattern == "declared" and collapsed:
+            entry["guidance"] += " Left out of the predicates table (compact view)."
+        out[pattern] = entry
+    return out
+
+
 def _sparql_var(name: str) -> str:
     """Lowercase-safe SPARQL variable name: keep [A-Za-z0-9_], drop the rest."""
     return re.sub(r"[^A-Za-z0-9_]", "", name.replace(" ", "_")).lower()
@@ -922,10 +1048,23 @@ def _build_schema_from_metadata(
                 relationship_uri=rel["uri"],
             ),
         }
+        if rel["pattern"]:
+            # One line beside the template it qualifies; the full text is once in
+            # pattern_guidance (repeating it cost prokn 29 KB over 68 edges).
+            entry = edge_properties_output[relationship_label]
+            entry["pattern"] = rel["pattern"]
+            if rel["pattern"] in _EDGE_USAGE:
+                entry["usage"] = _EDGE_USAGE[rel["pattern"]].format(uri=rel["uri"])
 
     # Pattern (how a predicate is stored: direct / reified / axiom / declared), counts
     # and extra source/target pairs exist only in the VoID-built files; the
     # columns appear only then, so curated-file output is unchanged.
+    # Compact view: declared-only predicates hold no data, so list them once in
+    # pattern_guidance instead of as table rows (79 in bio101, 67 in phaseskg).
+    collapsed = [p["uri"] for p in predicates if compact and p["pattern"] == "declared"]
+    if collapsed:
+        predicates = [p for p in predicates if p["pattern"] != "declared"]
+
     class_cols = ["uri", "label", "description", "type"]
     if any(c["instances"] is not None for c in classes):
         class_cols.append("instances")
@@ -966,6 +1105,10 @@ def _build_schema_from_metadata(
             "count": len(node_properties),
         },
     }
+
+    guidance = _pattern_guidance(shortname, predicates, collapsed)
+    if guidance:
+        result["pattern_guidance"] = guidance
 
     if not compact and edge_properties_output:
         result = {

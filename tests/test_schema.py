@@ -585,3 +585,54 @@ def test_curated_repeats_keep_last_row_primary_and_list_the_rest():
     obs = rows["https://ex.org/OBSERVED_AT"]
     assert obs["source_class"] == "https://ex.org/Frog"
     assert obs["other_pairs"] == "Bird → Location"
+
+
+AURA = "http://www.projecthalo.com/aura#"
+
+#: bio101 shapes (2026-10-15): axiom-only relations, a declared-only one, structure.
+OWL_CSV = f"""\
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples,Pattern
+{AURA}has-oxidized-form,has-oxidized-form,Axiom only.,Predicate,,{AURA}Chemical-Entity,{AURA}Chemical-Entity,0,axiom
+{AURA}latitude,latitude,Unused.,Predicate,,,,0,declared
+http://www.w3.org/2000/01/rdf-schema#subClassOf,subClassOf,,Predicate,,http://www.w3.org/2002/07/owl#Class,http://www.w3.org/2002/07/owl#Class,27760,direct
+"""
+
+
+def test_pattern_guidance_for_direct_and_reified_edges():
+    schema = _build_schema_from_metadata(
+        "spoke-genelab", parse_entity_metadata(VOID_CSV), compact=True
+    )
+    edge = schema["edge_properties"]["MEASURED_DIFFERENTIAL_EXPRESSION_ASmMG"]
+    assert edge["pattern"] == "direct;reified"
+    assert edge["usage"] == (
+        f"Also a direct triple: use `?s <{DE}> ?o` unless you need edge properties."
+    )
+    guide = schema["pattern_guidance"]
+    assert set(guide) == {"direct;reified"}  # plain direct gets no note
+    assert guide["direct;reified"]["guidance"].startswith("Stored twice, one-to-one")
+    assert guide["direct;reified"]["count"] == 1
+    assert "predicates" not in guide["direct;reified"]  # listed in edge_properties
+
+
+def test_pattern_guidance_axiom_template_and_compact_declared():
+    compact = _build_schema_from_metadata("bio101", _parse(OWL_CSV), compact=True)
+    preds = [r[0] for r in compact["predicates"]["data"]]
+    assert AURA + "latitude" not in preds and compact["predicates"]["count"] == 2
+    guide = compact["pattern_guidance"]
+    assert guide["declared"]["predicates"] == [AURA + "latitude"]
+    assert "Left out of the predicates table" in guide["declared"]["guidance"]
+    tmpl = guide["axiom"]["query_template"]
+    assert f"?r owl:onProperty <{AURA}has-oxidized-form>" in tmpl
+    assert "rdfs:subClassOf|owl:equivalentClass" in tmpl
+    assert "GROUP_CONCAT(DISTINCT STR(?subject)" in tmpl  # QLever drops bare IRIs
+    assert "See usage_notes" in guide["axiom"]["guidance"]  # bio101 has notes
+
+    full = _build_schema_from_metadata("bio101", _parse(OWL_CSV), compact=False)
+    assert AURA + "latitude" in [r[0] for r in full["predicates"]["data"]]
+    assert "predicates" not in full["pattern_guidance"]["declared"]
+
+
+def test_curated_file_gets_no_pattern_guidance():
+    schema = _build_schema_from_metadata("demo", _parse(EDGE_CSV), compact=True)
+    assert "pattern_guidance" not in schema
+    assert "pattern" not in schema["edge_properties"]["MEASURED_EXPR"]

@@ -30,6 +30,11 @@ async def get_schema(shortname: str, compact: bool = True) -> dict[str, Any]:
         `node_properties` is a `{"columns", "data", "count"}` table;
         `edge_properties` maps relationship names to their properties and a
         `query_template` showing the RDF reification pattern to query them.
+        When the predicates table has a `pattern` column (how each predicate is
+        stored: `direct`, `reified`, `axiom`, `declared`, `;`-joined), check it
+        before writing `?s <p> ?o`: `pattern_guidance` says what each
+        non-direct pattern means for the query and gives an OWL-restriction
+        `query_template` for `axiom` predicates, which have no direct triples.
         Also includes `next_step` reminding you to `probe_namespaces` for any
         predicate whose objects are ontology terms before writing the query. For
         KGs with domain rules the schema alone does not convey (e.g.
