@@ -291,7 +291,22 @@ def test_usage_notes_glygenkg_carries_the_record_to_protein_rule():
 
 def test_usage_notes_absent_for_other_kgs():
     assert usage_notes("prokn") is None
-    assert usage_notes("spoke-okn") is None
+    assert usage_notes("wildlifekn") is None
+
+
+def test_usage_notes_spoke_okn_location_kind_and_https_trap():
+    notes = usage_notes("spoke-okn")
+    assert notes is not None
+    guidance, snippet = notes["guidance"], notes["query_snippet"]
+    # The kind predicate is the bare rdf: namespace, with its counted values.
+    assert "<http://www.w3.org/1999/02/22-rdf-syntax-ns#>" in guidance
+    assert "Q28575" in guidance and "3,196" in guidance
+    # The https schema.org trap and the IRI(CONCAT()) way round it.
+    assert 'IRI(CONCAT("https://schema.org/", "State"))' in guidance
+    # The snippet uses the kind predicate, never a bracketed https schema.org IRI
+    # (this server would rewrite it to http and match nothing).
+    assert "?county <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" in snippet
+    assert "<https://schema.org/" not in snippet
 
 
 def test_instructions_include_spaceflight_contrast_section():

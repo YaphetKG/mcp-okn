@@ -134,6 +134,54 @@ ASK {{ GRAPH <https://purl.org/okn/frink/kg/{shortname}> {{
 #: CSV rebuilt for that release (upstream 36162dc) lists them; all 26 of its rows
 #: are populated. Chemicals are also typed properly now (``obo:CHEBI_23367``, 44
 #: nodes) instead of as ``sio:SIO_010043`` proteins.
+SPOKE_OKN_GUIDANCE = """\
+LOCATION KIND IS ON A MALFORMED PREDICATE (verified live 2026-10-16). Every
+spoke-okn location (113,882 nodes under .../spoke-okn/location/) is typed
+rdf:type <https://schema.org/AdministrativeArea>; WHAT KIND of place it is sits
+only on the bare RDF namespace used as a predicate,
+<http://www.w3.org/1999/02/22-rdf-syntax-ns#> (no local name - a mangled
+rdf:type). Its values:
+  https://schema.org/City                         58,441
+  http://www.wikidata.org/entity/Q37447            42,724  (postal code / ZIP)
+  .../spoke-okn/node/SubDivision                    5,402
+  http://www.wikidata.org/entity/Q5284423           3,816  (division)
+  http://www.wikidata.org/entity/Q28575             3,196  (county)
+  https://schema.org/Country                          251
+  https://schema.org/State                             52
+So "which counties / states / cities" filters on that predicate; rdf:type alone
+cannot tell a county from a ZIP code. Locations also carry rdfs:label and
+spoke-okn schema properties state_fips, state_name, county_fips, city_fips.
+
+THE schema.org KINDS ARE https. City, State and Country are stored as
+https://schema.org/..., and this server rewrites a bracketed
+<https://schema.org/...> IRI to http before sending it, so
+`?loc <http://www.w3.org/1999/02/22-rdf-syntax-ns#> <https://schema.org/State>`
+silently returns 0 rows. Build the IRI instead -
+BIND(IRI(CONCAT("https://schema.org/", "State")) AS ?kind) - or compare
+STR(?kind). The same applies to schema:AdministrativeArea in rdf:type. The
+Wikidata kinds (http://www.wikidata.org/entity/...) are unaffected.\
+"""
+
+#: Companion snippet: counties of one state, via the malformed kind predicate.
+#: Verified 2026-10-16: California returns 58 rows.
+SPOKE_OKN_SNIPPET = """\
+# spoke-okn counties in a state. The kind is on the bare rdf: namespace
+# predicate, not rdf:type; Wikidata Q28575 = county. For City / State /
+# Country use BIND(IRI(CONCAT("https://schema.org/", "State")) AS ?kind) and
+# ?loc <http://www.w3.org/1999/02/22-rdf-syntax-ns#> ?kind (https, see notes).
+SELECT ?county ?name ?state_fips ?county_fips WHERE {
+  GRAPH <https://purl.org/okn/frink/kg/spoke-okn> {
+    ?county <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+              <http://www.wikidata.org/entity/Q28575> ;
+            <https://purl.org/okn/frink/kg/spoke-okn/schema/state_name> "California" ;
+            <http://www.w3.org/2000/01/rdf-schema#label> ?name ;
+            <https://purl.org/okn/frink/kg/spoke-okn/schema/state_fips> ?state_fips ;
+            <https://purl.org/okn/frink/kg/spoke-okn/schema/county_fips> ?county_fips .
+  }
+}
+ORDER BY ?county_fips\
+"""
+
 NCIPIDKG_GUIDANCE = """\
 IDENTIFIER AND JOIN NOTES (the curated schema matches the deployed graph as of
 2026-10-13; these are the things it still does not tell you).
@@ -506,6 +554,11 @@ _KG_USAGE_NOTES: dict[str, dict[str, str]] = {
             shortname="medical-device-kg",
             predicate="http://medicaldevice.com/ontology/hasDeviceIdentifier",
         ),
+    },
+    "spoke-okn": {
+        "title": "Location-kind notes",
+        "guidance": SPOKE_OKN_GUIDANCE,
+        "query_snippet": SPOKE_OKN_SNIPPET,
     },
     "ncipidkg": {
         "guidance": NCIPIDKG_GUIDANCE,
