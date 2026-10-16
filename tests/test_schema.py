@@ -636,3 +636,33 @@ def test_curated_file_gets_no_pattern_guidance():
     schema = _build_schema_from_metadata("demo", _parse(EDGE_CSV), compact=True)
     assert "pattern_guidance" not in schema
     assert "pattern" not in schema["edge_properties"]["MEASURED_EXPR"]
+
+
+def test_diagram_schema_draws_void_files_by_label_with_typed_members():
+    """spoke-genelab VoID shapes: IRI endpoints, literal targets, reification wiring."""
+    obi = "http://purl.obolibrary.org/obo/OBI_0000070"
+    bl = "https://w3id.org/biolink/vocab/"
+    rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    csv_text = f"""\
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples,Pattern
+{obi},Assay,,Class,,,,13146,
+{bl}Gene,Gene,,Class,,,,139719,
+{STMT},Statement,,Class,,,,50235713,
+{DE},DE,,Predicate,,{obi},{bl}Gene,50208066,direct;reified
+{SG}symbol,symbol,,Predicate,,{bl}Gene,{XSD}string,139719,direct
+{SG}taxonomy,taxonomy,,Predicate,,{bl}Gene,,138948,direct
+{rdf}subject,subject,,Predicate,,{STMT},{obi},50235713,direct
+{SG}log2fc,log2fc,,Predicate,{DE},{STMT},{XSD}double,50208066,
+"""
+    meta = parse_entity_metadata(csv_text)
+    diagram = build_mermaid_diagram(
+        "spoke-genelab", schema_mod.diagram_schema("spoke-genelab", meta)
+    )
+    assert "Assay --> MEASURED_DIFFERENTIAL_EXPRESSION_ASmMG" in diagram
+    assert "MEASURED_DIFFERENTIAL_EXPRESSION_ASmMG --> Gene" in diagram
+    assert "string symbol" in diagram and "iri taxonomy" in diagram
+    assert "double log2fc" in diagram
+    for absent in ("OBI_0000070", "Statement", "subject", "--> string"):
+        assert absent not in diagram
+    assert schema_mod._is_void_metadata(meta)
+    assert not schema_mod._is_void_metadata(_parse(EDGE_CSV))  # curated: old path

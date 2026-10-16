@@ -1552,6 +1552,115 @@ def build_mermaid_diagram(
     return "\n".join(lines)
 
 
+_RDF_NS = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+#: Reification wiring: the edge classes already draw what these connect.
+_REIFICATION = frozenset(
+    {_RDF_NS + "subject", _RDF_NS + "predicate", _RDF_NS + "object", _RDF_NS + "type"}
+)
+_LITERAL_TYPES = ("http://www.w3.org/2001/XMLSchema#", _RDF_NS)
+
+
+def _is_void_metadata(entity_metadata: dict[str, dict[str, Any]]) -> bool:
+    """True for a VoID-built file (counts or Pattern present), not a curated one."""
+    return any(
+        m.get("pattern") or m.get("triples") is not None
+        for m in entity_metadata.values()
+    )
+
+
+def diagram_schema(
+    shortname: str, entity_metadata: dict[str, dict[str, Any]]
+) -> dict[str, Any]:
+    """A label-keyed schema for :func:`build_mermaid_diagram` from a VoID-built file.
+
+    The compact get_schema view keeps one source/target pair per predicate and
+    names endpoints by IRI, while the diagram matches classes by label. This walks
+    every pair instead: class IRIs map to their labels; a literal-typed target
+    (xsd:*, rdf:langString) makes the predicate a typed member of the source class;
+    an empty target (untyped IRIs, e.g. NCBITaxon) an ``iri`` member; reification
+    wiring and the rdf:Statement class are left out.
+    """
+    entries = [
+        (uri, m)
+        for uri, meta in entity_metadata.items()
+        for m in (meta, *meta.get("also", ()))
+    ]
+    labels = {
+        uri: m.get("label") or _local_name(uri)
+        for uri, m in entries
+        if (m.get("type") or "").lower() == "class"
+    }
+    labels.pop(_RDF_STATEMENT, None)
+
+    def name(uri: str) -> str:
+        return labels.get(uri) or _local_name(uri)
+
+    classes = [[uri, label] for uri, label in labels.items()]
+    predicates: list[list[Any]] = []
+    node_props: list[list[str]] = []
+    for uri, m in entries:
+        kind = (m.get("type") or "").lower()
+        if kind != "predicate" or uri in _REIFICATION:
+            continue
+        label = m.get("label") or _local_name(uri)
+        pairs = m.get("pairs") or [
+            (m.get("source_class", ""), m.get("target_class", ""), None)
+        ]
+        drawn = False
+        for src, tgt, _n in pairs:
+            if not src or src == _RDF_STATEMENT:
+                continue
+            if not tgt or tgt.startswith(_LITERAL_TYPES):
+                dtype = _local_name(tgt) if tgt else "iri"
+                node_props.append([uri, label, f"({dtype})", "NodeProperty", name(src)])
+            else:
+                predicates.append([uri, label, name(src), name(tgt), False])
+            drawn = True
+        if not drawn:
+            predicates.append([uri, label, "", "", False])
+
+    meta_schema = _build_schema_from_metadata(shortname, entity_metadata, compact=True)
+    edges = {}
+    for rel, info in meta_schema.get("edge_properties", {}).items():
+        props = []
+        for prop in info.get("properties", []):
+            desc = prop.get("description", "")
+            if not _member_type(desc):
+                target = entity_metadata.get(prop.get("uri", ""), {})
+                for cand in (target, *target.get("also", ())):
+                    if (cand.get("type") or "").lower() == "edgeproperty":
+                        tgt = cand.get("target_class", "")
+                        if tgt.startswith(_LITERAL_TYPES):
+                            desc = f"({_local_name(tgt)})"
+            props.append({**prop, "description": desc})
+        edges[rel] = {
+            **info,
+            "source_class": name(info.get("source_class", "")),
+            "target_class": name(info.get("target_class", "")),
+            "properties": props,
+        }
+    edge_rel_uris = {info.get("uri") for info in edges.values()}
+    predicates = [p for p in predicates if p[0] not in edge_rel_uris]
+    return {
+        "classes": {"columns": ["uri", "label"], "data": classes},
+        "predicates": {
+            "columns": [
+                "uri",
+                "label",
+                "source_class",
+                "target_class",
+                "has_edge_properties",
+            ],
+            "data": predicates,
+        },
+        "node_properties": {
+            "columns": ["uri", "label", "description", "type", "class"],
+            "data": node_props,
+        },
+        "edge_properties": edges,
+    }
+
+
 async def visualize_schema(shortname: str) -> dict[str, Any]:
     """Build a Mermaid ``classDiagram`` of a KG's schema, server-side.
 
@@ -1562,6 +1671,9 @@ async def visualize_schema(shortname: str) -> dict[str, Any]:
     if "error" in result:
         return {"shortname": shortname, "error": result["error"]}
     schema = result["schema"]
+    metadata = await fetch_entity_metadata(shortname)
+    if metadata and _is_void_metadata(metadata):
+        schema = diagram_schema(shortname, metadata)
     inferred = await infer_edge_labels(shortname, schema)
     diagram = build_mermaid_diagram(shortname, schema, inferred_edges=inferred)
     return {"shortname": shortname, "mermaid": diagram}
