@@ -24,6 +24,7 @@ import re
 from io import StringIO
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit
 
 import httpx
 
@@ -181,6 +182,82 @@ SELECT ?county ?name ?state_fips ?county_fips WHERE {
 }
 ORDER BY ?county_fips\
 """
+
+PROKN_NEGATED_PREDICATES = (
+    "https://w3id.org/biolink/vocab/actively_involved_in",
+    "https://w3id.org/biolink/vocab/catalyzes",
+    "http://purl.uniprot.org/core/partOf",
+    "https://w3id.org/biolink/vocab/part_of",
+    "https://w3id.org/biolink/vocab/colocalizes_with",
+    "https://w3id.org/biolink/vocab/contributes_to",
+    "https://w3id.org/biolink/vocab/acts_upstream_of_or_within",
+    "https://w3id.org/biolink/vocab/active_in",
+    "https://w3id.org/biolink/vocab/acts_upstream_of_or_within_negative_effect",
+)
+
+PROKN_GUIDANCE = """\
+NEGATED GO ANNOTATIONS ARE ALSO STORED AS POSITIVE TRIPLES (verified live
+2026-10-16). prokn holds 1,370 GO annotations with GO's NOT qualifier (e.g.
+uniprot:P61106 is NOT partOf GO:0005929, ECO_IDA, UniProt). Each is a reified
+rdf:Statement additionally typed
+<https://www.w3.org/2002/07/owl#NegativePropertyAssertion> - AND each is also
+asserted as a plain triple `?protein <pred> ?go`, indistinguishable from a
+positive annotation. Affected predicates (negated / all direct triples):
+  biolink:actively_involved_in       570 / 121,057
+  biolink:catalyzes                  535 /  90,713
+  uniprot core:partOf                212 /  77,072
+  biolink:part_of                     19 /  14,571
+  biolink:colocalizes_with            12 /     858
+  biolink:contributes_to              12 /     933
+  biolink:acts_upstream_of_or_within   6 /   2,433
+  biolink:active_in                    3 /   5,196
+  biolink:acts_upstream_of_or_within_negative_effect 1 / 11
+For these, do NOT use the plain triple when correctness matters (GO enrichment,
+"is protein X in compartment Y"): it returns the NOT annotations as positive.
+Use the statement pattern and drop negated statements:
+  FILTER NOT EXISTS { ?st rdf:type <https://www.w3.org/2002/07/owl#NegativePropertyAssertion> }
+This overrides the pattern_guidance advice to prefer the direct triple, for
+these predicates in prokn only. To LIST the negated annotations, use FILTER
+EXISTS instead.
+
+THE OWL IRIs ARE https. prokn writes OWL's namespace as https://www.w3.org/2002/07/owl#
+(wrong scheme): NegativePropertyAssertion (1,370 statements), Class (1,436
+nodes, mostly Bridge2AI cell-image crops .../ProKN/rdf/CellMedioid_...) and
+annotatedProperty. The standard http form (owl:Class, PREFIX owl:
+<http://www.w3.org/2002/07/owl#>) matches NOTHING here - write the https IRI
+in full.\
+"""
+
+#: Companion snippet: a protein's GO annotations without the NOT ones.
+#: Verified 2026-10-16: P61106 returns 232 rows and leaves out its NOT partOf
+#: GO:0005929, which the plain partOf triples include.
+PROKN_SNIPPET = """\
+# prokn GO annotations of one protein, EXCLUDING GO NOT-qualified (negated)
+# annotations, which are also present as plain ?protein <pred> ?go triples.
+SELECT ?pred ?go WHERE {
+  GRAPH <https://purl.org/okn/frink/kg/prokn> {
+    ?st <http://www.w3.org/1999/02/22-rdf-syntax-ns#subject> <http://purl.uniprot.org/uniprot/P61106> ;
+        <http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate> ?pred ;
+        <http://www.w3.org/1999/02/22-rdf-syntax-ns#object> ?go .
+    FILTER NOT EXISTS {
+      ?st <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
+          <https://www.w3.org/2002/07/owl#NegativePropertyAssertion>
+    }
+  }
+}\
+"""
+
+#: Per-KG replacements for the one-line edge_properties ``usage`` note, where the
+#: generic "use the direct triple" advice would give wrong answers.
+_EDGE_USAGE_OVERRIDES: dict[str, dict[str, str]] = {
+    "prokn": dict.fromkeys(
+        PROKN_NEGATED_PREDICATES,
+        "The direct triple ALSO holds GO NOT (negated) annotations: to exclude "
+        "them use this template with FILTER NOT EXISTS { ?stmt rdf:type "
+        "<https://www.w3.org/2002/07/owl#NegativePropertyAssertion> } (see "
+        "usage_notes).",
+    ),
+}
 
 NCIPIDKG_GUIDANCE = """\
 IDENTIFIER AND JOIN NOTES (the curated schema matches the deployed graph as of
@@ -554,6 +631,11 @@ _KG_USAGE_NOTES: dict[str, dict[str, str]] = {
             shortname="medical-device-kg",
             predicate="http://medicaldevice.com/ontology/hasDeviceIdentifier",
         ),
+    },
+    "prokn": {
+        "title": "Negated GO annotation notes",
+        "guidance": PROKN_GUIDANCE,
+        "query_snippet": PROKN_SNIPPET,
     },
     "spoke-okn": {
         "title": "Location-kind notes",
@@ -1085,6 +1167,12 @@ def _build_schema_from_metadata(
             continue
         rel["has_edge_properties"] = True
         relationship_label = _local_name(parent) if parent == rel["uri"] else parent
+        taken = edge_properties_output.get(relationship_label)
+        if taken is not None and taken["uri"] != rel["uri"]:
+            # Same local name, another namespace (prokn: biolink.github.io and
+            # w3id.org catalyzes): keep both rather than overwrite one.
+            host = urlsplit(rel["uri"]).netloc or "other"
+            relationship_label = f"{relationship_label} ({host})"
         edge_properties_output[relationship_label] = {
             "uri": rel["uri"],
             "label": relationship_label,
@@ -1108,6 +1196,9 @@ def _build_schema_from_metadata(
             entry["pattern"] = rel["pattern"]
             if rel["pattern"] in _EDGE_USAGE:
                 entry["usage"] = _EDGE_USAGE[rel["pattern"]].format(uri=rel["uri"])
+            override = _EDGE_USAGE_OVERRIDES.get(shortname, {}).get(rel["uri"])
+            if override:
+                entry["usage"] = override
 
     # Pattern (how a predicate is stored: direct / reified / axiom / declared), counts
     # and extra source/target pairs exist only in the VoID-built files; the

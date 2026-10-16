@@ -290,7 +290,7 @@ def test_usage_notes_glygenkg_carries_the_record_to_protein_rule():
 
 
 def test_usage_notes_absent_for_other_kgs():
-    assert usage_notes("prokn") is None
+    assert usage_notes("pankgraph") is None
     assert usage_notes("wildlifekn") is None
 
 
@@ -823,3 +823,38 @@ def test_merged_arrow_shows_four_labels_then_a_count():
     assert schema_mod._merge_parallel(lines) == [
         "  Feature --> Feature : p0, p1, p2, p3, +3 more"
     ]
+
+
+def test_usage_notes_prokn_negated_go_annotations():
+    notes = usage_notes("prokn")
+    assert notes is not None
+    guidance, snippet = notes["guidance"], notes["query_snippet"]
+    npa = "<https://www.w3.org/2002/07/owl#NegativePropertyAssertion>"
+    assert "1,370" in guidance and "overrides the pattern_guidance" in guidance
+    assert npa in guidance and npa in snippet and "FILTER NOT EXISTS" in snippet
+    assert len(schema_mod.PROKN_NEGATED_PREDICATES) == 9
+
+
+#: prokn shapes: the same relationship name in two namespaces, one of them negated.
+PROKN_CSV = """\
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples,Pattern
+https://biolink.github.io/biolink-model/catalyzes,catalyzes,,Predicate,,u:Protein,u:GO,5,direct;reified
+https://w3id.org/biolink/vocab/catalyzes,catalyzes,,Predicate,,u:Protein,u:GO,90713,direct;reified
+u:source,source,,Predicate,https://biolink.github.io/biolink-model/catalyzes,http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement,,5,
+u:source,source,,Predicate,https://w3id.org/biolink/vocab/catalyzes,http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement,,90713,
+"""
+
+
+def test_same_name_relationships_keep_separate_templates_and_prokn_warning():
+    schema = _build_schema_from_metadata(
+        "prokn", parse_entity_metadata(PROKN_CSV), True
+    )
+    edges = schema["edge_properties"]
+    assert {e["uri"] for e in edges.values()} == {
+        "https://biolink.github.io/biolink-model/catalyzes",
+        "https://w3id.org/biolink/vocab/catalyzes",
+    }
+    w3id = next(e for e in edges.values() if e["uri"].startswith("https://w3id.org"))
+    other = next(e for e in edges.values() if e["uri"].startswith("https://biolink"))
+    assert "GO NOT (negated)" in w3id["usage"]
+    assert other["usage"].startswith("Also a direct triple")
