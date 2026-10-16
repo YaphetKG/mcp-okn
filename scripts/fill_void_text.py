@@ -2,8 +2,9 @@
 
 Order per row: the KG's own ontology release where it supersedes the curated files
 (``RELEASES``: ContaminOSO for the SAWGraph graphs), else the curated proto-okn
-text, else the text already there (the KG's
-own, or ubergraph's), else another ontology — the vocabulary's own published
+text, else the text already there (the KG's own, or ubergraph's), else another
+ontology — for the SAWGraph graphs their project's other modules
+(``SAWGRAPH_MODULES``), then the vocabulary's own published
 document, the federation graph that defines the term, OLS, or for SUDOKN's NAICS
 industry classes the U.S. Census Bureau's NAICS definitions — tagged
 ``(source: …)``. Anything else stays empty and is listed in ``TEXT_FILL.md`` and
@@ -161,6 +162,60 @@ RELEASES: dict[str, tuple[str, frozenset[str], list[str]]] = {
     ),
 }
 
+#: The SAWGraph project's other ontology modules, one repo each, tried in order to
+#: fill descriptions nothing else supplies (tagged ``(source: …)``). They do NOT
+#: supersede curated text: checked 2026-10-16, they agree with it except where
+#: theirs is worse — a citation instead of a definition (wqp TaxonGroup.FishNekton),
+#: typos ("regoins"), or machine labels (``hasCASRN``, ``(kwg) sfContains``).
+#: water-kg's us-sdwis-schema.ttl is left out: it uses an undeclared dcterms: prefix
+#: and does not parse.
+_SAW = "https://raw.githubusercontent.com/SAWGraph/{}/refs/heads/main/{}"
+SAWGRAPH_MODULES: tuple[frozenset[str], list[tuple[str, list[str]]]] = (
+    frozenset({"sawgraph", "fiokg", "hydrologykg", "spatialkg"}),
+    [
+        (
+            "SAWGraph FIO",
+            [
+                _SAW.format("fio", p)
+                for p in (
+                    "ontology/fio.ttl",
+                    "datasets/federal/us-frs/ontology/epa-frs.ttl",
+                    "datasets/federal/us-frs/ontology/epa-frs-controlledVocab.ttl",
+                    "datasets/federal/us-frs/ontology/epa-frs-recordTypes.ttl",
+                )
+            ],
+        ),
+        (
+            "SAWGraph water ontology",
+            [
+                _SAW.format("water-kg", p)
+                for p in (
+                    "ontologies/sawgraph-water-ontology.ttl",
+                    "ontologies/reused-imported/hyf.ttl",
+                )
+            ],
+        ),
+        (
+            "SAWGraph spatial ontology",
+            [_SAW.format("geospatial-kg", "ontologies/sawgraph-spatial-ontology.ttl")],
+        ),
+        (
+            "SAWGraph PFAS KG schemas",
+            [
+                _SAW.format("pfas-kg", p)
+                for p in (
+                    "datasets/federal/us-wqp/ontology/wqp_schema.ttl",
+                    "datasets/maine/egad/ontology/egad-sites-samples-schema.ttl",
+                )
+            ],
+        ),
+        (
+            "SAWGraph DSSTox ontology V3",
+            [_SAW.format("comptox-ontology", "V3/DSSToxOntology_PFAS_as_instance.ttl")],
+        ),
+    ],
+)
+
 #: Census Bureau NAICS definitions, newest first. SUDOKN uses NAICS 2022 (16 of its
 #: codes exist only there, none only in 2017); 11 SUDOKN codes were dropped in 2017
 #: and need the 2012 definitions, which Census publishes only behind a search page
@@ -212,14 +267,22 @@ async def release_text(
     namespace: str, uris: list[str], client: httpx.AsyncClient
 ) -> dict[str, vt.TextHit]:
     """Text for ``uris`` from every module document of an ontology release."""
-    import rdflib
 
     name, _kgs, urls = RELEASES[namespace]
+    return await module_text(name, urls, uris, client) or {}
+
+
+async def module_text(
+    name: str, urls: list[str], uris: list[str], client: httpx.AsyncClient
+) -> dict[str, vt.TextHit] | None:
+    """Text for ``uris`` from module documents read together; None if any fails."""
+    import rdflib
+
     graph = rdflib.Graph()
     for url in urls:
         module = await _parse_doc(url, name, client)
         if module is None:
-            return {}  # a partial release would silently fall back to curated text
+            return None  # a partial release would silently fall back to other text
         graph += module
     return _graph_text(graph, uris, name)
 
@@ -502,6 +565,41 @@ async def resolve_releases(
     return out
 
 
+async def resolve_modules(
+    needed: dict[str, set[str]],
+    cache: dict[str, Any],
+    refresh: bool,
+    client: httpx.AsyncClient,
+) -> dict[str, dict[str, vt.TextHit]]:
+    """Per KG, gap-filling text from :data:`SAWGRAPH_MODULES` (first module wins)."""
+    kgs, modules = SAWGRAPH_MODULES
+    module_cache = {} if refresh else cache.setdefault("sawgraph_modules", {})
+    uris = sorted({u for kg, us in needed.items() if kg in kgs for u in us})
+    todo = [u for u in uris if u not in module_cache]
+    if todo:
+        found: dict[str, vt.TextHit] = {}
+        for name, urls in modules:
+            print(f"  {name}: {len(todo)} term(s)")
+            hits = await module_text(name, urls, todo, client)
+            if hits is None:
+                print(f"  {name}: unavailable, not cached")
+                todo = []  # retry everything next run rather than cache gaps
+                break
+            for u, h in hits.items():
+                # Descriptions only: their labels for reused terms are prefixed
+                # names (qudt:Quantity, hyf:realizedCatchment), not real labels.
+                if h.description:
+                    found.setdefault(u, vt.TextHit("", h.description, h.source))
+        for u in todo:
+            module_cache[u] = _hit_to_json(found.get(u))
+    cache["sawgraph_modules"] = module_cache
+    return {
+        kg: {u: vt.TextHit(**module_cache[u]) for u in us if module_cache.get(u)}
+        for kg, us in needed.items()
+        if kg in kgs
+    }
+
+
 def _read(path: Path) -> tuple[list[str], list[dict[str, str]]]:
     with path.open(newline="") as fh:
         reader = csv.DictReader(fh)
@@ -611,6 +709,13 @@ async def fill_all(
         print(f"lookups needed: {sum(map(len, needed.values())):,} (KG, URI) pairs")
         hits = await resolve(needed, cache, refresh, client)
         releases = await resolve_releases(files, cache, refresh, client)
+        modules = await resolve_modules(needed, cache, refresh, client)
+    for kg, per in modules.items():
+        # The KG's own project ontologies come before generic vocabularies and OLS.
+        for u, hit in per.items():
+            merged = _merge(hit, hits.get(kg, {}).get(u))
+            if merged:
+                hits.setdefault(kg, {})[u] = merged
 
     reports = {}
     for kg, (header, records) in files.items():

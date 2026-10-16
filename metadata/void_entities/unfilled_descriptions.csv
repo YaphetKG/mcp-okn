@@ -151,7 +151,6 @@ fiokg,http://w3id.org/sawgraph/v1/us-wqp#sampleID,Predicate,,wqp - sample id
 fiokg,http://w3id.org/sawgraph/v1/us-wqp#siteId,Predicate,,wqp - site id
 fiokg,http://w3id.org/sawgraph/v1/us-wqp#siteName,Predicate,,wqp - site name
 fiokg,http://w3id.org/sawgraph/v1/us-wqp#srsID,Predicate,,wqp - characteristic substance registry service ID
-fiokg,http://www.opengis.net/ont/geosparql#defaultGeometry,Predicate,,defaultGeometry
 fiokg,http://www.w3.org/1999/02/22-rdf-syntax-ns#langRange,Predicate,,langRange
 fiokg,http://www.w3.org/2001/XMLSchema#length,Predicate,,length
 fiokg,http://www.w3.org/2001/XMLSchema#maxExclusive,Predicate,,maxExclusive
@@ -192,7 +191,6 @@ hydrologykg,http://www.w3.org/2001/XMLSchema#minLength,Predicate,,minLength
 hydrologykg,http://www.w3.org/2001/XMLSchema#pattern,Predicate,,pattern
 hydrologykg,http://www.w3.org/2004/02/skos/core#description,Predicate,,description
 hydrologykg,https://www.opengis.net/def/schema/hy_features/hyf/encompassingCatchment,Predicate,,encompassingCatchment
-hydrologykg,https://www.opengis.net/def/schema/hy_features/hyf/realizedCatchment,Predicate,,realizedCatchment
 hydrologykg,https://www.opengis.net/def/schema/hy_features/hyf/upstreamFlowPath,Predicate,,upstreamFlowPath
 maudekg,http://medicaldevice.com/ontology/MAUDEReport,Class,,MAUDE Adverse Event Report
 maudekg,http://medicaldevice.com/ontology/MedicalDevice,Class,,Medical Device
