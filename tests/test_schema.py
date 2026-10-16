@@ -11,8 +11,8 @@ from mcp_okn.schema import (
     infer_edge_labels,
     parse_entity_metadata,
     usage_notes,
-    void_is_stale,
 )
+from mcp_okn.void_schema import void_is_stale
 
 
 def _parse(csv_text: str) -> dict[str, dict]:
@@ -519,37 +519,29 @@ def test_void_is_stale(fresh, stale):
     assert void_is_stale(fresh) is stale
 
 
-CURATED_CSV = "URI,Label,Description,Type\nhttps://ex.org/C,C,curated,Class\n"
-
-
 @pytest.fixture
-def curated_client():
-    """An httpx client that serves CURATED_CSV for every curated-file URL."""
+def no_curated_client():
+    """An httpx client that fails the test if any curated file is requested."""
 
     def handler(request: httpx.Request) -> httpx.Response:
-        assert str(request.url).startswith(schema_mod.ENTITY_METADATA_BASE)
-        return httpx.Response(200, text=CURATED_CSV)
+        raise AssertionError(f"curated file requested: {request.url}")
 
     return httpx.AsyncClient(transport=httpx.MockTransport(handler))
 
 
-async def test_override_dir_used_then_curated_fallback(tmp_path, curated_client):
-    (tmp_path / "fresh_entities.csv").write_text(VOID_CSV)
-    (tmp_path / "stale_entities.csv").write_text(VOID_CSV)
-    (tmp_path / "build_notes.json").write_text(
-        '{"freshness": {"stale": {"matches": false, "void_triples": 100,'
-        ' "served_triples": 50}}}'
-    )
-    schema_mod._notes_cache.clear()
+async def test_override_dir_is_exclusive_no_curated_fallback(
+    tmp_path, no_curated_client
+):
+    (tmp_path / "built_entities.csv").write_text(VOID_CSV)
     got = {}
-    for kg in ("fresh", "stale", "absent"):
+    for kg in ("built", "absent"):
         meta = await schema_mod.fetch_entity_metadata(
-            kg, client=curated_client, refresh=True, override=str(tmp_path)
+            kg, client=no_curated_client, refresh=True, override=str(tmp_path)
         )
         got[kg] = (schema_mod.metadata_source(kg), len(meta))
-    assert got["fresh"] == (str(tmp_path), len(parse_entity_metadata(VOID_CSV)))
-    assert got["stale"] == (schema_mod.ENTITY_METADATA_BASE, 1)
-    assert got["absent"] == (schema_mod.ENTITY_METADATA_BASE, 1)
+    assert got["built"] == (str(tmp_path), len(parse_entity_metadata(VOID_CSV)))
+    # Absent from the override: empty, so get_schema probes the live graph.
+    assert got["absent"] == (None, 0)
 
 
 def test_edge_property_of_on_a_node_class_stays_a_predicate():
@@ -919,3 +911,13 @@ def test_edge_classes_with_same_ends_and_properties_merge_into_one_box():
     for n in names:
         assert f"    {n}" in diagram  # each name listed in the box
     assert "Assay --> MEASURED" in diagram  # a lone relationship keeps its own box
+
+
+def test_deployment_lag_note_only_describes_the_curated_files(monkeypatch):
+    """The lag census is about the curated file; override files come from the graph."""
+    assert "DEPLOYMENT LAG" in usage_notes("medical-device-kg")["guidance"]
+    monkeypatch.setattr(
+        schema_mod, "ENTITY_METADATA_OVERRIDE", "metadata/void_entities"
+    )
+    assert usage_notes("medical-device-kg") is None
+    assert usage_notes("prokn") is not None  # notes about the graph itself stay

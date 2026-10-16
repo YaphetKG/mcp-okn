@@ -1,10 +1,12 @@
 """Build a per-KG schema table from the ``okn-void`` VoID descriptions.
 
-The curated ``<kg>_entities.csv`` files that ``get_schema`` reads today live in the
-``sbl-sdsc/mcp-proto-okn`` repo and are produced by live probing plus hand/LLM
-curation. This module explores generating the same table from the precomputed VoID
-statistics the federation already publishes, so the structure (and an exact triple
-count for every class and edge) always matches the loaded release.
+``get_schema`` reads these tables when ``MCP_OKN_ENTITY_METADATA_BASE`` points at
+``metadata/void_entities``. Their structure — every class, predicate and
+(source class, predicate, target) edge, with exact counts — comes from the
+precomputed VoID statistics the federation publishes, or, for a KG whose VoID
+describes a different release than the one served, from the same statistics
+counted on the live graph (:func:`introspect_partitions`). Nothing structural comes
+from the legacy curated ``sbl-sdsc/mcp-proto-okn`` files.
 
 VoID layout in ``okn-void`` (one graph for every KG; partition IRIs embed the KG
 shortname)::
@@ -25,28 +27,24 @@ Three things VoID cannot supply are filled by small live queries against the KG:
   row for the relations themselves (bio101: 22 of 382 curated predicates).
 * **Labels and descriptions.** VoID carries none. They come from the KG's own named
   graph, then ubergraph for OBO IRIs (tagged ``(source: … via ubergraph)``), then
-  the IRI's local name. Curated text is not used here, so :func:`compare_with_curated`
-  can show where the curated files carry hand-written knowledge the data lacks; the
-  build then fills it in afterwards (:mod:`mcp_okn.void_text`).
-
-Nothing here is wired into ``get_schema`` yet.
+  the IRI's local name; the build then fills the rest (:mod:`mcp_okn.void_text`).
 """
 
 from __future__ import annotations
 
+import asyncio
 import csv
 import re
 from collections import defaultdict
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass
-from io import StringIO
 from pathlib import Path
 from typing import Any
 
 import httpx
 
 from .registry import EXCLUDED_KGS
-from .schema import ENTITY_METADATA_BASE, _is_provenance_uri, _local_name
+from .schema import _is_provenance_uri, _local_name
 from .sparql import SparqlError, named_graph, run_sparql
 from .void import OKN_VOID_GRAPH
 
@@ -62,9 +60,6 @@ COLUMNS = [
     "Triples",
     "Pattern",
 ]
-
-#: Columns of the curated proto-okn ``*_entities.csv`` files.
-CURATED_COLUMNS = COLUMNS[:7]
 
 #: Per-KG schema metadata that is not domain schema, left out of the files.
 #: spoke-genelab describes its own schema in-graph: 9 ``MetaNode`` instances (one
@@ -138,6 +133,10 @@ DESCRIPTION_PREDICATES = (
 TEXT_BATCH = 25
 #: Timeout for the one heavy query (exact edge-property counts over every statement).
 EDGE_COUNT_TIMEOUT = 300.0
+#: Timeout for one live-introspection partition query (one property, one kind).
+INTROSPECT_TIMEOUT = 900.0
+#: Pause before retrying a per-class introspection query (endpoint memory pressure).
+INTROSPECT_RETRY_S = 30.0
 #: Statements sampled per reified predicate when the exact count times out.
 EDGE_SAMPLE_LIMIT = 1000
 
@@ -196,6 +195,16 @@ def _int(value: Any) -> int | None:
         return int(value)
     except (TypeError, ValueError):
         return None
+
+
+async def _run(query: str, **kw: Any) -> dict[str, Any]:
+    """:func:`run_sparql` with the IRIs left exactly as the graph stores them.
+
+    run_sparql rewrites ``<https://schema.org/…>`` to ``http`` for hand-written
+    queries; the builder queries IRIs it read from the data, and several KGs store
+    the https form (phaseskg's schema:alternateName matched nothing before this).
+    """
+    return await run_sparql(query, normalize_schema=False, **kw)
 
 
 # --------------------------------------------------------------------------- queries
@@ -372,6 +381,53 @@ SELECT DISTINCT ?prop ?domain ?range WHERE {{
     OPTIONAL {{ ?prop rdfs:range ?range . FILTER(isIRI(?range)) }}
   }}
 }}"""
+
+
+def graph_classes_query(kg: str) -> str:
+    """Live equivalent of the class partitions: instances per class."""
+    return f"""\
+SELECT ?cls (COUNT(?s) AS ?entities) WHERE {{
+  GRAPH <{kg_iri(kg)}> {{ ?s a ?cls }}
+}}
+GROUP BY ?cls"""
+
+
+def graph_properties_query(kg: str) -> str:
+    """Live equivalent of the dataset-level property partitions."""
+    return f"""\
+SELECT ?prop (COUNT(*) AS ?n) WHERE {{
+  GRAPH <{kg_iri(kg)}> {{ ?s ?prop ?o }}
+}}
+GROUP BY ?prop"""
+
+
+def graph_partition_query(kg: str, prop: str, kind: str, cls: str = "") -> str:
+    """Live equivalent of one property's class→property partitions.
+
+    ``kind`` is ``total`` (triples whose subject has the class), ``class`` (split
+    by the object's class) or ``datatype`` (split by the literal's datatype),
+    returned in the same shape as :func:`property_partitions_query`. Checked on
+    phaseskg and nestkg (fresh VoID): identical rows except that QLever reports
+    integer subtypes such as ``xsd:nonNegativeInteger`` as ``xsd:int``. One property
+    and one kind per query keeps each under the endpoint's time and memory limits
+    on the largest graphs (spatialkg, ~430M triples).
+    """
+    pattern = {
+        "total": "?s <{p}> ?o . ?s a ?cls .",
+        "class": "?s <{p}> ?o . ?s a ?cls . ?o a ?target .",
+        # QLever's DATATYPE() is unbound for a language-tagged literal; VoID
+        # (and SPARQL 1.1) call that rdf:langString.
+        "datatype": "?s <{p}> ?o . FILTER(isLiteral(?o)) ?s a ?cls . "
+        f'BIND(IF(LANG(?o) != "", <{RDF}langString>, DATATYPE(?o)) AS ?target)',
+    }[kind].format(p=prop)
+    if cls:  # one subject class, for a property too big to split in one query
+        pattern = f"VALUES ?cls {{ <{cls}> }} {pattern}"
+    target = "" if kind == "total" else " ?target"
+    return f"""\
+SELECT ?cls{target} (COUNT(*) AS ?n) WHERE {{
+  GRAPH <{kg_iri(kg)}> {{ {pattern} }}
+}}
+GROUP BY ?cls{target}"""
 
 
 def text_lookup_query(graph: str, uris: Iterable[str]) -> str:
@@ -827,7 +883,7 @@ async def _lookup_text(
     for i in range(0, len(uris), TEXT_BATCH):
         batch = uris[i : i + TEXT_BATCH]
         try:
-            res = await run_sparql(text_lookup_query(graph, batch), client=client)
+            res = await _run(text_lookup_query(graph, batch), client=client)
         except SparqlError as exc:
             log(f"  text lookup failed for a batch in {graph}: {str(exc)[:120]}")
             continue
@@ -842,14 +898,36 @@ async def fetch_edge_partition_counts(
     client: httpx.AsyncClient | None = None,
 ) -> dict[str, int]:
     """Object-class partition count per KG (see :func:`edge_partition_counts_query`)."""
-    res = await run_sparql(edge_partition_counts_query(), client=client)
+    res = await _run(edge_partition_counts_query(), client=client)
     return {r["kg"]: _int(r["n"]) or 0 for r in res["rows"] if r.get("kg")}
 
 
 async def list_void_kgs(client: httpx.AsyncClient | None = None) -> list[str]:
     """Shortnames of every servable KG with a VoID description."""
-    res = await run_sparql(datasets_query(), client=client)
+    res = await _run(datasets_query(), client=client)
     return shortnames_from_datasets(res["rows"])
+
+
+#: Largest relative VoID-vs-served triple-count gap at which VoID is still used.
+#: The 2026-10-15 small drifts (dreamkg, sawgraph, securechainkg) are under 0.001%;
+#: the stale releases (biomarkerkg, nikg, spatialkg) are >1%.
+STALE_VOID_TOLERANCE = 0.001
+
+
+def void_is_stale(freshness: dict[str, Any] | None) -> bool:
+    """True when VoID and the served graph differ by more than the tolerance.
+
+    A failed live count (``served_triples`` None) is not proof of staleness: VoID
+    is kept. A missing VoID count with a served graph is stale.
+    """
+    if not freshness:
+        return False
+    void, served = freshness.get("void_triples"), freshness.get("served_triples")
+    if not isinstance(served, int):
+        return False
+    if not isinstance(void, int) or not void:
+        return served > 0
+    return bool(abs(void - served) / void > STALE_VOID_TOLERANCE)
 
 
 async def check_freshness(
@@ -862,7 +940,7 @@ async def check_freshness(
     served graph (1,215,057 triples). Compares VoID's ``void:triples`` with a live
     ``COUNT(*)``; ``served`` is None when that count times out.
     """
-    res = await run_sparql(void_summary_query(kg), client=client)
+    res = await _run(void_summary_query(kg), client=client)
     row = res["rows"][0] if res["rows"] else {}
     out: dict[str, Any] = {
         "void_triples": _int(row.get("triples")),
@@ -871,7 +949,7 @@ async def check_freshness(
         "served_triples": None,
     }
     try:
-        res = await run_sparql(served_triples_query(kg), client=client, timeout=timeout)
+        res = await _run(served_triples_query(kg), client=client, timeout=timeout)
         out["served_triples"] = _int(res["rows"][0]["n"]) if res["rows"] else None
     except SparqlError as exc:
         out["error"] = str(exc)[:200]
@@ -880,16 +958,80 @@ async def check_freshness(
     return out
 
 
-async def build_kg_schema(
+async def introspect_partitions(
     kg: str, client: httpx.AsyncClient | None = None, log: Log = print
-) -> tuple[list[SchemaRow], list[str]]:
-    """Build the schema rows for one KG. Returns ``(rows, notes)``."""
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], list[str]]:
+    """``(classes, partitions, dataset properties, notes)`` counted from the live graph.
+
+    The same three binding sets the VoID queries return, for a KG whose VoID
+    describes a different release than the one served (see :func:`check_freshness`).
+    A partition query the endpoint cannot answer whole (spatialkg's S2-cell
+    relations need more memory than it has free) is retried one subject class at a
+    time; a class that still fails is left out and named in ``notes``.
+    """
+    classes = (await _run(graph_classes_query(kg), client=client))["rows"]
+    ds_props = (await _run(graph_properties_query(kg), client=client))["rows"]
+    class_iris = sorted(r["cls"] for r in classes if r.get("cls"))
+    partitions: list[dict[str, Any]] = []
     notes: list[str] = []
-    classes = (await run_sparql(class_partitions_query(kg), client=client))["rows"]
-    partitions = (await run_sparql(property_partitions_query(kg), client=client))[
-        "rows"
-    ]
-    ds_props = (await run_sparql(dataset_properties_query(kg), client=client))["rows"]
+    props = sorted(r["prop"] for r in ds_props if r.get("prop"))
+    log(f"  introspecting {len(classes)} classes, {len(props)} properties")
+
+    async def rows(prop: str, kind: str, cls: str = "") -> list[dict[str, Any]]:
+        res = await _run(
+            graph_partition_query(kg, prop, kind, cls),
+            client=client,
+            timeout=INTROSPECT_TIMEOUT,
+        )
+        return [{**r, "prop": prop, "kind": kind} for r in res["rows"] if r.get("cls")]
+
+    for prop in props:
+        for kind in ("total", "class", "datatype"):
+            try:
+                partitions.extend(await rows(prop, kind))
+                continue
+            except SparqlError as exc:
+                log(
+                    f"  {kind} split of {prop} failed whole ({str(exc)[:80]}); retrying per class"
+                )
+            for cls in class_iris:
+                for attempt in (1, 2):
+                    try:
+                        partitions.extend(await rows(prop, kind, cls))
+                        break
+                    except SparqlError as exc:
+                        if attempt == 2:
+                            notes.append(
+                                f"introspection: {kind} split of {prop} on {cls} "
+                                f"failed ({str(exc)[:80]}); left out"
+                            )
+                        else:
+                            await asyncio.sleep(INTROSPECT_RETRY_S)
+    return classes, partitions, ds_props, notes
+
+
+async def build_kg_schema(
+    kg: str,
+    client: httpx.AsyncClient | None = None,
+    log: Log = print,
+    source: str = "void",
+) -> tuple[list[SchemaRow], list[str]]:
+    """Build the schema rows for one KG. Returns ``(rows, notes)``.
+
+    ``source`` is ``"void"`` (the ``okn-void`` statistics) or ``"graph"`` (the same
+    statistics counted from the served graph, for a KG whose VoID is stale).
+    """
+    notes: list[str] = []
+    if source == "graph":
+        classes, partitions, ds_props, intro_notes = await introspect_partitions(
+            kg, client, log
+        )
+        notes.extend(intro_notes)
+        notes.append("schema counted from the served graph: its VoID is stale")
+    else:
+        classes = (await _run(class_partitions_query(kg), client=client))["rows"]
+        partitions = (await _run(property_partitions_query(kg), client=client))["rows"]
+        ds_props = (await _run(dataset_properties_query(kg), client=client))["rows"]
 
     rows = class_rows(classes)
     preds = predicate_rows(partitions, ds_props)
@@ -899,14 +1041,14 @@ async def build_kg_schema(
     reified: dict[str, int] = {}
     axiom_counts: dict[str, int] = {}
     if RDF_PREDICATE in void_props:
-        res = await run_sparql(reified_predicates_query(kg), client=client)
+        res = await _run(reified_predicates_query(kg), client=client)
         reified = {r["pred"]: _int(r["n"]) or 0 for r in res["rows"] if r.get("pred")}
         log(f"  {len(reified)} reified predicate(s)")
         pair_counts: dict[tuple[str, str], int] | None = None
         sampled: dict[str, set[str]] | None = None
         if len(reified) > 1:
             try:
-                res = await run_sparql(
+                res = await _run(
                     edge_property_counts_query(kg),
                     client=client,
                     timeout=EDGE_COUNT_TIMEOUT,
@@ -919,7 +1061,7 @@ async def build_kg_schema(
                 notes.append("edge-property counts: exact query failed; sampled")
                 sampled = {}
                 for pred in reified:
-                    res = await run_sparql(
+                    res = await _run(
                         edge_property_sample_query(kg, pred), client=client
                     )
                     sampled[pred] = {r["prop"] for r in res["rows"] if r.get("prop")}
@@ -935,7 +1077,7 @@ async def build_kg_schema(
         # Predicates that exist only in reified form have no VoID partition of their own.
         for pred in sorted(set(reified) - void_props):
             try:
-                res = await run_sparql(reified_endpoints_query(kg, pred), client=client)
+                res = await _run(reified_endpoints_query(kg, pred), client=client)
                 found = res["rows"]
             except SparqlError as exc:
                 log(
@@ -949,10 +1091,8 @@ async def build_kg_schema(
     void_classes = {b.get("cls") for b in classes}
     if OWL_ON_PROPERTY in void_props or void_classes & set(OWL_PROPERTY_TYPES):
         try:
-            axioms = (await run_sparql(axiom_properties_query(kg), client=client))[
-                "rows"
-            ]
-            declared = (await run_sparql(declared_properties_query(kg), client=client))[
+            axioms = (await _run(axiom_properties_query(kg), client=client))["rows"]
+            declared = (await _run(declared_properties_query(kg), client=client))[
                 "rows"
             ]
         except SparqlError as exc:
@@ -1028,21 +1168,7 @@ def validate_rows(records: list[dict[str, str]], header: list[str]) -> list[str]
     return problems
 
 
-async def fetch_curated_csv(
-    kg: str, client: httpx.AsyncClient
-) -> list[dict[str, str]] | None:
-    """The raw curated proto-okn rows (every row kept — no URI dedupe), or None."""
-    resp = await client.get(f"{ENTITY_METADATA_BASE}/{kg}_entities.csv")
-    if resp.status_code != 200:
-        return None
-    return list(csv.DictReader(StringIO(resp.text)))
-
-
-# ---------------------------------------------------------------------- comparison
-
-
-def _norm_text(text: str) -> str:
-    return re.sub(r"\s+", " ", text or "").strip().casefold()
+# ------------------------------------------------------------- curated text
 
 
 def _split_classes(value: str) -> list[str]:
@@ -1126,167 +1252,3 @@ def normalize_curated(
             )
         )
     return entries, sorted(unresolved)
-
-
-#: Text status for a curated entity whose URI the VoID-derived file lacks.
-NOT_IN_VOID = "not-in-void"
-
-
-def classify_text(curated: str, new: str) -> str:
-    """``match`` / ``differs`` / ``curated-only`` / ``machine-only`` / ``both-empty``."""
-    c, n = _norm_text(curated), _norm_text(new)
-    if c and n:
-        return "match" if c == n else "differs"
-    if c:
-        return "curated-only"
-    return "machine-only" if n else "both-empty"
-
-
-def compare_with_curated(
-    new_records: list[dict[str, str]], curated_records: list[dict[str, str]]
-) -> dict[str, Any]:
-    """Structural and textual diff of a VoID-derived file against a curated one."""
-    entries, unresolved = normalize_curated(curated_records)
-    new_classes = {r["URI"] for r in new_records if r["Type"] == "Class"}
-    new_preds = {r["URI"] for r in new_records if r["Type"] == "Predicate"}
-    cur_classes = {e.uri for e in entries if e.type == "Class"}
-    cur_preds = {e.uri for e in entries if e.type == "Predicate"}
-
-    new_pairs = {
-        (r["SourceClass"], r["URI"])
-        for r in new_records
-        if r["Type"] == "Predicate" and not r["EdgePropertyOf"] and r["SourceClass"]
-    }
-    new_triples = {
-        (r["SourceClass"], r["URI"], r["TargetClass"])
-        for r in new_records
-        if r["Type"] == "Predicate"
-        and not r["EdgePropertyOf"]
-        and r["SourceClass"]
-        and r["TargetClass"]
-        and not is_datatype(r["TargetClass"])
-    }
-    cur_pairs: set[tuple[str, str]] = set()
-    cur_triples: set[tuple[str, str, str]] = set()
-    for e in entries:
-        if e.type != "Predicate" or e.edge_property_of:
-            continue
-        for s in e.sources:
-            cur_pairs.add((s, e.uri))
-            for t in e.targets:
-                cur_triples.add((s, e.uri, t))
-    new_edge = {
-        (r["EdgePropertyOf"], r["URI"]) for r in new_records if r["EdgePropertyOf"]
-    }
-    cur_edge = {(e.edge_property_of, e.uri) for e in entries if e.edge_property_of}
-
-    new_text: dict[str, tuple[str, str]] = {}
-    for r in new_records:
-        new_text.setdefault(r["URI"], (r["Label"], r["Description"]))
-    text_rows = []
-    for e in entries:
-        if e.uri not in new_text:
-            # Curated-only entity (phantom / not deployed): its text is still curated.
-            text_rows.append(
-                {
-                    "uri": e.uri,
-                    "edge_property_of": e.edge_property_of,
-                    "label_status": NOT_IN_VOID,
-                    "curated_label": e.label,
-                    "new_label": "",
-                    "description_status": NOT_IN_VOID,
-                    "curated_description": e.description,
-                    "new_description": "",
-                }
-            )
-            continue
-        label, desc = new_text[e.uri]
-        label_status = classify_text(e.label, label)
-        # A label that is only the local-name fallback is not machine knowledge.
-        if label_status == "differs" and label == local_label(e.uri):
-            label_status = "curated-only"
-        text_rows.append(
-            {
-                "uri": e.uri,
-                "edge_property_of": e.edge_property_of,
-                "label_status": label_status,
-                "curated_label": e.label,
-                "new_label": label,
-                "description_status": classify_text(e.description, desc),
-                "curated_description": e.description,
-                "new_description": desc,
-            }
-        )
-
-    def counts(key: str) -> dict[str, int]:
-        out: dict[str, int] = defaultdict(int)
-        for t in text_rows:
-            out[t[key]] += 1
-        return dict(sorted(out.items()))
-
-    return {
-        "classes": {
-            "new": len(new_classes),
-            "curated": len(cur_classes),
-            "only_new": sorted(new_classes - cur_classes),
-            "only_curated": sorted(cur_classes - new_classes),
-        },
-        "predicates": {
-            "new": len(new_preds),
-            "curated": len(cur_preds),
-            "only_new": sorted(new_preds - cur_preds),
-            "only_curated": sorted(cur_preds - new_preds),
-        },
-        "source_predicate_pairs": {
-            "only_new": sorted(new_pairs - cur_pairs),
-            "only_curated": sorted(cur_pairs - new_pairs),
-        },
-        "edges": {
-            "only_new": sorted(new_triples - cur_triples),
-            "only_curated": sorted(cur_triples - new_triples),
-        },
-        "edge_properties": {
-            "new": len(new_edge),
-            "curated": len(cur_edge),
-            "only_new": sorted(new_edge - cur_edge),
-            "only_curated": sorted(cur_edge - new_edge),
-        },
-        "label_status": counts("label_status"),
-        "description_status": counts("description_status"),
-        "text": text_rows,
-        "unresolved_curated_labels": unresolved,
-        "curated_types": dict(
-            sorted(
-                {
-                    t: sum(1 for e in entries if e.original_type == t)
-                    for t in {e.original_type for e in entries}
-                }.items()
-            )
-        ),
-    }
-
-
-#: Columns of ``manual_definitions.csv``.
-MANUAL_COLUMNS = ["KG", "URI", "EdgePropertyOf", "Label", "Description", "Status"]
-
-
-def manual_definitions(kg: str, text_rows: list[dict[str, Any]]) -> list[list[str]]:
-    """Curated descriptions with no machine-accessible source, one row each.
-
-    ``Status`` is ``curated-only`` (the entity is in VoID but neither the KG nor
-    ubergraph describes it) or ``not-in-void`` (the entity itself is absent from the
-    served graph, so its text exists only in the curated file).
-    """
-    return [
-        [
-            kg,
-            t["uri"],
-            t["edge_property_of"],
-            t["curated_label"],
-            t["curated_description"],
-            t["description_status"],
-        ]
-        for t in text_rows
-        if t["curated_description"]
-        and t["description_status"] in ("curated-only", NOT_IN_VOID)
-    ]

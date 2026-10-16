@@ -123,11 +123,6 @@ biobricks-aopwiki,http://purl.obolibrary.org/obo/NCBITaxon_131567,Predicate,,cel
 biobricks-aopwiki,http://semanticscience.org/resource/CHEMINF_000059,Predicate,,CHEMINF 000059
 biobricks-aopwiki,http://semanticscience.org/resource/CHEMINF_000140,Predicate,,PubChem compound identifier (CID)
 biobricks-mesh,http://www.w3.org/ns/sparql-service-description#url,Predicate,,url
-biomarkerkg,http://purl.obolibrary.org/obo/OBCI_100000009,Predicate,,OBCI_100000009
-biomarkerkg,http://purl.obolibrary.org/obo/OBCI_100000011,Predicate,,OBCI_100000011
-biomarkerkg,http://purl.obolibrary.org/obo/OBCI_100000015,Predicate,,OBCI_100000015
-biomarkerkg,http://purl.obolibrary.org/obo/OBCI_100000016,Predicate,,OBCI_100000016
-biomarkerkg,http://purl.obolibrary.org/obo/OBCI_100000018,Predicate,,OBCI_100000018
 dreamkg,http://schema.org/serviceChannel,Predicate,,serviceChannel
 dreamkg,http://www.opengis.net/ont/geosparql#lat,Predicate,,lat
 dreamkg,http://www.opengis.net/ont/geosparql#long,Predicate,,long
@@ -192,17 +187,8 @@ hydrologykg,http://www.w3.org/2001/XMLSchema#pattern,Predicate,,pattern
 hydrologykg,http://www.w3.org/2004/02/skos/core#description,Predicate,,description
 hydrologykg,https://www.opengis.net/def/schema/hy_features/hyf/encompassingCatchment,Predicate,,encompassingCatchment
 hydrologykg,https://www.opengis.net/def/schema/hy_features/hyf/upstreamFlowPath,Predicate,,upstreamFlowPath
-maudekg,http://medicaldevice.com/ontology/MAUDEReport,Class,,MAUDE Adverse Event Report
-maudekg,http://medicaldevice.com/ontology/MedicalDevice,Class,,Medical Device
-maudekg,http://medicaldevice.com/ontology/dateOfEvent,Predicate,,date of event
-maudekg,http://medicaldevice.com/ontology/dateReceived,Predicate,,date received
-maudekg,http://medicaldevice.com/ontology/eventType,Predicate,,event type
-maudekg,http://medicaldevice.com/ontology/involvesDevice,Predicate,,involves device
-maudekg,http://medicaldevice.com/ontology/productCode,Predicate,,product code
-maudekg,http://medicaldevice.com/ontology/label,Predicate,,label
-nikg,http://www.opengis.net/ont/sf#Point,Class,,Point
-nikg,http://www.opengis.net/ont/geosparql#asWKT,Predicate,,asWKT
-nikg,https://metadata.phila.gov/happened_at,Predicate,,happened_at
+nikg,https://metadata.phila.gov/mesh_D000091368,Class,,mesh D000091368
+nikg,https://metadata.phila.gov/mesh_D005842,Class,,mesh D005842
 phaseskg,http://protege.stanford.edu/plugins/owl/protege#defaultLanguage,Predicate,,defaultLanguage
 phaseskg,http://purl.obolibrary.org/obo/IAO_0000426,Predicate,,first order logic expression
 phaseskg,http://purl.obolibrary.org/obo/PHASES_0002010,Predicate,,GERO
@@ -599,7 +585,6 @@ sockg,http://purl.org/spatialai/spatial/spatial-full#spatiallyRelatedTo,Predicat
 sockg,http://stko-kwg.geog.ucsb.edu/lod/ontology/spatialRelation,Predicate,,spatial relation (kwg)
 sockg,https://idir.uta.edu/sockg-ontology#hasStandardDeviation,Predicate,,hasStandardDeviation
 spatialkg,http://www.w3.org/1999/02/22-rdf-syntax-ns#ObjectProperty,Class,,ObjectProperty
-spatialkg,http://stko-kwg.geog.ucsb.edu/lod/ontology/cellID,Predicate,,cellID
 spatialkg,http://www.w3.org/1999/02/22-rdf-syntax-ns#langRange,Predicate,,langRange
 spatialkg,http://www.w3.org/2001/XMLSchema#length,Predicate,,length
 spatialkg,http://www.w3.org/2001/XMLSchema#maxExclusive,Predicate,,maxExclusive

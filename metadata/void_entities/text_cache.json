@@ -10881,6 +10881,8 @@
   "http://xmlns.com/foaf/0.1/page": [],
   "https://idir.uta.edu/sockg-ontology#hasStandardDeviation": [],
   "https://metadata.phila.gov/happened_at": [],
+  "https://metadata.phila.gov/mesh_D000091368": [],
+  "https://metadata.phila.gov/mesh_D005842": [],
   "https://purl.brain-bican.org/taxonomy/CCN20230722#CCF_acronym_freq": [],
   "https://purl.brain-bican.org/taxonomy/CCN20230722#CCF_broad_freq": [],
   "https://purl.brain-bican.org/taxonomy/CCN20230722#CTX_cluster_id": [],
@@ -14543,6 +14545,7 @@
   "http://stko-kwg.geog.ucsb.edu/lod/ontology/administrativePartOf": null,
   "http://stko-kwg.geog.ucsb.edu/lod/ontology/cellID": null,
   "http://stko-kwg.geog.ucsb.edu/lod/ontology/sfCrosses": null,
+  "http://stko-kwg.geog.ucsb.edu/lod/ontology/sfEquals": null,
   "http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled": {
    "description": "",
    "label": "isRuleEnabled",
@@ -15013,6 +15016,7 @@
   "http://www.opengis.net/ont/geosparql#asWKT": null,
   "http://www.opengis.net/ont/geosparql#defaultGeometry": null,
   "http://www.opengis.net/ont/geosparql#lat": null,
+  "http://www.opengis.net/ont/geosparql#long": null,
   "http://www.opengis.net/ont/sf#Point": null,
   "http://www.projecthalo.com/aura#Absorbance-Scalar-Constant": null,
   "http://www.projecthalo.com/aura#Acceptance-Constant": null,
@@ -15043,6 +15047,8 @@
   "http://www.w3.org/ns/sparql-service-description#url": null,
   "https://idir.uta.edu/sockg-ontology#hasStandardDeviation": null,
   "https://metadata.phila.gov/happened_at": null,
+  "https://metadata.phila.gov/mesh_D000091368": null,
+  "https://metadata.phila.gov/mesh_D005842": null,
   "https://purl.brain-bican.org/taxonomy/CCN20230722#CCF_acronym_freq": {
    "description": "",
    "label": "CCF acronym freq",

@@ -6,7 +6,10 @@ ubergraph for OBO terms). This module fills what is still missing, in order:
 0. **The KG's own ontology release**, for vocabularies whose maintainers publish a
    newer release than the curated files describe (ContaminOSO for the SAWGraph
    graphs). Where the release has a label or description it wins, untagged.
-1. **Curated text** from the ``sbl-sdsc/mcp-proto-okn`` file of the same KG,
+1. **Curated text** from ``metadata/void_entities/curated_text.csv`` — the
+   hand-written labels and descriptions, owned by this repo. It was seeded on
+   2026-10-16 from the legacy ``sbl-sdsc/mcp-proto-okn`` entity files (text only;
+   nothing structural), which are no longer read; edit it here. Rows are
    matched by URI, kind (Class / Predicate) and, for edge properties, the parent
    relationship. It is the primary source and replaces machine text.
 2. **Existing text** already in the row (the KG's own, or ubergraph's) is kept.
@@ -24,10 +27,12 @@ kept as existing text.
 
 from __future__ import annotations
 
+import csv
 import re
 from collections import Counter
 from collections.abc import Iterable
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any
 
 import httpx
@@ -51,7 +56,7 @@ USAGE_NOTE_RE = re.compile(
     r"\s*((?:Used only|Also used) inside class axioms, as owl:onProperty of [\d,]+ "
     r"owl:Restrictions?(?:; never asserted as a direct triple)?\."
     r"|Declared in the schema but used in no triple or class axiom\."
-    # The curated proto-okn files' own wording for the same fact (sawgraph).
+    # The curated text's own wording for the same fact (sawgraph).
     r"|Declared in the schema but not populated in the current release\.)\s*$"
 )
 
@@ -141,6 +146,20 @@ def _kind(row_type: str) -> str:
 
 def _parent(value: str) -> str:
     return local_label(value) if value.startswith(("http://", "https://")) else value
+
+
+#: Columns of ``curated_text.csv``.
+CURATED_TEXT_COLUMNS = ["KG", "URI", "Type", "EdgePropertyOf", "Label", "Description"]
+
+
+def read_curated_text(path: Path) -> dict[str, list[dict[str, str]]]:
+    """``curated_text.csv`` grouped by KG ({} when the file is absent)."""
+    out: dict[str, list[dict[str, str]]] = {}
+    if path.exists():
+        with path.open(newline="", encoding="utf-8") as fh:
+            for row in csv.DictReader(fh):
+                out.setdefault(row["KG"], []).append(row)
+    return out
 
 
 def curated_index(
@@ -399,7 +418,10 @@ async def federation_text(
     for i in range(0, len(uris), batch):
         try:
             res = await run_sparql(
-                federation_text_query(uris[i : i + batch]), client=client, timeout=300
+                federation_text_query(uris[i : i + batch]),
+                client=client,
+                timeout=300,
+                normalize_schema=False,  # keep the data's https schema.org IRIs
             )
         except SparqlError as exc:
             log(f"  federation text lookup failed for a batch: {str(exc)[:120]}")

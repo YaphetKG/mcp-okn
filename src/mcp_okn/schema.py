@@ -6,8 +6,8 @@ When no curated metadata exists we fall back to probing the federation endpoint
 for the distinct classes and predicates used in the KG's named graph.
 
 Set ``MCP_OKN_ENTITY_METADATA_BASE`` to a URL or directory of ``<kg>_entities.csv``
-files (e.g. the VoID-built ``metadata/void_entities``) to read those first; a KG the
-override lacks or whose VoID is stale falls back to the curated file.
+files (e.g. the VoID-built ``metadata/void_entities``) to read those INSTEAD: the
+curated files are then never read, and a KG the override lacks is probed live.
 
 The shortnames are the same ones used as federation named graphs
 (``https://purl.org/okn/frink/kg/{shortname}``), so the curated CSVs port over
@@ -18,7 +18,6 @@ from __future__ import annotations
 
 import asyncio
 import csv
-import json
 import os
 import re
 from io import StringIO
@@ -40,17 +39,13 @@ ENTITY_METADATA_BASE = (
 )
 
 #: Optional override: a URL or local directory of ``<kg>_entities.csv`` files (e.g.
-#: ``metadata/void_entities``, built by ``scripts/build_void_schema.py``). A KG the
-#: override lacks, or whose VoID is stale per the override's ``build_notes.json``,
-#: falls back to :data:`ENTITY_METADATA_BASE`.
+#: ``metadata/void_entities``, built by ``scripts/build_void_schema.py``). When set it
+#: replaces :data:`ENTITY_METADATA_BASE` entirely — no curated fallback; a KG the
+#: override lacks is probed live. The builder already counts a stale-VoID KG from the
+#: served graph, so every override file describes the release being served.
 ENTITY_METADATA_OVERRIDE = os.environ.get("MCP_OKN_ENTITY_METADATA_BASE", "").strip()
 
 _RDF_STATEMENT = "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
-
-#: Largest relative VoID-vs-served triple-count gap at which an override file is
-#: still used. The 2026-10-15 small drifts (dreamkg, sawgraph, securechainkg) are
-#: under 0.001%; the stale releases (biomarkerkg, nikg, spatialkg, maudekg) are >1%.
-STALE_VOID_TOLERANCE = 0.001
 
 #: Source/target pairs listed per predicate besides the top one.
 MAX_EXTRA_PAIRS = 3
@@ -649,8 +644,16 @@ _KG_USAGE_NOTES: dict[str, dict[str, str]] = {
 }
 
 
+#: Usage notes that describe a curated entity file, not the graph: they are wrong
+#: when the schema comes from :data:`ENTITY_METADATA_OVERRIDE`, which is built from
+#: the served graph itself (medical-device-kg's deployment-lag census).
+_CURATED_FILE_NOTES = frozenset({"medical-device-kg"})
+
+
 def usage_notes(shortname: str) -> dict[str, str] | None:
     """Return curated usage notes for a KG, or None if it has none."""
+    if ENTITY_METADATA_OVERRIDE and shortname in _CURATED_FILE_NOTES:
+        return None
     return _KG_USAGE_NOTES.get(shortname)
 
 
@@ -791,37 +794,6 @@ def _set_primary_pair(entry: dict[str, Any]) -> None:
     entry["source_class"], entry["target_class"] = pairs[0][0], pairs[0][1]
 
 
-#: Parsed ``build_notes.json`` per override base.
-_notes_cache: dict[str, dict[str, Any]] = {}
-
-
-async def _read_notes(base: str, client: httpx.AsyncClient) -> dict[str, Any]:
-    """The override's ``build_notes.json`` (freshness per KG), or ``{}``."""
-    if base not in _notes_cache:
-        text = None
-        try:
-            if base.startswith(("http://", "https://")):
-                resp = await client.get(f"{base}/build_notes.json")
-                text = resp.text if resp.status_code == 200 else None
-            else:
-                path = Path(base) / "build_notes.json"
-                text = path.read_text() if path.exists() else None
-            _notes_cache[base] = json.loads(text) if text else {}
-        except (OSError, ValueError, httpx.HTTPError):
-            _notes_cache[base] = {}
-    return _notes_cache[base]
-
-
-def void_is_stale(freshness: dict[str, Any] | None) -> bool:
-    """True when VoID and the served graph differ by more than the tolerance."""
-    if not freshness or freshness.get("matches") is not False:
-        return False
-    void, served = freshness.get("void_triples"), freshness.get("served_triples")
-    if not isinstance(void, int) or not void or not isinstance(served, int):
-        return True
-    return bool(abs(void - served) / void > STALE_VOID_TOLERANCE)
-
-
 async def _read_csv(base: str, shortname: str, client: httpx.AsyncClient) -> str | None:
     """One ``<kg>_entities.csv`` from a URL base or a local directory."""
     name = f"{shortname}_entities.csv"
@@ -852,9 +824,10 @@ async def fetch_entity_metadata(
 ) -> dict[str, dict[str, Any]]:
     """Fetch and parse the entity metadata CSV for a KG (cached).
 
-    Reads :data:`ENTITY_METADATA_OVERRIDE` (or ``override``) first when set, then
-    the curated proto-okn file. Returns an empty dict when neither has the KG (the
-    caller then falls back to probing). See :func:`parse_entity_metadata`.
+    Reads :data:`ENTITY_METADATA_OVERRIDE` (or ``override``) when set, else the
+    curated proto-okn file — never both. Returns an empty dict when the source lacks
+    the KG (the caller then falls back to probing). See
+    :func:`parse_entity_metadata`.
     """
     if shortname in _metadata_cache and not refresh:
         return _metadata_cache[shortname]
@@ -865,13 +838,7 @@ async def fetch_entity_metadata(
         client = httpx.AsyncClient(timeout=30.0)
     content, used = None, None
     try:
-        bases = []
-        if override:
-            notes = await _read_notes(override, client)
-            if not void_is_stale(notes.get("freshness", {}).get(shortname)):
-                bases.append(override)
-        bases.append(ENTITY_METADATA_BASE)
-        for base in bases:
+        for base in [override or ENTITY_METADATA_BASE]:
             content = await _read_csv(base, shortname, client)
             if content is not None:
                 used = base
@@ -1406,7 +1373,7 @@ async def get_schema(shortname: str, compact: bool = True) -> dict[str, Any]:
     result: dict[str, Any] = {"shortname": shortname, "schema": schema}
     source = metadata_source(shortname)
     if ENTITY_METADATA_OVERRIDE and source:
-        # Testing aid: say whether the override or the curated fallback answered.
+        # Testing aid: which entity files answered.
         result["metadata_source"] = source
     return result
 

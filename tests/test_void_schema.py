@@ -296,28 +296,6 @@ CURATED = [
 ]
 
 
-def _new(uri, type_, label="", desc="", edge_of="", src="", tgt="", n="1"):
-    return {
-        "URI": uri,
-        "Label": label or vs.local_label(uri),
-        "Description": desc,
-        "Type": type_,
-        "EdgePropertyOf": edge_of,
-        "SourceClass": src,
-        "TargetClass": tgt,
-        "Triples": n,
-    }
-
-
-NEW = [
-    _new(OBI, "Class", "assay", "A planned process."),
-    _new(BL + "Gene", "Class", desc="A gene"),
-    _new(STMT, "Class"),
-    _new(DE, "Predicate", src=OBI, tgt=BL + "Gene"),
-    _new(SG + "group_mean_1", "Predicate", edge_of=DE, src=STMT, tgt=XSD + "double"),
-]
-
-
 def test_normalize_curated_resolves_labels_and_folds_types():
     entries, unresolved = vs.normalize_curated(CURATED)
     by_uri = {e.uri: e for e in entries}
@@ -332,39 +310,40 @@ def test_normalize_curated_resolves_labels_and_folds_types():
     assert unresolved == []
 
 
-def test_compare_structure():
-    r = vs.compare_with_curated(NEW, CURATED)
-    assert r["classes"]["only_new"] == [STMT]
-    assert r["predicates"]["only_curated"] == [SG + "phantom"]
-    assert r["edges"]["only_new"] == [] and r["edges"]["only_curated"] == []
-    assert r["edge_properties"]["only_new"] == [] and r["edge_properties"]["new"] == 1
+async def test_introspection_returns_void_shaped_partitions(monkeypatch):
+    """A stale-VoID KG is counted from the served graph, in the VoID binding shape."""
+    calls = []
 
+    async def fake(q, client=None, **kw):
+        calls.append(q)
+        if "(COUNT(?s) AS ?entities)" in q:
+            return {"rows": [{"cls": OBI, "entities": 7}]}
+        if "?s ?prop ?o" in q:
+            return {"rows": [{"prop": DE, "n": 12}]}
+        if "?o a ?target" in q:
+            return {"rows": [{"cls": OBI, "target": BL + "Gene", "n": 12}]}
+        if "DATATYPE(?o)" in q:
+            return {"rows": []}
+        if "?s a ?cls" in q:
+            return {"rows": [{"cls": OBI, "n": 12}]}
+        raise AssertionError(q)
 
-def test_compare_text_categories_and_manual_definitions():
-    r = vs.compare_with_curated(NEW, CURATED)
-    status = {
-        (t["uri"], t["edge_property_of"]): t["description_status"] for t in r["text"]
-    }
-    assert status[(BL + "Gene", "")] == "match"
-    assert status[(OBI, "")] == "differs"
-    assert status[(SG + "group_mean_1", DE)] == "curated-only"
-    assert status[(SG + "phantom", "")] == vs.NOT_IN_VOID
-    manual = vs.manual_definitions("spoke-genelab", r["text"])
-    uris = {(m[1], m[5]) for m in manual}
-    assert uris == {
-        (DE, "curated-only"),
-        (SG + "group_mean_1", "curated-only"),
-        (SG + "phantom", vs.NOT_IN_VOID),
-    }
-    gm = next(m for m in manual if m[1] == SG + "group_mean_1")
-    assert gm[2] == DE and gm[4].startswith("Mean expression level")
-
-
-def test_label_that_is_only_the_local_name_counts_as_curated_only():
-    r = vs.compare_with_curated(NEW, CURATED)
-    labels = {t["uri"]: t["label_status"] for t in r["text"]}
-    assert labels[OBI] == "match"  # "assay" vs "Assay" — case-insensitive
-    assert labels[DE] == "match"
+    monkeypatch.setattr(vs, "run_sparql", fake)
+    classes, partitions, ds_props, notes = await vs.introspect_partitions(
+        "nikg", log=lambda _m: None
+    )
+    assert classes == [{"cls": OBI, "entities": 7}]
+    assert ds_props == [{"prop": DE, "n": 12}]
+    assert partitions == [
+        {"cls": OBI, "n": 12, "prop": DE, "kind": "total"},
+        {"cls": OBI, "target": BL + "Gene", "n": 12, "prop": DE, "kind": "class"},
+    ]
+    assert notes == []
+    assert all("<https://purl.org/okn/frink/kg/nikg>" in q for q in calls)
+    assert not any("okn-void" in q for q in calls)  # never reads VoID
+    # The VoID row builders accept them unchanged.
+    (row,) = vs.predicate_rows(partitions, ds_props)
+    assert (row.source_class, row.target_class, row.triples) == (OBI, BL + "Gene", 12)
 
 
 async def test_build_kg_schema_driver_end_to_end(monkeypatch):
@@ -502,3 +481,27 @@ def test_drop_excluded_removes_spoke_genelab_meta_layer():
         ("22-rdf-syntax-ns#predicate", 50235713),
         ("log2fc", 50208066),
     ]
+
+
+async def test_introspection_splits_a_failing_property_by_subject_class(monkeypatch):
+    """spatialkg 2026-10-16: an S2-cell relation's object-class split ran out of
+    endpoint memory whole; per subject class it fits, and a class that still fails
+    is reported rather than silently dropped."""
+    a, b = OBI, BL + "Gene"
+    monkeypatch.setattr(vs, "INTROSPECT_RETRY_S", 0)
+
+    async def fake(q, client=None, **kw):
+        if "(COUNT(?s) AS ?entities)" in q:
+            return {"rows": [{"cls": a, "entities": 1}, {"cls": b, "entities": 1}]}
+        if "?s ?prop ?o" in q:
+            return {"rows": [{"prop": DE, "n": 2}]}
+        if "?o a ?target" in q:
+            if "VALUES ?cls" not in q or f"<{b}>" in q:
+                raise vs.SparqlError("Tried to allocate 5.9 GB")
+            return {"rows": [{"cls": a, "target": b, "n": 1}]}
+        return {"rows": []}
+
+    monkeypatch.setattr(vs, "run_sparql", fake)
+    _c, partitions, _d, notes = await vs.introspect_partitions("spatialkg", log=print)
+    assert partitions == [{"cls": a, "target": b, "n": 1, "prop": DE, "kind": "class"}]
+    assert len(notes) == 1 and f"class split of {DE} on {b}" in notes[0]

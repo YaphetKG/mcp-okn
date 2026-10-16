@@ -1,9 +1,0 @@
-URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples,Pattern
-http://medicaldevice.com/ontology/MAUDEReport,MAUDE Adverse Event Report,,Class,,,,15284,
-http://medicaldevice.com/ontology/MedicalDevice,Medical Device,,Class,,,,4099,
-http://medicaldevice.com/ontology/dateOfEvent,date of event,,Predicate,,http://medicaldevice.com/ontology/MAUDEReport,http://www.w3.org/2001/XMLSchema#string,11276,direct
-http://medicaldevice.com/ontology/dateReceived,date received,,Predicate,,http://medicaldevice.com/ontology/MAUDEReport,http://www.w3.org/2001/XMLSchema#string,15285,direct
-http://medicaldevice.com/ontology/eventType,event type,,Predicate,,http://medicaldevice.com/ontology/MAUDEReport,http://www.w3.org/2001/XMLSchema#string,15279,direct
-http://medicaldevice.com/ontology/involvesDevice,involves device,,Predicate,,http://medicaldevice.com/ontology/MAUDEReport,http://medicaldevice.com/ontology/MedicalDevice,15285,direct
-http://medicaldevice.com/ontology/productCode,product code,,Predicate,,http://medicaldevice.com/ontology/MAUDEReport,http://www.w3.org/2001/XMLSchema#string,15277,direct
-http://medicaldevice.com/ontology/label,label,,Predicate,,http://medicaldevice.com/ontology/MedicalDevice,http://www.w3.org/2001/XMLSchema#string,4128,direct
