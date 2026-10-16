@@ -13,6 +13,11 @@ KG and writes:
   source (the hand-written knowledge the VoID files cannot reproduce);
 * ``build_notes.json``       — per-KG build notes, skips and failures.
 
+After the comparison (which needs the raw machine text), ``fill_void_text.py`` fills
+Label/Description in place — curated text first, then other ontologies tagged
+``(source: …)`` — and writes ``TEXT_FILL.md`` / ``unfilled_descriptions.csv``.
+Pass ``--no-fill`` to keep the raw text.
+
 ``get_schema`` reads them only when ``MCP_OKN_ENTITY_METADATA_BASE`` points here
 (see :mod:`mcp_okn.schema`); by default it reads the curated files.
 
@@ -389,6 +394,9 @@ async def main() -> int:
         "--include-large", action="store_true", help="also build huge KGs"
     )
     parser.add_argument("--out", type=Path, default=OUT, help="output directory")
+    parser.add_argument(
+        "--no-fill", action="store_true", help="skip the label/description fill"
+    )
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
 
@@ -411,6 +419,10 @@ async def main() -> int:
         fresh = await build(kgs, args.include_large, args.out)
         notes = _merge_notes(args.out, fresh, kgs)
     await compare(args.out, notes)
+    if not (args.compare_only or args.freshness_only or args.no_fill):
+        from fill_void_text import fill_all  # sibling script
+
+        await fill_all(args.out)
     return 0
 
 

@@ -66,7 +66,7 @@ Treat the structural diff for a stale KG with suspicion: VoID may describe a dif
 | oard-kg | 9 / 9 | 0 | 0 | 16 / 16 | 0 | 0 | 0 / 9 | 0 | 0 | 25 | 0 | 0 |
 | pankgraph | 13 / 13 | 0 | 0 | 102 / 102 | 0 | 0 | 85 / 82 | 0 | 3 | 112 | 0 | 0 |
 | phaseskg | 14 / 92 | 2 | 80 | 145 / 90 | 55 | 0 | 0 / 0 | 4 | 42 | 56 | 0 | 80 |
-| prokn | 41 / 41 | 0 | 0 | 217 / 218 | 0 | 1 | 208 / 13 | 71 | 9 | 208 | 0 | 1 |
+| prokn | 41 / 41 | 0 | 0 | 217 / 218 | 0 | 1 | 208 / 13 | 16 | 64 | 208 | 0 | 1 |
 | rdkg | 13 / 11 | 2 | 0 | 21 / 21 | 0 | 0 | 0 / 0 | 0 | 7 | 25 | 0 | 0 |
 | ruralkg | 20 / 244 | 3 | 227 | 84 / 86 | 2 | 4 | 0 / 0 | 1 | 16 | 145 | 0 | 231 |
 | sawgraph ⚠ stale | 416 / 194 | 239 | 17 | 266 / 146 | 121 | 1 | 0 / 0 | 63 | 42 | 236 | 0 | 17 |
@@ -270,8 +270,8 @@ Curated row types: {'Class': 24, 'Predicate': 62}
 
 - `obo:GO_0008150`<br>curated: A biological process represents a series of molecular events with a defined beginning and end, carried out by one or more organized assemblies of molecular functions.<br>KG: Note that, in addition to forming the root of the biological process ontology, this term is recommended for the annotation of gene products whose biological process is unknown. When this term is used 
 - `obo:GO_0008150`<br>curated: A biological process represents a series of molecular events with a defined beginning and end, carried out by one or more organized assemblies of molecular functions.<br>KG: Note that, in addition to forming the root of the biological process ontology, this term is recommended for the annotation of gene products whose biological process is unknown. When this term is used 
-- `obo:PATO_0000001`<br>curated: A dependent entity that inheres in a bearer by virtue of how the bearer is related to other entities.<br>KG: A dependent entity that inheres in a bearer by virtue of how the bearer is related to other entities
-- `obo:PATO_0000047`<br>curated: An organismal quality inhering in a bearer by virtue of the bearer's ability to produce gametes.<br>KG: An organismal quality inhering in a bearer by virtue of the bearer's ability to undergo sexual reproduction in order to differentiate the individuals or types involved.
+- `obo:PATO_0000001`<br>curated: A dependent entity that inheres in a bearer by virtue of how the bearer is related to other entities.<br>KG: A dependent entity that inheres in a bearer by virtue of how the bearer is related to other entities (source: PATO via ubergraph)
+- `obo:PATO_0000047`<br>curated: An organismal quality inhering in a bearer by virtue of the bearer's ability to produce gametes.<br>KG: An organismal quality inhering in a bearer by virtue of the bearer's ability to undergo sexual reproduction in order to differentiate the individuals or types involved. (source: PATO via ubergraph)
 
 ## biobricks-ice
 
@@ -332,10 +332,10 @@ Curated row types: {'Class': 10, 'Predicate': 21}
 
 **Descriptions that differ** (4)
 
-- `obo:IAO_0000136`<br>curated: Indicates that information or data pertains to a particular subject<br>KG: A (currently) primitive relation that relates an information artifact to an entity.
-- `obo:OBI_0000299`<br>curated: The result or product produced by a process or assay<br>KG: The inverse property of is specified output of
-- `obo:RO_0000056`<br>curated: An entity takes part in or is involved in a biological process<br>KG: a relation between a continuant and a process, in which the continuant is somehow involved in the process
-- `obo:RO_0000057`<br>curated: A process involves or includes a particular entity<br>KG: a relation between a process and a continuant, in which the continuant is somehow involved in the process
+- `obo:IAO_0000136`<br>curated: Indicates that information or data pertains to a particular subject<br>KG: A (currently) primitive relation that relates an information artifact to an entity. (source: IAO via ubergraph)
+- `obo:OBI_0000299`<br>curated: The result or product produced by a process or assay<br>KG: The inverse property of is specified output of (source: OBI via ubergraph)
+- `obo:RO_0000056`<br>curated: An entity takes part in or is involved in a biological process<br>KG: a relation between a continuant and a process, in which the continuant is somehow involved in the process (source: RO via ubergraph)
+- `obo:RO_0000057`<br>curated: A process involves or includes a particular entity<br>KG: a relation between a process and a continuant, in which the continuant is somehow involved in the process (source: RO via ubergraph)
 
 ## biobricks-mesh
 
@@ -522,10 +522,10 @@ Curated row types: {'Class': 7, 'Predicate': 11}
 
 **Descriptions that differ** (4)
 
-- `obo:IAO_0000136`<br>curated: Indicates that information or data pertains to a particular subject<br>KG: A (currently) primitive relation that relates an information artifact to an entity.
-- `obo:OBI_0000299`<br>curated: The result or product produced by a process or assay<br>KG: The inverse property of is specified output of
-- `obo:RO_0000056`<br>curated: An entity takes part in or is involved in a biological process<br>KG: a relation between a continuant and a process, in which the continuant is somehow involved in the process
-- `obo:RO_0000057`<br>curated: A process involves or includes a particular entity<br>KG: a relation between a process and a continuant, in which the continuant is somehow involved in the process
+- `obo:IAO_0000136`<br>curated: Indicates that information or data pertains to a particular subject<br>KG: A (currently) primitive relation that relates an information artifact to an entity. (source: IAO via ubergraph)
+- `obo:OBI_0000299`<br>curated: The result or product produced by a process or assay<br>KG: The inverse property of is specified output of (source: OBI via ubergraph)
+- `obo:RO_0000056`<br>curated: An entity takes part in or is involved in a biological process<br>KG: a relation between a continuant and a process, in which the continuant is somehow involved in the process (source: RO via ubergraph)
+- `obo:RO_0000057`<br>curated: A process involves or includes a particular entity<br>KG: a relation between a process and a continuant, in which the continuant is somehow involved in the process (source: RO via ubergraph)
 
 ## biohealth
 
@@ -1363,7 +1363,7 @@ Curated row types: {'Class': 127, 'Predicate': 191}
 
 **Descriptions that differ** (79)
 
-- `obo:OBI_0200000`<br>curated: A planned process that produces output data from input data (OBI). Here the type of the six algorithms used to compute the dataset summaries.<br>KG: A planned process that produces output data from input data.
+- `obo:OBI_0200000`<br>curated: A planned process that produces output data from input data (OBI). Here the type of the six algorithms used to compute the dataset summaries.<br>KG: A planned process that produces output data from input data. (source: OBI via ubergraph)
 - `http://purl.org/spatialai/stad/v2/core/DatasetDescription`<br>curated: The extended stad:DatasetDescription class for describing datasets.<br>KG: The extended stad:DatasetDescription class for describing datasets
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion`<br>curated: Administrative regions as defined by GADM.<br>KG: Administrative regoins as defined by the Global Administrative Area Database (GADM); see https://gadm.org/metadata.html
 - `http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_1`<br>curated: GADM level 1 administrative regions (states, provinces).<br>KG: GADM level 1 administrative regions which are the highest level of division of a country, such as US states, Canadian provinces, or French departments.
@@ -1596,12 +1596,12 @@ Curated row types: {'Class': 6, 'Predicate': 78}
 
 **Descriptions that differ** (45)
 
-- `obo:CHEBI_23367`<br>curated: Any constitutionally or isotopically distinct atom, molecule, ion, ion pair, radical, radical ion, complex, conformer etc., identifiable as a separately distinguishable entity. Chemicals appear here a<br>KG: Any constitutionally or isotopically distinct atom, molecule, ion, ion pair, radical, radical ion, complex, conformer etc., identifiable as a separately distinguishable entity.
+- `obo:CHEBI_23367`<br>curated: Any constitutionally or isotopically distinct atom, molecule, ion, ion pair, radical, radical ion, complex, conformer etc., identifiable as a separately distinguishable entity. Chemicals appear here a<br>KG: Any constitutionally or isotopically distinct atom, molecule, ion, ion pair, radical, radical ion, complex, conformer etc., identifiable as a separately distinguishable entity. (source: CHEBI via uber
 - `obo:SO_0000655`<br>curated: An RNA transcript that does not encode for a protein rather the RNA molecule is the gene product.<br>KG: A ncRNA is a processed_transcript, so it may not contain parts such as transcribed_spacer_regions that are removed in the act of processing. For the corresponding primary_transcripts, please see term 
-- `obo:RO_0000056`<br>curated: A relation between a continuant and a process, in which the continuant is somehow involved in the process.<br>KG: a relation between a continuant and a process, in which the continuant is somehow involved in the process
-- `obo:RO_0000056`<br>curated: A relation between a continuant and a process, in which the continuant is somehow involved in the process.<br>KG: a relation between a continuant and a process, in which the continuant is somehow involved in the process
-- `obo:RO_0000056`<br>curated: A relation between a continuant and a process, in which the continuant is somehow involved in the process.<br>KG: a relation between a continuant and a process, in which the continuant is somehow involved in the process
-- `obo:RO_0000056`<br>curated: A relation between a continuant and a process, in which the continuant is somehow involved in the process.<br>KG: a relation between a continuant and a process, in which the continuant is somehow involved in the process
+- `obo:RO_0000056`<br>curated: A relation between a continuant and a process, in which the continuant is somehow involved in the process.<br>KG: a relation between a continuant and a process, in which the continuant is somehow involved in the process (source: RO via ubergraph)
+- `obo:RO_0000056`<br>curated: A relation between a continuant and a process, in which the continuant is somehow involved in the process.<br>KG: a relation between a continuant and a process, in which the continuant is somehow involved in the process (source: RO via ubergraph)
+- `obo:RO_0000056`<br>curated: A relation between a continuant and a process, in which the continuant is somehow involved in the process.<br>KG: a relation between a continuant and a process, in which the continuant is somehow involved in the process (source: RO via ubergraph)
+- `obo:RO_0000056`<br>curated: A relation between a continuant and a process, in which the continuant is somehow involved in the process.<br>KG: a relation between a continuant and a process, in which the continuant is somehow involved in the process (source: RO via ubergraph)
 - `obo:RO_0002211`<br>curated: x regulates y if x has an effect on the frequency, rate, or extent of y.<br>KG: p regulates q iff p is causally upstream of q, the execution of p is not constant and varies according to specific conditions, and p influences the rate or magnitude of execution of q due to an effect
 - `obo:RO_0002211`<br>curated: x regulates y if x has an effect on the frequency, rate, or extent of y.<br>KG: p regulates q iff p is causally upstream of q, the execution of p is not constant and varies according to specific conditions, and p influences the rate or magnitude of execution of q due to an effect
 - `obo:RO_0002211`<br>curated: x regulates y if x has an effect on the frequency, rate, or extent of y.<br>KG: p regulates q iff p is causally upstream of q, the execution of p is not constant and varies according to specific conditions, and p influences the rate or magnitude of execution of q due to an effect
@@ -1959,8 +1959,8 @@ Curated row types: {'Class': 13, 'Predicate': 102}
 **Descriptions that differ** (3)
 
 - `obo:SO_0000694`<br>curated: A single nucleotide polymorphism; a single-base sequence variant that is polymorphic in a population.<br>KG: SNPs are single base pair positions in genomic DNA at which different sequence alternatives exist in normal individuals in some population(s), wherein the least frequent variant has an abundance of 1%
-- `obo:SO_0001483`<br>curated: A single nucleotide variant; a genomic position at which different single-nucleotide alternatives exist.<br>KG: SNVs are single nucleotide positions in genomic DNA at which different sequence alternatives exist.
-- `obo:SO_0001747`<br>curated: A DNA region corresponding to an unfolded, accessible stretch of chromatin.<br>KG: Requested by John Calley 3125900.
+- `obo:SO_0001483`<br>curated: A single nucleotide variant; a genomic position at which different single-nucleotide alternatives exist.<br>KG: SNVs are single nucleotide positions in genomic DNA at which different sequence alternatives exist. (source: SO via ubergraph)
+- `obo:SO_0001747`<br>curated: A DNA region corresponding to an unfolded, accessible stretch of chromatin.<br>KG: Requested by John Calley 3125900. (source: SO via ubergraph)
 
 ## phaseskg
 
@@ -2212,17 +2212,19 @@ Curated row types: {'Class': 41, 'Predicate': 248}
 - `obo:RO_0002410` → `dct:source`
 - … 170 more (see comparison.json)
 
-**Descriptions that differ** (9)
+**Descriptions that differ** (64)
 
-- `obo:SO_0001147`<br>curated: Describes the natural sequence variants due to polymorphisms, disease-associated mutations, RNA editing and variations between strains, isolates or cultivars.<br>KG: Discrete.
-- `obo:GO_0005694`<br>curated: A structure composed of a very long molecule of DNA and associated proteins (e.g. histones) that carries hereditary information.<br>KG: Chromosomes include parts that are not part of the chromatin. Examples include the kinetochore.
-- `obo:ECO_9000000`<br>curated: A relation connecting an evidence type to an assertion method where the assertion method describes the type of process employed to evaluate the evidence.<br>KG: In the future we may use a more generic relation with weaker domain and range constraints taken from IAO, RO or OBI.
-- `obo:GO_0000776`<br>curated: A multisubunit complex that is located at the centromeric region of DNA and provides an attachment point for the spindle microtubules.<br>KG: Note that the kinetochore overlaps the centromeric DNA, but centromeric DNA is not part of the kinetochore.
-- `obo:NCIT_C13258`<br>curated: Semiautonomous, self-reproducing organelles that occur in the cytoplasm of all cells of most, but not all, eukaryotes. Mitochondria are the principal energy source of the cell and contain the cytochro<br>KG: Semiautonomous, self-reproducing organelles that occur in the cytoplasm of all cells of most, but not all, eukaryotes. Mitochondria contain distinctive ribosomes, transfer RNAs, amino acyl t-RNA synth
-- `obo:GO_0005730`<br>curated: A small, dense body one or more of which are present in the nucleus of eukaryotic cells. It is rich in RNA and protein, is not bounded by a limiting membrane, and is not seen during mitosis.<br>KG: A small, dense body one or more of which are present in the nucleus of eukaryotic cells. It is rich in RNA and protein, is not bounded by a limiting membrane, and is not seen during mitosis. Its prime
-- `obo:GO_0005813`<br>curated: A structure comprised of a core structure (in most organisms, a pair of centrioles) and peripheral material from which a microtubule-based structure, such as a spindle apparatus, is organized.<br>KG: A structure comprised of a core structure (in most organisms, a pair of centrioles) and peripheral material from which a microtubule-based structure, such as a spindle apparatus, is organized. Centros
-- `obo:GO_0032154`<br>curated: The cleavage furrow is a plasma membrane invagination at the cell division site. The cleavage furrow begins as a shallow groove and eventually deepens to divide the cytoplasm.<br>KG: While the term 'cleavage furrow' was initially associated with animal cells, such a structure occurs in many other types of cells, including unicellular protists.
-- `obo:RO_0002180`<br>curated: w 'has component' p if w 'has part' p and w is such that it can be directly disassembled into n parts p, p2, p3, ..., pn, where these parts are of similar type.<br>KG: w 'has component' p if w 'has part' p and w is such that it can be directly disassembled into into n parts p, p2, p3, ..., pn, where these parts are of similar type.
+- `obo:NCIT_C43366`<br>curated: A substance formed by chemical union of two or more elements or ingredients in definite proportion by weight.<br>KG: A substance formed by chemical union of two or more elements or ingredients in definite proportion by weight. (source: NCIT via ubergraph)
+- `obo:SO_0001147`<br>curated: Describes the natural sequence variants due to polymorphisms, disease-associated mutations, RNA editing and variations between strains, isolates or cultivars.<br>KG: Discrete. (source: SO via ubergraph)
+- `obo:NCIT_C19398`<br>curated: A molecular entity formed by loose association involving two or more component molecular entities. The bonding between the components is normally weaker than in a covalent bond.<br>KG: A molecular entity formed by loose association involving two or more component molecular entities. The bonding between the components is normally weaker than in a covalent bond. (source: NCIT via uber
+- `obo:NCIT_C48182`<br>curated: A form of gene expression profiling that is indicative of the biological behavior of a tumor or cancer. This pattern of expression is comprised of unique clusters of genes that display differential le<br>KG: A form of gene expression profiling that is indicative of the biological behavior of a tumor or cancer. This pattern of expression is comprised of unique clusters of genes that display differential le
+- `obo:NCIT_C61154`<br>curated: Any substance involved in metabolism, either as a product of metabolism or as necessary for metabolism.<br>KG: Any substance involved in metabolism, either as a product of metabolism or as necessary for metabolism. (source: NCIT via ubergraph)
+- `obo:NCIT_C178092`<br>curated: Documentation supporting direct medical treatment or testing.<br>KG: Documentation supporting direct medical treatment or testing. (source: NCIT via ubergraph)
+- `obo:NCIT_C20130`<br>curated: Collection of proteins that are evolutionarily related.  This is reflected in the structural and functional similarities as well as in the extent of sequence conservation or residue identity. (from SC<br>KG: Collection of proteins that are evolutionarily related. This is reflected in the structural and functional similarities as well as in the extent of sequence conservation or residue identity. (from SCO
+- `obo:UBERON_0001062`<br>curated: Biological entity that is either an individual member of a biological species or constitutes the structural organization of an individual member of a biological species.<br>KG: Biological entity that is either an individual member of a biological species or constitutes the structural organization of an individual member of a biological species. (source: UBERON via ubergraph)
+- `obo:NCIT_C73619`<br>curated: A prominent or identifiable aspect, region, or site of interest.<br>KG: A prominent or identifiable aspect, region, or site of interest. (source: NCIT via ubergraph)
+- `obo:FBcv_0003016`<br>curated: Genes whose protein products form a macromolecular complex (GO:0043234).<br>KG: Genes whose protein products form a macromolecular complex (GO:0043234). (source: FBCV via ubergraph)
+- … 54 more (see comparison.json)
 
 ## rdkg
 
@@ -3019,7 +3021,7 @@ Curated row types: {'Class': 8, 'EdgeProperty': 20, 'NodeProperty': 34, 'Predica
 
 **Descriptions that differ** (1)
 
-- `obo:OBI_0000070`<br>curated: Unique identifier for an assay instance in the NASA Open Science Data Repository (OSDR)<br>KG: A planned process that has the objective to produce information about a material entity (the evaluant) by examining it.
+- `obo:OBI_0000070`<br>curated: Unique identifier for an assay instance in the NASA Open Science Data Repository (OSDR)<br>KG: A planned process that has the objective to produce information about a material entity (the evaluant) by examining it. (source: OBI via ubergraph)
 
 ## spoke-okn
 

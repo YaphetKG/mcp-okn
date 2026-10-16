@@ -15,7 +15,7 @@ shortname)::
         void-ext:objectClassPartition [ void:class ?target ; void:triples ?n ] ;
         void-ext:datatypePartition   [ void-ext:datatype ?dt ; void:triples ?n ] .
 
-Two things VoID cannot supply are filled by small live queries against the KG:
+Three things VoID cannot supply are filled by small live queries against the KG:
 
 * **Reified edge properties.** VoID lists them only as properties of the reifying
   class (``rdf:Statement``), never split by the ``rdf:predicate`` they qualify.
@@ -24,9 +24,10 @@ Two things VoID cannot supply are filled by small live queries against the KG:
   the predicate of a triple, so VoID shows one ``owl:onProperty`` partition and no
   row for the relations themselves (bio101: 22 of 382 curated predicates).
 * **Labels and descriptions.** VoID carries none. They come from the KG's own named
-  graph, then ubergraph for OBO IRIs, then the IRI's local name. Curated text from
-  the proto-okn files is deliberately NOT copied in, so :func:`compare_with_curated`
-  can show where the curated files carry hand-written knowledge the data lacks.
+  graph, then ubergraph for OBO IRIs (tagged ``(source: … via ubergraph)``), then
+  the IRI's local name. Curated text is not used here, so :func:`compare_with_curated`
+  can show where the curated files carry hand-written knowledge the data lacks; the
+  build then fills it in afterwards (:mod:`mcp_okn.void_text`).
 
 Nothing here is wired into ``get_schema`` yet.
 """
@@ -774,17 +775,38 @@ def pick_text(bindings: Iterable[dict[str, Any]]) -> dict[str, dict[str, str]]:
     return {u: {f: v[1] for f, v in fields.items()} for u, fields in best.items()}
 
 
+def source_tag(source: str) -> str:
+    """The suffix marking a description taken from another ontology or graph."""
+    return f" (source: {source})"
+
+
+def obo_ontology(uri: str) -> str:
+    """The OBO ontology an IRI belongs to: ``…/obo/GO_0008150`` → ``GO``."""
+    local = uri.removeprefix(_OBO_PREFIX)
+    return re.split(r"[_#/]", local, maxsplit=1)[0].upper()
+
+
 def apply_text(
     rows: list[SchemaRow],
     kg_text: dict[str, dict[str, str]],
     ontology_text: dict[str, dict[str, str]] | None = None,
 ) -> None:
-    """Fill Label/Description: the KG's own text, then ubergraph, then the local name."""
+    """Fill Label/Description: the KG's own text, then ubergraph, then the local name.
+
+    A description taken from ubergraph is tagged with its ontology (``(source: GO
+    via ubergraph)``): it is not the KG's own text.
+    """
     ontology_text = ontology_text or {}
     for row in rows:
-        for source in (kg_text.get(row.uri, {}), ontology_text.get(row.uri, {})):
-            row.label = row.label or source.get("label", "")
-            row.description = row.description or source.get("description", "")
+        own, onto = kg_text.get(row.uri, {}), ontology_text.get(row.uri, {})
+        row.label = row.label or own.get("label", "") or onto.get("label", "")
+        if not row.description:
+            if own.get("description"):
+                row.description = own["description"]
+            elif onto.get("description"):
+                row.description = onto["description"] + source_tag(
+                    f"{obo_ontology(row.uri)} via ubergraph"
+                )
         row.label = row.label or local_label(row.uri)
         if row.note and row.note not in row.description:
             row.description = f"{row.description} {row.note}".strip()

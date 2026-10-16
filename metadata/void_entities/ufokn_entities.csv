@@ -1,41 +1,41 @@
 URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples,Pattern
-https://schema.org/GeoCoordinates,GeoCoordinates,,Class,,,,5927018,
-https://schema.org/GeoShape,GeoShape,,Class,,,,5927018,
-https://schema.org/Observation,Observation,,Class,,,,67760,
-https://schema.org/Place,Place,,Class,,,,5839329,
-https://schema.org/PropertyValue,PropertyValue,,Class,,,,41080766,
-https://stko-kwg.geog.ucsb.edu/lod/ontology#S2Cell,S2Cell,,Class,,,,11717916,
-https://schema.org/elevation,elevation,,Predicate,,https://schema.org/GeoCoordinates,http://www.w3.org/2001/XMLSchema#double,5858958,direct
-https://schema.org/latitude,latitude,,Predicate,,https://schema.org/GeoCoordinates,http://www.w3.org/2001/XMLSchema#double,5927018,direct
-https://schema.org/longitude,longitude,,Predicate,,https://schema.org/GeoCoordinates,http://www.w3.org/2001/XMLSchema#double,5927018,direct
-http://www.opengis.net/ont/geosparql#asWKT,asWKT,,Predicate,,https://schema.org/GeoShape,http://www.opengis.net/ont/geosparql#wktLiteral,5927018,direct
-https://schema.org/identifier,identifier,,Predicate,,https://schema.org/GeoShape,https://schema.org/PropertyValue,11717916,direct
-https://schema.org/identifier,identifier,,Predicate,,https://schema.org/GeoShape,https://stko-kwg.geog.ucsb.edu/lod/ontology#S2Cell,11717916,direct
-https://schema.org/description,description,,Predicate,,https://schema.org/Observation,http://www.w3.org/2001/XMLSchema#string,67760,direct
-https://schema.org/measuredProperty,measuredProperty,,Predicate,,https://schema.org/Observation,,68060,direct
-https://schema.org/name,name,,Predicate,,https://schema.org/Observation,http://www.w3.org/2001/XMLSchema#string,67760,direct
-https://schema.org/observationAbout,observationAbout,,Predicate,,https://schema.org/Observation,https://schema.org/Place,570,direct
-https://schema.org/observationAbout,observationAbout,,Predicate,,https://schema.org/Observation,,67190,direct
-https://schema.org/observationDate,observationDate,,Predicate,,https://schema.org/Observation,http://www.w3.org/2001/XMLSchema#string,67760,direct
-https://schema.org/value,value,,Predicate,,https://schema.org/Observation,http://www.w3.org/2001/XMLSchema#string,67760,direct
-https://schema.org/variableMeasured,variableMeasured,,Predicate,,https://schema.org/Observation,https://schema.org/PropertyValue,68060,direct
-https://schema.org/additionalType,additionalType,,Predicate,,https://schema.org/Place,http://www.w3.org/2001/XMLSchema#string,5839332,direct
-https://schema.org/description,description,,Predicate,,https://schema.org/Place,http://www.w3.org/2001/XMLSchema#string,5846397,direct
-https://schema.org/geo,geo,,Predicate,,https://schema.org/Place,https://schema.org/GeoCoordinates,5859530,direct
-https://schema.org/geo,geo,,Predicate,,https://schema.org/Place,https://schema.org/GeoShape,5859530,direct
-https://schema.org/identifier,identifier,,Predicate,,https://schema.org/Place,https://schema.org/PropertyValue,23435832,direct
-https://schema.org/identifier,identifier,,Predicate,,https://schema.org/Place,http://www.w3.org/2001/XMLSchema#string,570,direct
-https://schema.org/name,name,,Predicate,,https://schema.org/Place,http://www.w3.org/2001/XMLSchema#string,5839899,direct
-https://schema.org/variableMeasured,variableMeasured,,Predicate,,https://schema.org/Place,https://schema.org/PropertyValue,5858958,direct
-https://schema.org/additionalType,additionalType,,Predicate,,https://schema.org/PropertyValue,,11717916,direct
-https://schema.org/description,description,,Predicate,,https://schema.org/PropertyValue,http://www.w3.org/2001/XMLSchema#string,17576874,direct
-https://schema.org/name,name,,Predicate,,https://schema.org/PropertyValue,http://www.w3.org/2001/XMLSchema#string,41080766,direct
-https://schema.org/propertyID,propertyID,,Predicate,,https://schema.org/PropertyValue,http://www.w3.org/2001/XMLSchema#string,5927018,direct
-https://schema.org/unitCode,unitCode,,Predicate,,https://schema.org/PropertyValue,http://www.w3.org/2001/XMLSchema#string,5927018,direct
-https://schema.org/unitText,unitText,,Predicate,,https://schema.org/PropertyValue,http://www.w3.org/2001/XMLSchema#string,5858958,direct
-https://schema.org/value,value,,Predicate,,https://schema.org/PropertyValue,http://www.w3.org/2001/XMLSchema#double,5858958,direct
-https://schema.org/value,value,,Predicate,,https://schema.org/PropertyValue,http://www.w3.org/2001/XMLSchema#string,35221808,direct
-https://schema.org/additionalType,additionalType,,Predicate,,https://stko-kwg.geog.ucsb.edu/lod/ontology#S2Cell,,11717916,direct
-https://schema.org/description,description,,Predicate,,https://stko-kwg.geog.ucsb.edu/lod/ontology#S2Cell,http://www.w3.org/2001/XMLSchema#string,11717916,direct
-https://schema.org/name,name,,Predicate,,https://stko-kwg.geog.ucsb.edu/lod/ontology#S2Cell,http://www.w3.org/2001/XMLSchema#string,11717916,direct
-https://schema.org/value,value,,Predicate,,https://stko-kwg.geog.ucsb.edu/lod/ontology#S2Cell,http://www.w3.org/2001/XMLSchema#string,11717916,direct
+https://schema.org/GeoCoordinates,GeoCoordinates,The geographic coordinates of a place or event.,Class,,,,5927018,
+https://schema.org/GeoShape,GeoShape,The geographic shape of a place represented using a textual description or geometry format.,Class,,,,5927018,
+https://schema.org/Observation,Observation,An observation or data point about a feature or phenomenon.,Class,,,,67760,
+https://schema.org/Place,Place,Entities that have a somewhat fixed physical extension such as a location or venue.,Class,,,,5839329,
+https://schema.org/PropertyValue,PropertyValue,A property-value pair representing a characteristic of another entity.,Class,,,,41080766,
+https://stko-kwg.geog.ucsb.edu/lod/ontology#S2Cell,S2Cell,A cell in the S2 hierarchical discrete global grid system used for spatial indexing and representation. S2 cells are square-shaped cells that tessellate the Earth's surface in a hierarchical manner for efficient geospatial data processing.,Class,,,,11717916,
+https://schema.org/elevation,elevation,The elevation of a location measured in meters (WGS 84 datum).,Predicate,,https://schema.org/GeoCoordinates,http://www.w3.org/2001/XMLSchema#double,5858958,direct
+https://schema.org/latitude,latitude,The latitude of a location in decimal degrees (WGS 84). For example 37.42242.,Predicate,,https://schema.org/GeoCoordinates,http://www.w3.org/2001/XMLSchema#double,5927018,direct
+https://schema.org/longitude,longitude,The longitude of a location in decimal degrees (WGS 84). For example -122.08585.,Predicate,,https://schema.org/GeoCoordinates,http://www.w3.org/2001/XMLSchema#double,5927018,direct
+http://www.opengis.net/ont/geosparql#asWKT,asWKT,A Well-Known Text serialization of a geometry object conforming to the GeoSPARQL WKT literal format.,Predicate,,https://schema.org/GeoShape,http://www.opengis.net/ont/geosparql#wktLiteral,5927018,direct
+https://schema.org/identifier,identifier,"The identifier property represents any kind of identifier for any kind of Thing, such as ISBNs, GTIN codes, UUIDs etc.",Predicate,,https://schema.org/GeoShape,https://schema.org/PropertyValue,11717916,direct
+https://schema.org/identifier,identifier,"The identifier property represents any kind of identifier for any kind of Thing, such as ISBNs, GTIN codes, UUIDs etc.",Predicate,,https://schema.org/GeoShape,https://stko-kwg.geog.ucsb.edu/lod/ontology#S2Cell,11717916,direct
+https://schema.org/description,description,A description of the item.,Predicate,,https://schema.org/Observation,http://www.w3.org/2001/XMLSchema#string,67760,direct
+https://schema.org/measuredProperty,measuredProperty,"The measuredProperty of an Observation, typically via its StatisticalVariable. A property being measured.",Predicate,,https://schema.org/Observation,,68060,direct
+https://schema.org/name,name,The name of the item.,Predicate,,https://schema.org/Observation,http://www.w3.org/2001/XMLSchema#string,67760,direct
+https://schema.org/observationAbout,observationAbout,"The subject matter of the observation, typically a feature or entity being observed.",Predicate,,https://schema.org/Observation,https://schema.org/Place,570,direct
+https://schema.org/observationAbout,observationAbout,"The subject matter of the observation, typically a feature or entity being observed.",Predicate,,https://schema.org/Observation,,67190,direct
+https://schema.org/observationDate,observationDate,"The observationDate of an Observation, typically expressed as a date or datetime value.",Predicate,,https://schema.org/Observation,http://www.w3.org/2001/XMLSchema#string,67760,direct
+https://schema.org/value,value,The value of a PropertyValue or other structured value.,Predicate,,https://schema.org/Observation,http://www.w3.org/2001/XMLSchema#string,67760,direct
+https://schema.org/variableMeasured,variableMeasured,The variableMeasured property can indicate (repeated as necessary) the variables that are measured in a dataset or observation.,Predicate,,https://schema.org/Observation,https://schema.org/PropertyValue,68060,direct
+https://schema.org/additionalType,additionalType,"An additional type for the item, typically used for adding more specific types from external vocabularies.",Predicate,,https://schema.org/Place,http://www.w3.org/2001/XMLSchema#string,5839332,direct
+https://schema.org/description,description,A description of the item.,Predicate,,https://schema.org/Place,http://www.w3.org/2001/XMLSchema#string,5846397,direct
+https://schema.org/geo,geo,The geo coordinates or geographic shape of a place.,Predicate,,https://schema.org/Place,https://schema.org/GeoCoordinates,5859530,direct
+https://schema.org/geo,geo,The geo coordinates or geographic shape of a place.,Predicate,,https://schema.org/Place,https://schema.org/GeoShape,5859530,direct
+https://schema.org/identifier,identifier,"The identifier property represents any kind of identifier for any kind of Thing, such as ISBNs, GTIN codes, UUIDs etc.",Predicate,,https://schema.org/Place,https://schema.org/PropertyValue,23435832,direct
+https://schema.org/identifier,identifier,"The identifier property represents any kind of identifier for any kind of Thing, such as ISBNs, GTIN codes, UUIDs etc.",Predicate,,https://schema.org/Place,http://www.w3.org/2001/XMLSchema#string,570,direct
+https://schema.org/name,name,The name of the item.,Predicate,,https://schema.org/Place,http://www.w3.org/2001/XMLSchema#string,5839899,direct
+https://schema.org/variableMeasured,variableMeasured,The variableMeasured property can indicate (repeated as necessary) the variables that are measured in a dataset or observation.,Predicate,,https://schema.org/Place,https://schema.org/PropertyValue,5858958,direct
+https://schema.org/additionalType,additionalType,"An additional type for the item, typically used for adding more specific types from external vocabularies.",Predicate,,https://schema.org/PropertyValue,,11717916,direct
+https://schema.org/description,description,A description of the item.,Predicate,,https://schema.org/PropertyValue,http://www.w3.org/2001/XMLSchema#string,17576874,direct
+https://schema.org/name,name,The name of the item.,Predicate,,https://schema.org/PropertyValue,http://www.w3.org/2001/XMLSchema#string,41080766,direct
+https://schema.org/propertyID,propertyID,A commonly used identifier for the characteristic represented by the property.,Predicate,,https://schema.org/PropertyValue,http://www.w3.org/2001/XMLSchema#string,5927018,direct
+https://schema.org/unitCode,unitCode,The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL.,Predicate,,https://schema.org/PropertyValue,http://www.w3.org/2001/XMLSchema#string,5927018,direct
+https://schema.org/unitText,unitText,A string or text indicating the unit of measurement. Useful if the unitCode cannot be used.,Predicate,,https://schema.org/PropertyValue,http://www.w3.org/2001/XMLSchema#string,5858958,direct
+https://schema.org/value,value,The value of a PropertyValue or other structured value.,Predicate,,https://schema.org/PropertyValue,http://www.w3.org/2001/XMLSchema#double,5858958,direct
+https://schema.org/value,value,The value of a PropertyValue or other structured value.,Predicate,,https://schema.org/PropertyValue,http://www.w3.org/2001/XMLSchema#string,35221808,direct
+https://schema.org/additionalType,additionalType,"An additional type for the item, typically used for adding more specific types from external vocabularies.",Predicate,,https://stko-kwg.geog.ucsb.edu/lod/ontology#S2Cell,,11717916,direct
+https://schema.org/description,description,A description of the item.,Predicate,,https://stko-kwg.geog.ucsb.edu/lod/ontology#S2Cell,http://www.w3.org/2001/XMLSchema#string,11717916,direct
+https://schema.org/name,name,The name of the item.,Predicate,,https://stko-kwg.geog.ucsb.edu/lod/ontology#S2Cell,http://www.w3.org/2001/XMLSchema#string,11717916,direct
+https://schema.org/value,value,The value of a PropertyValue or other structured value.,Predicate,,https://stko-kwg.geog.ucsb.edu/lod/ontology#S2Cell,http://www.w3.org/2001/XMLSchema#string,11717916,direct

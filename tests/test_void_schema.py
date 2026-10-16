@@ -221,7 +221,10 @@ def test_text_fallback_order_kg_then_ontology_then_local_name():
     kg_text = {SG + "Mission": {"label": "Mission", "description": "A mission."}}
     obo = {OBI: {"label": "assay", "description": "A planned process."}}
     vs.apply_text(rows, kg_text, obo)
-    assert (rows[0].label, rows[0].description) == ("assay", "A planned process.")
+    assert (rows[0].label, rows[0].description) == (
+        "assay",
+        "A planned process. (source: OBI via ubergraph)",
+    )
     assert (rows[1].label, rows[1].description) == ("Gene", "")
     assert rows[2].description == "A mission."
 

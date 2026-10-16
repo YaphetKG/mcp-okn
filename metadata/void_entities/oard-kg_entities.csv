@@ -1,45 +1,45 @@
 URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples,Pattern
-https://w3id.org/biolink/vocab/ConceptCountAnalysisResult,ConceptCountAnalysisResult,,Class,,,,2599159,
-https://w3id.org/biolink/vocab/Dataset,Dataset,,Class,,,,3,
-https://w3id.org/biolink/vocab/Disease,Disease,,Class,,,,2297,
-https://w3id.org/biolink/vocab/DiseaseToPhenotypicFeatureAssociation,DiseaseToPhenotypicFeatureAssociation,,Class,,,,406403,
-https://w3id.org/biolink/vocab/EntityToDiseaseAssociation,EntityToDiseaseAssociation,,Class,,,,27424,
-https://w3id.org/biolink/vocab/LogOddsAnalysisResult,LogOddsAnalysisResult,,Class,,,,2599159,
-https://w3id.org/biolink/vocab/PhenotypicFeature,PhenotypicFeature,,Class,,,,6496,
-https://w3id.org/biolink/vocab/PhenotypicFeatureToPhenotypicFeatureAssociation,PhenotypicFeatureToPhenotypicFeatureAssociation,,Class,,,,1886452,
-https://w3id.org/biolink/vocab/Study,Study,,Class,,,,2599159,
-https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/ConceptCountAnalysisResult,,2599159,direct
-https://w3id.org/biolink/vocab/concept_count_object,concept_count_object,,Predicate,,https://w3id.org/biolink/vocab/ConceptCountAnalysisResult,http://www.w3.org/2001/XMLSchema#integer,2599159,direct
-https://w3id.org/biolink/vocab/concept_count_subject,concept_count_subject,,Predicate,,https://w3id.org/biolink/vocab/ConceptCountAnalysisResult,http://www.w3.org/2001/XMLSchema#integer,2599159,direct
-https://w3id.org/biolink/vocab/concept_pair_count,concept_pair_count,,Predicate,,https://w3id.org/biolink/vocab/ConceptCountAnalysisResult,http://www.w3.org/2001/XMLSchema#integer,2599159,direct
-https://w3id.org/biolink/vocab/dataset_count,dataset_count,,Predicate,,https://w3id.org/biolink/vocab/ConceptCountAnalysisResult,http://www.w3.org/2001/XMLSchema#integer,2599159,direct
-https://w3id.org/biolink/vocab/supporting_data_set,supporting_data_set,,Predicate,,https://w3id.org/biolink/vocab/ConceptCountAnalysisResult,https://w3id.org/biolink/vocab/Dataset,2599159,direct
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/Dataset,http://www.w3.org/1999/02/22-rdf-syntax-ns#langString,3,direct
-https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/Dataset,,3,direct
-http://www.geneontology.org/formats/oboInOwl#inSubset,inSubset,,Predicate,,https://w3id.org/biolink/vocab/Disease,,2297,direct
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/Disease,http://www.w3.org/1999/02/22-rdf-syntax-ns#langString,2297,direct
-https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/Disease,,2297,direct
-https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/DiseaseToPhenotypicFeatureAssociation,,406403,direct
-https://w3id.org/biolink/vocab/has_supporting_studies,has_supporting_studies,,Predicate,,https://w3id.org/biolink/vocab/DiseaseToPhenotypicFeatureAssociation,https://w3id.org/biolink/vocab/Study,436166,direct
-https://w3id.org/biolink/vocab/object,object,,Predicate,,https://w3id.org/biolink/vocab/DiseaseToPhenotypicFeatureAssociation,https://w3id.org/biolink/vocab/PhenotypicFeature,406403,direct
-https://w3id.org/biolink/vocab/predicate,predicate,,Predicate,,https://w3id.org/biolink/vocab/DiseaseToPhenotypicFeatureAssociation,,406403,direct
-https://w3id.org/biolink/vocab/subject,subject,,Predicate,,https://w3id.org/biolink/vocab/DiseaseToPhenotypicFeatureAssociation,https://w3id.org/biolink/vocab/Disease,406403,direct
-https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/EntityToDiseaseAssociation,,27424,direct
-https://w3id.org/biolink/vocab/has_supporting_studies,has_supporting_studies,,Predicate,,https://w3id.org/biolink/vocab/EntityToDiseaseAssociation,https://w3id.org/biolink/vocab/Study,29592,direct
-https://w3id.org/biolink/vocab/object,object,,Predicate,,https://w3id.org/biolink/vocab/EntityToDiseaseAssociation,https://w3id.org/biolink/vocab/Disease,27424,direct
-https://w3id.org/biolink/vocab/predicate,predicate,,Predicate,,https://w3id.org/biolink/vocab/EntityToDiseaseAssociation,,27424,direct
-https://w3id.org/biolink/vocab/subject,subject,,Predicate,,https://w3id.org/biolink/vocab/EntityToDiseaseAssociation,https://w3id.org/biolink/vocab/Disease,27424,direct
-https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/LogOddsAnalysisResult,,2599159,direct
-https://w3id.org/biolink/vocab/log_odds_ratio,log_odds_ratio,,Predicate,,https://w3id.org/biolink/vocab/LogOddsAnalysisResult,http://www.w3.org/2001/XMLSchema#double,2599159,direct
-https://w3id.org/biolink/vocab/log_odds_ratio_95_ci,log_odds_ratio_95_ci,,Predicate,,https://w3id.org/biolink/vocab/LogOddsAnalysisResult,http://www.w3.org/2001/XMLSchema#double,5177770,direct
-https://w3id.org/biolink/vocab/total_sample_size,total_sample_size,,Predicate,,https://w3id.org/biolink/vocab/LogOddsAnalysisResult,http://www.w3.org/2001/XMLSchema#integer,2599159,direct
-http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeature,http://www.w3.org/1999/02/22-rdf-syntax-ns#langString,6496,direct
-https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeature,,6496,direct
-https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeatureToPhenotypicFeatureAssociation,,1886452,direct
-https://w3id.org/biolink/vocab/has_supporting_studies,has_supporting_studies,,Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeatureToPhenotypicFeatureAssociation,https://w3id.org/biolink/vocab/Study,2133401,direct
-https://w3id.org/biolink/vocab/object,object,,Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeatureToPhenotypicFeatureAssociation,https://w3id.org/biolink/vocab/PhenotypicFeature,1886452,direct
-https://w3id.org/biolink/vocab/predicate,predicate,,Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeatureToPhenotypicFeatureAssociation,,1886452,direct
-https://w3id.org/biolink/vocab/subject,subject,,Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeatureToPhenotypicFeatureAssociation,https://w3id.org/biolink/vocab/PhenotypicFeature,1886452,direct
-https://w3id.org/biolink/vocab/category,category,,Predicate,,https://w3id.org/biolink/vocab/Study,,2599159,direct
-https://w3id.org/biolink/vocab/has_study_results,has_study_results,,Predicate,,https://w3id.org/biolink/vocab/Study,https://w3id.org/biolink/vocab/ConceptCountAnalysisResult,2599159,direct
-https://w3id.org/biolink/vocab/has_study_results,has_study_results,,Predicate,,https://w3id.org/biolink/vocab/Study,https://w3id.org/biolink/vocab/LogOddsAnalysisResult,2599159,direct
+https://w3id.org/biolink/vocab/ConceptCountAnalysisResult,Concept Count Analysis Result,A result of a concept count analysis.,Class,,,,2599159,
+https://w3id.org/biolink/vocab/Dataset,Dataset,A collection of data items or records that can be used as evidence or supporting data in a study.,Class,,,,3,
+https://w3id.org/biolink/vocab/Disease,Disease,A pathological condition or disorder that affects an organism and is associated with signs symptoms or abnormal biological processes.,Class,,,,2297,
+https://w3id.org/biolink/vocab/DiseaseToPhenotypicFeatureAssociation,Disease To Phenotypic Feature Association,An association between a disease and a phenotypic feature that may be observed in or characteristic of the disease.,Class,,,,406403,
+https://w3id.org/biolink/vocab/EntityToDiseaseAssociation,Entity To Disease Association,An association between an entity and a disease.,Class,,,,27424,
+https://w3id.org/biolink/vocab/LogOddsAnalysisResult,Log Odds Analysis Result,A result of a log odds ratio analysis.,Class,,,,2599159,
+https://w3id.org/biolink/vocab/PhenotypicFeature,Phenotypic Feature,A biological feature or observable characteristic of an organism that can be measured or described as part of a phenotype.,Class,,,,6496,
+https://w3id.org/biolink/vocab/PhenotypicFeatureToPhenotypicFeatureAssociation,Phenotypic Feature To Phenotypic Feature Association,An association between two phenotypic features.,Class,,,,1886452,
+https://w3id.org/biolink/vocab/Study,Study,A planned investigation or analysis that produces study results and may use datasets or other evidence.,Class,,,,2599159,
+https://w3id.org/biolink/vocab/category,category,"A Biolink category or class assigned to an entity, association, or result node.",Predicate,,https://w3id.org/biolink/vocab/ConceptCountAnalysisResult,,2599159,direct
+https://w3id.org/biolink/vocab/concept_count_object,concept count object,The number of instances in a dataset or cohort whose records contain the concept in the object slot of an association.,Predicate,,https://w3id.org/biolink/vocab/ConceptCountAnalysisResult,http://www.w3.org/2001/XMLSchema#integer,2599159,direct
+https://w3id.org/biolink/vocab/concept_count_subject,concept count subject,The number of instances in a dataset or cohort whose records contain the concept in the subject slot of an association.,Predicate,,https://w3id.org/biolink/vocab/ConceptCountAnalysisResult,http://www.w3.org/2001/XMLSchema#integer,2599159,direct
+https://w3id.org/biolink/vocab/concept_pair_count,concept pair count,The number of instances in a dataset or cohort whose records contain both the subject and object concept of an association.,Predicate,,https://w3id.org/biolink/vocab/ConceptCountAnalysisResult,http://www.w3.org/2001/XMLSchema#integer,2599159,direct
+https://w3id.org/biolink/vocab/dataset_count,dataset count,The total number of instances in a dataset or cohort.,Predicate,,https://w3id.org/biolink/vocab/ConceptCountAnalysisResult,http://www.w3.org/2001/XMLSchema#integer,2599159,direct
+https://w3id.org/biolink/vocab/supporting_data_set,supporting data set,Connects a study result or analysis result to the dataset that supports it.,Predicate,,https://w3id.org/biolink/vocab/ConceptCountAnalysisResult,https://w3id.org/biolink/vocab/Dataset,2599159,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,A human-readable version of a resource name.,Predicate,,https://w3id.org/biolink/vocab/Dataset,http://www.w3.org/1999/02/22-rdf-syntax-ns#langString,3,direct
+https://w3id.org/biolink/vocab/category,category,"A Biolink category or class assigned to an entity, association, or result node.",Predicate,,https://w3id.org/biolink/vocab/Dataset,,3,direct
+http://www.geneontology.org/formats/oboInOwl#inSubset,in subset,An annotation property indicating that an ontology term belongs to a named subset (slim) of an ontology.,Predicate,,https://w3id.org/biolink/vocab/Disease,,2297,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,A human-readable version of a resource name.,Predicate,,https://w3id.org/biolink/vocab/Disease,http://www.w3.org/1999/02/22-rdf-syntax-ns#langString,2297,direct
+https://w3id.org/biolink/vocab/category,category,"A Biolink category or class assigned to an entity, association, or result node.",Predicate,,https://w3id.org/biolink/vocab/Disease,,2297,direct
+https://w3id.org/biolink/vocab/category,category,"A Biolink category or class assigned to an entity, association, or result node.",Predicate,,https://w3id.org/biolink/vocab/DiseaseToPhenotypicFeatureAssociation,,406403,direct
+https://w3id.org/biolink/vocab/has_supporting_studies,has supporting studies,Connects an association to one or more studies that support or provide evidence for the association.,Predicate,,https://w3id.org/biolink/vocab/DiseaseToPhenotypicFeatureAssociation,https://w3id.org/biolink/vocab/Study,436166,direct
+https://w3id.org/biolink/vocab/object,object,"Connects an association to the object of the association, such as the phenotype in a disease-to-phenotype association.",Predicate,,https://w3id.org/biolink/vocab/DiseaseToPhenotypicFeatureAssociation,https://w3id.org/biolink/vocab/PhenotypicFeature,406403,direct
+https://w3id.org/biolink/vocab/predicate,predicate,"The relationship type or edge label for an association, corresponding to rdf:predicate in RDF.",Predicate,,https://w3id.org/biolink/vocab/DiseaseToPhenotypicFeatureAssociation,,406403,direct
+https://w3id.org/biolink/vocab/subject,subject,"Connects an association to the subject of the association, such as the disease in a disease-to-phenotype association.",Predicate,,https://w3id.org/biolink/vocab/DiseaseToPhenotypicFeatureAssociation,https://w3id.org/biolink/vocab/Disease,406403,direct
+https://w3id.org/biolink/vocab/category,category,"A Biolink category or class assigned to an entity, association, or result node.",Predicate,,https://w3id.org/biolink/vocab/EntityToDiseaseAssociation,,27424,direct
+https://w3id.org/biolink/vocab/has_supporting_studies,has supporting studies,Connects an association to one or more studies that support or provide evidence for the association.,Predicate,,https://w3id.org/biolink/vocab/EntityToDiseaseAssociation,https://w3id.org/biolink/vocab/Study,29592,direct
+https://w3id.org/biolink/vocab/object,object,"Connects an association to the object of the association, such as the phenotype in a disease-to-phenotype association.",Predicate,,https://w3id.org/biolink/vocab/EntityToDiseaseAssociation,https://w3id.org/biolink/vocab/Disease,27424,direct
+https://w3id.org/biolink/vocab/predicate,predicate,"The relationship type or edge label for an association, corresponding to rdf:predicate in RDF.",Predicate,,https://w3id.org/biolink/vocab/EntityToDiseaseAssociation,,27424,direct
+https://w3id.org/biolink/vocab/subject,subject,"Connects an association to the subject of the association, such as the disease in a disease-to-phenotype association.",Predicate,,https://w3id.org/biolink/vocab/EntityToDiseaseAssociation,https://w3id.org/biolink/vocab/Disease,27424,direct
+https://w3id.org/biolink/vocab/category,category,"A Biolink category or class assigned to an entity, association, or result node.",Predicate,,https://w3id.org/biolink/vocab/LogOddsAnalysisResult,,2599159,direct
+https://w3id.org/biolink/vocab/log_odds_ratio,log odds ratio,The natural logarithm of the odds ratio for an event or association in an exposed group versus a non-exposed group.,Predicate,,https://w3id.org/biolink/vocab/LogOddsAnalysisResult,http://www.w3.org/2001/XMLSchema#double,2599159,direct
+https://w3id.org/biolink/vocab/log_odds_ratio_95_ci,log odds ratio 95 ci,The 95 percent confidence interval within which the true log odds ratio for the sample population is expected to fall.,Predicate,,https://w3id.org/biolink/vocab/LogOddsAnalysisResult,http://www.w3.org/2001/XMLSchema#double,5177770,direct
+https://w3id.org/biolink/vocab/total_sample_size,total sample size,The total sample size represented by an analysis result.,Predicate,,https://w3id.org/biolink/vocab/LogOddsAnalysisResult,http://www.w3.org/2001/XMLSchema#integer,2599159,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,A human-readable version of a resource name.,Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeature,http://www.w3.org/1999/02/22-rdf-syntax-ns#langString,6496,direct
+https://w3id.org/biolink/vocab/category,category,"A Biolink category or class assigned to an entity, association, or result node.",Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeature,,6496,direct
+https://w3id.org/biolink/vocab/category,category,"A Biolink category or class assigned to an entity, association, or result node.",Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeatureToPhenotypicFeatureAssociation,,1886452,direct
+https://w3id.org/biolink/vocab/has_supporting_studies,has supporting studies,Connects an association to one or more studies that support or provide evidence for the association.,Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeatureToPhenotypicFeatureAssociation,https://w3id.org/biolink/vocab/Study,2133401,direct
+https://w3id.org/biolink/vocab/object,object,"Connects an association to the object of the association, such as the phenotype in a disease-to-phenotype association.",Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeatureToPhenotypicFeatureAssociation,https://w3id.org/biolink/vocab/PhenotypicFeature,1886452,direct
+https://w3id.org/biolink/vocab/predicate,predicate,"The relationship type or edge label for an association, corresponding to rdf:predicate in RDF.",Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeatureToPhenotypicFeatureAssociation,,1886452,direct
+https://w3id.org/biolink/vocab/subject,subject,"Connects an association to the subject of the association, such as the disease in a disease-to-phenotype association.",Predicate,,https://w3id.org/biolink/vocab/PhenotypicFeatureToPhenotypicFeatureAssociation,https://w3id.org/biolink/vocab/PhenotypicFeature,1886452,direct
+https://w3id.org/biolink/vocab/category,category,"A Biolink category or class assigned to an entity, association, or result node.",Predicate,,https://w3id.org/biolink/vocab/Study,,2599159,direct
+https://w3id.org/biolink/vocab/has_study_results,has study results,Connects a study to instances of its study result.,Predicate,,https://w3id.org/biolink/vocab/Study,https://w3id.org/biolink/vocab/ConceptCountAnalysisResult,2599159,direct
+https://w3id.org/biolink/vocab/has_study_results,has study results,Connects a study to instances of its study result.,Predicate,,https://w3id.org/biolink/vocab/Study,https://w3id.org/biolink/vocab/LogOddsAnalysisResult,2599159,direct
