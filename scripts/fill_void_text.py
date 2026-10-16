@@ -112,6 +112,27 @@ VOCABS: dict[str, tuple[str, list[str]]] = {
     ),
     "https://w3id.org/linkml/": ("LinkML", ["https://w3id.org/linkml/meta"]),
     "http://qudt.org/schema/qudt/": ("QUDT", ["http://qudt.org/schema/qudt/"]),
+    # Industrial Ontologies Foundry (SUDOKN builds on these; okn-registry: sudokn).
+    # Pinned to Release_202401: later releases moved the annotation vocabulary to
+    # …/ontology/annotation/, so the IRIs SUDOKN uses are no longer described.
+    "https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/": (
+        "IOF Annotation Vocabulary, Release 202401",
+        [
+            "https://raw.githubusercontent.com/iofoundry/ontology/Release_202401/"
+            "core/meta/AnnotationVocabulary.rdf"
+        ],
+    ),
+    "https://spec.industrialontologies.org/ontology/core/Core/": (
+        "IOF Core, Release 202401",
+        [
+            "https://raw.githubusercontent.com/iofoundry/ontology/Release_202401/"
+            "core/Core.rdf"
+        ],
+    ),
+    "https://spec.industrialontologies.org/ontology/supplychain/SupplyChain/": (
+        "IOF Supply Chain",
+        ["https://spec.industrialontologies.org/ontology/supplychain/SupplyChain/"],
+    ),
     "http://semanticscience.org/resource/": (
         "SIO",
         ["http://semanticscience.org/ontology/sio.owl"],
@@ -190,7 +211,8 @@ async def vocab_text(
             vals = sorted(
                 vs._clean(str(o))
                 for o in graph.objects(subject, p)
-                if isinstance(o, rdflib.Literal) and o.language in (None, "en")
+                if isinstance(o, rdflib.Literal)
+                and (o.language is None or o.language.lower().split("-")[0] == "en")
             )
             if vals:
                 return vals[0]

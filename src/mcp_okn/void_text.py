@@ -56,7 +56,11 @@ _CURATED_USAGE = ("owl:onProperty", "never asserted", "not populated")
 _RESTRICTION_COUNT = re.compile(r"owl:onProperty of ([\d,]+)")
 
 #: Extra text predicates for the cross-graph lookup (on top of the builder's).
-EXTRA_LABEL_PREDICATES = ("http://www.w3.org/2004/02/skos/core#prefLabel",)
+EXTRA_LABEL_PREDICATES = (
+    "http://www.w3.org/2004/02/skos/core#prefLabel",
+    # sudokn's registry entry names altLabel as its second label role.
+    "http://www.w3.org/2004/02/skos/core#altLabel",
+)
 EXTRA_DESCRIPTION_PREDICATES = (
     "http://www.w3.org/2004/02/skos/core#scopeNote",
     "http://schema.org/description",

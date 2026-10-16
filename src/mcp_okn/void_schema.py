@@ -124,6 +124,14 @@ DESCRIPTION_PREDICATES = (
     "http://purl.obolibrary.org/obo/IAO_0000115",
     # bio101 (AURA) carries its definitions here and nowhere else.
     "http://www.projecthalo.com/aura#user-description",
+    # Industrial Ontologies Foundry annotations: SUDOKN (and the IOF ontologies it
+    # builds on) define terms with these; the okn-registry entry declares iof-av.
+    "https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/"
+    "naturalLanguageDefinition",
+    # Non-standard, but sudokn's own definition of GrindingCapability uses it.
+    "http://www.w3.org/2000/01/rdf-schema#definition",
+    "https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/"
+    "explanatoryNote",
 )
 
 #: URIs per ``VALUES`` block in a text lookup.

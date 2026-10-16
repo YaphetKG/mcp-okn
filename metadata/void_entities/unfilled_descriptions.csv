@@ -617,7 +617,6 @@ sudokn,http://asu.edu/semantics/SUDOKN/AS9003Certificate,Class,,AS 9003
 sudokn,http://asu.edu/semantics/SUDOKN/AS9102Certificate,Class,,AS 9102
 sudokn,http://asu.edu/semantics/SUDOKN/AS9120Certificate,Class,,AS 9120
 sudokn,http://asu.edu/semantics/SUDOKN/ASMECertificate,Class,,ASME
-sudokn,http://asu.edu/semantics/SUDOKN/AWSWelderCertificate,Class,,AWS Welder
 sudokn,http://asu.edu/semantics/SUDOKN/AcetalProcessingCapability,Class,,Acetal
 sudokn,http://asu.edu/semantics/SUDOKN/AcetronProcessingCapability,Class,,Acetron
 sudokn,http://asu.edu/semantics/SUDOKN/AcrylicProcessingCapability,Class,,Acrylic
@@ -791,7 +790,6 @@ sudokn,http://asu.edu/semantics/SUDOKN/SilverProcessingCapability,Class,,Silver
 sudokn,http://asu.edu/semantics/SUDOKN/SolarPowerIndustry,Class,,Solar Power
 sudokn,http://asu.edu/semantics/SUDOKN/SportsAndLeisureIndustry,Class,,Sports And Leisure
 sudokn,http://asu.edu/semantics/SUDOKN/SuperAlloyProcessingCapability,Class,,Super Alloy
-sudokn,http://asu.edu/semantics/SUDOKN/SurfaceGrindingCapability,Class,,Surface Grinding
 sudokn,http://asu.edu/semantics/SUDOKN/SustainabilityCertificate,Class,,Sustainability
 sudokn,http://asu.edu/semantics/SUDOKN/SyntheticFiberProcessingCapability,Class,,Synthetic Fiber
 sudokn,http://asu.edu/semantics/SUDOKN/TL9000Certificate,Class,,TL 9000
@@ -828,20 +826,11 @@ sudokn,http://asu.edu/semantics/SUDOKN/ZirconProcessingCapability,Class,,Zircon
 sudokn,http://asu.edu/semantics/SUDOKN/ZirconiumProcessingCapability,Class,,Zirconium
 sudokn,http://asu.edu/semantics/SUDOKN/ZytelProcessingCapability,Class,,Zytel
 sudokn,http://www.w3.org/2000/01/rdf-schema#definition,Predicate,,definition
-sudokn,https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/adaptedFrom,Predicate,,adaptedFrom
-sudokn,https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/directSource,Predicate,,directSource
-sudokn,https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/explanatoryNote,Predicate,,explanatoryNote
-sudokn,https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/naturalLanguageDefinition,Predicate,,naturalLanguageDefinition
-sudokn,http://asu.edu/semantics/SUDOKN/CityOf,Predicate,,city of
-sudokn,http://asu.edu/semantics/SUDOKN/countryOf,Predicate,,country of
 sudokn,http://asu.edu/semantics/SUDOKN/countyOf,Predicate,,countyOf
 sudokn,http://asu.edu/semantics/SUDOKN/hasIntegerValue,Predicate,,has integer value
 sudokn,http://asu.edu/semantics/SUDOKN/hasNAICSCodeValue,Predicate,,has NAICS code value
 sudokn,http://asu.edu/semantics/SUDOKN/hasNAICSTextValue,Predicate,,has NAICS text value
 sudokn,http://asu.edu/semantics/SUDOKN/hasName,Predicate,,has name
-sudokn,http://asu.edu/semantics/SUDOKN/stateOf,Predicate,,state of
-sudokn,https://spec.industrialontologies.org/ontology/core/Core/denotedBy,Predicate,,denotedBy
-sudokn,https://spec.industrialontologies.org/ontology/core/meta/AnnotationVocabulary/replacedBy,Predicate,,replacedBy
 ubergraph,http://purl.obolibrary.org/obo/NCBITaxon_9606,Class,,Homo sapiens
 ubergraph,http://purl.obolibrary.org/obo/PCL_0010001,Class,,Cluster
 ubergraph,http://purl.obolibrary.org/obo/PCL_0010002,Class,,Taxonomy
