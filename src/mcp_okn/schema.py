@@ -1826,6 +1826,16 @@ def build_mermaid_diagram(
             continue
         if p_has is not None and len(row) > p_has and row[p_has]:
             continue  # already drawn as an intermediary class
+        if str(row[0]).startswith(_META_NAMESPACES):
+            # owl:sameAs, rdfs:subClassOf, …: identity and modelling links, not
+            # domain relationships. sawgraph's sameAs between multi-typed samples
+            # tied every FoodOn material class to every other. Classes only these
+            # reached are dropped below, like those only OWL constructs reached.
+            for end in (p_src, p_tgt):
+                name = row[end] if end is not None and len(row) > end else ""
+                if name:
+                    touched_by_meta.add(_mermaid_id(iri_label.get(name, name)))
+            continue
         label = row[p_label] if p_label is not None and len(row) > p_label else ""
         label = label or _local_name(row[0])
         src = row[p_src] if p_src is not None and len(row) > p_src else ""

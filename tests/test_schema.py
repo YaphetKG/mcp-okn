@@ -858,3 +858,30 @@ def test_same_name_relationships_keep_separate_templates_and_prokn_warning():
     other = next(e for e in edges.values() if e["uri"].startswith("https://biolink"))
     assert "GO NOT (negated)" in w3id["usage"]
     assert other["usage"].startswith("Also a direct triple")
+
+
+def test_owl_predicates_are_not_drawn_as_relationships():
+    """sawgraph: owl:sameAs between multi-typed samples tied every material class together."""
+    owl = "http://www.w3.org/2002/07/owl#"
+    schema = {
+        "classes": {
+            "columns": ["uri", "label"],
+            "data": [
+                ["u:A", "animal_material"],
+                ["u:B", "organism_material"],
+                ["u:S", "Sample"],
+                ["u:O", "Observation"],
+            ],
+        },
+        "predicates": {
+            "columns": ["uri", "label", "source_class", "target_class"],
+            "data": [
+                [owl + "sameAs", "same as", "animal_material", "organism_material"],
+                ["u:of", "has feature of interest", "Observation", "Sample"],
+            ],
+        },
+    }
+    diagram = build_mermaid_diagram("sawgraph", schema)
+    assert "Observation --> Sample : has feature of interest" in diagram
+    assert "same as" not in diagram
+    assert "animal_material" not in diagram and "organism_material" not in diagram
