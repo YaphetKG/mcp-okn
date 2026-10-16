@@ -29,6 +29,7 @@ from typing import Any
 
 import httpx
 
+from .schema import _is_provenance_uri
 from .sparql import SparqlError, run_sparql
 from .void_schema import (
     DESCRIPTION_PREDICATES,
@@ -143,15 +144,25 @@ def curated_index(
     """Curated ``(label, description)`` keyed three ways, most specific first.
 
     ``(uri, kind, parent)`` for edge properties (spoke-genelab's adj_p_value is
-    described per relationship), ``(uri, kind)`` and ``(uri,)``. When a curated
-    file repeats a key, the last non-empty value wins, as its loader reads it.
+    described per relationship), ``(uri, kind)`` and ``(uri,)``. The parent is
+    the curated row's OWN value: an IRI stays an exact IRI (``"P", iri``) and only
+    a short name as written becomes a name key (``"S", name``). Resolving a short
+    name to an IRI picks one arbitrarily when two predicates share a local name
+    (prokn: biolink.github.io and w3id.org ``catalyzes``), and reducing an IRI to
+    its local name would let one relationship's text land on the other.
+    When a curated file repeats a key, the last non-empty value wins.
     """
     entries, _ = normalize_curated(records)
+    rows = [
+        r for r in records if r.get("URI") and not _is_provenance_uri(r["URI"].strip())
+    ]
     index: dict[tuple[str, ...], tuple[str, str]] = {}
-    for e in entries:
-        keys = [(e.uri, e.type), (e.uri,)]
-        if e.edge_property_of:
-            keys.insert(0, (e.uri, e.type, _parent(e.edge_property_of)))
+    for raw, e in zip(rows, entries, strict=True):
+        keys: list[tuple[str, ...]] = [(e.uri, e.type), (e.uri,)]
+        parent = (raw.get("EdgePropertyOf") or "").strip()
+        if parent:
+            tag = "P" if parent.startswith(("http://", "https://")) else "S"
+            keys.insert(0, (e.uri, e.type, tag, parent))
         for key in keys:
             old_label, old_desc = index.get(key, ("", ""))
             index[key] = (e.label or old_label, e.description or old_desc)
@@ -163,8 +174,11 @@ def _curated_for(
 ) -> tuple[str, str]:
     uri, kind = row["URI"], _kind(row["Type"])
     keys: list[tuple[str, ...]] = [(uri, kind), (uri,)]
-    if row.get("EdgePropertyOf"):
-        keys.insert(0, (uri, kind, _parent(row["EdgePropertyOf"])))
+    parent = row.get("EdgePropertyOf") or ""
+    if parent:
+        # The exact parent IRI first; a curated short name applies to any parent
+        # with that local name (that is all the curated row says).
+        keys[:0] = [(uri, kind, "P", parent), (uri, kind, "S", _parent(parent))]
     label = desc = ""
     for key in keys:
         hit_label, hit_desc = index.get(key, ("", ""))

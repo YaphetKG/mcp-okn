@@ -317,3 +317,43 @@ def test_alt_label_counts_only_in_graphs_that_declare_it():
     hits = vt.pick_federation_hits(rows, {})
     assert hits[SUD + "ASG"].label == "Aluminum Silicate Glass"
     assert linkml not in hits
+
+
+def test_edge_property_text_does_not_cross_same_name_parents():
+    """prokn: two catalyzes relationships (biolink.github.io vs w3id.org)."""
+    gh = "https://biolink.github.io/biolink-model/catalyzes"
+    w3 = "https://w3id.org/biolink/vocab/catalyzes"
+    index = vt.curated_index(
+        _curated(
+            (gh, "catalyzes", "", "Predicate", ""),
+            (w3, "catalyzes", "", "Predicate", ""),
+            ("u:source", "source", "Source on the github.io edge.", "Predicate", gh),
+        )
+    )
+    rows = [_row("u:source", parent=gh), _row("u:source", parent=w3)]
+    vt.fill_records(rows, index, {})
+    assert rows[0]["Description"] == "Source on the github.io edge."
+    # No parent-specific text for the w3id edge: the property's general text
+    # (here the same row, via its URI key) is all that may apply - but never as a
+    # parent match. Check the parent key itself was not shared:
+    assert (("u:source", "Predicate", "P", w3)) not in index
+    assert (("u:source", "Predicate", "S", "catalyzes")) not in index
+
+
+def test_curated_short_name_parent_matches_by_local_name():
+    de = SG + "MEASURED_DIFFERENTIAL_EXPRESSION_ASmMG"
+    index = vt.curated_index(
+        _curated(
+            (de, "DE", "", "Predicate", ""),
+            (
+                SG + "log2fc",
+                "log2fc",
+                "Fold change.",
+                "EdgeProperty",
+                "MEASURED_DIFFERENTIAL_EXPRESSION_ASmMG",
+            ),
+        )
+    )
+    row = _row(SG + "log2fc", parent=de)
+    vt.fill_records([row], index, {})
+    assert row["Description"] == "Fold change."
