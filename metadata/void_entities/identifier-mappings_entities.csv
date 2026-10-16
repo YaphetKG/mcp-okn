@@ -1,0 +1,6 @@
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples
+http://www.w3.org/2004/02/skos/core#exactMatch,exactMatch,,Predicate,,,,25963995
+http://www.w3.org/2002/07/owl#equivalentProperty,equivalentProperty,,Predicate,,,,791
+http://www.w3.org/2000/01/rdf-schema#subPropertyOf,subPropertyOf,,Predicate,,,,295
+http://www.w3.org/2002/07/owl#equivalentClass,equivalentClass,,Predicate,,,,1721
+http://www.w3.org/2004/02/skos/core#narrowMatch,narrowMatch,,Predicate,,,,95

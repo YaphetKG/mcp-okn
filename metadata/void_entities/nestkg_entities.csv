@@ -1,0 +1,67 @@
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples
+http://semanticscience.org/resource/SIO_010035,SIO_010035,,Class,,,,12
+http://semanticscience.org/resource/SIO_010043,SIO_010043,,Class,,,,16767
+http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,Property,,Class,,,,6
+http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement,Statement,,Class,,,,209956
+http://www.w3.org/2000/01/rdf-schema#Class,Class,,Class,,,,1
+http://www.w3.org/2002/07/owl#Class,Class,,Class,,,,1
+http://www.w3.org/2002/07/owl#DatatypeProperty,DatatypeProperty,,Class,,,,6
+http://www.w3.org/ns/prov#Activity,Activity,,Class,,,,1
+http://www.w3.org/ns/prov#Entity,Entity,,Class,,,,1
+https://w3id.org/biolink/vocab/Association,Association,,Class,,,,701
+https://www.ndexbio.org/vocab/ProteinSystem,protein system,"A set of proteins identified as functioning together, derived by multiscale community detection over a protein-association network. Spans scales from protein complexes to broad cellular processes.",Class,,,,395
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://semanticscience.org/resource/SIO_010035,http://www.w3.org/2001/XMLSchema#string,12
+https://w3id.org/biolink/vocab/interacts_with,interacts_with,,Predicate,,http://semanticscience.org/resource/SIO_010035,http://semanticscience.org/resource/SIO_010043,47
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://semanticscience.org/resource/SIO_010043,http://www.w3.org/2001/XMLSchema#string,16828
+https://w3id.org/biolink/vocab/interacts_with,interacts_with,,Predicate,,http://semanticscience.org/resource/SIO_010043,http://semanticscience.org/resource/SIO_010035,6
+https://w3id.org/biolink/vocab/interacts_with,interacts_with,,Predicate,,http://semanticscience.org/resource/SIO_010043,http://semanticscience.org/resource/SIO_010043,209725
+http://www.w3.org/2000/01/rdf-schema#comment,comment,,Predicate,,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,http://www.w3.org/2001/XMLSchema#string,6
+http://www.w3.org/2000/01/rdf-schema#domain,domain,,Predicate,,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,http://www.w3.org/2000/01/rdf-schema#Class,3
+http://www.w3.org/2000/01/rdf-schema#domain,domain,,Predicate,,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,http://www.w3.org/2002/07/owl#Class,3
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,http://www.w3.org/2001/XMLSchema#string,6
+http://www.w3.org/2000/01/rdf-schema#range,range,,Predicate,,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,,6
+http://www.w3.org/2000/01/rdf-schema#seeAlso,seeAlso,,Predicate,,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,,3
+http://www.w3.org/2000/01/rdf-schema#subPropertyOf,subPropertyOf,,Predicate,,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,,2
+http://www.w3.org/1999/02/22-rdf-syntax-ns#object,object,,Predicate,,http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement,http://semanticscience.org/resource/SIO_010035,6
+http://www.w3.org/1999/02/22-rdf-syntax-ns#object,object,,Predicate,,http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement,http://semanticscience.org/resource/SIO_010043,209950
+http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate,predicate,,Predicate,,http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement,,209956
+http://www.w3.org/1999/02/22-rdf-syntax-ns#subject,subject,,Predicate,,http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement,http://semanticscience.org/resource/SIO_010035,47
+http://www.w3.org/1999/02/22-rdf-syntax-ns#subject,subject,,Predicate,,http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement,http://semanticscience.org/resource/SIO_010043,209909
+http://www.w3.org/2000/01/rdf-schema#comment,comment,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2001/XMLSchema#string,1
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,http://www.w3.org/2001/XMLSchema#string,1
+http://www.w3.org/2000/01/rdf-schema#subClassOf,subClassOf,,Predicate,,http://www.w3.org/2000/01/rdf-schema#Class,,1
+http://www.w3.org/2000/01/rdf-schema#comment,comment,,Predicate,,http://www.w3.org/2002/07/owl#Class,http://www.w3.org/2001/XMLSchema#string,1
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://www.w3.org/2002/07/owl#Class,http://www.w3.org/2001/XMLSchema#string,1
+http://www.w3.org/2000/01/rdf-schema#subClassOf,subClassOf,,Predicate,,http://www.w3.org/2002/07/owl#Class,,1
+http://www.w3.org/2000/01/rdf-schema#comment,comment,,Predicate,,http://www.w3.org/2002/07/owl#DatatypeProperty,http://www.w3.org/2001/XMLSchema#string,6
+http://www.w3.org/2000/01/rdf-schema#domain,domain,,Predicate,,http://www.w3.org/2002/07/owl#DatatypeProperty,http://www.w3.org/2000/01/rdf-schema#Class,3
+http://www.w3.org/2000/01/rdf-schema#domain,domain,,Predicate,,http://www.w3.org/2002/07/owl#DatatypeProperty,http://www.w3.org/2002/07/owl#Class,3
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://www.w3.org/2002/07/owl#DatatypeProperty,http://www.w3.org/2001/XMLSchema#string,6
+http://www.w3.org/2000/01/rdf-schema#range,range,,Predicate,,http://www.w3.org/2002/07/owl#DatatypeProperty,,6
+http://www.w3.org/2000/01/rdf-schema#seeAlso,seeAlso,,Predicate,,http://www.w3.org/2002/07/owl#DatatypeProperty,,3
+http://www.w3.org/2000/01/rdf-schema#subPropertyOf,subPropertyOf,,Predicate,,http://www.w3.org/2002/07/owl#DatatypeProperty,,2
+http://www.w3.org/ns/prov#wasAssociatedWith,wasAssociatedWith,,Predicate,,http://www.w3.org/ns/prov#Activity,,1
+http://purl.org/dc/terms/created,created,,Predicate,,http://www.w3.org/ns/prov#Entity,http://www.w3.org/2001/XMLSchema#date,1
+http://purl.org/dc/terms/description,description,,Predicate,,http://www.w3.org/ns/prov#Entity,http://www.w3.org/2001/XMLSchema#string,1
+http://purl.org/dc/terms/publisher,publisher,,Predicate,,http://www.w3.org/ns/prov#Entity,,1
+http://purl.org/dc/terms/source,source,,Predicate,,http://www.w3.org/ns/prov#Entity,,1
+http://purl.org/dc/terms/title,title,,Predicate,,http://www.w3.org/ns/prov#Entity,http://www.w3.org/2001/XMLSchema#string,1
+http://www.w3.org/ns/prov#wasDerivedFrom,wasDerivedFrom,,Predicate,,http://www.w3.org/ns/prov#Entity,,2
+http://www.w3.org/ns/prov#wasGeneratedBy,wasGeneratedBy,,Predicate,,http://www.w3.org/ns/prov#Entity,http://www.w3.org/ns/prov#Activity,1
+https://w3id.org/biolink/vocab/agent_type,agent_type,,Predicate,,https://w3id.org/biolink/vocab/Association,,701
+https://w3id.org/biolink/vocab/has_evidence,has_evidence,,Predicate,,https://w3id.org/biolink/vocab/Association,,701
+https://w3id.org/biolink/vocab/knowledge_level,knowledge_level,,Predicate,,https://w3id.org/biolink/vocab/Association,,701
+https://w3id.org/biolink/vocab/object,object,,Predicate,,https://w3id.org/biolink/vocab/Association,,701
+https://w3id.org/biolink/vocab/predicate,predicate,,Predicate,,https://w3id.org/biolink/vocab/Association,,701
+https://w3id.org/biolink/vocab/subject,subject,,Predicate,,https://w3id.org/biolink/vocab/Association,https://www.ndexbio.org/vocab/ProteinSystem,701
+https://www.ndexbio.org/vocab/nest/tumorsMutatedFraction,tumors mutated fraction,Fraction of tumors in the cohort carrying at least one somatic mutation in any member gene of the system. Numerator: patients with >=1 mutated member. Denominator: patients in the cohort.,Predicate,,https://w3id.org/biolink/vocab/Association,http://www.w3.org/2001/XMLSchema#double,589
+http://purl.org/dc/terms/identifier,identifier,,Predicate,,https://www.ndexbio.org/vocab/ProteinSystem,http://www.w3.org/2001/XMLSchema#string,395
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://www.ndexbio.org/vocab/ProteinSystem,http://www.w3.org/2001/XMLSchema#string,395
+https://w3id.org/biolink/vocab/has_member,has_member,,Predicate,,https://www.ndexbio.org/vocab/ProteinSystem,http://semanticscience.org/resource/SIO_010035,7
+https://w3id.org/biolink/vocab/has_member,has_member,,Predicate,,https://www.ndexbio.org/vocab/ProteinSystem,http://semanticscience.org/resource/SIO_010043,11335
+https://w3id.org/biolink/vocab/part_of,part_of,,Predicate,,https://www.ndexbio.org/vocab/ProteinSystem,https://www.ndexbio.org/vocab/ProteinSystem,466
+https://www.ndexbio.org/vocab/memberCount,member count,"Number of distinct member proteins in the system as reported by the source. NOT necessarily the number of emitted biolink:has_member triples: membership is suppressed above the size cutoff, and a few members have no node in the interaction network.",Predicate,,https://www.ndexbio.org/vocab/ProteinSystem,http://www.w3.org/2001/XMLSchema#nonNegativeInteger,395
+https://www.ndexbio.org/vocab/nest/hisigAdjustedPValue,HiSig adjusted p-value,"Benjamini-Hochberg-corrected empirical p-value from HiSig's permutation test, pan-cancer. One value per system, emitted for all systems; many are exactly 1.0, i.e. not significant.",Predicate,,https://www.ndexbio.org/vocab/ProteinSystem,http://www.w3.org/2001/XMLSchema#double,395
+https://www.ndexbio.org/vocab/nest/hisigWeight,HiSig weight,"Lasso coefficient assigned to the system by HiSig - how much of the observed mutational signal the model attributes to it. One value per system, from the pan-cancer run. NOT a significance measure: read it together with nestv:hisigAdjustedPValue, emitted on the same node for every system.",Predicate,,https://www.ndexbio.org/vocab/ProteinSystem,http://www.w3.org/2001/XMLSchema#double,394
+https://www.ndexbio.org/vocab/ias/integratedAssociationStringency,integrated association stringency,"The IAS score: a granularity/stringency measure of shared-system membership, trained to predict GO semantic similarity. NOT a probability, p-value, or binding score.",Predicate,https://w3id.org/biolink/vocab/interacts_with,http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement,http://www.w3.org/2001/XMLSchema#double,209956
+https://www.ndexbio.org/vocab/ias/retainedForConnectivity,retained for connectivity,"True on an edge kept only because it is one of its proteins' single highest-scoring edge, i.e. below the IAS core threshold. Emitted only where true.",Predicate,https://w3id.org/biolink/vocab/interacts_with,http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement,http://www.w3.org/2001/XMLSchema#boolean,5220

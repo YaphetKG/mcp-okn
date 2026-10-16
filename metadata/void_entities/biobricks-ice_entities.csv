@@ -1,0 +1,46 @@
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples
+http://edamontology.org/data_1027,data_1027,,Class,,,,526
+http://edamontology.org/data_1181,data_1181,,Class,,,,59
+http://purl.obolibrary.org/obo/CHEMINF_000000,CHEMINF_000000,,Class,,,,206543
+http://purl.obolibrary.org/obo/CHEMINF_000446,CHEMINF_000446,,Class,,,,538147
+http://purl.obolibrary.org/obo/CHEMINF_000568,CHEMINF_000568,,Class,,,,538131
+http://www.bioassayontology.org/bao#BAO_0000015,BAO_0000015,,Class,,,,2063
+http://www.bioassayontology.org/bao#BAO_0000040,BAO_0000040,,Class,,,,203755
+http://www.bioassayontology.org/bao#BAO_0000179,BAO_0000179,,Class,,,,3020705
+http://www.bioassayontology.org/bao#BAO_0003064,BAO_0003064,,Class,,,,59
+https://w3id.org/biolink/vocab/ChemicalEntity,ChemicalEntity,,Class,,,,206543
+http://edamontology.org/has_identifier,has_identifier,,Predicate,,http://purl.obolibrary.org/obo/CHEMINF_000000,http://purl.obolibrary.org/obo/CHEMINF_000446,206543
+http://edamontology.org/has_identifier,has_identifier,,Predicate,,http://purl.obolibrary.org/obo/CHEMINF_000000,http://purl.obolibrary.org/obo/CHEMINF_000568,206543
+http://purl.obolibrary.org/obo/RO_0000056,participates in,"a relation between a continuant and a process, in which the continuant is somehow involved in the process",Predicate,,http://purl.obolibrary.org/obo/CHEMINF_000000,http://www.bioassayontology.org/bao#BAO_0000040,2306975
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://purl.obolibrary.org/obo/CHEMINF_000000,http://www.w3.org/2001/XMLSchema#string,206543
+http://purl.org/dc/elements/1.1/source,source,,Predicate,,http://purl.obolibrary.org/obo/CHEMINF_000446,http://www.w3.org/2001/XMLSchema#string,538147
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://purl.obolibrary.org/obo/CHEMINF_000446,http://www.w3.org/2001/XMLSchema#string,542470
+http://purl.org/dc/elements/1.1/source,source,,Predicate,,http://purl.obolibrary.org/obo/CHEMINF_000568,http://www.w3.org/2001/XMLSchema#string,538131
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://purl.obolibrary.org/obo/CHEMINF_000568,http://www.w3.org/2001/XMLSchema#string,542456
+http://purl.org/dc/elements/1.1/source,source,,Predicate,,http://www.bioassayontology.org/bao#BAO_0000015,http://www.w3.org/2001/XMLSchema#string,1995
+http://www.bioassayontology.org/bao#BAO_0000209,BAO_0000209,,Predicate,,http://www.bioassayontology.org/bao#BAO_0000015,http://www.bioassayontology.org/bao#BAO_0000040,9641
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://www.bioassayontology.org/bao#BAO_0000015,http://www.w3.org/2001/XMLSchema#string,2063
+https://ice.ntp.niehs.nih.gov/property/assay_entrez_gene_id,assay_entrez_gene_id,,Predicate,,http://www.bioassayontology.org/bao#BAO_0000015,http://edamontology.org/data_1027,1814
+https://ice.ntp.niehs.nih.gov/property/assay_invitro_assay_format,assay_invitro_assay_format,,Predicate,,http://www.bioassayontology.org/bao#BAO_0000015,http://www.w3.org/2001/XMLSchema#string,1814
+https://ice.ntp.niehs.nih.gov/property/assay_source,assay_source,,Predicate,,http://www.bioassayontology.org/bao#BAO_0000015,http://www.w3.org/2001/XMLSchema#string,1814
+https://ice.ntp.niehs.nih.gov/property/assay_species,assay_species,,Predicate,,http://www.bioassayontology.org/bao#BAO_0000015,http://www.w3.org/2001/XMLSchema#string,1814
+https://ice.ntp.niehs.nih.gov/property/assay_tissue,assay_tissue,,Predicate,,http://www.bioassayontology.org/bao#BAO_0000015,http://www.w3.org/2001/XMLSchema#string,1814
+https://ice.ntp.niehs.nih.gov/property/mayInformOn,mayInformOn,,Predicate,,http://www.bioassayontology.org/bao#BAO_0000015,http://www.w3.org/2001/XMLSchema#string,3570
+https://ice.ntp.niehs.nih.gov/property/throughMechanisticTarget,throughMechanisticTarget,,Predicate,,http://www.bioassayontology.org/bao#BAO_0000015,http://www.w3.org/2001/XMLSchema#string,2753
+https://ice.ntp.niehs.nih.gov/property/throughMechanisticTarget_NCIm,throughMechanisticTarget_NCIm,,Predicate,,http://www.bioassayontology.org/bao#BAO_0000015,http://edamontology.org/data_1181,3015
+https://ice.ntp.niehs.nih.gov/property/throughMechanisticTarget_NCIm,throughMechanisticTarget_NCIm,,Predicate,,http://www.bioassayontology.org/bao#BAO_0000015,http://www.bioassayontology.org/bao#BAO_0003064,3015
+https://identifiers.org/umls:C1708327,umls:C1708327,,Predicate,,http://www.bioassayontology.org/bao#BAO_0000015,http://edamontology.org/data_1181,3015
+https://identifiers.org/umls:C1708327,umls:C1708327,,Predicate,,http://www.bioassayontology.org/bao#BAO_0000015,http://www.bioassayontology.org/bao#BAO_0003064,3015
+http://purl.obolibrary.org/obo/OBI_0000299,has specified output,The inverse property of is specified output of,Predicate,,http://www.bioassayontology.org/bao#BAO_0000040,http://www.bioassayontology.org/bao#BAO_0000179,3021699
+http://purl.obolibrary.org/obo/RO_0000057,has participant,"a relation between a process and a continuant, in which the continuant is somehow involved in the process",Predicate,,http://www.bioassayontology.org/bao#BAO_0000040,http://purl.obolibrary.org/obo/CHEMINF_000000,2306975
+http://purl.obolibrary.org/obo/RO_0000057,has participant,"a relation between a process and a continuant, in which the continuant is somehow involved in the process",Predicate,,http://www.bioassayontology.org/bao#BAO_0000040,https://w3id.org/biolink/vocab/ChemicalEntity,2306975
+http://purl.obolibrary.org/obo/ExO_0000055,ExO_0000055,,Predicate,,http://www.bioassayontology.org/bao#BAO_0000179,http://www.w3.org/2001/XMLSchema#string,135113
+http://purl.obolibrary.org/obo/IAO_0000136,is about,A (currently) primitive relation that relates an information artifact to an entity.,Predicate,,http://www.bioassayontology.org/bao#BAO_0000179,http://purl.obolibrary.org/obo/CHEMINF_000000,3020705
+http://purl.obolibrary.org/obo/IAO_0000136,is about,A (currently) primitive relation that relates an information artifact to an entity.,Predicate,,http://www.bioassayontology.org/bao#BAO_0000179,https://w3id.org/biolink/vocab/ChemicalEntity,3020705
+http://semanticscience.org/resource/SIO_000221,SIO_000221,,Predicate,,http://www.bioassayontology.org/bao#BAO_0000179,http://www.w3.org/2001/XMLSchema#string,3020705
+http://semanticscience.org/resource/SIO_000300,SIO_000300,,Predicate,,http://www.bioassayontology.org/bao#BAO_0000179,http://www.w3.org/2001/XMLSchema#string,3021184
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://www.bioassayontology.org/bao#BAO_0000179,http://www.w3.org/2001/XMLSchema#string,3020705
+http://edamontology.org/has_identifier,has_identifier,,Predicate,,https://w3id.org/biolink/vocab/ChemicalEntity,http://purl.obolibrary.org/obo/CHEMINF_000446,206543
+http://edamontology.org/has_identifier,has_identifier,,Predicate,,https://w3id.org/biolink/vocab/ChemicalEntity,http://purl.obolibrary.org/obo/CHEMINF_000568,206543
+http://purl.obolibrary.org/obo/RO_0000056,participates in,"a relation between a continuant and a process, in which the continuant is somehow involved in the process",Predicate,,https://w3id.org/biolink/vocab/ChemicalEntity,http://www.bioassayontology.org/bao#BAO_0000040,2306975
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,https://w3id.org/biolink/vocab/ChemicalEntity,http://www.w3.org/2001/XMLSchema#string,206543

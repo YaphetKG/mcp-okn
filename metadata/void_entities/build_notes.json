@@ -1,0 +1,363 @@
+{
+  "skipped_large": {
+    "wikidata": 683972
+  },
+  "failed": {},
+  "notes": {},
+  "timing_s": {
+    "babel": 2.0,
+    "bio101": 35.2,
+    "biobricks-aopwiki": 2.8,
+    "biobricks-ice": 2.7,
+    "biobricks-mesh": 3.0,
+    "biobricks-pubchem-annotations": 1.3,
+    "biobricks-tox21": 1.7,
+    "biobricks-toxcast": 1.8,
+    "biohealth": 25.3,
+    "biomarkerkg": 1.9,
+    "climatemodelskg": 5.6,
+    "digcfdekg": 54.5,
+    "dreamkg": 1.8,
+    "evoweb": 1.4,
+    "fiokg": 5.8,
+    "gene-expression-atlas-okn": 2.0,
+    "geoconnex": 4.2,
+    "glygenkg": 2.3,
+    "hydrologykg": 7.8,
+    "identifier-mappings": 1.4,
+    "maudekg": 1.5,
+    "medical-device-kg": 4.8,
+    "nasa-gesdisc-kg": 11.6,
+    "ncipidkg": 9.7,
+    "nde": 1.9,
+    "nestkg": 2.3,
+    "nikg": 1.4,
+    "oard-kg": 1.4,
+    "pankgraph": 13.2,
+    "phaseskg": 5.6,
+    "prokn": 22.0,
+    "rdkg": 1.9,
+    "ruralkg": 3.6,
+    "sawgraph": 18.6,
+    "scales": 7.1,
+    "securechainkg": 20.6,
+    "sockg": 5.0,
+    "spatialkg": 2.3,
+    "spoke-genelab": 76.3,
+    "spoke-okn": 22.1,
+    "sudokn": 30.7,
+    "ubergraph": 65.2,
+    "ufokn": 1.3,
+    "wildlifekn": 9.7
+  },
+  "freshness": {
+    "babel": {
+      "void_triples": 1510676589,
+      "version": "v0.0.1",
+      "last_updated": "2026-08-23T01:04:43.336+00:00",
+      "served_triples": 1510676589,
+      "matches": true
+    },
+    "bio101": {
+      "void_triples": 1060849,
+      "version": "v0.0.1",
+      "last_updated": "2026-10-01T21:07:13.254+00:00",
+      "served_triples": 1060849,
+      "matches": true
+    },
+    "biobricks-aopwiki": {
+      "void_triples": 184333,
+      "version": "v0.0.4",
+      "last_updated": "2026-03-18T17:29:20.631+00:00",
+      "served_triples": 184333,
+      "matches": true
+    },
+    "biobricks-ice": {
+      "void_triples": 27386547,
+      "version": "v0.0.3",
+      "last_updated": "2026-03-30T19:15:32.854+00:00",
+      "served_triples": 27386547,
+      "matches": true
+    },
+    "biobricks-mesh": {
+      "void_triples": 18194666,
+      "version": "v0.0.4",
+      "last_updated": "2026-04-03T16:03:25.972+00:00",
+      "served_triples": 18194666,
+      "matches": true
+    },
+    "biobricks-pubchem-annotations": {
+      "void_triples": 87425612,
+      "version": "v0.0.2",
+      "last_updated": "2026-03-16T17:10:17.628+00:00",
+      "served_triples": 87425612,
+      "matches": true
+    },
+    "biobricks-tox21": {
+      "void_triples": 26939,
+      "version": "v0.0.3",
+      "last_updated": "2026-05-07T15:04:26.331+00:00",
+      "served_triples": 26939,
+      "matches": true
+    },
+    "biobricks-toxcast": {
+      "void_triples": 30246162,
+      "version": "v0.0.2",
+      "last_updated": "2026-03-18T15:36:10.940+00:00",
+      "served_triples": 30246162,
+      "matches": true
+    },
+    "biohealth": {
+      "void_triples": 110866002,
+      "version": "v0.0.4",
+      "last_updated": "2026-03-16T01:45:58.314+00:00",
+      "served_triples": 110866002,
+      "matches": true
+    },
+    "biomarkerkg": {
+      "void_triples": 1820793,
+      "version": "v0.0.4",
+      "last_updated": "2026-10-09T14:03:28.536+00:00",
+      "served_triples": 1215057,
+      "matches": false
+    },
+    "climatemodelskg": {
+      "void_triples": 4118610,
+      "version": "v0.0.16",
+      "last_updated": "2026-07-28T18:39:34.788+00:00",
+      "served_triples": 4118610,
+      "matches": true
+    },
+    "digcfdekg": {
+      "void_triples": 330535806,
+      "version": "v0.0.1",
+      "last_updated": "2026-06-21T16:55:33.595+00:00",
+      "served_triples": 330535806,
+      "matches": true
+    },
+    "dreamkg": {
+      "void_triples": 94780,
+      "version": "v0.0.5",
+      "last_updated": "2026-05-13T17:06:32.947+00:00",
+      "served_triples": 94778,
+      "matches": false
+    },
+    "evoweb": {
+      "void_triples": 3436180,
+      "version": "v0.0.2",
+      "last_updated": "2026-06-04T18:40:09.773+00:00",
+      "served_triples": 3436180,
+      "matches": true
+    },
+    "fiokg": {
+      "void_triples": 294890110,
+      "version": "v0.0.11",
+      "last_updated": "2026-03-18T16:38:50.584+00:00",
+      "served_triples": 294890110,
+      "matches": true
+    },
+    "gene-expression-atlas-okn": {
+      "void_triples": 66623837,
+      "version": "v0.0.3",
+      "last_updated": "2026-03-18T16:07:41.993+00:00",
+      "served_triples": 66623837,
+      "matches": true
+    },
+    "geoconnex": {
+      "void_triples": 424331377,
+      "version": "v0.0.4",
+      "last_updated": "2026-04-02T00:58:17.214+00:00",
+      "served_triples": 424331377,
+      "matches": true
+    },
+    "glygenkg": {
+      "void_triples": 1101681,
+      "version": "v0.0.1",
+      "last_updated": "2026-10-08T16:46:40.969+00:00",
+      "served_triples": 1101681,
+      "matches": true
+    },
+    "hydrologykg": {
+      "void_triples": 521561008,
+      "version": "v0.0.9",
+      "last_updated": "2026-03-16T17:57:36.708+00:00",
+      "served_triples": 521561008,
+      "matches": true
+    },
+    "identifier-mappings": {
+      "void_triples": 25966897,
+      "version": "v0.0.3",
+      "last_updated": "2026-03-16T17:10:46.984+00:00",
+      "served_triples": 25966897,
+      "matches": true
+    },
+    "maudekg": {
+      "void_triples": 95913,
+      "version": "v0.0.2",
+      "last_updated": "2026-06-29T17:55:24.277+00:00",
+      "served_triples": 0,
+      "matches": false
+    },
+    "medical-device-kg": {
+      "void_triples": 17857085,
+      "version": "v0.0.4",
+      "last_updated": "2026-09-09T00:26:46.368+00:00",
+      "served_triples": 17857085,
+      "matches": true
+    },
+    "nasa-gesdisc-kg": {
+      "void_triples": 30013241,
+      "version": "v0.0.7",
+      "last_updated": "2026-06-26T20:31:57.549+00:00",
+      "served_triples": 30013241,
+      "matches": true
+    },
+    "ncipidkg": {
+      "void_triples": 774743,
+      "version": "v0.0.3",
+      "last_updated": "2026-08-12T15:37:42.187+00:00",
+      "served_triples": 774743,
+      "matches": true
+    },
+    "nde": {
+      "void_triples": 5980642,
+      "version": "v0.0.3",
+      "last_updated": "2026-03-16T17:01:50.186+00:00",
+      "served_triples": 5980642,
+      "matches": true
+    },
+    "nestkg": {
+      "void_triples": 1318130,
+      "version": "v0.0.1",
+      "last_updated": "2026-08-11T20:56:10.264+00:00",
+      "served_triples": 1318130,
+      "matches": true
+    },
+    "nikg": {
+      "void_triples": 174613,
+      "version": "v0.0.6",
+      "last_updated": "2026-03-16T00:38:01.139+00:00",
+      "served_triples": 1338339,
+      "matches": false
+    },
+    "oard-kg": {
+      "void_triples": 58394394,
+      "version": "v0.0.3",
+      "last_updated": "2026-06-05T13:58:34.004+00:00",
+      "served_triples": 58394394,
+      "matches": true
+    },
+    "pankgraph": {
+      "void_triples": 27115636,
+      "version": "v0.0.1",
+      "last_updated": "2026-03-23T20:23:00.696+00:00",
+      "served_triples": 27115636,
+      "matches": true
+    },
+    "phaseskg": {
+      "void_triples": 2750,
+      "version": "v0.0.1",
+      "last_updated": "2026-04-01T20:47:11.217+00:00",
+      "served_triples": 2750,
+      "matches": true
+    },
+    "prokn": {
+      "void_triples": 99302327,
+      "version": "v0.0.6",
+      "last_updated": "2026-09-09T15:55:21.173+00:00",
+      "served_triples": 99302327,
+      "matches": true
+    },
+    "rdkg": {
+      "void_triples": 1332747,
+      "version": "v0.0.1",
+      "last_updated": "2026-05-04T19:19:45.042+00:00",
+      "served_triples": 1332747,
+      "matches": true
+    },
+    "ruralkg": {
+      "void_triples": 885098,
+      "version": "v0.2.10",
+      "last_updated": "2026-09-03T22:57:32.814+00:00",
+      "served_triples": 885098,
+      "matches": true
+    },
+    "sawgraph": {
+      "void_triples": 161265076,
+      "version": "v0.0.16",
+      "last_updated": "2026-08-28T20:27:40.089+00:00",
+      "served_triples": 161264797,
+      "matches": false
+    },
+    "scales": {
+      "void_triples": 1084783977,
+      "version": "v0.0.25",
+      "last_updated": "2026-09-04T23:03:58.418+00:00",
+      "served_triples": 1084783977,
+      "matches": true
+    },
+    "securechainkg": {
+      "void_triples": 75238886,
+      "version": "v0.0.11",
+      "last_updated": "2026-03-23T20:04:56.930+00:00",
+      "served_triples": 75238585,
+      "matches": false
+    },
+    "sockg": {
+      "void_triples": 27142983,
+      "version": "v0.0.10",
+      "last_updated": "2026-03-16T17:09:55.397+00:00",
+      "served_triples": 27142983,
+      "matches": true
+    },
+    "spatialkg": {
+      "void_triples": 437177601,
+      "version": "v0.0.6",
+      "last_updated": "2026-08-10T18:04:25.686+00:00",
+      "served_triples": 429771869,
+      "matches": false
+    },
+    "spoke-genelab": {
+      "void_triples": 552036759,
+      "version": "v0.0.2",
+      "last_updated": "2026-03-13T18:36:44.259+00:00",
+      "served_triples": 552036759,
+      "matches": true
+    },
+    "spoke-okn": {
+      "void_triples": 42860270,
+      "version": "v0.0.6",
+      "last_updated": "2026-03-16T02:27:00.564+00:00",
+      "served_triples": 42860270,
+      "matches": true
+    },
+    "sudokn": {
+      "void_triples": 8733981,
+      "version": "v0.0.10",
+      "last_updated": "2026-05-08T03:24:17.032+00:00",
+      "served_triples": 8733981,
+      "matches": true
+    },
+    "ubergraph": {
+      "void_triples": 600183608,
+      "version": "v0.0.2",
+      "last_updated": "2026-05-01T03:45:16.066+00:00",
+      "served_triples": 600183608,
+      "matches": true
+    },
+    "ufokn": {
+      "void_triples": 294466999,
+      "version": "v0.0.3",
+      "last_updated": "2026-03-19T02:52:03.426+00:00",
+      "served_triples": 294466999,
+      "matches": true
+    },
+    "wildlifekn": {
+      "void_triples": 9424687,
+      "version": "v0.0.7",
+      "last_updated": "2026-09-28T18:32:18.855+00:00",
+      "served_triples": 9424687,
+      "matches": true
+    }
+  }
+}

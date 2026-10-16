@@ -1,0 +1,582 @@
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples
+http://www.projecthalo.com/aura#Absorbance-Scalar-Constant,Absorbance-Scalar-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Acceptance-Constant,Acceptance-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Activation-Constant,Activation-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Age-Constant,Age-Constant,,Class,,,,7
+http://www.projecthalo.com/aura#Angle-Constant,Angle-Constant,,Class,,,,5
+http://www.projecthalo.com/aura#Animacy-Constant,Animacy-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Area-Constant,Area-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Breakability-Constant,Breakability-Constant,,Class,,,,5
+http://www.projecthalo.com/aura#Brightness-Constant,Brightness-Constant,,Class,,,,4
+http://www.projecthalo.com/aura#Capacity-Constant,Capacity-Constant,,Class,,,,4
+http://www.projecthalo.com/aura#Charge-Categorical-Constant,Charge-Categorical-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Chemical-Polarity-Constant,Chemical-Polarity-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Chemical-Stability-Constant,Chemical-Stability-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Color-Constant,Color-Constant,,Class,,,,152
+http://www.projecthalo.com/aura#Concentration-Constant,Concentration-Constant,,Class,,,,4
+http://www.projecthalo.com/aura#Conductivity-Constant,Conductivity-Constant,,Class,,,,3
+http://www.projecthalo.com/aura#Consistency-Constant,Consistency-Constant,,Class,,,,12
+http://www.projecthalo.com/aura#Day-Constant,Day-Constant,,Class,,,,7
+http://www.projecthalo.com/aura#Density-Constant,Density-Constant,,Class,,,,3
+http://www.projecthalo.com/aura#Depth-Constant,Depth-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Dimension-Constant,Dimension-Constant,,Class,,,,3
+http://www.projecthalo.com/aura#Direction-Constant,Direction-Constant,,Class,,,,31
+http://www.projecthalo.com/aura#Distance-Constant,Distance-Constant,,Class,,,,3
+http://www.projecthalo.com/aura#Duration-Constant,Duration-Constant,,Class,,,,3
+http://www.projecthalo.com/aura#Electrolyte-Status-Constant,Electrolyte-Status-Constant,,Class,,,,3
+http://www.projecthalo.com/aura#Electronegativity-Constant,Electronegativity-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Energy-Constant,Energy-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Fertility-Constant,Fertility-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Fertility-Scalar-Constant,Fertility-Scalar-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Flexibility-Constant,Flexibility-Constant,,Class,,,,3
+http://www.projecthalo.com/aura#Fluidity-Constant,Fluidity-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Frequency-Constant,Frequency-Constant,,Class,,,,3
+http://www.projecthalo.com/aura#Heat-of-Vaporization-Constant,Heat-of-Vaporization-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Height-Constant,Height-Constant,,Class,,,,3
+http://www.projecthalo.com/aura#Humidity-Constant,Humidity-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Importance-Constant,Importance-Constant,,Class,,,,3
+http://www.projecthalo.com/aura#Integrity-Constant,Integrity-Constant,,Class,,,,3
+http://www.projecthalo.com/aura#Intensity-Constant,Intensity-Constant,,Class,,,,6
+http://www.projecthalo.com/aura#Length-Constant,Length-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Manner-Constant,Manner-Constant,,Class,,,,3
+http://www.projecthalo.com/aura#Mass-Constant,Mass-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Orientation-Constant,Orientation-Constant,,Class,,,,3
+http://www.projecthalo.com/aura#Oxidation-State-Constant,Oxidation-State-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#PH-Constant,PH-Constant,,Class,,,,3
+http://www.projecthalo.com/aura#Polarity-Constant,Polarity-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Pressure-Constant,Pressure-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Primary-Constant,Primary-Constant,,Class,,,,6
+http://www.projecthalo.com/aura#Priority-Constant,Priority-Constant,,Class,,,,4
+http://www.projecthalo.com/aura#Quantity-Constant,Quantity-Constant,,Class,,,,7
+http://www.projecthalo.com/aura#Rate-Constant,Rate-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Reaction-Direction-Constant,Reaction-Direction-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Salt-Status-Constant,Salt-Status-Constant,,Class,,,,1
+http://www.projecthalo.com/aura#Sentience-Constant,Sentience-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Sex-Constant,Sex-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Shape-Constant,Shape-Constant,,Class,,,,53
+http://www.projecthalo.com/aura#Size-Constant,Size-Constant,,Class,,,,9
+http://www.projecthalo.com/aura#Slope-Constant,Slope-Constant,,Class,,,,4
+http://www.projecthalo.com/aura#Smell-Constant,Smell-Constant,,Class,,,,10
+http://www.projecthalo.com/aura#Solubility-Constant,Solubility-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Specific-Heat-Constant,Specific-Heat-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Specific-Surface-Area-Constant,Specific-Surface-Area-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Speed-Constant,Speed-Constant,,Class,,,,1
+http://www.projecthalo.com/aura#State-Constant,State-Constant,,Class,,,,4
+http://www.projecthalo.com/aura#Structural-Complexity-Constant,Structural-Complexity-Constant,,Class,,,,3
+http://www.projecthalo.com/aura#Surface-Area-Categorical-Constant,Surface-Area-Categorical-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Surface-Area-Scalar-Constant,Surface-Area-Scalar-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Surface-Tension-Constant,Surface-Tension-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Taste-Constant,Taste-Constant,,Class,,,,8
+http://www.projecthalo.com/aura#Temperature-Categorical-Constant,Temperature-Categorical-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Temperature-Constant,Temperature-Constant,,Class,,,,9
+http://www.projecthalo.com/aura#Texture-Constant,Texture-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Thickness-Constant,Thickness-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Time-Zone-Constant,Time-Zone-Constant,,Class,,,,43
+http://www.projecthalo.com/aura#Trait-Constant,Trait-Constant,,Class,,,,7
+http://www.projecthalo.com/aura#Transmittance-Scalar-Constant,Transmittance-Scalar-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Truth-Constant,Truth-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#UoM-Acceleration-Magnitude,UoM-Acceleration-Magnitude,,Class,,,,7
+http://www.projecthalo.com/aura#UoM-Angle,UoM-Angle,,Class,,,,5
+http://www.projecthalo.com/aura#UoM-Area,UoM-Area,,Class,,,,3
+http://www.projecthalo.com/aura#UoM-Brightness,UoM-Brightness,,Class,,,,1
+http://www.projecthalo.com/aura#UoM-Concentration,UoM-Concentration,,Class,,,,5
+http://www.projecthalo.com/aura#UoM-Conductivity,UoM-Conductivity,,Class,,,,1
+http://www.projecthalo.com/aura#UoM-Coordinate,UoM-Coordinate,,Class,,,,3
+http://www.projecthalo.com/aura#UoM-Density,UoM-Density,,Class,,,,1
+http://www.projecthalo.com/aura#UoM-Duration,UoM-Duration,,Class,,,,10
+http://www.projecthalo.com/aura#UoM-Energy,UoM-Energy,,Class,,,,1
+http://www.projecthalo.com/aura#UoM-Frequency,UoM-Frequency,,Class,,,,16
+http://www.projecthalo.com/aura#UoM-Heat-of-Vaporization,UoM-Heat-of-Vaporization,,Class,,,,2
+http://www.projecthalo.com/aura#UoM-Length,UoM-Length,,Class,,,,10
+http://www.projecthalo.com/aura#UoM-Luminance,UoM-Luminance,,Class,,,,8
+http://www.projecthalo.com/aura#UoM-Luminous-Flux,UoM-Luminous-Flux,,Class,,,,1
+http://www.projecthalo.com/aura#UoM-Luminous-Intensity,UoM-Luminous-Intensity,,Class,,,,1
+http://www.projecthalo.com/aura#UoM-Mass,UoM-Mass,,Class,,,,4
+http://www.projecthalo.com/aura#UoM-Moment-of-Inertia,UoM-Moment-of-Inertia,,Class,,,,1
+http://www.projecthalo.com/aura#UoM-Momentum,UoM-Momentum,,Class,,,,1
+http://www.projecthalo.com/aura#UoM-Potential-Quantity,UoM-Potential-Quantity,,Class,,,,3
+http://www.projecthalo.com/aura#UoM-Power,UoM-Power,,Class,,,,5
+http://www.projecthalo.com/aura#UoM-Pressure,UoM-Pressure,,Class,,,,5
+http://www.projecthalo.com/aura#UoM-Quantity,UoM-Quantity,,Class,,,,9
+http://www.projecthalo.com/aura#UoM-Rate,UoM-Rate,,Class,,,,2
+http://www.projecthalo.com/aura#UoM-Rotational-Rate,UoM-Rotational-Rate,,Class,,,,1
+http://www.projecthalo.com/aura#UoM-Specific-Heat,UoM-Specific-Heat,,Class,,,,1
+http://www.projecthalo.com/aura#UoM-Specific-Surface-Area,UoM-Specific-Surface-Area,,Class,,,,24
+http://www.projecthalo.com/aura#UoM-Speed,UoM-Speed,,Class,,,,7
+http://www.projecthalo.com/aura#UoM-Surface-Area,UoM-Surface-Area,,Class,,,,5
+http://www.projecthalo.com/aura#UoM-Temperature,UoM-Temperature,,Class,,,,3
+http://www.projecthalo.com/aura#UoM-Time,UoM-Time,,Class,,,,6
+http://www.projecthalo.com/aura#UoM-Unitless,UoM-Unitless,,Class,,,,1
+http://www.projecthalo.com/aura#UoM-Voltage,UoM-Voltage,,Class,,,,1
+http://www.projecthalo.com/aura#UoM-Volume,UoM-Volume,,Class,,,,4
+http://www.projecthalo.com/aura#UoM-Worth,UoM-Worth,,Class,,,,10
+http://www.projecthalo.com/aura#Velocity-Constant,Velocity-Constant,,Class,,,,6
+http://www.projecthalo.com/aura#Visibility-Constant,Visibility-Constant,,Class,,,,6
+http://www.projecthalo.com/aura#Visibility-Scalar-Constant,Visibility-Scalar-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Volume-Constant,Volume-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Wetness-Constant,Wetness-Constant,,Class,,,,5
+http://www.projecthalo.com/aura#Width-Constant,Width-Constant,,Class,,,,2
+http://www.projecthalo.com/aura#Worth-Constant,Worth-Constant,,Class,,,,3
+http://www.w3.org/2002/07/owl#AnnotationProperty,AnnotationProperty,,Class,,,,5
+http://www.w3.org/2002/07/owl#Class,Class,,Class,,,,105292
+http://www.w3.org/2002/07/owl#DatatypeProperty,DatatypeProperty,,Class,,,,5
+http://www.w3.org/2002/07/owl#FunctionalProperty,FunctionalProperty,,Class,,,,127
+http://www.w3.org/2002/07/owl#NamedIndividual,NamedIndividual,,Class,,,,634
+http://www.w3.org/2002/07/owl#ObjectProperty,ObjectProperty,,Class,,,,353
+http://www.w3.org/2002/07/owl#Ontology,Ontology,,Class,,,,1
+http://www.w3.org/2002/07/owl#Restriction,Restriction,,Class,,,,81646
+http://www.w3.org/2002/07/owl#TransitiveProperty,TransitiveProperty,,Class,,,,17
+http://www.projecthalo.com/aura#description,description,,Predicate,,http://www.w3.org/2002/07/owl#Class,http://www.w3.org/2001/XMLSchema#string,159
+http://www.projecthalo.com/aura#in-concept,in-concept,,Predicate,,http://www.w3.org/2002/07/owl#Class,http://www.w3.org/2002/07/owl#Class,21058
+http://www.projecthalo.com/aura#prototype-node,prototype-node,,Predicate,,http://www.w3.org/2002/07/owl#Class,http://www.w3.org/2001/XMLSchema#string,21058
+http://www.projecthalo.com/aura#user-description,user-description,,Predicate,,http://www.w3.org/2002/07/owl#Class,http://www.w3.org/2001/XMLSchema#string,5651
+http://www.w3.org/2000/01/rdf-schema#subClassOf,subClassOf,,Predicate,,http://www.w3.org/2002/07/owl#Class,http://www.w3.org/2002/07/owl#Class,27760
+http://www.w3.org/2002/07/owl#disjointWith,disjointWith,,Predicate,,http://www.w3.org/2002/07/owl#Class,http://www.w3.org/2002/07/owl#Class,9290
+http://www.w3.org/2002/07/owl#intersectionOf,intersectionOf,,Predicate,,http://www.w3.org/2002/07/owl#Class,,77882
+http://www.w3.org/2002/07/owl#unionOf,unionOf,,Predicate,,http://www.w3.org/2002/07/owl#Class,,14
+http://www.w3.org/2000/01/rdf-schema#domain,domain,,Predicate,,http://www.w3.org/2002/07/owl#DatatypeProperty,http://www.w3.org/2002/07/owl#Class,2
+http://www.w3.org/2000/01/rdf-schema#range,range,,Predicate,,http://www.w3.org/2002/07/owl#DatatypeProperty,,5
+http://www.projecthalo.com/aura#user-description,user-description,,Predicate,,http://www.w3.org/2002/07/owl#FunctionalProperty,http://www.w3.org/2001/XMLSchema#string,44
+http://www.w3.org/2000/01/rdf-schema#domain,domain,,Predicate,,http://www.w3.org/2002/07/owl#FunctionalProperty,http://www.w3.org/2002/07/owl#Class,125
+http://www.w3.org/2000/01/rdf-schema#range,range,,Predicate,,http://www.w3.org/2002/07/owl#FunctionalProperty,http://www.w3.org/2002/07/owl#Class,124
+http://www.w3.org/2000/01/rdf-schema#range,range,,Predicate,,http://www.w3.org/2002/07/owl#FunctionalProperty,,3
+http://www.projecthalo.com/aura#user-description,user-description,,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2001/XMLSchema#string,72
+http://www.w3.org/2000/01/rdf-schema#domain,domain,,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2002/07/owl#Class,229
+http://www.w3.org/2000/01/rdf-schema#range,range,,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2002/07/owl#Class,229
+http://www.w3.org/2000/01/rdf-schema#subPropertyOf,subPropertyOf,,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2002/07/owl#ObjectProperty,5
+http://www.w3.org/2002/07/owl#inverseOf,inverseOf,,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2002/07/owl#ObjectProperty,2
+http://www.w3.org/2000/01/rdf-schema#comment,comment,,Predicate,,http://www.w3.org/2002/07/owl#Ontology,http://www.w3.org/2001/XMLSchema#string,1
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Absorbance-Scalar-Constant,86
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Age-Constant,1
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Area-Constant,7
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Concentration-Constant,86
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Conductivity-Constant,2
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Density-Constant,9
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Depth-Constant,1
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Direction-Constant,15
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Distance-Constant,27
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Duration-Constant,32
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Electrolyte-Status-Constant,3
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Electronegativity-Constant,86
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Energy-Constant,6
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Fertility-Scalar-Constant,86
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Fluidity-Constant,86
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Frequency-Constant,9
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Heat-of-Vaporization-Constant,86
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Height-Constant,17
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Humidity-Constant,86
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Importance-Constant,6
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Intensity-Constant,88
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Length-Constant,38
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Orientation-Constant,3
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#PH-Constant,3
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Pressure-Constant,86
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Primary-Constant,33
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Priority-Constant,86
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Quantity-Constant,98
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Rate-Constant,25
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Salt-Status-Constant,1
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Size-Constant,263
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Slope-Constant,3
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Solubility-Constant,32
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Specific-Heat-Constant,86
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Specific-Surface-Area-Constant,86
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Structural-Complexity-Constant,35
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Surface-Area-Categorical-Constant,18
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Surface-Area-Scalar-Constant,86
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Surface-Tension-Constant,86
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Temperature-Constant,91
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Thickness-Constant,9
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Transmittance-Scalar-Constant,86
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#UoM-Duration,7
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#UoM-Energy,12
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#UoM-Heat-of-Vaporization,4
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#UoM-Length,71
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#UoM-Mass,134
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#UoM-Potential-Quantity,5
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#UoM-Pressure,4
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#UoM-Quantity,3
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#UoM-Specific-Heat,2
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#UoM-Speed,1
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#UoM-Temperature,10
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#UoM-Time,7
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#UoM-Unitless,672
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#UoM-Voltage,2
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Velocity-Constant,111
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Visibility-Scalar-Constant,86
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Volume-Constant,18
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Width-Constant,7
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.projecthalo.com/aura#Worth-Constant,1
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.w3.org/2002/07/owl#NamedIndividual,1504
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.w3.org/2001/XMLSchema#float,923
+http://www.w3.org/2002/07/owl#hasValue,hasValue,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.w3.org/2001/XMLSchema#string,1703
+http://www.w3.org/2002/07/owl#maxQualifiedCardinality,maxQualifiedCardinality,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.w3.org/2001/XMLSchema#nonNegativeInteger,28
+http://www.w3.org/2002/07/owl#minQualifiedCardinality,minQualifiedCardinality,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.w3.org/2001/XMLSchema#nonNegativeInteger,188
+http://www.w3.org/2002/07/owl#onClass,onClass,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.w3.org/2002/07/owl#Class,936
+http://www.w3.org/2002/07/owl#onProperty,onProperty,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.w3.org/2002/07/owl#DatatypeProperty,2626
+http://www.w3.org/2002/07/owl#onProperty,onProperty,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.w3.org/2002/07/owl#FunctionalProperty,6223
+http://www.w3.org/2002/07/owl#onProperty,onProperty,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.w3.org/2002/07/owl#ObjectProperty,79020
+http://www.w3.org/2002/07/owl#qualifiedCardinality,qualifiedCardinality,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.w3.org/2001/XMLSchema#nonNegativeInteger,720
+http://www.w3.org/2002/07/owl#someValuesFrom,someValuesFrom,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.w3.org/2002/07/owl#Class,76556
+http://www.w3.org/2002/07/owl#someValuesFrom,someValuesFrom,,Predicate,,http://www.w3.org/2002/07/owl#Restriction,http://www.w3.org/2002/07/owl#Restriction,24
+http://www.w3.org/1999/02/22-rdf-syntax-ns#first,first,,Predicate,,,,272205
+http://www.w3.org/1999/02/22-rdf-syntax-ns#rest,rest,,Predicate,,,,272205
+http://www.projecthalo.com/aura#absorbance,absorbance,The property absorbance of a solution refers to the measure of the fraction of light absorbed through it. Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Solution,http://www.projecthalo.com/aura#Absorbance-Value,0
+http://www.projecthalo.com/aura#abuts,abuts,"Used only inside class axioms, as owl:onProperty of 312 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#acceleration,acceleration,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Acceleration-Magnitude-Value,0
+http://www.projecthalo.com/aura#acceleration-magnitude,acceleration-magnitude,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Acceleration-Magnitude-Value,0
+http://www.projecthalo.com/aura#acceptance,acceptance,"Acceptance refers to an attribute of knowledge for its acceptance or rejection by people. Used only inside class axioms, as owl:onProperty of 2 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Information,http://www.projecthalo.com/aura#Acceptance-Value,0
+http://www.projecthalo.com/aura#activation,activation,"Activation refers to the status of an entity for its ability to perform its primary function. Used only inside class axioms, as owl:onProperty of 82 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Entity,http://www.projecthalo.com/aura#Activation-Value,0
+http://www.projecthalo.com/aura#activation-of,activation-of,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#age,age,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Entity,http://www.projecthalo.com/aura#Duration-Value,0
+http://www.projecthalo.com/aura#agent,agent,"Used only inside class axioms, as owl:onProperty of 1,381 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Entity,0
+http://www.projecthalo.com/aura#agent-of,agent-of,"Used only inside class axioms, as owl:onProperty of 3,154 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#angle,angle,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Angle-Value,0
+http://www.projecthalo.com/aura#animacy,animacy,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Entity,http://www.projecthalo.com/aura#Animacy-Value,0
+http://www.projecthalo.com/aura#area,area,"Used only inside class axioms, as owl:onProperty of 7 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Area-Value,0
+http://www.projecthalo.com/aura#area-of,area-of,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#atomic-mass,atomic-mass,"Atomic mass is the sum of the masses of the protons, neutrons and electrons in a specific isotope of an atom, measured in daltons. Because the mass of an electron is very small and does not contribute much to the overall mass of an atom, the atomic mass number is a close approximation of the actual mass of an atom. Declared in the schema but used in no triple or class axiom.",Predicate,,http://www.projecthalo.com/aura#Isotope,http://www.projecthalo.com/aura#Mass-Value,0
+http://www.projecthalo.com/aura#atomic-number,atomic-number,"The number of protons in a nucleus. It determines the chemical properties of an element. Used only inside class axioms, as owl:onProperty of 198 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Atom,http://www.projecthalo.com/aura#Atomic-Number-Value,0
+http://www.projecthalo.com/aura#atomic-number-of,atomic-number-of,"Used only inside class axioms, as owl:onProperty of 3 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#atomic-symbol,atomic-symbol,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Atom,http://www.w3.org/2001/XMLSchema#string,0
+http://www.projecthalo.com/aura#atomic-weight,atomic-weight,"The mass of a neutral atom of a nuclide. The atomic weight of an atom is the weight of the atom based on a scale where 12C = 12. The atomic weight of an element is the weighted average of each isotope. Used only inside class axioms, as owl:onProperty of 130 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Atom,http://www.projecthalo.com/aura#Atomic-Weight-Value,0
+http://www.projecthalo.com/aura#away-from,away-from,"Used only inside class axioms, as owl:onProperty of 8 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#away-from-of,away-from-of,"Used only inside class axioms, as owl:onProperty of 9 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#base,base,"Used only inside class axioms, as owl:onProperty of 1,138 owl:Restrictions; never asserted as a direct triple.",Predicate,,,http://www.projecthalo.com/aura#Entity,0
+http://www.projecthalo.com/aura#base-of,base-of,"Used only inside class axioms, as owl:onProperty of 1,858 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#beneficiary,beneficiary,"Used only inside class axioms, as owl:onProperty of 14 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Living-Entity,0
+http://www.projecthalo.com/aura#beneficiary-of,beneficiary-of,"Used only inside class axioms, as owl:onProperty of 10 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#breakability,breakability,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Breakability-Value,0
+http://www.projecthalo.com/aura#brightness,brightness,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Brightness-Value,0
+http://www.projecthalo.com/aura#by-means-of,by-means-of,"Used only inside class axioms, as owl:onProperty of 198 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Event,0
+http://www.projecthalo.com/aura#by-means-of-trans,by-means-of-trans,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0
+http://www.projecthalo.com/aura#called,called,"Used only inside class axioms, as owl:onProperty of 1,360 owl:Restrictions; never asserted as a direct triple.",Predicate,,,http://www.w3.org/2001/XMLSchema#string,0
+http://www.projecthalo.com/aura#capacity,capacity,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Capacity-Value,0
+http://www.projecthalo.com/aura#cardinal-unit-class,cardinal-unit-class,"Used only inside class axioms, as owl:onProperty of 921 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Cardinal-Property-Value,http://www.projecthalo.com/aura#Unit-of-Measurement,0
+http://www.projecthalo.com/aura#caused-by,caused-by,"Used only inside class axioms, as owl:onProperty of 223 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#causes,causes,"Used only inside class axioms, as owl:onProperty of 346 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Event,0
+http://www.projecthalo.com/aura#causes-trans,causes-trans,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0
+http://www.projecthalo.com/aura#charge,charge,"Refers to charge of an ion. Specifically, the charge on an ion is equal to a constant charge e multiplied by an integer from 1 to 15. Used only inside class axioms, as owl:onProperty of 72 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Charge-Value,0
+http://www.projecthalo.com/aura#charge-of,charge-of,"Used only inside class axioms, as owl:onProperty of 8 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#chemical-polarity,chemical-polarity,"Used only inside class axioms, as owl:onProperty of 2 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Chemical-Polarity-Value,0
+http://www.projecthalo.com/aura#chemical-stability,chemical-stability,"Used only inside class axioms, as owl:onProperty of 8 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Chemical-Stability-Value,0
+http://www.projecthalo.com/aura#circumference,circumference,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Length-Value,0
+http://www.projecthalo.com/aura#coefficient,coefficient,"a quantity (usually a numerical constant) which is multiplied by another quantity following it in an expression; e.g. in the algebraic expression 4 x 2 - 6 x, the coefficient of (the first term) x 2 is 4 and the coefficient of (the second term) x is -6. Declared in the schema but used in no triple or class axiom.",Predicate,,http://www.projecthalo.com/aura#Chemical,http://www.projecthalo.com/aura#Coefficient-Value,0
+http://www.projecthalo.com/aura#color,color,"Used only inside class axioms, as owl:onProperty of 23 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Color-Value,0
+http://www.projecthalo.com/aura#color-of,color-of,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#complement,complement,"Used only inside class axioms, as owl:onProperty of 132 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#concentration,concentration,"The amount of a substance that is contained in a defined space. Used only inside class axioms, as owl:onProperty of 44 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Concentration-Value,0
+http://www.projecthalo.com/aura#concentration-of,concentration-of,"Used only inside class axioms, as owl:onProperty of 30 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#concept2words,concept2words,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0
+http://www.projecthalo.com/aura#conductivity,conductivity,"A measure of the resistance of water to electrical flow; this resistance is a direct measure of the salinity of water, and it can be measured accurately with a conductivity sensor. Used only inside class axioms, as owl:onProperty of 2 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Chemical,http://www.projecthalo.com/aura#Conductivity-Value,0
+http://www.projecthalo.com/aura#consistency,consistency,"Used only inside class axioms, as owl:onProperty of 10 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Consistency-Value,0
+http://www.projecthalo.com/aura#correspondence,correspondence,"A qualitative relation describing a vague notion that the first value has an impact on the second value but we aren't sure how it impacts. Used only inside class axioms, as owl:onProperty of 55 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Property-Value,http://www.projecthalo.com/aura#Property-Value,0
+http://www.projecthalo.com/aura#correspondence-of,correspondence-of,"Used only inside class axioms, as owl:onProperty of 45 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#default-ka,default-ka,"Default ka value, where Ka is a quantitative descriptor for describing the strength of acids. Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Acid-Role,http://www.projecthalo.com/aura#Equilibrium-Constant-Value,0
+http://www.projecthalo.com/aura#default-kb,default-kb,"Default kb value, where Kb is a quantitative descriptor for describing the strength of bases. Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Base-Role,http://www.projecthalo.com/aura#Equilibrium-Constant-Value,0
+http://www.projecthalo.com/aura#density,density,"Used only inside class axioms, as owl:onProperty of 39 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Density-Value,0
+http://www.projecthalo.com/aura#density-of,density-of,"Used only inside class axioms, as owl:onProperty of 5 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#depth,depth,"Used only inside class axioms, as owl:onProperty of 2 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Length-Value,0
+http://www.projecthalo.com/aura#destination,destination,"Used only inside class axioms, as owl:onProperty of 274 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#destination-of,destination-of,"Used only inside class axioms, as owl:onProperty of 143 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#diameter,diameter,"Used only inside class axioms, as owl:onProperty of 19 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Length-Value,0
+http://www.projecthalo.com/aura#different-type,different-type,"A relation showing that a Thing is different type than another Thing. Used only inside class axioms, as owl:onProperty of 16 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Thing,http://www.projecthalo.com/aura#Thing,0
+http://www.projecthalo.com/aura#dimension,dimension,Any entity that exists in physical space has existance in certain dimensions. Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Dimension-Value,0
+http://www.projecthalo.com/aura#direction,direction,"Used only inside class axioms, as owl:onProperty of 21 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Angle-Value,0
+http://www.projecthalo.com/aura#directly-proportional,directly-proportional,"A qualitative relation describing the relationship between two property values such that the second value is directly proportional to the first value. Used only inside class axioms, as owl:onProperty of 214 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Property-Value,http://www.projecthalo.com/aura#Property-Value,0
+http://www.projecthalo.com/aura#directly-proportional-of,directly-proportional-of,"Used only inside class axioms, as owl:onProperty of 323 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#distance,distance,"Used only inside class axioms, as owl:onProperty of 12 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Length-Value,0
+http://www.projecthalo.com/aura#does-not-enclose,does-not-enclose,"Used only inside class axioms, as owl:onProperty of 370 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#donor,donor,"Used only inside class axioms, as owl:onProperty of 115 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Entity,0
+http://www.projecthalo.com/aura#donor-of,donor-of,"Used only inside class axioms, as owl:onProperty of 217 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#duration,duration,"Used only inside class axioms, as owl:onProperty of 14 owl:Restrictions; never asserted as a direct triple.",Predicate,,,http://www.projecthalo.com/aura#Duration-Value,0
+http://www.projecthalo.com/aura#during,during,"An event occurs during another, but is not a step of the other event. Declared in the schema but used in no triple or class axiom.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Event,0
+http://www.projecthalo.com/aura#electrolyte-status,electrolyte-status,"The degree of ionization for a solution, e.g. non-electrolyte, weak-electrolyte, or strong-electrolyte. Used only inside class axioms, as owl:onProperty of 3 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Chemical,http://www.projecthalo.com/aura#Electrolyte-Status-Value,0
+http://www.projecthalo.com/aura#electronegativity,electronegativity,"Electronegativity is the strength of attraction of a particular atom for electrons of a covalent bond. Used only inside class axioms, as owl:onProperty of 265 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Atom,http://www.projecthalo.com/aura#Electronegativity-Value,0
+http://www.projecthalo.com/aura#electronegativity-of,electronegativity-of,"Used only inside class axioms, as owl:onProperty of 67 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#element,element,"Used only inside class axioms, as owl:onProperty of 885 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Entity,http://www.projecthalo.com/aura#Entity,0
+http://www.projecthalo.com/aura#element-of,element-of,"Used only inside class axioms, as owl:onProperty of 190 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#element-trans,element-trans,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0
+http://www.projecthalo.com/aura#enabled-by,enabled-by,"Used only inside class axioms, as owl:onProperty of 146 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#enables,enables,"Used only inside class axioms, as owl:onProperty of 137 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Event,0
+http://www.projecthalo.com/aura#enables-trans,enables-trans,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0
+http://www.projecthalo.com/aura#encloses,encloses,"Used only inside class axioms, as owl:onProperty of 1,959 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#equation,equation,"Used only inside class axioms, as owl:onProperty of 11 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#equation-of,equation-of,"Used only inside class axioms, as owl:onProperty of 83 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#equation-uses,equation-uses,"Used only inside class axioms, as owl:onProperty of 104 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#equilibrium-concentration,equilibrium-concentration,"The thermodynamic state when the fugacity between two phases is equal, or when the free energy of the system is zero; the condition when the concentration in one phase is at the same chemical activity as that in the surrounding phases. Declared in the schema but used in no triple or class axiom.",Predicate,,http://www.projecthalo.com/aura#Chemical,http://www.projecthalo.com/aura#Concentration-Value,0
+http://www.projecthalo.com/aura#experiencer,experiencer,"Used only inside class axioms, as owl:onProperty of 93 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Entity,0
+http://www.projecthalo.com/aura#experiencer-of,experiencer-of,"Used only inside class axioms, as owl:onProperty of 31 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#facilitates,facilitates,"A facilitates relation shows that a particular part/region of an entity facilititates its function. Used only inside class axioms, as owl:onProperty of 109 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Entity,http://www.projecthalo.com/aura#Event,0
+http://www.projecthalo.com/aura#facilitates-of,facilitates-of,"Used only inside class axioms, as owl:onProperty of 152 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#fertility,fertility,"The property fertility of any organism refers to its ability to produce its offspring. Used only inside class axioms, as owl:onProperty of 2 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Organism,http://www.projecthalo.com/aura#Fertility-Value,0
+http://www.projecthalo.com/aura#first-element,first-element,"Used only inside class axioms, as owl:onProperty of 50 owl:Restrictions; never asserted as a direct triple.",Predicate,,,http://www.projecthalo.com/aura#Entity,0
+http://www.projecthalo.com/aura#first-element-of,first-element-of,"Used only inside class axioms, as owl:onProperty of 3 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#first-element-trans,first-element-trans,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0
+http://www.projecthalo.com/aura#first-subevent,first-subevent,"Used only inside class axioms, as owl:onProperty of 504 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Event,0
+http://www.projecthalo.com/aura#first-subevent-of,first-subevent-of,"Used only inside class axioms, as owl:onProperty of 86 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#flexibility,flexibility,"Flexibility of a thing refers to its tendency to change its shape. Used only inside class axioms, as owl:onProperty of 3 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Flexibility-Value,0
+http://www.projecthalo.com/aura#fluidity,fluidity,"Property indicating relative ease of molecules associated with an object to freely move past one another. Fluidityofagasorliquidishigherthanfluidityofasolid. Used only inside class axioms, as owl:onProperty of 21 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Fluidity-Value,0
+http://www.projecthalo.com/aura#free-energy-change,free-energy-change,"Used only inside class axioms, as owl:onProperty of 20 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Free-Energy-Change-Value,0
+http://www.projecthalo.com/aura#frequency,frequency,"Used only inside class axioms, as owl:onProperty of 12 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Frequency-Value,0
+http://www.projecthalo.com/aura#from-value,from-value,"Used only inside class axioms, as owl:onProperty of 71 owl:Restrictions; never asserted as a direct triple.",Predicate,,,http://www.projecthalo.com/aura#Property-Value,0
+http://www.projecthalo.com/aura#from-value-of,from-value-of,"Used only inside class axioms, as owl:onProperty of 36 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#greater-than,greater-than,"Used only inside class axioms, as owl:onProperty of 332 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Property-Value,http://www.projecthalo.com/aura#Property-Value,0
+http://www.projecthalo.com/aura#greater-than-or-equal-to,greater-than-or-equal-to,"Used only inside class axioms, as owl:onProperty of 92 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Property-Value,http://www.projecthalo.com/aura#Property-Value,0
+http://www.projecthalo.com/aura#has-atom,has-atom,"Used only inside class axioms, as owl:onProperty of 111 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Chemical-Entity,http://www.projecthalo.com/aura#Atom,0
+http://www.projecthalo.com/aura#has-function,has-function,"A relation from an entity to its functions. Used only inside class axioms, as owl:onProperty of 1,364 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Entity,http://www.projecthalo.com/aura#Event,0
+http://www.projecthalo.com/aura#has-goal,has-goal,"Used only inside class axioms, as owl:onProperty of 12 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Entity,http://www.projecthalo.com/aura#Event,0
+http://www.projecthalo.com/aura#has-habitat,has-habitat,"The habitat is an entity at which an organism exists. Used only inside class axioms, as owl:onProperty of 2 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Organism,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#has-ion,has-ion,"Used only inside class axioms, as owl:onProperty of 7 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Chemical-Entity,http://www.projecthalo.com/aura#Ion,0
+http://www.projecthalo.com/aura#has-isomer,has-isomer,"A relation relating two molecules as isomers. Used only inside class axioms, as owl:onProperty of 12 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Chemical-Entity,http://www.projecthalo.com/aura#Chemical-Entity,0
+http://www.projecthalo.com/aura#has-isotope,has-isotope,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Atom,http://www.projecthalo.com/aura#Atom,0
+http://www.projecthalo.com/aura#has-on-it,has-on-it,"Used only inside class axioms, as owl:onProperty of 2 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#has-oxidized-form,has-oxidized-form,"The has-oxidized-form relation relates a chemical entity with its oxidized state. Used only inside class axioms, as owl:onProperty of 14 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Chemical-Entity,http://www.projecthalo.com/aura#Chemical-Entity,0
+http://www.projecthalo.com/aura#has-part,has-part,"Used only inside class axioms, as owl:onProperty of 7,975 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Tangible-Entity,0
+http://www.projecthalo.com/aura#has-reduced-form,has-reduced-form,"The has-reduced-form relation relates a chemical entity with its reduced state. Used only inside class axioms, as owl:onProperty of 19 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Chemical-Entity,http://www.projecthalo.com/aura#Chemical-Entity,0
+http://www.projecthalo.com/aura#has-region,has-region,"Used only inside class axioms, as owl:onProperty of 3,476 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Region,0
+http://www.projecthalo.com/aura#has-region-trans,has-region-trans,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0
+http://www.projecthalo.com/aura#has-solute,has-solute,"Used only inside class axioms, as owl:onProperty of 80 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Solution,http://www.projecthalo.com/aura#Substance,0
+http://www.projecthalo.com/aura#has-solvent,has-solvent,"Used only inside class axioms, as owl:onProperty of 59 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Solution,http://www.projecthalo.com/aura#Substance,0
+http://www.projecthalo.com/aura#has-state,has-state,"Used only inside class axioms, as owl:onProperty of 284 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#heat-of-vaporization,heat-of-vaporization,"Heat of vaporization of a liquid substance refers to the amount of heat that must be provided to one gram of that substance to vaporize. Used only inside class axioms, as owl:onProperty of 4 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Liquid-Substance,http://www.projecthalo.com/aura#Heat-of-Vaporization-Value,0
+http://www.projecthalo.com/aura#height,height,"Used only inside class axioms, as owl:onProperty of 10 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Length-Value,0
+http://www.projecthalo.com/aura#humidity,humidity,Humidity of air refers to the amount of moisture present in the air. Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Air,http://www.projecthalo.com/aura#Humidity-Value,0
+http://www.projecthalo.com/aura#importance,importance,"Used only inside class axioms, as owl:onProperty of 24 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Thing,http://www.projecthalo.com/aura#Unitless-Value,0
+http://www.projecthalo.com/aura#in-event,in-event,"Used only inside class axioms, as owl:onProperty of 178 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Role,http://www.projecthalo.com/aura#Event,0
+http://www.projecthalo.com/aura#in-event-of,in-event-of,"Used only inside class axioms, as owl:onProperty of 633 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#in-organization,in-organization,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Role,http://www.projecthalo.com/aura#Organization,0
+http://www.projecthalo.com/aura#information-content,information-content,"Used only inside class axioms, as owl:onProperty of 28 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Conceptual-Entity,http://www.projecthalo.com/aura#Thing,0
+http://www.projecthalo.com/aura#information-content-of,information-content-of,"Used only inside class axioms, as owl:onProperty of 5 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#inhibited-by,inhibited-by,"Used only inside class axioms, as owl:onProperty of 8 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#inhibits,inhibits,"Used only inside class axioms, as owl:onProperty of 57 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Event,0
+http://www.projecthalo.com/aura#instrument,instrument,"Used only inside class axioms, as owl:onProperty of 230 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Entity,0
+http://www.projecthalo.com/aura#instrument-of,instrument-of,"Used only inside class axioms, as owl:onProperty of 215 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#integrity,integrity,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Integrity-Value,0
+http://www.projecthalo.com/aura#intensity,intensity,"Used only inside class axioms, as owl:onProperty of 2 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Thing,http://www.projecthalo.com/aura#Intensity-Value,0
+http://www.projecthalo.com/aura#inversely-proportional,inversely-proportional,"A qualitative relation describing the relationship between two property values such that the second value is inversely proportional to the first value. Used only inside class axioms, as owl:onProperty of 14 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Property-Value,http://www.projecthalo.com/aura#Property-Value,0
+http://www.projecthalo.com/aura#inversely-proportional-of,inversely-proportional-of,"Used only inside class axioms, as owl:onProperty of 24 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-above,is-above,"Used only inside class axioms, as owl:onProperty of 30 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#is-above-trans,is-above-trans,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0
+http://www.projecthalo.com/aura#is-across,is-across,"A relation describing that an entity is spatially across another entity. Used only inside class axioms, as owl:onProperty of 141 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#is-across-of,is-across-of,"Used only inside class axioms, as owl:onProperty of 230 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-along,is-along,"Used only inside class axioms, as owl:onProperty of 102 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#is-at,is-at,"Used only inside class axioms, as owl:onProperty of 729 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#is-at-of,is-at-of,"Used only inside class axioms, as owl:onProperty of 581 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-at-trans,is-at-trans,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0
+http://www.projecthalo.com/aura#is-atom-of,is-atom-of,"Used only inside class axioms, as owl:onProperty of 5 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-behind,is-behind,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#is-behind-trans,is-behind-trans,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0
+http://www.projecthalo.com/aura#is-below,is-below,"Used only inside class axioms, as owl:onProperty of 45 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-beside,is-beside,"Used only inside class axioms, as owl:onProperty of 10 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#is-between,is-between,"Used only inside class axioms, as owl:onProperty of 1,153 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#is-between-of,is-between-of,"Used only inside class axioms, as owl:onProperty of 949 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-faced-by,is-faced-by,"Used only inside class axioms, as owl:onProperty of 47 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-facing,is-facing,"Used only inside class axioms, as owl:onProperty of 18 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#is-function-of,is-function-of,"Used only inside class axioms, as owl:onProperty of 481 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-goal-of,is-goal-of,"Used only inside class axioms, as owl:onProperty of 2 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-hypertonic-to,is-hypertonic-to,"A tonicity relation describing that a solution is hypertonic to another solution. Used only inside class axioms, as owl:onProperty of 16 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Solution,http://www.projecthalo.com/aura#Solution,0
+http://www.projecthalo.com/aura#is-hypotonic-to,is-hypotonic-to,"A tonicity relation describing that a solution is hypotonic to another solution. Used only inside class axioms, as owl:onProperty of 27 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Solution,http://www.projecthalo.com/aura#Solution,0
+http://www.projecthalo.com/aura#is-identical-to,is-identical-to,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Chemical,http://www.projecthalo.com/aura#Chemical,0
+http://www.projecthalo.com/aura#is-impermeable-to,is-impermeable-to,"A relation indicating that one thing is blocked from being able to move through another thing, based on the property of permeability. Used only inside class axioms, as owl:onProperty of 65 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Tangible-Entity,0
+http://www.projecthalo.com/aura#is-impermeable-to-of,is-impermeable-to-of,"Used only inside class axioms, as owl:onProperty of 3 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-in-front-of,is-in-front-of,"Used only inside class axioms, as owl:onProperty of 2 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-inside,is-inside,"Used only inside class axioms, as owl:onProperty of 2,065 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#is-inside-trans,is-inside-trans,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0
+http://www.projecthalo.com/aura#is-ion-of,is-ion-of,"Used only inside class axioms, as owl:onProperty of 10 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-isomer-of,is-isomer-of,"Used only inside class axioms, as owl:onProperty of 18 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-isotonic-to,is-isotonic-to,"A tonicity relation describing that a solution is isotonic to another solution. Used only inside class axioms, as owl:onProperty of 6 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Solution,http://www.projecthalo.com/aura#Solution,0
+http://www.projecthalo.com/aura#is-isotope-of,is-isotope-of,"Used only inside class axioms, as owl:onProperty of 8 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-near,is-near,"Used only inside class axioms, as owl:onProperty of 509 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#is-near-trans,is-near-trans,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0
+http://www.projecthalo.com/aura#is-on,is-on,"Used only inside class axioms, as owl:onProperty of 5 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#is-opposite,is-opposite,"Used only inside class axioms, as owl:onProperty of 118 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#is-oriented-toward,is-oriented-toward,"Used only inside class axioms, as owl:onProperty of 19 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#is-oriented-toward-of,is-oriented-toward-of,"Used only inside class axioms, as owl:onProperty of 47 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-outside,is-outside,"Used only inside class axioms, as owl:onProperty of 98 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#is-over,is-over,"Used only inside class axioms, as owl:onProperty of 3 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#is-parallel-to,is-parallel-to,"This relation connects two entities that are parallel to each other. Used only inside class axioms, as owl:onProperty of 7 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#is-part-of,is-part-of,"Used only inside class axioms, as owl:onProperty of 1,216 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-permeable-to,is-permeable-to,"A relation indicating that one thing is able to move through another thing, based on the property of permeability. Used only inside class axioms, as owl:onProperty of 26 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Tangible-Entity,0
+http://www.projecthalo.com/aura#is-permeable-to-of,is-permeable-to-of,"Used only inside class axioms, as owl:onProperty of 9 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-perpendicular-to,is-perpendicular-to,The is-perpendicular-to relation connects two entities that are spatially perpendicular to each other. Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#is-possessed-by,is-possessed-by,"Used only inside class axioms, as owl:onProperty of 166 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-region-of,is-region-of,"Used only inside class axioms, as owl:onProperty of 544 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-saturated-with,is-saturated-with,"Is completely filled to capacity by something else. With regard to solutions, a saturated solution holds the maximum amount of solute possible at a given temperature. Withregardtomolecules,typicallyafattyacid,asaturatedmoleculeisbondedtothemaximumnumberofhydrogenatomspossible. Used only inside class axioms, as owl:onProperty of 2 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Tangible-Entity,0
+http://www.projecthalo.com/aura#is-solute-of,is-solute-of,"Used only inside class axioms, as owl:onProperty of 29 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-solvent-of,is-solvent-of,"Used only inside class axioms, as owl:onProperty of 18 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-specific-to,is-specific-to,"The is-specific-to relation describes the specificity of the first entity to the second. Used only inside class axioms, as owl:onProperty of 9 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Entity,http://www.projecthalo.com/aura#Entity,0
+http://www.projecthalo.com/aura#is-specific-to-of,is-specific-to-of,"Used only inside class axioms, as owl:onProperty of 9 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-state-of,is-state-of,"Used only inside class axioms, as owl:onProperty of 245 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-under,is-under,"Used only inside class axioms, as owl:onProperty of 2 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#is-unsaturated-with,is-unsaturated-with,"Is not filled to capacity by something else. With regard to solutions, an unsaturated solution can still dissolve more solute at a given temperature. Withregardtomolecules,typicallyafattyacid,anunsaturatedmoleculehasatleastonedoublebond;changingthesebondstosinglebondswouldallowittobindmorehydrogen,atwhichpointitwouldbecomesaturatedwithhydrogen. Declared in the schema but used in no triple or class axiom.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Tangible-Entity,0
+http://www.projecthalo.com/aura#ka,ka,Ka is a quantitative descriptor for describing the strength of acids. Declared in the schema but used in no triple or class axiom.,Predicate,,,http://www.projecthalo.com/aura#Equilibrium-Constant-Value,0
+http://www.projecthalo.com/aura#kb,kb,Kb is a quantitative descriptor for describing the strength of bases. Declared in the schema but used in no triple or class axiom.,Predicate,,,http://www.projecthalo.com/aura#Equilibrium-Constant-Value,0
+http://www.projecthalo.com/aura#keq,keq,the ratio between the concentration of products in a reaction and the concentration of reactants. It expresses the extent to which equilibrium has proceeded in either direction. Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Chemical-Equilibrium-Reaction,http://www.projecthalo.com/aura#Equilibrium-Constant-Value,0
+http://www.projecthalo.com/aura#ki,ki,"the equilibrium constants of each individual equilibrium reaction that is combined to form an overall equilibrium reaction. Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Chemical-Reaction,http://www.projecthalo.com/aura#Equilibrium-Constant-Value,0
+http://www.projecthalo.com/aura#latitude,latitude,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Angle-Value,0
+http://www.projecthalo.com/aura#length,length,"Used only inside class axioms, as owl:onProperty of 48 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Length-Value,0
+http://www.projecthalo.com/aura#length-of,length-of,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#less-than,less-than,"Used only inside class axioms, as owl:onProperty of 314 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#less-than-or-equal-to,less-than-or-equal-to,"Used only inside class axioms, as owl:onProperty of 88 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#longitude,longitude,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Angle-Value,0
+http://www.projecthalo.com/aura#luminance,luminance,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Luminance-Value,0
+http://www.projecthalo.com/aura#luminous-flux,luminous-flux,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Luminous-Flux-Value,0
+http://www.projecthalo.com/aura#luminous-intensity,luminous-intensity,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Luminous-Intensity-Value,0
+http://www.projecthalo.com/aura#magnification,magnification,Magnification in microscopy is the ratio of an object's image to its real size. Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Physical-Object,http://www.projecthalo.com/aura#Unitless-Value,0
+http://www.projecthalo.com/aura#manner,manner,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Manner-Value,0
+http://www.projecthalo.com/aura#mass,mass,"Mass is defined as the quantity of matter contained in an object and is the property of that causes it to have weight in a gravitational field. For a molecule, it is simply the sum of the masses of all the atoms in a molecule. Used only inside class axioms, as owl:onProperty of 8 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Mass-Value,0
+http://www.projecthalo.com/aura#mass-number,mass-number,"Atomic mass number is the sum of the number of protons and neutrons in the nucleus of an atom. Because the mass of an electron is very small and does not contribute much to the overall mass of an atom, the atomic mass number is a close approximation of the actual mass of an atom. Used only inside class axioms, as owl:onProperty of 125 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Atom,http://www.projecthalo.com/aura#Atomic-Mass-Value,0
+http://www.projecthalo.com/aura#mass-of,mass-of,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#material,material,"Used only inside class axioms, as owl:onProperty of 10 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Tangible-Entity,0
+http://www.projecthalo.com/aura#material-of,material-of,"Used only inside class axioms, as owl:onProperty of 2 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#material-trans,material-trans,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0
+http://www.projecthalo.com/aura#means-by-which,means-by-which,"Used only inside class axioms, as owl:onProperty of 82 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#moment-of-inertia,moment-of-inertia,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Physical-Object,http://www.projecthalo.com/aura#Moment-of-Inertia-Value,0
+http://www.projecthalo.com/aura#momentum,momentum,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Momentum-Value,0
+http://www.projecthalo.com/aura#negative-influence,negative-influence,"A qualitative relation describing the relationship between two property values such that the first value has a negative influence on the second value. Used only inside class axioms, as owl:onProperty of 9 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Property-Value,http://www.projecthalo.com/aura#Property-Value,0
+http://www.projecthalo.com/aura#negative-influence-of,negative-influence-of,"Used only inside class axioms, as owl:onProperty of 3 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#next-element,next-element,"Used only inside class axioms, as owl:onProperty of 141 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Entity,http://www.projecthalo.com/aura#Entity,0
+http://www.projecthalo.com/aura#next-event,next-event,"Used only inside class axioms, as owl:onProperty of 712 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Event,0
+http://www.projecthalo.com/aura#next-event-trans,next-event-trans,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0
+http://www.projecthalo.com/aura#node-id,node-id,Declared in the schema but used in no triple or class axiom.,Predicate,,,http://www.w3.org/2001/XMLSchema#string,0
+http://www.projecthalo.com/aura#not-equal,not-equal,"A relation between two Things, used internally to suggest that a merging shouldn't occur and avoid unification. Used only inside class axioms, as owl:onProperty of 7,656 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Thing,http://www.projecthalo.com/aura#Thing,0
+http://www.projecthalo.com/aura#object,object,"Used only inside class axioms, as owl:onProperty of 3,114 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Entity,0
+http://www.projecthalo.com/aura#object-of,object-of,"Used only inside class axioms, as owl:onProperty of 4,523 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#objective,objective,"Used only inside class axioms, as owl:onProperty of 42 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Event,0
+http://www.projecthalo.com/aura#objective-of,objective-of,"Used only inside class axioms, as owl:onProperty of 7 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#optical-resolution,optical-resolution,"Used only inside class axioms, as owl:onProperty of 2 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Physical-Object,http://www.projecthalo.com/aura#Length-Value,0
+http://www.projecthalo.com/aura#orientation,orientation,"Used only inside class axioms, as owl:onProperty of 5 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Entity,http://www.projecthalo.com/aura#Angle-Value,0
+http://www.projecthalo.com/aura#origin,origin,"Used only inside class axioms, as owl:onProperty of 265 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#origin-of,origin-of,"Used only inside class axioms, as owl:onProperty of 150 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#oxidation-state,oxidation-state,"Oxidation State of a Chemical entity refers to the fact that a chemical entity is in an oxidized or reduced state. Used only inside class axioms, as owl:onProperty of 56 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Chemical-Entity,http://www.projecthalo.com/aura#Oxidation-State-Value,0
+http://www.projecthalo.com/aura#pH,pH,"pH is a measure of hydrogen ion concentration. It is also referred as a measure of the acidity or basicity (alkalinity) of a material when dissolved in water Used only inside class axioms, as owl:onProperty of 17 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Substance,http://www.projecthalo.com/aura#PH-Value,0
+http://www.projecthalo.com/aura#pH-of,pH-of,"Used only inside class axioms, as owl:onProperty of 2 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#path,path,"Used only inside class axioms, as owl:onProperty of 222 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#path-of,path-of,"Used only inside class axioms, as owl:onProperty of 191 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#perimeter,perimeter,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Length-Value,0
+http://www.projecthalo.com/aura#physical-state,physical-state,"Used only inside class axioms, as owl:onProperty of 17 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#State-Value,0
+http://www.projecthalo.com/aura#pka,pka,"the negative log to base 10 of the acidity constant, ka Declared in the schema but used in no triple or class axiom.",Predicate,,,http://www.projecthalo.com/aura#PKa-Value,0
+http://www.projecthalo.com/aura#pkb,pkb,"the negative log to base 10 of the alkalinity constant, kb. Declared in the schema but used in no triple or class axiom.",Predicate,,,http://www.projecthalo.com/aura#PKb-Value,0
+http://www.projecthalo.com/aura#played-by,played-by,"Used only inside class axioms, as owl:onProperty of 195 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#plays,plays,"Used only inside class axioms, as owl:onProperty of 945 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Entity,http://www.projecthalo.com/aura#Role,0
+http://www.projecthalo.com/aura#polarity,polarity,"Used only inside class axioms, as owl:onProperty of 4 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Polarity-Value,0
+http://www.projecthalo.com/aura#positive-influence,positive-influence,"A qualitative relation describing the relationship between two property values such that the first value has a positive influence on the second value. Used only inside class axioms, as owl:onProperty of 9 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Property-Value,http://www.projecthalo.com/aura#Property-Value,0
+http://www.projecthalo.com/aura#positive-influence-of,positive-influence-of,"Used only inside class axioms, as owl:onProperty of 4 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#possesses,possesses,"Used only inside class axioms, as owl:onProperty of 1,223 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,,0
+http://www.projecthalo.com/aura#power,power,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Power-Value,0
+http://www.projecthalo.com/aura#pressure,pressure,"Used only inside class axioms, as owl:onProperty of 2 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Pressure-Value,0
+http://www.projecthalo.com/aura#pressure-potential,pressure-potential,"A component of water potential that is due to the actual physical pressure exerted by the water in a solution. Used only inside class axioms, as owl:onProperty of 3 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Solution,http://www.projecthalo.com/aura#Potential-Value,0
+http://www.projecthalo.com/aura#prev-event,prev-event,"Used only inside class axioms, as owl:onProperty of 590 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#prevented-by,prevented-by,"Used only inside class axioms, as owl:onProperty of 10 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#prevents,prevents,"Used only inside class axioms, as owl:onProperty of 47 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Event,0
+http://www.projecthalo.com/aura#previous-element,previous-element,"Used only inside class axioms, as owl:onProperty of 55 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#priority,priority,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Thing,http://www.projecthalo.com/aura#Unitless-Value,0
+http://www.projecthalo.com/aura#purpose,purpose,"Used only inside class axioms, as owl:onProperty of 10 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Entity,,0
+http://www.projecthalo.com/aura#purpose-of,purpose-of,"Used only inside class axioms, as owl:onProperty of 2 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#quantity,quantity,"Used only inside class axioms, as owl:onProperty of 722 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Quantity-Value,0
+http://www.projecthalo.com/aura#quantity-of,quantity-of,"Used only inside class axioms, as owl:onProperty of 310 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#radius,radius,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Length-Value,0
+http://www.projecthalo.com/aura#rate,rate,"Used only inside class axioms, as owl:onProperty of 94 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Rate-Value,0
+http://www.projecthalo.com/aura#rate-of,rate-of,"Used only inside class axioms, as owl:onProperty of 24 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#raw-material,raw-material,"Used only inside class axioms, as owl:onProperty of 1,230 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Tangible-Entity,0
+http://www.projecthalo.com/aura#raw-material-of,raw-material-of,"Used only inside class axioms, as owl:onProperty of 519 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#reaction-direction,reaction-direction,"the direction of an equilibrium reaction, i.e. left or right Declared in the schema but used in no triple or class axiom.",Predicate,,http://www.projecthalo.com/aura#Chemical-Equilibrium-Reaction,http://www.projecthalo.com/aura#Reaction-Direction-Value,0
+http://www.projecthalo.com/aura#recipient,recipient,"Used only inside class axioms, as owl:onProperty of 134 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Entity,0
+http://www.projecthalo.com/aura#recipient-of,recipient-of,"Used only inside class axioms, as owl:onProperty of 207 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#result,result,"Used only inside class axioms, as owl:onProperty of 2,220 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Entity,0
+http://www.projecthalo.com/aura#result-of,result-of,"Used only inside class axioms, as owl:onProperty of 1,534 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#rotational-rate,rotational-rate,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Rotational-Rate-Value,0
+http://www.projecthalo.com/aura#salt-status,salt-status,"whether an ionic compound is salt or not Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Chemical-Entity,http://www.projecthalo.com/aura#Salt-Status-Value,0
+http://www.projecthalo.com/aura#same-as,same-as,"Used only inside class axioms, as owl:onProperty of 253 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Property-Value,http://www.projecthalo.com/aura#Property-Value,0
+http://www.projecthalo.com/aura#same-type,same-type,"Used only inside class axioms, as owl:onProperty of 151 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Thing,http://www.projecthalo.com/aura#Thing,0
+http://www.projecthalo.com/aura#scalar-magnitude-of,scalar-magnitude-of,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Scalar-Value,http://www.projecthalo.com/aura#Scalar-Constant-Class,0
+http://www.projecthalo.com/aura#scalar-unit-class,scalar-unit-class,"Used only inside class axioms, as owl:onProperty of 583 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#sentience,sentience,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Living-Entity,http://www.projecthalo.com/aura#Sentience-Value,0
+http://www.projecthalo.com/aura#sex,sex,"Used only inside class axioms, as owl:onProperty of 28 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Living-Entity,http://www.projecthalo.com/aura#Sex-Value,0
+http://www.projecthalo.com/aura#shape,shape,"Used only inside class axioms, as owl:onProperty of 146 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Shape-Value,0
+http://www.projecthalo.com/aura#shape-of,shape-of,"Used only inside class axioms, as owl:onProperty of 13 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#site,site,"Used only inside class axioms, as owl:onProperty of 522 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#site-of,site-of,"Used only inside class axioms, as owl:onProperty of 512 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#size,size,"Used only inside class axioms, as owl:onProperty of 554 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Size-Value,0
+http://www.projecthalo.com/aura#size-of,size-of,"Used only inside class axioms, as owl:onProperty of 121 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#slope,slope,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Unitless-Value,0
+http://www.projecthalo.com/aura#smell,smell,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Smell-Value,0
+http://www.projecthalo.com/aura#solubility-in-lipid,solubility-in-lipid,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Solubility-Value,0
+http://www.projecthalo.com/aura#solubility-in-water,solubility-in-water,"Used only inside class axioms, as owl:onProperty of 32 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Solubility-Value,0
+http://www.projecthalo.com/aura#solute-potential,solute-potential,"The solute potential of a solution is a measure of the concentration of the solute relative to pure water. Used only inside class axioms, as owl:onProperty of 8 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Chemical,http://www.projecthalo.com/aura#Potential-Value,0
+http://www.projecthalo.com/aura#solute-species,solute-species,the molecule or the ions of a solute that is dissolved in a solution Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Solution,http://www.projecthalo.com/aura#Chemical,0
+http://www.projecthalo.com/aura#specific-heat,specific-heat,"The property Specific-Heat of a substance refers to the amount of heat that must be absorbed or lost for 1 gram of that substance to change its temperature by 1 degree celsius. Used only inside class axioms, as owl:onProperty of 39 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Substance,http://www.projecthalo.com/aura#Specific-Heat-Value,0
+http://www.projecthalo.com/aura#specific-heat-of,specific-heat-of,"Used only inside class axioms, as owl:onProperty of 50 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#specific-surface-area,specific-surface-area,"The property of a spatial entity specifying its specific surface area. Used only inside class axioms, as owl:onProperty of 3 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Specific-Surface-Area-Value,0
+http://www.projecthalo.com/aura#speed,speed,"Used only inside class axioms, as owl:onProperty of 92 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Speed-Value,0
+http://www.projecthalo.com/aura#speed-of,speed-of,"Used only inside class axioms, as owl:onProperty of 188 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#structural-complexity,structural-complexity,"Used only inside class axioms, as owl:onProperty of 225 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Structural-Complexity-Value,0
+http://www.projecthalo.com/aura#structural-complexity-of,structural-complexity-of,"Used only inside class axioms, as owl:onProperty of 66 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#subevent,subevent,"Used only inside class axioms, as owl:onProperty of 2,803 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Event,0
+http://www.projecthalo.com/aura#subevent-of,subevent-of,"Used only inside class axioms, as owl:onProperty of 410 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#subevent-trans,subevent-trans,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0
+http://www.projecthalo.com/aura#subscript,subscript,a number that indicates the mole proportion of the preceeding element Declared in the schema but used in no triple or class axiom.,Predicate,,,http://www.projecthalo.com/aura#Subscript-Value,0
+http://www.projecthalo.com/aura#substrate,substrate,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Tangible-Entity,0
+http://www.projecthalo.com/aura#supported-by,supported-by,"Used only inside class axioms, as owl:onProperty of 14 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#supports,supports,"Used only inside class axioms, as owl:onProperty of 26 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Event,0
+http://www.projecthalo.com/aura#surface-area,surface-area,"The surface area is the total area of the surface of an object. Used only inside class axioms, as owl:onProperty of 4 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Surface-Area-Value,0
+http://www.projecthalo.com/aura#surface-area-of,surface-area-of,"Used only inside class axioms, as owl:onProperty of 3 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#surface-tension,surface-tension,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Liquid-Substance,http://www.projecthalo.com/aura#Surface-Tension-Value,0
+http://www.projecthalo.com/aura#taste,taste,"Used only inside class axioms, as owl:onProperty of 3 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Taste-Value,0
+http://www.projecthalo.com/aura#temperature,temperature,"A measure of the intensity of heat in degrees, reflecting the average kinetic energy of the molecules. Used only inside class axioms, as owl:onProperty of 132 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Temperature-Value,0
+http://www.projecthalo.com/aura#temperature-of,temperature-of,"Used only inside class axioms, as owl:onProperty of 8 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#text-is-southwest,text-is-southwest,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0
+http://www.projecthalo.com/aura#texture,texture,"Used only inside class axioms, as owl:onProperty of 5 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Texture-Value,0
+http://www.projecthalo.com/aura#the-cardinal-value,the-cardinal-value,"Used only inside class axioms, as owl:onProperty of 923 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Cardinal-Property-Value,http://www.w3.org/2001/XMLSchema#float,0
+http://www.projecthalo.com/aura#the-categorical-value,the-categorical-value,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Categorical-Value,http://www.projecthalo.com/aura#Categorical-Constant,0
+http://www.projecthalo.com/aura#the-scalar-value,the-scalar-value,"Used only inside class axioms, as owl:onProperty of 583 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Scalar-Value,http://www.projecthalo.com/aura#Scalar-Constant-Class,0
+http://www.projecthalo.com/aura#thickness,thickness,"Used only inside class axioms, as owl:onProperty of 13 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Length-Value,0
+http://www.projecthalo.com/aura#thickness-of,thickness-of,"Used only inside class axioms, as owl:onProperty of 5 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#time-after,time-after,"Used only inside class axioms, as owl:onProperty of 122 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#time-at,time-at,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Time-Instant,0
+http://www.projecthalo.com/aura#time-before,time-before,"Used only inside class axioms, as owl:onProperty of 162 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Temporal-Entity,http://www.projecthalo.com/aura#Temporal-Entity,0
+http://www.projecthalo.com/aura#time-before-trans,time-before-trans,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0
+http://www.projecthalo.com/aura#time-beginning-of,time-beginning-of,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#time-begins,time-begins,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Temporal-Entity,http://www.projecthalo.com/aura#Time-Instant,0
+http://www.projecthalo.com/aura#time-begins-or-in,time-begins-or-in,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Time-Interval,http://www.projecthalo.com/aura#Time-Instant,0
+http://www.projecthalo.com/aura#time-between,time-between,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Time-Interval,http://www.projecthalo.com/aura#Time-Instant,0
+http://www.projecthalo.com/aura#time-contains,time-contains,"Used only inside class axioms, as owl:onProperty of 123 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#time-during,time-during,"Used only inside class axioms, as owl:onProperty of 322 owl:Restrictions; never asserted as a direct triple.",Predicate,,,http://www.projecthalo.com/aura#Time-Interval,0
+http://www.projecthalo.com/aura#time-end-of,time-end-of,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#time-ends,time-ends,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Temporal-Entity,http://www.projecthalo.com/aura#Time-Instant,0
+http://www.projecthalo.com/aura#time-inside,time-inside,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Time-Interval,http://www.projecthalo.com/aura#Time-Instant,0
+http://www.projecthalo.com/aura#time-int-after,time-int-after,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#time-int-before,time-int-before,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Time-Interval,http://www.projecthalo.com/aura#Time-Interval,0
+http://www.projecthalo.com/aura#time-int-during,time-int-during,"Used only inside class axioms, as owl:onProperty of 3 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Time-Interval,http://www.projecthalo.com/aura#Time-Interval,0
+http://www.projecthalo.com/aura#time-int-during-trans,time-int-during-trans,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0
+http://www.projecthalo.com/aura#time-int-equals,time-int-equals,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Time-Interval,http://www.projecthalo.com/aura#Time-Interval,0
+http://www.projecthalo.com/aura#time-int-finishes,time-int-finishes,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Time-Interval,http://www.projecthalo.com/aura#Time-Interval,0
+http://www.projecthalo.com/aura#time-int-meets,time-int-meets,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Time-Interval,http://www.projecthalo.com/aura#Time-Interval,0
+http://www.projecthalo.com/aura#time-int-overlaps,time-int-overlaps,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Time-Interval,http://www.projecthalo.com/aura#Time-Interval,0
+http://www.projecthalo.com/aura#time-int-starts,time-int-starts,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Time-Interval,http://www.projecthalo.com/aura#Time-Interval,0
+http://www.projecthalo.com/aura#time-int-starts-trans,time-int-starts-trans,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0
+http://www.projecthalo.com/aura#time-of,time-of,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#time-of-existence,time-of-existence,Declared in the schema but used in no triple or class axiom.,Predicate,,,http://www.projecthalo.com/aura#Time-Interval,0
+http://www.projecthalo.com/aura#to-value,to-value,"Used only inside class axioms, as owl:onProperty of 35 owl:Restrictions; never asserted as a direct triple.",Predicate,,,http://www.projecthalo.com/aura#Property-Value,0
+http://www.projecthalo.com/aura#to-value-of,to-value-of,"Used only inside class axioms, as owl:onProperty of 2 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#toward,toward,"Used only inside class axioms, as owl:onProperty of 15 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Event,http://www.projecthalo.com/aura#Spatial-Entity,0
+http://www.projecthalo.com/aura#toward-of,toward-of,"Used only inside class axioms, as owl:onProperty of 11 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#trait,trait,Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Entity,http://www.projecthalo.com/aura#Trait-Value,0
+http://www.projecthalo.com/aura#transmittance,transmittance,The property transmittance of a solution refers to the measure of the fraction of light transmitted through it. Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.projecthalo.com/aura#Solution,http://www.projecthalo.com/aura#Transmittance-Value,0
+http://www.projecthalo.com/aura#truth,truth,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Information,http://www.projecthalo.com/aura#Truth-Value,0
+http://www.projecthalo.com/aura#used-in-equation,used-in-equation,"Used only inside class axioms, as owl:onProperty of 104 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#valence,valence,"It is the bonding capacity of an atom and determined by the number of electrons that complete the valence shell. Used only inside class axioms, as owl:onProperty of 44 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Atom,http://www.projecthalo.com/aura#Valence-Value,0
+http://www.projecthalo.com/aura#value,value,"Used only inside class axioms, as owl:onProperty of 343 owl:Restrictions; never asserted as a direct triple.",Predicate,,,http://www.w3.org/2001/XMLSchema#string,0
+http://www.projecthalo.com/aura#visibility,visibility,"Visibility of an entity refers to the measure of it being visible to aided or unaided eyes. Used only inside class axioms, as owl:onProperty of 7 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Entity,http://www.projecthalo.com/aura#Visibility-Value,0
+http://www.projecthalo.com/aura#voltage,voltage,"Used only inside class axioms, as owl:onProperty of 2 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Voltage-Value,0
+http://www.projecthalo.com/aura#volume,volume,"Used only inside class axioms, as owl:onProperty of 136 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Volume-Value,0
+http://www.projecthalo.com/aura#volume-of,volume-of,"Used only inside class axioms, as owl:onProperty of 3 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#water-potential,water-potential,"Water potential is the physical property that predicts the direction in which water will flow. It is a quantity that includes the effects of solute concentration and physical pressure. Used only inside class axioms, as owl:onProperty of 12 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Aqueous-Solution,http://www.projecthalo.com/aura#Potential-Value,0
+http://www.projecthalo.com/aura#water-potential-of,water-potential-of,"Used only inside class axioms, as owl:onProperty of 10 owl:Restrictions; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#wavelength,wavelength,"The distance between crests of waves, such as those of electromagnetic spectrum. Used only inside class axioms, as owl:onProperty of 20 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Energy,http://www.projecthalo.com/aura#Length-Value,0
+http://www.projecthalo.com/aura#wavelength-of,wavelength-of,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#wetness,wetness,"Used only inside class axioms, as owl:onProperty of 3 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Tangible-Entity,http://www.projecthalo.com/aura#Wetness-Value,0
+http://www.projecthalo.com/aura#wetness-of,wetness-of,"Used only inside class axioms, as owl:onProperty of 1 owl:Restriction; never asserted as a direct triple.",Predicate,,,,0
+http://www.projecthalo.com/aura#width,width,"Used only inside class axioms, as owl:onProperty of 8 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Spatial-Entity,http://www.projecthalo.com/aura#Length-Value,0
+http://www.projecthalo.com/aura#worth,worth,"Used only inside class axioms, as owl:onProperty of 2 owl:Restrictions; never asserted as a direct triple.",Predicate,,http://www.projecthalo.com/aura#Entity,http://www.projecthalo.com/aura#Worth-Value,0

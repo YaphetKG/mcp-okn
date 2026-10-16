@@ -1,0 +1,7 @@
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples
+http://www.w3.org/ns/oa#Annotation,Annotation,,Class,,,,10718093
+http://purl.org/dc/elements/1.1/subject,subject,,Predicate,,http://www.w3.org/ns/oa#Annotation,,17550399
+http://www.w3.org/ns/oa#hasBody,hasBody,,Predicate,,http://www.w3.org/ns/oa#Annotation,,10718093
+http://www.w3.org/ns/oa#hasTarget,hasTarget,,Predicate,,http://www.w3.org/ns/oa#Annotation,,17550399
+http://purl.org/dc/elements/1.1/format,format,,Predicate,,,,10718093
+http://www.w3.org/1999/02/22-rdf-syntax-ns#value,value,,Predicate,,,,20170535

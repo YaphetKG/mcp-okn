@@ -1,0 +1,1139 @@
+"""Build a per-KG schema table from the ``okn-void`` VoID descriptions.
+
+The curated ``<kg>_entities.csv`` files that ``get_schema`` reads today live in the
+``sbl-sdsc/mcp-proto-okn`` repo and are produced by live probing plus hand/LLM
+curation. This module explores generating the same table from the precomputed VoID
+statistics the federation already publishes, so the structure (and an exact triple
+count for every class and edge) always matches the loaded release.
+
+VoID layout in ``okn-void`` (one graph for every KG; partition IRIs embed the KG
+shortname)::
+
+    <…/kg/{kg}> void:classPartition ?cp .
+    ?cp void:class ?cls ; void:entities ?n ; void:propertyPartition ?pp .
+    ?pp void:property ?p ; void:triples ?n ;
+        void-ext:objectClassPartition [ void:class ?target ; void:triples ?n ] ;
+        void-ext:datatypePartition   [ void-ext:datatype ?dt ; void:triples ?n ] .
+
+Two things VoID cannot supply are filled by small live queries against the KG:
+
+* **Reified edge properties.** VoID lists them only as properties of the reifying
+  class (``rdf:Statement``), never split by the ``rdf:predicate`` they qualify.
+* **OWL axiom properties.** In an OWL ontology most relations appear only inside
+  class axioms (``?r owl:onProperty ex:has-part``) or as bare declarations, never as
+  the predicate of a triple, so VoID shows one ``owl:onProperty`` partition and no
+  row for the relations themselves (bio101: 22 of 382 curated predicates).
+* **Labels and descriptions.** VoID carries none. They come from the KG's own named
+  graph, then ubergraph for OBO IRIs, then the IRI's local name. Curated text from
+  the proto-okn files is deliberately NOT copied in, so :func:`compare_with_curated`
+  can show where the curated files carry hand-written knowledge the data lacks.
+
+Nothing here is wired into ``get_schema`` yet.
+"""
+
+from __future__ import annotations
+
+import csv
+import re
+from collections import defaultdict
+from collections.abc import Callable, Iterable
+from dataclasses import dataclass
+from io import StringIO
+from pathlib import Path
+from typing import Any
+
+import httpx
+
+from .registry import EXCLUDED_KGS
+from .schema import ENTITY_METADATA_BASE, _is_provenance_uri, _local_name
+from .sparql import SparqlError, named_graph, run_sparql
+from .void import OKN_VOID_GRAPH
+
+#: Output columns, in order.
+COLUMNS = [
+    "URI",
+    "Label",
+    "Description",
+    "Type",
+    "EdgePropertyOf",
+    "SourceClass",
+    "TargetClass",
+    "Triples",
+]
+
+#: Columns of the curated proto-okn ``*_entities.csv`` files.
+CURATED_COLUMNS = COLUMNS[:-1]
+
+VOID = "http://rdfs.org/ns/void#"
+VOID_EXT = "http://ldf.fi/void-ext#"
+RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+RDF_TYPE = RDF + "type"
+RDF_PREDICATE = RDF + "predicate"
+RDFS = "http://www.w3.org/2000/01/rdf-schema#"
+OWL = "http://www.w3.org/2002/07/owl#"
+OWL_ON_PROPERTY = OWL + "onProperty"
+#: Declaration types whose instances are schema predicates.
+OWL_PROPERTY_TYPES = (
+    OWL + "ObjectProperty",
+    OWL + "DatatypeProperty",
+    OWL + "AnnotationProperty",
+)
+#: The reification scaffolding itself — never an edge property.
+REIFICATION_PROPERTIES = frozenset(
+    {RDF + "subject", RDF_PREDICATE, RDF + "object", RDF_TYPE}
+)
+
+_KG_PREFIX = "https://purl.org/okn/frink/kg/"
+_OBO_PREFIX = "http://purl.obolibrary.org/obo/"
+_DATATYPE_PREFIXES = ("http://www.w3.org/2001/XMLSchema#", RDF)
+
+#: Text predicates, in preference order (proto-okn's extract_entities.py order, plus
+#: the OBO definition annotation).
+LABEL_PREDICATES = ("http://www.w3.org/2000/01/rdf-schema#label",)
+DESCRIPTION_PREDICATES = (
+    "http://www.w3.org/2000/01/rdf-schema#comment",
+    "http://www.w3.org/2004/02/skos/core#definition",
+    "http://purl.org/dc/terms/description",
+    "http://purl.org/dc/elements/1.1/description",
+    "http://purl.obolibrary.org/obo/IAO_0000115",
+    # bio101 (AURA) carries its definitions here and nowhere else.
+    "http://www.projecthalo.com/aura#user-description",
+)
+
+#: URIs per ``VALUES`` block in a text lookup.
+TEXT_BATCH = 25
+#: Timeout for the one heavy query (exact edge-property counts over every statement).
+EDGE_COUNT_TIMEOUT = 300.0
+#: Statements sampled per reified predicate when the exact count times out.
+EDGE_SAMPLE_LIMIT = 1000
+
+Log = Callable[[str], None]
+
+
+@dataclass
+class SchemaRow:
+    """One output row. ``triples`` is None when no exact count is available."""
+
+    uri: str
+    type: str
+    label: str = ""
+    description: str = ""
+    edge_property_of: str = ""
+    source_class: str = ""
+    target_class: str = ""
+    triples: int | None = None
+    #: Data-derived usage text appended to the description (not a CSV column).
+    note: str = ""
+
+    def as_record(self) -> list[str]:
+        """The row as CSV cells, in :data:`COLUMNS` order."""
+        return [
+            self.uri,
+            self.label,
+            self.description,
+            self.type,
+            self.edge_property_of,
+            self.source_class,
+            self.target_class,
+            "" if self.triples is None else str(self.triples),
+        ]
+
+
+def kg_iri(kg: str) -> str:
+    """The KG's federation named graph — also its VoID dataset IRI."""
+    return named_graph(kg)
+
+
+def is_datatype(uri: str) -> bool:
+    """True for a literal datatype IRI (xsd:*, rdf:langString, …), not a class."""
+    return uri.startswith(_DATATYPE_PREFIXES)
+
+
+def _clean(text: str) -> str:
+    """Collapse whitespace and drop control characters (as proto-okn does)."""
+    return re.sub(r"\s+", " ", re.sub(r"[\x00-\x1f\x7f]", " ", text)).strip()
+
+
+def _int(value: Any) -> int | None:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+# --------------------------------------------------------------------------- queries
+
+
+def datasets_query() -> str:
+    """Every KG with a VoID description.
+
+    Partition nodes are ALSO typed ``void:Dataset``, so keep only IRIs of the exact
+    ``…/kg/{shortname}`` form.
+    """
+    return f"""\
+PREFIX void: <{VOID}>
+SELECT ?ds WHERE {{
+  GRAPH <{OKN_VOID_GRAPH}> {{
+    ?ds a void:Dataset .
+    FILTER(REGEX(STR(?ds), "^{_KG_PREFIX}[^/]+$"))
+  }}
+}}"""
+
+
+def edge_partition_counts_query() -> str:
+    """Object-class partition count per KG — the size of its per-edge table."""
+    return f"""\
+PREFIX void-ext: <{VOID_EXT}>
+SELECT ?kg (COUNT(*) AS ?n) WHERE {{
+  GRAPH <{OKN_VOID_GRAPH}> {{
+    ?pp void-ext:objectClassPartition ?ocp .
+    BIND(STRBEFORE(STRAFTER(STR(?pp), "{_KG_PREFIX}"), "/") AS ?kg)
+  }}
+}}
+GROUP BY ?kg"""
+
+
+def class_partitions_query(kg: str) -> str:
+    """Every class partition of a KG with its instance count."""
+    return f"""\
+PREFIX void: <{VOID}>
+SELECT ?cls ?entities WHERE {{
+  GRAPH <{OKN_VOID_GRAPH}> {{
+    <{kg_iri(kg)}> void:classPartition ?cp .
+    ?cp void:class ?cls .
+    OPTIONAL {{ ?cp void:entities ?entities }}
+  }}
+}}"""
+
+
+def property_partitions_query(kg: str) -> str:
+    """Every class→property partition with its total, object-class and datatype splits.
+
+    ``?kind`` is ``total`` (the property partition itself), ``class`` (an object
+    class partition; ``?target`` = class) or ``datatype`` (``?target`` = datatype).
+    """
+    return f"""\
+PREFIX void: <{VOID}>
+PREFIX void-ext: <{VOID_EXT}>
+SELECT ?cls ?prop ?kind ?target ?n WHERE {{
+  GRAPH <{OKN_VOID_GRAPH}> {{
+    <{kg_iri(kg)}> void:classPartition ?cp .
+    ?cp void:class ?cls ; void:propertyPartition ?pp .
+    ?pp void:property ?prop .
+    {{ ?pp void:triples ?n . BIND("total" AS ?kind) }}
+    UNION
+    {{ ?pp void-ext:objectClassPartition ?x . ?x void:class ?target ; void:triples ?n .
+       BIND("class" AS ?kind) }}
+    UNION
+    {{ ?pp void-ext:datatypePartition ?x . ?x void-ext:datatype ?target ; void:triples ?n .
+       BIND("datatype" AS ?kind) }}
+  }}
+}}"""
+
+
+def dataset_properties_query(kg: str) -> str:
+    """Dataset-level property partitions: the per-predicate totals."""
+    return f"""\
+PREFIX void: <{VOID}>
+SELECT ?prop ?n WHERE {{
+  GRAPH <{OKN_VOID_GRAPH}> {{
+    <{kg_iri(kg)}> void:propertyPartition ?pp .
+    ?pp void:property ?prop .
+    OPTIONAL {{ ?pp void:triples ?n }}
+  }}
+}}"""
+
+
+def void_summary_query(kg: str) -> str:
+    """VoID's own whole-KG triple count and the release it describes."""
+    return f"""\
+PREFIX void: <{VOID}>
+PREFIX pav: <http://purl.org/pav/>
+SELECT ?triples ?version ?updated WHERE {{
+  GRAPH <{OKN_VOID_GRAPH}> {{
+    <{kg_iri(kg)}> void:triples ?triples .
+    OPTIONAL {{ <{kg_iri(kg)}> pav:version ?version }}
+    OPTIONAL {{ <{kg_iri(kg)}> pav:lastUpdatedOn ?updated }}
+  }}
+}}"""
+
+
+def served_triples_query(kg: str) -> str:
+    """The served graph's actual triple count (slow on the largest KGs: ~100 s)."""
+    return f"SELECT (COUNT(*) AS ?n) WHERE {{ GRAPH <{kg_iri(kg)}> {{ ?s ?p ?o }} }}"
+
+
+def reified_predicates_query(kg: str) -> str:
+    """Each predicate used as an ``rdf:predicate`` value, with its statement count."""
+    return f"""\
+PREFIX rdf: <{RDF}>
+SELECT ?pred (COUNT(*) AS ?n) WHERE {{
+  GRAPH <{kg_iri(kg)}> {{ ?st rdf:predicate ?pred }}
+}}
+GROUP BY ?pred"""
+
+
+def edge_property_counts_query(kg: str) -> str:
+    """Exact triple count per (reified predicate, property). Heavy on big KGs."""
+    return f"""\
+PREFIX rdf: <{RDF}>
+SELECT ?pred ?prop (COUNT(*) AS ?n) WHERE {{
+  GRAPH <{kg_iri(kg)}> {{ ?st rdf:predicate ?pred ; ?prop ?o }}
+}}
+GROUP BY ?pred ?prop"""
+
+
+def edge_property_sample_query(
+    kg: str, pred: str, limit: int = EDGE_SAMPLE_LIMIT
+) -> str:
+    """Properties seen on a sample of one reified predicate's statements."""
+    return f"""\
+PREFIX rdf: <{RDF}>
+SELECT DISTINCT ?prop WHERE {{
+  GRAPH <{kg_iri(kg)}> {{
+    {{ SELECT ?st WHERE {{ ?st rdf:predicate <{pred}> }} LIMIT {limit} }}
+    ?st ?prop ?o .
+  }}
+}}"""
+
+
+def reified_endpoints_query(kg: str, pred: str) -> str:
+    """Source/target classes of a predicate that exists only in reified form."""
+    return f"""\
+PREFIX rdf: <{RDF}>
+SELECT ?sc ?oc (COUNT(DISTINCT ?st) AS ?n) WHERE {{
+  GRAPH <{kg_iri(kg)}> {{
+    ?st rdf:predicate <{pred}> ; rdf:subject ?s ; rdf:object ?o .
+    ?s a ?sc .
+    ?o a ?oc .
+  }}
+}}
+GROUP BY ?sc ?oc"""
+
+
+def axiom_properties_query(kg: str) -> str:
+    """Each property used as an ``owl:onProperty`` value, with its restriction count."""
+    return f"""\
+PREFIX owl: <{OWL}>
+SELECT ?prop (COUNT(?r) AS ?n) WHERE {{
+  GRAPH <{kg_iri(kg)}> {{ ?r owl:onProperty ?prop . FILTER(isIRI(?prop)) }}
+}}
+GROUP BY ?prop"""
+
+
+def declared_properties_query(kg: str) -> str:
+    """Declared object/datatype/annotation properties with named domain and range."""
+    kinds = " ".join(f"<{t}>" for t in OWL_PROPERTY_TYPES)
+    return f"""\
+PREFIX rdfs: <{RDFS}>
+SELECT DISTINCT ?prop ?domain ?range WHERE {{
+  GRAPH <{kg_iri(kg)}> {{
+    VALUES ?kind {{ {kinds} }}
+    ?prop a ?kind .
+    FILTER(isIRI(?prop))
+    OPTIONAL {{ ?prop rdfs:domain ?domain . FILTER(isIRI(?domain)) }}
+    OPTIONAL {{ ?prop rdfs:range ?range . FILTER(isIRI(?range)) }}
+  }}
+}}"""
+
+
+def text_lookup_query(graph: str, uris: Iterable[str]) -> str:
+    """English/untagged label and description literals for a batch of URIs."""
+    values = " ".join(f"<{u}>" for u in uris)
+    preds = " ".join(f"<{p}>" for p in (*LABEL_PREDICATES, *DESCRIPTION_PREDICATES))
+    return f"""\
+SELECT ?u ?p ?o WHERE {{
+  GRAPH <{graph}> {{
+    VALUES ?u {{ {values} }}
+    VALUES ?p {{ {preds} }}
+    ?u ?p ?o .
+    FILTER(isLiteral(?o) && (LANG(?o) = "" || LANGMATCHES(LANG(?o), "en")))
+  }}
+}}"""
+
+
+# ---------------------------------------------------------------------- row building
+
+
+def shortnames_from_datasets(rows: Iterable[dict[str, Any]]) -> list[str]:
+    """KG shortnames from :func:`datasets_query` rows, minus excluded/meta graphs."""
+    names = set()
+    for r in rows:
+        ds = r.get("ds", "")
+        if re.fullmatch(re.escape(_KG_PREFIX) + r"[^/]+", ds):
+            names.add(ds.removeprefix(_KG_PREFIX))
+    return sorted(n for n in names if n not in EXCLUDED_KGS and n != "okn-void")
+
+
+def class_rows(bindings: Iterable[dict[str, Any]]) -> list[SchemaRow]:
+    """One Class row per class partition; Triples = instance count (void:entities)."""
+    out: dict[str, SchemaRow] = {}
+    for b in bindings:
+        cls = b.get("cls", "")
+        if not cls or _is_provenance_uri(cls):
+            continue
+        n = _int(b.get("entities"))
+        row = out.setdefault(cls, SchemaRow(uri=cls, type="Class", triples=n))
+        if row.triples is None:
+            row.triples = n
+    return sorted(out.values(), key=lambda r: r.uri)
+
+
+@dataclass
+class _PropertyPartition:
+    total: int | None = None
+    classes: dict[str, int] | None = None
+    datatypes: dict[str, int] | None = None
+
+
+def _group_partitions(
+    bindings: Iterable[dict[str, Any]],
+) -> dict[tuple[str, str], _PropertyPartition]:
+    parts: dict[tuple[str, str], _PropertyPartition] = {}
+    for b in bindings:
+        cls, prop, kind = b.get("cls", ""), b.get("prop", ""), b.get("kind", "")
+        if not cls or not prop:
+            continue
+        part = parts.setdefault(
+            (cls, prop), _PropertyPartition(classes={}, datatypes={})
+        )
+        n = _int(b.get("n"))
+        if kind == "total":
+            part.total = n
+        elif kind == "class" and b.get("target") and n is not None:
+            assert part.classes is not None
+            part.classes[b["target"]] = n
+        elif kind == "datatype" and b.get("target") and n is not None:
+            assert part.datatypes is not None
+            part.datatypes[b["target"]] = n
+    return parts
+
+
+def predicate_rows(
+    partition_bindings: Iterable[dict[str, Any]],
+    dataset_properties: Iterable[dict[str, Any]] = (),
+) -> list[SchemaRow]:
+    """One Predicate row per (source class, predicate, target) VoID edge.
+
+    A property partition whose total exceeds its typed splits (objects that are
+    untyped IRIs) gets one extra row with an empty TargetClass carrying the remainder.
+    A predicate that appears ONLY at dataset level (its subjects are untyped) gets a
+    single row with empty Source/Target and the dataset total.
+    """
+    rows: list[SchemaRow] = []
+    seen_props: set[str] = set()
+    for (cls, prop), part in sorted(_group_partitions(partition_bindings).items()):
+        seen_props.add(prop)
+        if prop == RDF_TYPE or _is_provenance_uri(prop) or _is_provenance_uri(cls):
+            continue
+        assigned = 0
+        for target, n in sorted((part.classes or {}).items()):
+            rows.append(
+                SchemaRow(
+                    prop, "Predicate", source_class=cls, target_class=target, triples=n
+                )
+            )
+            assigned += n
+        for target, n in sorted((part.datatypes or {}).items()):
+            rows.append(
+                SchemaRow(
+                    prop, "Predicate", source_class=cls, target_class=target, triples=n
+                )
+            )
+            assigned += n
+        if part.total is not None and part.total > assigned:
+            rows.append(
+                SchemaRow(
+                    prop, "Predicate", source_class=cls, triples=part.total - assigned
+                )
+            )
+    for b in dataset_properties:
+        prop = b.get("prop", "")
+        if (
+            not prop
+            or prop in seen_props
+            or prop == RDF_TYPE
+            or _is_provenance_uri(prop)
+        ):
+            continue
+        seen_props.add(prop)
+        rows.append(SchemaRow(prop, "Predicate", triples=_int(b.get("n"))))
+    return rows
+
+
+def reifying_classes(partition_bindings: Iterable[dict[str, Any]]) -> list[str]:
+    """Classes whose instances carry ``rdf:predicate`` — the reified statement nodes."""
+    return sorted(
+        {
+            b["cls"]
+            for b in partition_bindings
+            if b.get("prop") == RDF_PREDICATE
+            and b.get("kind") == "total"
+            and b.get("cls")
+        }
+    )
+
+
+def _reifying_profile(
+    partition_bindings: list[dict[str, Any]], reifiers: list[str]
+) -> tuple[dict[str, int], dict[str, str]]:
+    """Per property on the reifying classes: VoID total, and its dominant target.
+
+    VoID's datatype/object-class splits for a reifying class are pooled across every
+    reified predicate, so a stray minority type (spoke-genelab's 3 ``xsd:string``
+    log2fc values, all on ``MetaRelationship``) can't be attributed to a predicate.
+    The target is therefore the datatype/class with the most triples.
+    """
+    totals: dict[str, int] = defaultdict(int)
+    target_counts: dict[str, dict[str, int]] = defaultdict(lambda: defaultdict(int))
+    for (cls, prop), part in _group_partitions(partition_bindings).items():
+        if cls not in reifiers or prop in REIFICATION_PROPERTIES:
+            continue
+        totals[prop] += part.total or 0
+        for target, n in {**(part.datatypes or {}), **(part.classes or {})}.items():
+            target_counts[prop][target] += n
+    dominant = {
+        prop: max(sorted(counts), key=lambda t: counts[t])
+        for prop, counts in target_counts.items()
+        if counts
+    }
+    return dict(totals), dominant
+
+
+def edge_property_rows(
+    partition_bindings: list[dict[str, Any]],
+    reified: dict[str, int],
+    pair_counts: dict[tuple[str, str], int] | None,
+    sampled: dict[str, set[str]] | None = None,
+) -> tuple[list[SchemaRow], list[str]]:
+    """Rows for reified edge properties, plus notes on counts that are unavailable.
+
+    ``reified`` maps each reified predicate to its statement count. Counts come
+    from ``pair_counts`` (exact live (pred, prop) counts) when given; with a single
+    reified predicate VoID's reifying-class totals are already exact; otherwise
+    (``sampled`` props only) a count is filled only for a property that occurs under
+    one predicate. SourceClass is the reifying class when there is exactly one, and
+    TargetClass the property's dominant VoID target (datatype or class), else empty.
+    """
+    reifiers = reifying_classes(partition_bindings)
+    totals, targets = _reifying_profile(partition_bindings, reifiers)
+    source = reifiers[0] if len(reifiers) == 1 else ""
+    notes: list[str] = []
+
+    pairs: dict[tuple[str, str], int | None] = {}
+    if pair_counts is not None:
+        pairs = {
+            (pred, prop): n
+            for (pred, prop), n in pair_counts.items()
+            if pred in reified and prop not in REIFICATION_PROPERTIES
+        }
+    elif len(reified) == 1:
+        (pred,) = reified
+        pairs = {(pred, prop): n for prop, n in totals.items()}
+    else:
+        owners: dict[str, list[str]] = defaultdict(list)
+        for pred, props in (sampled or {}).items():
+            for prop in props - REIFICATION_PROPERTIES:
+                owners[prop].append(pred)
+        for prop, preds in owners.items():
+            for pred in preds:
+                n = totals.get(prop) if len(preds) == 1 else None
+                pairs[(pred, prop)] = n
+                if n is None:
+                    notes.append(f"count unavailable: {prop} on {pred} (sampled)")
+
+    rows = []
+    for (pred, prop), n in sorted(pairs.items()):
+        if _is_provenance_uri(prop):
+            continue
+        target = targets.get(prop, "")
+        rows.append(
+            SchemaRow(
+                prop,
+                "Predicate",
+                edge_property_of=pred,
+                source_class=source,
+                target_class=target,
+                triples=n,
+            )
+        )
+    return rows, notes
+
+
+def drop_aggregated_edge_rows(
+    rows: list[SchemaRow], edge_rows: list[SchemaRow], reifiers: Iterable[str]
+) -> list[SchemaRow]:
+    """Remove the VoID reifying-class rows that the per-predicate edge rows replace."""
+    reifier_set = set(reifiers)
+    edge_props = {r.uri for r in edge_rows}
+    return [
+        r
+        for r in rows
+        if not (
+            r.source_class in reifier_set
+            and r.uri in edge_props
+            and not r.edge_property_of
+        )
+    ]
+
+
+def reified_only_rows(
+    pred: str, bindings: list[dict[str, Any]], statements: int
+) -> list[SchemaRow]:
+    """Predicate rows for a predicate present only as ``rdf:predicate`` values."""
+    rows = [
+        SchemaRow(
+            pred,
+            "Predicate",
+            source_class=b["sc"],
+            target_class=b["oc"],
+            triples=_int(b.get("n")),
+        )
+        for b in bindings
+        if b.get("sc") and b.get("oc")
+    ]
+    return rows or [SchemaRow(pred, "Predicate", triples=statements)]
+
+
+def axiom_property_rows(
+    axiom_bindings: Iterable[dict[str, Any]],
+    declared_bindings: Iterable[dict[str, Any]],
+    present: Iterable[str],
+) -> list[SchemaRow]:
+    """Predicate rows for OWL properties that VoID cannot see.
+
+    A property is covered when it is an ``owl:onProperty`` value or a declared
+    :data:`OWL_PROPERTY_TYPES` property but never the predicate of a
+    triple (not in ``present``). Its domain and range become Source/Target, Triples is
+    0 (no direct triples) and the note says how it is used, since a query that asks
+    for ``?s <prop> ?o`` returns nothing.
+    """
+    axioms = {b["prop"]: _int(b.get("n")) or 0 for b in axiom_bindings if b.get("prop")}
+    declared: dict[str, set[tuple[str, str]]] = defaultdict(set)
+    for b in declared_bindings:
+        if b.get("prop"):
+            declared[b["prop"]].add((b.get("domain") or "", b.get("range") or ""))
+    skip = set(present) | {RDF_TYPE}
+    rows: list[SchemaRow] = []
+    for prop in sorted((set(axioms) | set(declared)) - skip):
+        if _is_provenance_uri(prop):
+            continue
+        n = axioms.get(prop, 0)
+        note = (
+            f"Used only inside class axioms, as owl:onProperty of {n:,} "
+            f"owl:Restriction{'s' if n != 1 else ''}; never asserted as a direct triple."
+            if n
+            else "Declared in the schema but used in no triple or class axiom."
+        )
+        for domain, rng in sorted(declared.get(prop) or {("", "")}):
+            rows.append(
+                SchemaRow(
+                    prop,
+                    "Predicate",
+                    source_class=domain,
+                    target_class=rng,
+                    triples=0,
+                    note=note,
+                )
+            )
+    return rows
+
+
+# ---------------------------------------------------------------------------- text
+
+
+def local_label(uri: str) -> str:
+    """The fallback label: the IRI's local name, verbatim."""
+    return _local_name(uri)
+
+
+def pick_text(bindings: Iterable[dict[str, Any]]) -> dict[str, dict[str, str]]:
+    """``{uri: {"label", "description"}}`` from text-lookup rows, by predicate preference."""
+    best: dict[str, dict[str, tuple[int, str]]] = defaultdict(dict)
+    for b in bindings:
+        u, p, o = b.get("u", ""), b.get("p", ""), _clean(str(b.get("o", "")))
+        if not (u and o):
+            continue
+        for field, order in (
+            ("label", LABEL_PREDICATES),
+            ("description", DESCRIPTION_PREDICATES),
+        ):
+            if p in order:
+                rank = order.index(p)
+                cur = best[u].get(field)
+                if cur is None or rank < cur[0] or (rank == cur[0] and o < cur[1]):
+                    best[u][field] = (rank, o)
+    return {u: {f: v[1] for f, v in fields.items()} for u, fields in best.items()}
+
+
+def apply_text(
+    rows: list[SchemaRow],
+    kg_text: dict[str, dict[str, str]],
+    ontology_text: dict[str, dict[str, str]] | None = None,
+) -> None:
+    """Fill Label/Description: the KG's own text, then ubergraph, then the local name."""
+    ontology_text = ontology_text or {}
+    for row in rows:
+        for source in (kg_text.get(row.uri, {}), ontology_text.get(row.uri, {})):
+            row.label = row.label or source.get("label", "")
+            row.description = row.description or source.get("description", "")
+        row.label = row.label or local_label(row.uri)
+        if row.note and row.note not in row.description:
+            row.description = f"{row.description} {row.note}".strip()
+
+
+async def _lookup_text(
+    graph: str, uris: list[str], client: httpx.AsyncClient | None, log: Log
+) -> dict[str, dict[str, str]]:
+    out: dict[str, dict[str, str]] = {}
+    for i in range(0, len(uris), TEXT_BATCH):
+        batch = uris[i : i + TEXT_BATCH]
+        try:
+            res = await run_sparql(text_lookup_query(graph, batch), client=client)
+        except SparqlError as exc:
+            log(f"  text lookup failed for a batch in {graph}: {str(exc)[:120]}")
+            continue
+        out.update(pick_text(res["rows"]))
+    return out
+
+
+# --------------------------------------------------------------------------- driver
+
+
+async def fetch_edge_partition_counts(
+    client: httpx.AsyncClient | None = None,
+) -> dict[str, int]:
+    """Object-class partition count per KG (see :func:`edge_partition_counts_query`)."""
+    res = await run_sparql(edge_partition_counts_query(), client=client)
+    return {r["kg"]: _int(r["n"]) or 0 for r in res["rows"] if r.get("kg")}
+
+
+async def list_void_kgs(client: httpx.AsyncClient | None = None) -> list[str]:
+    """Shortnames of every servable KG with a VoID description."""
+    res = await run_sparql(datasets_query(), client=client)
+    return shortnames_from_datasets(res["rows"])
+
+
+async def check_freshness(
+    kg: str, client: httpx.AsyncClient | None = None, timeout: float = 300.0
+) -> dict[str, Any]:
+    """Does the VoID describe the graph actually being served?
+
+    VoID is NOT guaranteed to match the loaded release: on 2026-10-14 biomarkerkg's
+    VoID (v0.0.4, 1,820,793 triples) described different predicate IRIs than the
+    served graph (1,215,057 triples). Compares VoID's ``void:triples`` with a live
+    ``COUNT(*)``; ``served`` is None when that count times out.
+    """
+    res = await run_sparql(void_summary_query(kg), client=client)
+    row = res["rows"][0] if res["rows"] else {}
+    out: dict[str, Any] = {
+        "void_triples": _int(row.get("triples")),
+        "version": row.get("version"),
+        "last_updated": row.get("updated"),
+        "served_triples": None,
+    }
+    try:
+        res = await run_sparql(served_triples_query(kg), client=client, timeout=timeout)
+        out["served_triples"] = _int(res["rows"][0]["n"]) if res["rows"] else None
+    except SparqlError as exc:
+        out["error"] = str(exc)[:200]
+    v, n = out["void_triples"], out["served_triples"]
+    out["matches"] = None if v is None or n is None else v == n
+    return out
+
+
+async def build_kg_schema(
+    kg: str, client: httpx.AsyncClient | None = None, log: Log = print
+) -> tuple[list[SchemaRow], list[str]]:
+    """Build the schema rows for one KG. Returns ``(rows, notes)``."""
+    notes: list[str] = []
+    classes = (await run_sparql(class_partitions_query(kg), client=client))["rows"]
+    partitions = (await run_sparql(property_partitions_query(kg), client=client))[
+        "rows"
+    ]
+    ds_props = (await run_sparql(dataset_properties_query(kg), client=client))["rows"]
+
+    rows = class_rows(classes)
+    preds = predicate_rows(partitions, ds_props)
+
+    # Reified edge properties: only for KGs whose VoID shows rdf:predicate in use.
+    void_props = {b.get("prop") for b in ds_props} | {b.get("prop") for b in partitions}
+    if RDF_PREDICATE in void_props:
+        res = await run_sparql(reified_predicates_query(kg), client=client)
+        reified = {r["pred"]: _int(r["n"]) or 0 for r in res["rows"] if r.get("pred")}
+        log(f"  {len(reified)} reified predicate(s)")
+        pair_counts: dict[tuple[str, str], int] | None = None
+        sampled: dict[str, set[str]] | None = None
+        if len(reified) > 1:
+            try:
+                res = await run_sparql(
+                    edge_property_counts_query(kg),
+                    client=client,
+                    timeout=EDGE_COUNT_TIMEOUT,
+                )
+                pair_counts = {
+                    (r["pred"], r["prop"]): _int(r["n"]) or 0 for r in res["rows"]
+                }
+            except SparqlError as exc:
+                log(f"  exact edge-property count failed, sampling: {str(exc)[:120]}")
+                notes.append("edge-property counts: exact query failed; sampled")
+                sampled = {}
+                for pred in reified:
+                    res = await run_sparql(
+                        edge_property_sample_query(kg, pred), client=client
+                    )
+                    sampled[pred] = {r["prop"] for r in res["rows"] if r.get("prop")}
+        edge_rows, edge_notes = edge_property_rows(
+            partitions, reified, pair_counts, sampled
+        )
+        notes.extend(edge_notes)
+        preds = drop_aggregated_edge_rows(
+            preds, edge_rows, reifying_classes(partitions)
+        )
+        preds.extend(edge_rows)
+
+        # Predicates that exist only in reified form have no VoID partition of their own.
+        for pred in sorted(set(reified) - void_props):
+            try:
+                res = await run_sparql(reified_endpoints_query(kg, pred), client=client)
+                found = res["rows"]
+            except SparqlError as exc:
+                log(
+                    f"  endpoint classes failed for reified-only {pred}: {str(exc)[:120]}"
+                )
+                notes.append(f"reified-only predicate without classes: {pred}")
+                found = []
+            preds.extend(reified_only_rows(pred, found, reified[pred]))
+
+    # OWL ontologies: relations that live only in class axioms or declarations.
+    void_classes = {b.get("cls") for b in classes}
+    if OWL_ON_PROPERTY in void_props or void_classes & set(OWL_PROPERTY_TYPES):
+        try:
+            axioms = (await run_sparql(axiom_properties_query(kg), client=client))[
+                "rows"
+            ]
+            declared = (await run_sparql(declared_properties_query(kg), client=client))[
+                "rows"
+            ]
+        except SparqlError as exc:
+            log(f"  OWL axiom-property lookup failed: {str(exc)[:120]}")
+            notes.append("OWL axiom properties: live lookup failed; omitted")
+        else:
+            owl_rows = axiom_property_rows(axioms, declared, {r.uri for r in preds})
+            log(f"  {len({r.uri for r in owl_rows})} axiom-only/declared propert(ies)")
+            preds.extend(owl_rows)
+
+    rows.extend(preds)
+    uris = sorted({r.uri for r in rows})
+    kg_text = await _lookup_text(kg_iri(kg), uris, client, log)
+    missing_obo = [
+        u
+        for u in uris
+        if u.startswith(_OBO_PREFIX) and not kg_text.get(u, {}).get("description")
+    ]
+    obo_text = (
+        await _lookup_text(named_graph("ubergraph"), missing_obo, client, log)
+        if missing_obo
+        else {}
+    )
+    apply_text(rows, kg_text, obo_text)
+    return rows, notes
+
+
+# ------------------------------------------------------------------------------ io
+
+
+def write_csv(rows: Iterable[SchemaRow], path: Path) -> None:
+    """Write rows under the :data:`COLUMNS` header."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", newline="", encoding="utf-8") as fh:
+        writer = csv.writer(fh)
+        writer.writerow(COLUMNS)
+        for row in rows:
+            writer.writerow(row.as_record())
+
+
+def read_csv(path: Path) -> list[dict[str, str]]:
+    """Read a CSV into header-keyed dicts."""
+    with path.open(newline="", encoding="utf-8") as fh:
+        return list(csv.DictReader(fh))
+
+
+def validate_rows(records: list[dict[str, str]], header: list[str]) -> list[str]:
+    """Problems with a written file: header, Type values, Triples integers."""
+    problems = []
+    if header != COLUMNS:
+        problems.append(f"header {header} != {COLUMNS}")
+    for i, r in enumerate(records, start=2):
+        if None in r or len(r) != len(COLUMNS):
+            problems.append(f"line {i}: wrong column count")
+        if r.get("Type") not in ("Class", "Predicate"):
+            problems.append(f"line {i}: Type {r.get('Type')!r}")
+        t = r.get("Triples") or ""
+        if t and not t.isdigit():
+            problems.append(f"line {i}: Triples {t!r}")
+    return problems
+
+
+async def fetch_curated_csv(
+    kg: str, client: httpx.AsyncClient
+) -> list[dict[str, str]] | None:
+    """The raw curated proto-okn rows (every row kept — no URI dedupe), or None."""
+    resp = await client.get(f"{ENTITY_METADATA_BASE}/{kg}_entities.csv")
+    if resp.status_code != 200:
+        return None
+    return list(csv.DictReader(StringIO(resp.text)))
+
+
+# ---------------------------------------------------------------------- comparison
+
+
+def _norm_text(text: str) -> str:
+    return re.sub(r"\s+", " ", text or "").strip().casefold()
+
+
+def _split_classes(value: str) -> list[str]:
+    return [v.strip() for v in re.split(r"[|;]", value or "") if v.strip()]
+
+
+@dataclass
+class CuratedEntry:
+    """One curated row, mapped onto the VoID file's vocabulary."""
+
+    uri: str
+    type: str  # Class or Predicate (EdgeProperty/NodeProperty folded in)
+    original_type: str
+    label: str
+    description: str
+    edge_property_of: str  # URI when resolvable, else the curated text
+    sources: list[str]
+    targets: list[str]
+
+
+def normalize_curated(
+    records: list[dict[str, str]],
+) -> tuple[list[CuratedEntry], list[str]]:
+    """Map a curated file onto the new vocabulary. Returns ``(entries, unresolved)``.
+
+    Curated Source/TargetClass hold class LABELS and EdgePropertyOf a predicate's
+    short name; both are resolved to URIs through the file's own Class and predicate
+    rows. ``EdgeProperty``/``NodeProperty`` fold into ``Predicate``.
+    """
+    records = [
+        r for r in records if r.get("URI") and not _is_provenance_uri(r["URI"].strip())
+    ]
+    label_to_class: dict[str, str] = {}
+    short_to_pred: dict[str, str] = {}
+    for r in records:
+        uri = r["URI"].strip()
+        if (r.get("Type") or "").strip() == "Class":
+            for key in (r.get("Label") or "", local_label(uri)):
+                if key.strip():
+                    label_to_class.setdefault(key.strip(), uri)
+                    label_to_class.setdefault(key.strip().casefold(), uri)
+        elif (r.get("Type") or "").strip() == "Predicate":
+            short_to_pred.setdefault(local_label(uri), uri)
+            if (r.get("Label") or "").strip():
+                short_to_pred.setdefault(r["Label"].strip(), uri)
+
+    unresolved: set[str] = set()
+
+    def resolve_class(value: str) -> str:
+        if value.startswith(("http://", "https://")):
+            return value
+        hit = label_to_class.get(value) or label_to_class.get(value.casefold())
+        if hit is None:
+            unresolved.add(value)
+            return value
+        return hit
+
+    entries = []
+    for r in records:
+        orig = (r.get("Type") or "").strip()
+        parent = (r.get("EdgePropertyOf") or "").strip()
+        if parent and not parent.startswith(("http://", "https://")):
+            resolved = short_to_pred.get(parent)
+            if resolved is None:
+                unresolved.add(parent)
+            parent = resolved or parent
+        entries.append(
+            CuratedEntry(
+                uri=r["URI"].strip(),
+                type="Class" if orig == "Class" else "Predicate",
+                original_type=orig,
+                label=(r.get("Label") or "").strip(),
+                description=(r.get("Description") or "").strip(),
+                edge_property_of=parent,
+                sources=[
+                    resolve_class(v) for v in _split_classes(r.get("SourceClass", ""))
+                ],
+                targets=[
+                    resolve_class(v) for v in _split_classes(r.get("TargetClass", ""))
+                ],
+            )
+        )
+    return entries, sorted(unresolved)
+
+
+#: Text status for a curated entity whose URI the VoID-derived file lacks.
+NOT_IN_VOID = "not-in-void"
+
+
+def classify_text(curated: str, new: str) -> str:
+    """``match`` / ``differs`` / ``curated-only`` / ``machine-only`` / ``both-empty``."""
+    c, n = _norm_text(curated), _norm_text(new)
+    if c and n:
+        return "match" if c == n else "differs"
+    if c:
+        return "curated-only"
+    return "machine-only" if n else "both-empty"
+
+
+def compare_with_curated(
+    new_records: list[dict[str, str]], curated_records: list[dict[str, str]]
+) -> dict[str, Any]:
+    """Structural and textual diff of a VoID-derived file against a curated one."""
+    entries, unresolved = normalize_curated(curated_records)
+    new_classes = {r["URI"] for r in new_records if r["Type"] == "Class"}
+    new_preds = {r["URI"] for r in new_records if r["Type"] == "Predicate"}
+    cur_classes = {e.uri for e in entries if e.type == "Class"}
+    cur_preds = {e.uri for e in entries if e.type == "Predicate"}
+
+    new_pairs = {
+        (r["SourceClass"], r["URI"])
+        for r in new_records
+        if r["Type"] == "Predicate" and not r["EdgePropertyOf"] and r["SourceClass"]
+    }
+    new_triples = {
+        (r["SourceClass"], r["URI"], r["TargetClass"])
+        for r in new_records
+        if r["Type"] == "Predicate"
+        and not r["EdgePropertyOf"]
+        and r["SourceClass"]
+        and r["TargetClass"]
+        and not is_datatype(r["TargetClass"])
+    }
+    cur_pairs: set[tuple[str, str]] = set()
+    cur_triples: set[tuple[str, str, str]] = set()
+    for e in entries:
+        if e.type != "Predicate" or e.edge_property_of:
+            continue
+        for s in e.sources:
+            cur_pairs.add((s, e.uri))
+            for t in e.targets:
+                cur_triples.add((s, e.uri, t))
+    new_edge = {
+        (r["EdgePropertyOf"], r["URI"]) for r in new_records if r["EdgePropertyOf"]
+    }
+    cur_edge = {(e.edge_property_of, e.uri) for e in entries if e.edge_property_of}
+
+    new_text: dict[str, tuple[str, str]] = {}
+    for r in new_records:
+        new_text.setdefault(r["URI"], (r["Label"], r["Description"]))
+    text_rows = []
+    for e in entries:
+        if e.uri not in new_text:
+            # Curated-only entity (phantom / not deployed): its text is still curated.
+            text_rows.append(
+                {
+                    "uri": e.uri,
+                    "edge_property_of": e.edge_property_of,
+                    "label_status": NOT_IN_VOID,
+                    "curated_label": e.label,
+                    "new_label": "",
+                    "description_status": NOT_IN_VOID,
+                    "curated_description": e.description,
+                    "new_description": "",
+                }
+            )
+            continue
+        label, desc = new_text[e.uri]
+        label_status = classify_text(e.label, label)
+        # A label that is only the local-name fallback is not machine knowledge.
+        if label_status == "differs" and label == local_label(e.uri):
+            label_status = "curated-only"
+        text_rows.append(
+            {
+                "uri": e.uri,
+                "edge_property_of": e.edge_property_of,
+                "label_status": label_status,
+                "curated_label": e.label,
+                "new_label": label,
+                "description_status": classify_text(e.description, desc),
+                "curated_description": e.description,
+                "new_description": desc,
+            }
+        )
+
+    def counts(key: str) -> dict[str, int]:
+        out: dict[str, int] = defaultdict(int)
+        for t in text_rows:
+            out[t[key]] += 1
+        return dict(sorted(out.items()))
+
+    return {
+        "classes": {
+            "new": len(new_classes),
+            "curated": len(cur_classes),
+            "only_new": sorted(new_classes - cur_classes),
+            "only_curated": sorted(cur_classes - new_classes),
+        },
+        "predicates": {
+            "new": len(new_preds),
+            "curated": len(cur_preds),
+            "only_new": sorted(new_preds - cur_preds),
+            "only_curated": sorted(cur_preds - new_preds),
+        },
+        "source_predicate_pairs": {
+            "only_new": sorted(new_pairs - cur_pairs),
+            "only_curated": sorted(cur_pairs - new_pairs),
+        },
+        "edges": {
+            "only_new": sorted(new_triples - cur_triples),
+            "only_curated": sorted(cur_triples - new_triples),
+        },
+        "edge_properties": {
+            "new": len(new_edge),
+            "curated": len(cur_edge),
+            "only_new": sorted(new_edge - cur_edge),
+            "only_curated": sorted(cur_edge - new_edge),
+        },
+        "label_status": counts("label_status"),
+        "description_status": counts("description_status"),
+        "text": text_rows,
+        "unresolved_curated_labels": unresolved,
+        "curated_types": dict(
+            sorted(
+                {
+                    t: sum(1 for e in entries if e.original_type == t)
+                    for t in {e.original_type for e in entries}
+                }.items()
+            )
+        ),
+    }
+
+
+#: Columns of ``manual_definitions.csv``.
+MANUAL_COLUMNS = ["KG", "URI", "EdgePropertyOf", "Label", "Description", "Status"]
+
+
+def manual_definitions(kg: str, text_rows: list[dict[str, Any]]) -> list[list[str]]:
+    """Curated descriptions with no machine-accessible source, one row each.
+
+    ``Status`` is ``curated-only`` (the entity is in VoID but neither the KG nor
+    ubergraph describes it) or ``not-in-void`` (the entity itself is absent from the
+    served graph, so its text exists only in the curated file).
+    """
+    return [
+        [
+            kg,
+            t["uri"],
+            t["edge_property_of"],
+            t["curated_label"],
+            t["curated_description"],
+            t["description_status"],
+        ]
+        for t in text_rows
+        if t["curated_description"]
+        and t["description_status"] in ("curated-only", NOT_IN_VOID)
+    ]

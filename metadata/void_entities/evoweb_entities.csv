@@ -1,0 +1,6 @@
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples
+http://www.w3.org/2004/02/skos/core#Collection,Collection,,Class,,,,18257
+http://www.w3.org/2000/01/rdf-schema#label,label,,Predicate,,http://www.w3.org/2004/02/skos/core#Collection,http://www.w3.org/2001/XMLSchema#string,18257
+http://www.w3.org/2004/02/skos/core#member,member,,Predicate,,http://www.w3.org/2004/02/skos/core#Collection,,3269864
+https://purl.org/okn/frink/kg/evoweb/schema/connectedTo,connectedTo,,Predicate,,http://www.w3.org/2004/02/skos/core#Collection,http://www.w3.org/2004/02/skos/core#Collection,26920
+https://purl.org/okn/frink/kg/evoweb/schema/secondaryComponent,secondaryComponent,,Predicate,,http://www.w3.org/2004/02/skos/core#Collection,,102882
