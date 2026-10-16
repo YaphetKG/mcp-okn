@@ -65,6 +65,21 @@ COLUMNS = [
 #: Columns of the curated proto-okn ``*_entities.csv`` files.
 CURATED_COLUMNS = COLUMNS[:7]
 
+#: Per-KG schema metadata that is not domain schema, left out of the files.
+#: spoke-genelab describes its own schema in-graph: 9 ``MetaNode`` instances (one
+#: per node type, carrying sample property values) linked by 9 reified
+#: ``MetaRelationship`` statements (one per edge type, with sample edge values).
+#: Excluding a class drops its Class row and every row with it as source or target;
+#: excluding a predicate drops its rows and its edge properties, and subtracts its
+#: statements from the ``rdf:Statement`` / ``rdf:predicate`` counts.
+_SG_SCHEMA = "https://purl.org/okn/frink/kg/spoke-genelab/schema/"
+EXCLUDED_SCHEMA_CLASSES: dict[str, frozenset[str]] = {
+    "spoke-genelab": frozenset({_SG_SCHEMA + "MetaNode"}),
+}
+EXCLUDED_SCHEMA_PREDICATES: dict[str, frozenset[str]] = {
+    "spoke-genelab": frozenset({_SG_SCHEMA + "MetaRelationship"}),
+}
+
 #: How a predicate is stored, which decides the query shape (``Pattern`` column):
 #: ``direct`` asserted triples (``?s <p> ?o``); ``reified`` the subject of
 #: ``rdf:Statement``s with ``rdf:predicate <p>`` (edge properties hang off them);
@@ -78,6 +93,7 @@ VOID_EXT = "http://ldf.fi/void-ext#"
 RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 RDF_TYPE = RDF + "type"
 RDF_PREDICATE = RDF + "predicate"
+RDF_STATEMENT = RDF + "Statement"
 RDFS = "http://www.w3.org/2000/01/rdf-schema#"
 OWL = "http://www.w3.org/2002/07/owl#"
 OWL_ON_PROPERTY = OWL + "onProperty"
@@ -695,6 +711,42 @@ def add_patterns(
         row.pattern = ";".join(p for p in PATTERNS if p in found)
 
 
+def drop_excluded(
+    rows: list[SchemaRow],
+    classes: Iterable[str],
+    predicates: Iterable[str],
+    reified: dict[str, int],
+) -> list[SchemaRow]:
+    """Remove excluded metadata classes/predicates (see :data:`EXCLUDED_SCHEMA_CLASSES`).
+
+    Rows are split per (source, target) pair, so dropping the pairs that touch an
+    excluded class keeps the other counts exact. An excluded predicate's reified
+    statements are subtracted from the ``rdf:Statement`` class count and from the
+    target-less ``rdf:predicate`` row, the only rows that pool them.
+    """
+    cls_set, pred_set = set(classes), set(predicates)
+    statements = sum(reified.get(p, 0) for p in pred_set)
+    out = []
+    for row in rows:
+        if row.uri in cls_set and row.type == "Class":
+            continue
+        if row.source_class in cls_set or row.target_class in cls_set:
+            continue
+        if row.uri in pred_set or row.edge_property_of in pred_set:
+            continue
+        if statements and row.triples is not None:
+            pooled_class = row.type == "Class" and row.uri == RDF_STATEMENT
+            pooled_pred = (
+                row.uri == RDF_PREDICATE
+                and row.source_class == RDF_STATEMENT
+                and not row.target_class
+            )
+            if pooled_class or pooled_pred:
+                row.triples -= statements
+        out.append(row)
+    return out
+
+
 # ---------------------------------------------------------------------------- text
 
 
@@ -886,6 +938,12 @@ async def build_kg_schema(
 
     add_patterns(preds, reified, axiom_counts)
     rows.extend(preds)
+    rows = drop_excluded(
+        rows,
+        EXCLUDED_SCHEMA_CLASSES.get(kg, ()),
+        EXCLUDED_SCHEMA_PREDICATES.get(kg, ()),
+        reified,
+    )
     uris = sorted({r.uri for r in rows})
     kg_text = await _lookup_text(kg_iri(kg), uris, client, log)
     missing_obo = [

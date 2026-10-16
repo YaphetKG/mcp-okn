@@ -445,3 +445,57 @@ def test_validate_rows_flags_unknown_pattern():
     bad = {**rec, "URI": "u", "Type": "Predicate", "Pattern": "direct;edge"}
     assert vs.validate_rows([ok], vs.COLUMNS) == []
     assert any("Pattern" in p for p in vs.validate_rows([bad], vs.COLUMNS))
+
+
+def test_drop_excluded_removes_spoke_genelab_meta_layer():
+    """Shapes from spoke-genelab (2026-10-15): 9 MetaNodes, 9 MetaRelationship statements."""
+    meta_node, meta_rel = SG + "MetaNode", SG + "MetaRelationship"
+    rows = [
+        vs.SchemaRow(meta_node, "Class", triples=9),
+        vs.SchemaRow(STMT, "Class", triples=50235722),
+        vs.SchemaRow(BL + "Gene", "Class", triples=139719),
+        vs.SchemaRow(
+            meta_rel,
+            "Predicate",
+            source_class=meta_node,
+            target_class=meta_node,
+            triples=9,
+        ),
+        vs.SchemaRow(SG + "chromosome", "Predicate", source_class=meta_node, triples=1),
+        vs.SchemaRow(
+            SG + "chromosome", "Predicate", source_class=BL + "Gene", triples=5
+        ),
+        vs.SchemaRow(
+            vs.RDF + "subject",
+            "Predicate",
+            source_class=STMT,
+            target_class=meta_node,
+            triples=9,
+        ),
+        vs.SchemaRow(
+            vs.RDF + "subject",
+            "Predicate",
+            source_class=STMT,
+            target_class=OBI,
+            triples=50235713,
+        ),
+        vs.SchemaRow(
+            vs.RDF_PREDICATE, "Predicate", source_class=STMT, triples=50235722
+        ),
+        vs.SchemaRow(SG + "from", "Predicate", edge_property_of=meta_rel, triples=9),
+        vs.SchemaRow(SG + "log2fc", "Predicate", edge_property_of=DE, triples=50208066),
+    ]
+    kept = vs.drop_excluded(
+        rows,
+        vs.EXCLUDED_SCHEMA_CLASSES["spoke-genelab"],
+        vs.EXCLUDED_SCHEMA_PREDICATES["spoke-genelab"],
+        {DE: 50208066, meta_rel: 9},
+    )
+    assert [(r.uri.rsplit("/", 1)[-1], r.triples) for r in kept] == [
+        ("22-rdf-syntax-ns#Statement", 50235713),
+        ("Gene", 139719),
+        ("chromosome", 5),
+        ("22-rdf-syntax-ns#subject", 50235713),
+        ("22-rdf-syntax-ns#predicate", 50235713),
+        ("log2fc", 50208066),
+    ]

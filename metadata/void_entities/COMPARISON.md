@@ -74,7 +74,7 @@ Treat the structural diff for a stale KG with suspicion: VoID may describe a dif
 | securechainkg ⚠ stale | 898 / 22 | 876 | 0 | 49 / 42 | 7 | 0 | 0 / 0 | 0 | 0 | 109 | 0 | 0 |
 | sockg | 90 / 105 | 0 | 15 | 109 / 106 | 3 | 0 | 0 / 0 | 3 | 0 | 193 | 0 | 15 |
 | spatialkg ⚠ stale | 25 / 15 | 16 | 6 | 53 / 23 | 30 | 0 | 0 / 0 | 0 | 9 | 55 | 0 | 6 |
-| spoke-genelab | 10 / 8 | 2 | 0 | 58 / 50 | 8 | 0 | 32 / 20 | 0 | 1 | 70 | 0 | 0 |
+| spoke-genelab | 9 / 8 | 1 | 0 | 55 / 50 | 5 | 0 | 20 / 20 | 0 | 1 | 70 | 0 | 0 |
 | spoke-okn | 8 / 8 | 0 | 0 | 127 / 127 | 1 | 1 | 74 / 41 | 0 | 0 | 134 | 0 | 1 |
 | sudokn | 822 / 56 | 782 | 16 | 73 / 37 | 36 | 0 | 0 / 0 | 0 | 15 | 72 | 0 | 16 |
 | ufokn | 6 / 6 | 0 | 0 | 17 / 17 | 0 | 0 | 0 / 0 | 0 | 0 | 23 | 0 | 0 |
@@ -2981,79 +2981,41 @@ Curated row types: {'Class': 15, 'Predicate': 55}
 
 Curated row types: {'Class': 8, 'EdgeProperty': 20, 'NodeProperty': 34, 'Predicate': 9}
 
-**Classes only in VoID** (2)
+**Classes only in VoID** (1)
 
 - `rdf:Statement`
-- `kg:schema/MetaNode`
 
-**Predicates only in VoID** (8)
+**Predicates only in VoID** (5)
 
 - `rdf:object`
 - `rdf:predicate`
 - `rdf:subject`
 - `rdfs:comment`
 - `rdfs:label`
-- `kg:schema/MetaRelationship`
-- `kg:schema/from`
-- `kg:schema/to`
 
-**(source class, predicate) only in VoID** (45)
+**(source class, predicate) only in VoID** (10)
 
 - `obo:OBI_0000070` → `rdfs:label`
 - `rdf:Statement` → `rdf:object`
 - `rdf:Statement` → `rdf:predicate`
 - `rdf:Statement` → `rdf:subject`
-- `kg:schema/MetaNode` → `rdfs:comment`
-- `kg:schema/MetaNode` → `rdfs:label`
-- `kg:schema/MetaNode` → `kg:schema/MetaRelationship`
-- `kg:schema/MetaNode` → `kg:schema/chromosome`
-- `kg:schema/MetaNode` → `kg:schema/differential_analysis_method`
-- `kg:schema/MetaNode` → `kg:schema/dist_to_feature`
-- `kg:schema/MetaNode` → `kg:schema/end`
-- `kg:schema/MetaNode` → `kg:schema/end_date`
-- `kg:schema/MetaNode` → `kg:schema/factor_space_1`
-- `kg:schema/MetaNode` → `kg:schema/factor_space_2`
-- `kg:schema/MetaNode` → `kg:schema/factors_1`
-- `kg:schema/MetaNode` → `kg:schema/factors_2`
-- `kg:schema/MetaNode` → `kg:schema/flight_program`
-- `kg:schema/MetaNode` → `kg:schema/host_organism`
-- `kg:schema/MetaNode` → `kg:schema/host_strain`
-- `kg:schema/MetaNode` → `kg:schema/host_taxonomy`
-- `kg:schema/MetaNode` → `kg:schema/in_exon`
-- `kg:schema/MetaNode` → `kg:schema/in_intron`
-- `kg:schema/MetaNode` → `kg:schema/in_promoter`
-- `kg:schema/MetaNode` → `kg:schema/material_1`
-- `kg:schema/MetaNode` → `kg:schema/material_2`
-- … 20 more (see comparison.json)
+- `kg:schema/MethylationRegion` → `rdfs:label`
+- `kg:schema/Mission` → `rdfs:label`
+- `kg:schema/Organism` → `rdfs:label`
+- `biolink:Gene` → `rdfs:label`
+- `biolink:Study` → `rdfs:comment`
+- `biolink:Study` → `rdfs:label`
 
-**Edges only in VoID** (11)
+**Edges only in VoID** (8)
 
 - `obo:OBI_0000070` → `kg:schema/material_id_1` → `biolink:AnatomicalEntity`
 - `obo:OBI_0000070` → `kg:schema/material_id_1` → `biolink:Cell`
 - `obo:OBI_0000070` → `kg:schema/material_id_2` → `biolink:AnatomicalEntity`
 - `obo:OBI_0000070` → `kg:schema/material_id_2` → `biolink:Cell`
-- `rdf:Statement` → `rdf:object` → `kg:schema/MetaNode`
 - `rdf:Statement` → `rdf:object` → `kg:schema/MethylationRegion`
 - `rdf:Statement` → `rdf:object` → `kg:schema/Organism`
 - `rdf:Statement` → `rdf:object` → `biolink:Gene`
 - `rdf:Statement` → `rdf:subject` → `obo:OBI_0000070`
-- `rdf:Statement` → `rdf:subject` → `kg:schema/MetaNode`
-- `kg:schema/MetaNode` → `kg:schema/MetaRelationship` → `kg:schema/MetaNode`
-
-**Edge properties (predicate, property) only in VoID** (12)
-
-- `kg:schema/MetaRelationship` → `rdfs:label`
-- `kg:schema/MetaRelationship` → `kg:schema/adj_p_value`
-- `kg:schema/MetaRelationship` → `kg:schema/from`
-- `kg:schema/MetaRelationship` → `kg:schema/group_mean_1`
-- `kg:schema/MetaRelationship` → `kg:schema/group_mean_2`
-- `kg:schema/MetaRelationship` → `kg:schema/group_stdev_1`
-- `kg:schema/MetaRelationship` → `kg:schema/group_stdev_2`
-- `kg:schema/MetaRelationship` → `kg:schema/lnfc`
-- `kg:schema/MetaRelationship` → `kg:schema/log2fc`
-- `kg:schema/MetaRelationship` → `kg:schema/methylation_diff`
-- `kg:schema/MetaRelationship` → `kg:schema/q_value`
-- `kg:schema/MetaRelationship` → `kg:schema/to`
 
 **Descriptions that differ** (1)
 
