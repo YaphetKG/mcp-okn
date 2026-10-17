@@ -63,4 +63,6 @@ async def test_get_server_info_reports_the_running_build(monkeypatch):
         "version": __version__,
         "build": "cafe123",
         "sparql_endpoint": FEDERATION_ENDPOINT,
+        "schema_files": info["schema_files"],
     }
+    assert info["schema_files"] > 0  # the shipped VoID files were found

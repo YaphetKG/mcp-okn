@@ -6,8 +6,8 @@ Mermaid library — the same major version the transcript HTML uses
 (``transcript_render.MERMAID_VERSION``, newest release from jsDelivr) — parses and
 renders it, reports the drawn size, and saves the image.
 
-Targets are KG shortnames (the diagram comes from ``visualize_schema``, so
-``MCP_OKN_ENTITY_METADATA_BASE`` applies) or ``.mmd`` files.
+Targets are KG shortnames (the diagram comes from ``visualize_schema``) or ``.mmd``
+files.
 
 Needs Playwright (``pip install 'mcp-okn[pdf]'``) and a Chromium: Playwright's own
 (``playwright install chromium``) or an installed Google Chrome. Needs network
@@ -16,8 +16,6 @@ access to cdn.jsdelivr.net.
 Usage:
     uv run python scripts/render_mermaid.py spoke-genelab bio101
     uv run python scripts/render_mermaid.py diagram.mmd --format svg --out renders/
-    MCP_OKN_ENTITY_METADATA_BASE=metadata/void_entities \\
-        uv run python scripts/render_mermaid.py bio101
 
 Exit codes: 0 every diagram rendered, 1 a diagram failed to parse or render,
 2 no Playwright/Chromium or Mermaid could not be loaded.

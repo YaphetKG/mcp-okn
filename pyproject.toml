@@ -39,6 +39,8 @@ packages = ["src/mcp_okn"]
 [tool.hatch.build.targets.wheel.force-include]
 "src/mcp_okn/data/kgs.json" = "mcp_okn/data/kgs.json"
 "src/mcp_okn/data/crosswalks.json" = "mcp_okn/data/crosswalks.json"
+"metadata/void_entities" = "mcp_okn/data/void_entities"
+"metadata/descriptions" = "mcp_okn/data/descriptions"
 
 [dependency-groups]
 dev = [

@@ -85,3 +85,26 @@ async def test_describe_kg_appends_assay_rules_for_spoke_genelab(monkeypatch):
         assert "DIRECTION" in out and "COMPARABILITY" in out
         # Points at the reusable snippet without inlining it here.
         assert 'get_schema("spoke-genelab")' in out
+
+
+async def test_describe_kg_appends_the_kg_summary(monkeypatch):
+    from mcp_okn import server
+
+    async def fake_long(shortname, client=None, refresh=False):
+        return "Registry prose."
+
+    monkeypatch.setattr(registry, "fetch_kg_long_description", fake_long)
+    out = await server.describe_kg("prokn", long_description=True)
+    summary = registry.kg_summary("prokn")
+    assert summary and summary.startswith("The Protein Knowledge Network")
+    assert out.startswith("Registry prose.\n\n## Summary\n\n" + summary)
+
+
+def test_kg_summaries_ship_for_every_kg_that_had_one():
+    from mcp_okn.bundled import metadata_dir
+
+    folder = metadata_dir("descriptions")
+    assert folder is not None
+    assert len(list(folder.glob("*.txt"))) == 40
+    # A KG with no file gets the registry text alone.
+    assert registry.kg_summary("wikidata") is None

@@ -19,8 +19,8 @@ in place (the repo's ``curated_text.csv`` first, then other ontologies tagged
 ``(source: …)``) and writes ``TEXT_FILL.md`` / ``unfilled_descriptions.csv``. Pass
 ``--no-fill`` to keep the raw text.
 
-``get_schema`` reads these files only when ``MCP_OKN_ENTITY_METADATA_BASE`` points
-here (see :mod:`mcp_okn.schema`).
+``get_schema`` reads these files by default; they ship with the server (see
+:mod:`mcp_okn.schema`). Re-run ``scripts/check_payload_drift.py`` after a rebuild.
 
 Usage:
     uv run python scripts/build_void_schema.py --kg spoke-genelab    # one KG (repeatable)

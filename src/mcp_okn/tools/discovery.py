@@ -12,9 +12,11 @@ from ..sparql import FEDERATION_ENDPOINT
 
 @mcp.tool()
 async def get_server_info() -> dict[str, Any]:
-    """Identify THIS server: `{service, version, build, sparql_endpoint}`.
+    """Identify THIS server: `{service, version, build, sparql_endpoint, schema_files}`.
 
-    `build` is the deployed commit (`unknown` if unidentifiable). The version alone
+    `build` is the deployed commit (`unknown` if unidentifiable). `schema_files` is
+    how many per-KG schema files `get_schema` can read (0 means every schema is
+    probed live, so the deployment is missing them). The version alone
     can't tell two deployments apart, so call this when a tool or argument seems to
     be missing — a hosted server can lag the repo — or to record exactly which build
     produced a result.
@@ -24,6 +26,7 @@ async def get_server_info() -> dict[str, Any]:
         "version": __version__,
         "build": build_id(),
         "sparql_endpoint": FEDERATION_ENDPOINT,
+        "schema_files": schema.schema_file_count(),
     }
 
 
@@ -59,23 +62,28 @@ async def describe_kg(shortname: str, long_description: bool = False) -> str:
     Args:
         shortname: The KG shortname (e.g. `prokn`, `sawgraph`, `ubergraph`),
             as returned by `list_kgs`.
-        long_description: If True, return ONLY the registry's free-text
-            description — the ~150-word prose below the YAML frontmatter — instead
-            of the full markdown. Reach for this when the one-line `list_kgs`
+        long_description: If True, return the registry's free-text description
+            — the ~150-word prose below the YAML frontmatter — instead of the full
+            markdown. Reach for this when the one-line `list_kgs`
             descriptions are too terse to tell which KG a question belongs to:
             the longer prose usually names the entities, sources, and scope that
             disambiguate near-overlapping graphs.
 
     Returns the registry markdown (title, description, and prose) for deeper
     context before writing a query — or just the long description when
-    `long_description` is set. For KGs with query-time domain rules the registry
-    prose does not cover (e.g. `spoke-genelab`'s spaceflight assay-comparison
-    rules), the relevant guidance is appended to the returned text.
+    `long_description` is set. Either way, a `Summary` section follows when this
+    server has its own description of the KG. For KGs with query-time domain rules
+    the registry prose does not cover (e.g. `spoke-genelab`'s spaceflight
+    assay-comparison rules), the relevant guidance is appended to the returned text.
     """
     if long_description:
         doc = await registry.fetch_kg_long_description(shortname)
     else:
         doc = await registry.fetch_kg_doc(shortname)
+
+    summary = registry.kg_summary(shortname)
+    if summary:
+        doc = f"{doc.rstrip()}\n\n## Summary\n\n{summary}"
 
     notes = schema.usage_notes(shortname)
     if notes is not None:
