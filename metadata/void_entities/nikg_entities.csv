@@ -1,0 +1,48 @@
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples,Pattern
+http://www.w3.org/2000/01/rdf-schema#Class,Class,"The class of classes, used in RDF Schema to define the concept of a class.",Class,,,,4,
+https://metadata.phila.gov/BlockGroup,Block Group,"A census block group, a geographic subdivision used for statistical purposes.",Class,,,,480,
+https://metadata.phila.gov/CensusTract,Census Tract,"A census tract, a small geographic subdivision used for presenting statistical data.",Class,,,,2284,
+https://metadata.phila.gov/Incident,Incident,"An event or occurrence, typically related to public safety or emergency services.",Class,,,,103669,
+https://metadata.phila.gov/Location,Location,A geographic location or place within the Philadelphia region.,Class,,,,60178,
+https://metadata.phila.gov/mesh_D000091368,mesh D000091368,,Class,,,,1142,
+https://metadata.phila.gov/mesh_D005842,mesh D005842,,Class,,,,30089,
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,sfWithin,Simple-features spatial 'within' relationship: the subject feature lies within the object feature.,Predicate,,https://metadata.phila.gov/BlockGroup,https://metadata.phila.gov/CensusTract,23904,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,sfWithin,Simple-features spatial 'within' relationship: the subject feature lies within the object feature.,Predicate,,https://metadata.phila.gov/BlockGroup,https://metadata.phila.gov/mesh_D000091368,23904,direct
+http://www.opengis.net/ont/sf#sfWithin,sfWithin,Simple-features spatial 'within' relationship: the subject feature lies within the object feature.,Predicate,,https://metadata.phila.gov/BlockGroup,https://metadata.phila.gov/CensusTract,23904,direct
+http://www.opengis.net/ont/sf#sfWithin,sfWithin,Simple-features spatial 'within' relationship: the subject feature lies within the object feature.,Predicate,,https://metadata.phila.gov/BlockGroup,https://metadata.phila.gov/mesh_D000091368,23904,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,sfWithin,Simple-features spatial 'within' relationship: the subject feature lies within the object feature.,Predicate,,https://metadata.phila.gov/CensusTract,,1162,direct
+http://www.opengis.net/ont/geosparql#hasGeometry,geo:hasGeometry,A spatial representation for a given Feature.,Predicate,,https://metadata.phila.gov/CensusTract,https://metadata.phila.gov/CensusTract,1142,direct
+http://www.opengis.net/ont/sf#sfWithin,sfWithin,Simple-features spatial 'within' relationship: the subject feature lies within the object feature.,Predicate,,https://metadata.phila.gov/CensusTract,,1162,direct
+http://purl.org/dc/terms/date,date,A point or period of time associated with the resource.,Predicate,,https://metadata.phila.gov/Incident,http://www.w3.org/2001/XMLSchema#date,103839,direct
+https://metadata.phila.gov/IsArrest,Is Arrest,Whether the incident resulted in an arrest.,Predicate,,https://metadata.phila.gov/Incident,http://www.w3.org/2001/XMLSchema#boolean,88511,direct
+https://metadata.phila.gov/IsDomestic,Is Domestic,Whether the incident was classified as domestic.,Predicate,,https://metadata.phila.gov/Incident,http://www.w3.org/2001/XMLSchema#boolean,88511,direct
+https://metadata.phila.gov/OffenderDeceased,OffenderDeceased,Indicates whether an offender was deceased in relation to an incident.,Predicate,,https://metadata.phila.gov/Incident,http://www.w3.org/2001/XMLSchema#boolean,15328,direct
+https://metadata.phila.gov/OffenderInjured,OffenderInjured,Indicates whether an offender was injured in relation to an incident.,Predicate,,https://metadata.phila.gov/Incident,http://www.w3.org/2001/XMLSchema#boolean,15328,direct
+https://metadata.phila.gov/OffenderRace,OffenderRace,Specifies the race of an offender involved in an incident.,Predicate,,https://metadata.phila.gov/Incident,http://www.w3.org/2001/XMLSchema#string,119,direct
+https://metadata.phila.gov/OffenderRace,OffenderRace,Specifies the race of an offender involved in an incident.,Predicate,,https://metadata.phila.gov/Incident,,15086,direct
+https://metadata.phila.gov/OffenderSex,OffenderSex,Specifies the sex or gender of an offender involved in an incident.,Predicate,,https://metadata.phila.gov/Incident,,15328,direct
+https://metadata.phila.gov/OffenderWound,Offender Wound,Information about wounds sustained by the offender in the incident.,Predicate,,https://metadata.phila.gov/Incident,http://www.w3.org/2001/XMLSchema#string,15200,direct
+https://metadata.phila.gov/OfficerInvolved,OfficerInvolved,Indicates whether a law enforcement officer was involved in an incident.,Predicate,,https://metadata.phila.gov/Incident,http://www.w3.org/2001/XMLSchema#boolean,15328,direct
+https://metadata.phila.gov/age_of,age_of,Indicates the age of a person involved in an incident.,Predicate,,https://metadata.phila.gov/Incident,http://qudt.org/vocab/unit/YR,15093,direct
+https://metadata.phila.gov/date_of,Date Of,The date on which the incident occurred.,Predicate,,https://metadata.phila.gov/Incident,http://www.w3.org/2001/XMLSchema#date,103839,direct
+https://metadata.phila.gov/is_fatal,is_fatal,Boolean property indicating whether an incident resulted in a fatality.,Predicate,,https://metadata.phila.gov/Incident,http://www.w3.org/2001/XMLSchema#boolean,15205,direct
+https://metadata.phila.gov/time_of,Time Of,The time at which the incident occurred.,Predicate,,https://metadata.phila.gov/Incident,http://www.w3.org/2001/XMLSchema#string,103707,direct
+https://metadata.phila.gov/type_of,Type Of,The type or category of the incident.,Predicate,,https://metadata.phila.gov/Incident,http://www.w3.org/2001/XMLSchema#string,88511,direct
+https://schema.org/location,location,The location of an event or action.,Predicate,,https://metadata.phila.gov/Incident,https://metadata.phila.gov/BlockGroup,88511,direct
+https://schema.org/location,location,The location of an event or action.,Predicate,,https://metadata.phila.gov/Incident,https://metadata.phila.gov/CensusTract,103839,direct
+https://schema.org/location,location,The location of an event or action.,Predicate,,https://metadata.phila.gov/Incident,https://metadata.phila.gov/Location,103839,direct
+https://schema.org/location,location,The location of an event or action.,Predicate,,https://metadata.phila.gov/Incident,https://metadata.phila.gov/mesh_D000091368,103839,direct
+https://schema.org/location,location,The location of an event or action.,Predicate,,https://metadata.phila.gov/Incident,https://metadata.phila.gov/mesh_D005842,103839,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,sfWithin,Simple-features spatial 'within' relationship: the subject feature lies within the object feature.,Predicate,,https://metadata.phila.gov/Location,https://metadata.phila.gov/CensusTract,32004,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,sfWithin,Simple-features spatial 'within' relationship: the subject feature lies within the object feature.,Predicate,,https://metadata.phila.gov/Location,https://metadata.phila.gov/mesh_D000091368,32004,direct
+http://www.opengis.net/ont/geosparql#hasGeometry,geo:hasGeometry,A spatial representation for a given Feature.,Predicate,,https://metadata.phila.gov/Location,https://metadata.phila.gov/Location,30089,direct
+http://www.opengis.net/ont/sf#sfWithin,sfWithin,Simple-features spatial 'within' relationship: the subject feature lies within the object feature.,Predicate,,https://metadata.phila.gov/Location,https://metadata.phila.gov/CensusTract,32004,direct
+http://www.opengis.net/ont/sf#sfWithin,sfWithin,Simple-features spatial 'within' relationship: the subject feature lies within the object feature.,Predicate,,https://metadata.phila.gov/Location,https://metadata.phila.gov/mesh_D000091368,32004,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,sfWithin,Simple-features spatial 'within' relationship: the subject feature lies within the object feature.,Predicate,,https://metadata.phila.gov/mesh_D000091368,,1162,direct
+http://www.opengis.net/ont/geosparql#hasGeometry,geo:hasGeometry,A spatial representation for a given Feature.,Predicate,,https://metadata.phila.gov/mesh_D000091368,https://metadata.phila.gov/CensusTract,1142,direct
+http://www.opengis.net/ont/sf#sfWithin,sfWithin,Simple-features spatial 'within' relationship: the subject feature lies within the object feature.,Predicate,,https://metadata.phila.gov/mesh_D000091368,,1162,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,sfWithin,Simple-features spatial 'within' relationship: the subject feature lies within the object feature.,Predicate,,https://metadata.phila.gov/mesh_D005842,https://metadata.phila.gov/CensusTract,32004,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,sfWithin,Simple-features spatial 'within' relationship: the subject feature lies within the object feature.,Predicate,,https://metadata.phila.gov/mesh_D005842,https://metadata.phila.gov/mesh_D000091368,32004,direct
+http://www.opengis.net/ont/geosparql#hasGeometry,geo:hasGeometry,A spatial representation for a given Feature.,Predicate,,https://metadata.phila.gov/mesh_D005842,https://metadata.phila.gov/Location,30089,direct
+http://www.opengis.net/ont/sf#sfWithin,sfWithin,Simple-features spatial 'within' relationship: the subject feature lies within the object feature.,Predicate,,https://metadata.phila.gov/mesh_D005842,https://metadata.phila.gov/CensusTract,32004,direct
+http://www.opengis.net/ont/sf#sfWithin,sfWithin,Simple-features spatial 'within' relationship: the subject feature lies within the object feature.,Predicate,,https://metadata.phila.gov/mesh_D005842,https://metadata.phila.gov/mesh_D000091368,32004,direct

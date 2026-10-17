@@ -1,0 +1,464 @@
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples,Pattern
+http://purl.org/dc/terms/BibliographicResource,Bibliographic Resource,Resource with bibliographic information,Class,,,,14,
+http://purl.org/ontology/bibo/Book,Book,Published book,Class,,,,2,
+http://qudt.org/schema/qudt/QuantityValue,qudt:QuantityValue,Numerical value with associated unit,Class,,,,3381570,
+http://qudt.org/schema/qudt/Unit,qudt:Unit,Unit of measurement,Class,,,,41,
+http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_0,Administrative Region Level 0,GADM level 0 administrative regions which represent countries.,Class,,,,2,
+http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_1,Administrative Region Level 1,"GADM level 1 administrative regions which are the highest level of division of a country, such as US states, Canadian provinces, or French departments.",Class,,,,36,
+http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_2,Administrative Region Level 2,"GADM level 2 administrative regions which further subdivide states, provinces, or departments. Examples include counties in the US",Class,,,,62,
+http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level13,S2 Cell Level 13,S2 geometric cell at level 13 resolution,Class,,,,1069,
+http://www.opengis.net/ont/geosparql#Geometry,geo:Geometry,A coherent set of direct positions in space. The positions are held within a Spatial Reference System (SRS).,Class,,,,41,
+http://www.w3.org/2000/01/rdf-schema#Datatype,Datatype,Data type definition,Class,,,,1,
+http://www.w3.org/2002/07/owl#Class,OWL Class,OWL or RDFS class definition,Class,,,,92,
+http://www.w3.org/2002/07/owl#DatatypeProperty,Datatype Property,Property with literal values,Class,,,,13,
+http://www.w3.org/2002/07/owl#ObjectProperty,Object Property,Property relating objects,Class,,,,62,
+http://www.w3.org/2002/07/owl#Ontology,Ontology,Formal ontology definition,Class,,,,1,
+https://idir.uta.edu/sockg-ontology#Abstract,Abstract,Abstract of a publication,Class,,,,3,
+https://idir.uta.edu/sockg-ontology#ActiveIngredient,Active Ingredient,Active chemical ingredient in pesticides or amendments,Class,,,,84,
+https://idir.uta.edu/sockg-ontology#Amendment,Amendment,Soil or crop amendment applied in agricultural experiments,Class,,,,47106,
+https://idir.uta.edu/sockg-ontology#AmendmentPlacement,Amendment Placement,Method or location of amendment application,Class,,,,10,
+https://idir.uta.edu/sockg-ontology#AmendmentType,Amendment Type,Classification of amendment types used in agriculture,Class,,,,73,
+https://idir.uta.edu/sockg-ontology#AnimalClass,Animal Class,Classification of animals used in grazing experiments,Class,,,,4,
+https://idir.uta.edu/sockg-ontology#AnimalSpecies,Animal Species,Specific species of animals used in agricultural studies,Class,,,,3,
+https://idir.uta.edu/sockg-ontology#BiomassCarbohydrate,Biomass Carbohydrate,Carbohydrate content measurement in biomass,Class,,,,1367,
+https://idir.uta.edu/sockg-ontology#BiomassEnergy,Biomass Energy,Energy content measurement in biomass,Class,,,,799,
+https://idir.uta.edu/sockg-ontology#BiomassMineral,Biomass Mineral,Mineral content measurement in biomass,Class,,,,6739,
+https://idir.uta.edu/sockg-ontology#BookChapter,Book Chapter,Chapter within a book,Class,,,,2,
+https://idir.uta.edu/sockg-ontology#BroadleafOrGrass,Broadleaf or Grass,Classification indicating whether a plant is broadleaf or grass,Class,,,,2,
+https://idir.uta.edu/sockg-ontology#ChamberPlacement,Chamber Placement,Location or setup of measurement chambers,Class,,,,7,
+https://idir.uta.edu/sockg-ontology#CoverCrop,Cover Crop,Crops planted to cover soil rather than for harvest,Class,,,,8,
+https://idir.uta.edu/sockg-ontology#Cultivar,Cultivar,Specific variety of a cultivated plant,Class,,,,308,
+https://idir.uta.edu/sockg-ontology#CuttingHeight,Cutting Height,Height at which crops are cut or harvested,Class,,,,17,
+https://idir.uta.edu/sockg-ontology#Equipment,Equipment,Agricultural equipment used in experiments or farming,Class,,,,12,
+https://idir.uta.edu/sockg-ontology#ExperimentalUnit,Experimental Unit,Basic unit of experimentation in agricultural studies,Class,,,,3863,
+https://idir.uta.edu/sockg-ontology#FertilizerAmendment,Fertilizer Amendment,Fertilizer applied as soil amendment,Class,,,,4,
+https://idir.uta.edu/sockg-ontology#FundingSource,Funding Source,Organization or entity providing research funding,Class,,,,7,
+https://idir.uta.edu/sockg-ontology#GHGFlux,GHG Flux,Measurement of greenhouse gas flux from soil,Class,,,,132766,
+https://idir.uta.edu/sockg-ontology#GasNutrientLoss,Gas Nutrient Loss,Loss of nutrients through gaseous emissions,Class,,,,2231,
+https://idir.uta.edu/sockg-ontology#GrazingManagement,Grazing Management,Management practices for grazing animals,Class,,,,1951,
+https://idir.uta.edu/sockg-ontology#GrazingPlants,Grazing Plants,Plants consumed by grazing animals,Class,,,,6996,
+https://idir.uta.edu/sockg-ontology#GrazingRate,Grazing Rate,Rate at which animals graze vegetation,Class,,,,3,
+https://idir.uta.edu/sockg-ontology#GrowthStage,Growth Stage,Developmental stage of plant growth,Class,,,,33,
+https://idir.uta.edu/sockg-ontology#GrowthStageManagement,Growth Stage Management,Management practices at specific growth stages,Class,,,,5148,
+https://idir.uta.edu/sockg-ontology#HarvestFraction,Harvest Fraction,Fraction of biomass removed during harvest,Class,,,,9470,
+https://idir.uta.edu/sockg-ontology#HarvestedFraction,Harvested Fraction,Portion of crop that is harvested,Class,,,,12,
+https://idir.uta.edu/sockg-ontology#Irrigation,Irrigation,Application of water to crops,Class,,,,4,
+https://idir.uta.edu/sockg-ontology#JournalArticle,Journal Article,Article published in a journal,Class,,,,149,
+https://idir.uta.edu/sockg-ontology#Location,Location,Geographic location of experimental site or field,Class,,,,58,
+https://idir.uta.edu/sockg-ontology#LossesOrDeposition,Losses or Deposition,Nutrient losses or deposition processes,Class,,,,2,
+https://idir.uta.edu/sockg-ontology#Measurement,Measurement,Quantitative observation or data point,Class,,,,3180012,
+https://idir.uta.edu/sockg-ontology#NutrientEfficiency,Nutrient Efficiency,Efficiency of nutrient use by crops,Class,,,,5159,
+https://idir.uta.edu/sockg-ontology#OtherEvents,Other Events,Miscellaneous agricultural events or activities,Class,,,,2,
+https://idir.uta.edu/sockg-ontology#Parameter,Parameter,Variable or factor in agricultural experiments,Class,,,,156,
+https://idir.uta.edu/sockg-ontology#PesticidePlacement,Pesticide Placement,Method or location of pesticide application,Class,,,,5,
+https://idir.uta.edu/sockg-ontology#PesticideTarget,Pesticide Target,Pest or disease targeted by pesticide,Class,,,,38,
+https://idir.uta.edu/sockg-ontology#PlantFraction,Plant Fraction,Specific part or fraction of a plant,Class,,,,29,
+https://idir.uta.edu/sockg-ontology#PlantingManagement,Planting Management,Management practices related to planting,Class,,,,23728,
+https://idir.uta.edu/sockg-ontology#PlantingMethod,Planting Method,Technique used for planting crops,Class,,,,6,
+https://idir.uta.edu/sockg-ontology#PopularArticle,Popular Article,Article in popular or non-peer-reviewed publication,Class,,,,1,
+https://idir.uta.edu/sockg-ontology#Proceedings,Proceedings,Conference proceedings publication,Class,,,,3,
+https://idir.uta.edu/sockg-ontology#Project,Project,Research project or study,Class,,,,3,
+https://idir.uta.edu/sockg-ontology#ProjectScenario,Project Scenario,Specific scenario within a research project,Class,,,,19,
+https://idir.uta.edu/sockg-ontology#Report,Report,Technical or research report,Class,,,,1,
+https://idir.uta.edu/sockg-ontology#ResidueManagement,Residue Management,Management of crop residues after harvest,Class,,,,3334,
+https://idir.uta.edu/sockg-ontology#ResidueMeasurement,Residue Measurement,Measurement of crop residue quantity or quality,Class,,,,18512,
+https://idir.uta.edu/sockg-ontology#ResidueRemoval,Residue Removal,Removal of crop residues from field,Class,,,,3,
+https://idir.uta.edu/sockg-ontology#Rotation,Rotation,Sequence of crops planted in succession,Class,,,,66,
+https://idir.uta.edu/sockg-ontology#SimulationModel,Simulation Model,Computational model used for simulation,Class,,,,12,
+https://idir.uta.edu/sockg-ontology#Site,Site,Physical location where experiments are conducted,Class,,,,60,
+https://idir.uta.edu/sockg-ontology#SoilBiologicalSample,Soil Biological Sample,Soil sample analyzed for biological properties,Class,,,,18273,
+https://idir.uta.edu/sockg-ontology#SoilChemicalSample,Soil Chemical Sample,Soil sample analyzed for chemical properties,Class,,,,54269,
+https://idir.uta.edu/sockg-ontology#SoilCover,Soil Cover,Material or vegetation covering soil surface,Class,,,,1034,
+https://idir.uta.edu/sockg-ontology#SoilPhysicalSample,Soil Physical Sample,Soil sample analyzed for physical properties,Class,,,,28237,
+https://idir.uta.edu/sockg-ontology#SpeciesMix,Species Mix,Mixture of different plant species,Class,,,,7,
+https://idir.uta.edu/sockg-ontology#StartStopInterval,Start Stop Interval,Time interval with defined start and stop points,Class,,,,3,
+https://idir.uta.edu/sockg-ontology#SurfaceOrLeaching,Surface or Leaching,Process occurring at surface or through leaching,Class,,,,2,
+https://idir.uta.edu/sockg-ontology#Thesis,Thesis,Academic thesis or dissertation,Class,,,,4,
+https://idir.uta.edu/sockg-ontology#Tillage,Tillage,Mechanical manipulation of soil,Class,,,,8,
+https://idir.uta.edu/sockg-ontology#TillageEvent,Tillage Event,Specific occurrence of tillage activity,Class,,,,18,
+https://idir.uta.edu/sockg-ontology#TillageManagement,Tillage Management,Management practices related to tillage,Class,,,,27450,
+https://idir.uta.edu/sockg-ontology#TillageMethod,Tillage Method,Specific technique used for tillage,Class,,,,61,
+https://idir.uta.edu/sockg-ontology#Timing,Timing,Temporal aspect or schedule of activities,Class,,,,7,
+https://idir.uta.edu/sockg-ontology#Treatment,Treatment,Experimental treatment applied to crops or soil,Class,,,,769,
+https://idir.uta.edu/sockg-ontology#WaterQualityArea,Water Quality Area,Spatial extent related to water quality,Class,,,,681,
+https://idir.uta.edu/sockg-ontology#WaterQualityConcentration,Water Quality Concentration,Concentration of substances in water,Class,,,,2305,
+https://idir.uta.edu/sockg-ontology#WeatherObservation,Weather Observation,Meteorological data observation,Class,,,,149774,
+https://idir.uta.edu/sockg-ontology#WindErosionArea,Wind Erosion Area,Area affected by wind erosion,Class,,,,34,
+https://idir.uta.edu/sockg-ontology#YieldNutrientUptake,Yield Nutrient Uptake,Nutrient uptake related to crop yield,Class,,,,704,
+https://lod.nal.usda.gov/nalt/7140,Soil organic carbon,Class representing soil organic carbon in the knowledge graph,Class,,,,48,
+https://schema.org/Occupation,Occupation,Professional occupation or job,Class,,,,18,
+https://schema.org/Organization,Organization,Organized group or institution,Class,,,,28,
+https://schema.org/Person,Person,Individual human being,Class,,,,158,
+http://purl.org/dc/terms/bibliographicCitation,bibliographic Citation,Bibliographic citation for the resource,Predicate,,http://purl.org/dc/terms/BibliographicResource,http://www.w3.org/2001/XMLSchema#string,14,direct
+http://purl.org/dc/terms/creator,creator,Entity responsible for creating the resource,Predicate,,http://purl.org/dc/terms/BibliographicResource,http://www.w3.org/2001/XMLSchema#string,14,direct
+http://purl.org/dc/terms/identifier,identifier,Unambiguous reference to the resource,Predicate,,http://purl.org/dc/terms/BibliographicResource,http://www.w3.org/2001/XMLSchema#anyURI,11,direct
+http://purl.org/dc/terms/issued,issued,Date of formal issuance of the resource,Predicate,,http://purl.org/dc/terms/BibliographicResource,http://www.w3.org/2001/XMLSchema#date,14,direct
+http://purl.org/dc/terms/title,title,Name given to the resource,Predicate,,http://purl.org/ontology/bibo/Book,http://www.w3.org/2001/XMLSchema#string,2,direct
+http://qudt.org/schema/qudt/hasUnit,qudt:hasUnit,Links a quantity value to its unit of measurement,Predicate,,http://qudt.org/schema/qudt/QuantityValue,http://qudt.org/schema/qudt/Unit,2975592,direct
+http://qudt.org/schema/qudt/hasUnit,qudt:hasUnit,Links a quantity value to its unit of measurement,Predicate,,http://qudt.org/schema/qudt/QuantityValue,,405978,direct
+http://qudt.org/schema/qudt/numericValue,numeric Value,Numeric value of a quantity,Predicate,,http://qudt.org/schema/qudt/QuantityValue,http://www.w3.org/2001/XMLSchema#decimal,3381522,direct
+http://qudt.org/schema/qudt/numericValue,numeric Value,Numeric value of a quantity,Predicate,,http://qudt.org/schema/qudt/QuantityValue,http://www.w3.org/2001/XMLSchema#double,48,direct
+http://qudt.org/schema/qudt/standardUncertainty,standard Uncertainty,Standard uncertainty associated with a measurement,Predicate,,http://qudt.org/schema/qudt/QuantityValue,http://www.w3.org/2001/XMLSchema#decimal,403746,direct
+http://qudt.org/schema/qudt/standardUncertainty,standard Uncertainty,Standard uncertainty associated with a measurement,Predicate,,http://qudt.org/schema/qudt/QuantityValue,http://www.w3.org/2001/XMLSchema#double,5,direct
+https://idir.uta.edu/sockg-ontology#isInterpolated,is Interpolated,Indicates value was interpolated,Predicate,,http://qudt.org/schema/qudt/QuantityValue,http://www.w3.org/2001/XMLSchema#boolean,397571,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains,sfContains (kwg),Spatial relationship indicating one geometry contains another,Predicate,,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_0,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_1,36,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains,sfContains (kwg),Spatial relationship indicating one geometry contains another,Predicate,,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_0,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_2,62,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains,sfContains (kwg),Spatial relationship indicating one geometry contains another,Predicate,,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_0,http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level13,1069,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains,sfContains (kwg),Spatial relationship indicating one geometry contains another,Predicate,,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_0,http://www.w3.org/2002/07/owl#Class,2,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains,sfContains (kwg),Spatial relationship indicating one geometry contains another,Predicate,,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_0,https://idir.uta.edu/sockg-ontology#Location,4,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains,sfContains (kwg),Spatial relationship indicating one geometry contains another,Predicate,,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_0,https://idir.uta.edu/sockg-ontology#Site,1,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_0,http://www.w3.org/2001/XMLSchema#string,2,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains,sfContains (kwg),Spatial relationship indicating one geometry contains another,Predicate,,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_1,https://idir.uta.edu/sockg-ontology#Location,108,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains,sfContains (kwg),Spatial relationship indicating one geometry contains another,Predicate,,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_1,https://idir.uta.edu/sockg-ontology#Site,118,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,sfWithin (kwg),Spatial relationship indicating one geometry is within another,Predicate,,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_1,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_0,36,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_1,http://www.w3.org/2001/XMLSchema#string,36,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,sfWithin (kwg),Spatial relationship indicating one geometry is within another,Predicate,,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_2,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_0,62,direct
+http://purl.org/spatialai/spatial/spatial-full#connectedTo,topological connection (spatial contact) (sawgraph),Indicates topological connection or spatial contact between entities,Predicate,,http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level13,https://idir.uta.edu/sockg-ontology#Location,1086,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,sfWithin (kwg),Spatial relationship indicating one geometry is within another,Predicate,,http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level13,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_0,1069,direct
+http://www.opengis.net/ont/geosparql#asWKT,as WKT,Well-Known Text serialization of geometry,Predicate,,http://www.opengis.net/ont/geosparql#Geometry,http://www.opengis.net/ont/geosparql#wktLiteral,41,direct
+http://www.w3.org/2000/01/rdf-schema#comment,comment,Human-readable description or comment,Predicate,,http://www.w3.org/2002/07/owl#Class,http://www.w3.org/2001/XMLSchema#string,4,direct
+http://www.w3.org/2000/01/rdf-schema#subClassOf,sub Class Of,Indicates class hierarchy,Predicate,,http://www.w3.org/2002/07/owl#Class,http://www.w3.org/2002/07/owl#Class,66,direct
+http://www.w3.org/2002/07/owl#disjointWith,disjoint With,Indicates classes that have no common instances,Predicate,,http://www.w3.org/2002/07/owl#Class,http://www.w3.org/2002/07/owl#Class,1,direct
+http://www.w3.org/2000/01/rdf-schema#domain,domain,Domain class for a property,Predicate,,http://www.w3.org/2002/07/owl#DatatypeProperty,http://www.w3.org/2002/07/owl#Class,13,direct
+http://www.w3.org/2000/01/rdf-schema#range,range,Range class for a property,Predicate,,http://www.w3.org/2002/07/owl#DatatypeProperty,http://www.w3.org/2000/01/rdf-schema#Datatype,2,direct
+http://www.w3.org/2000/01/rdf-schema#range,range,Range class for a property,Predicate,,http://www.w3.org/2002/07/owl#DatatypeProperty,http://www.w3.org/2002/07/owl#Class,3,direct
+http://www.w3.org/2000/01/rdf-schema#range,range,Range class for a property,Predicate,,http://www.w3.org/2002/07/owl#DatatypeProperty,,8,direct
+http://www.w3.org/2000/01/rdf-schema#domain,domain,Domain class for a property,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2002/07/owl#Class,57,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2001/XMLSchema#string,5,direct
+http://www.w3.org/2000/01/rdf-schema#range,range,Range class for a property,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2002/07/owl#Class,58,direct
+http://www.w3.org/2000/01/rdf-schema#subPropertyOf,sub Property Of,Indicates property hierarchy,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2002/07/owl#ObjectProperty,3,direct
+http://www.w3.org/2002/07/owl#equivalentProperty,equivalent Property,Indicates properties with same meaning,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2002/07/owl#ObjectProperty,1,direct
+http://www.w3.org/2002/07/owl#inverseOf,inverse Of,Indicates inverse property relationship,Predicate,,http://www.w3.org/2002/07/owl#ObjectProperty,http://www.w3.org/2002/07/owl#ObjectProperty,1,direct
+http://purl.org/dc/terms/bibliographicCitation,bibliographic Citation,Bibliographic citation for the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Abstract,http://www.w3.org/2001/XMLSchema#string,3,direct
+http://purl.org/dc/terms/creator,creator,Entity responsible for creating the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Abstract,http://www.w3.org/2001/XMLSchema#string,3,direct
+http://purl.org/dc/terms/issued,issued,Date of formal issuance of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Abstract,http://www.w3.org/2001/XMLSchema#date,3,direct
+http://purl.org/dc/terms/title,title,Name given to the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Abstract,http://www.w3.org/2001/XMLSchema#string,3,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#Abstract,http://www.w3.org/2001/XMLSchema#string,3,direct
+https://idir.uta.edu/sockg-ontology#correspondingAuthor,corresponding Author,Author designated as correspondence contact,Predicate,,https://idir.uta.edu/sockg-ontology#Abstract,http://www.w3.org/2001/XMLSchema#string,3,direct
+http://w3id.org/coso/v1/contaminoso#casNumber,cas number,Chemical Abstracts Service registry number,Predicate,,https://idir.uta.edu/sockg-ontology#ActiveIngredient,http://www.w3.org/2001/XMLSchema#string,84,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#ActiveIngredient,http://www.w3.org/2001/XMLSchema#string,84,direct
+https://idir.uta.edu/sockg-ontology#hasAmendmentType,has Amendment Type,Type of amendment applied,Predicate,,https://idir.uta.edu/sockg-ontology#Amendment,https://idir.uta.edu/sockg-ontology#AmendmentType,25357,direct
+https://idir.uta.edu/sockg-ontology#hasCrop,has Crop,Crop species or type,Predicate,,https://idir.uta.edu/sockg-ontology#Amendment,https://lod.nal.usda.gov/nalt/7140,45261,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#Amendment,https://idir.uta.edu/sockg-ontology#Measurement,122893,direct
+https://idir.uta.edu/sockg-ontology#hasPesticideActiveIngredient,has Pesticide Active Ingredient,Active ingredient in pesticide,Predicate,,https://idir.uta.edu/sockg-ontology#Amendment,https://idir.uta.edu/sockg-ontology#ActiveIngredient,16104,direct
+https://idir.uta.edu/sockg-ontology#hasPesticideTarget,has Pesticide Target,Target pest or disease,Predicate,,https://idir.uta.edu/sockg-ontology#Amendment,https://idir.uta.edu/sockg-ontology#PesticideTarget,12841,direct
+https://idir.uta.edu/sockg-ontology#startDate,start Date,Start date of time period or event,Predicate,,https://idir.uta.edu/sockg-ontology#Amendment,http://www.w3.org/2001/XMLSchema#date,47106,direct
+https://idir.uta.edu/sockg-ontology#usesIrrigation,uses Irrigation,Irrigation method used,Predicate,,https://idir.uta.edu/sockg-ontology#Amendment,https://idir.uta.edu/sockg-ontology#Irrigation,6063,direct
+https://idir.uta.edu/sockg-ontology#withPesticidePlacement,with Pesticide Placement,Placement method for pesticide,Predicate,,https://idir.uta.edu/sockg-ontology#Amendment,https://idir.uta.edu/sockg-ontology#PesticidePlacement,9498,direct
+https://idir.uta.edu/sockg-ontology#withPlacement,with Placement,Placement location or method,Predicate,,https://idir.uta.edu/sockg-ontology#Amendment,https://idir.uta.edu/sockg-ontology#AmendmentPlacement,24794,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#AmendmentPlacement,http://www.w3.org/2001/XMLSchema#string,10,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#AmendmentType,http://www.w3.org/2001/XMLSchema#string,73,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#AnimalClass,http://www.w3.org/2001/XMLSchema#string,4,direct
+http://purl.org/dc/terms/description,description,Description of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#AnimalSpecies,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#AnimalSpecies,http://www.w3.org/2001/XMLSchema#string,2,direct
+http://purl.org/dc/terms/date,date,Date associated with an event in the lifecycle of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#BiomassCarbohydrate,http://www.w3.org/2001/XMLSchema#date,1367,direct
+https://idir.uta.edu/sockg-ontology#fromUnit,from Unit,Links measurement to experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#BiomassCarbohydrate,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,1367,direct
+https://idir.uta.edu/sockg-ontology#hasCrop,has Crop,Crop species or type,Predicate,,https://idir.uta.edu/sockg-ontology#BiomassCarbohydrate,https://lod.nal.usda.gov/nalt/7140,1367,direct
+https://idir.uta.edu/sockg-ontology#hasGrowthStage,has Growth Stage,Growth stage of plant,Predicate,,https://idir.uta.edu/sockg-ontology#BiomassCarbohydrate,https://idir.uta.edu/sockg-ontology#GrowthStage,1367,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#BiomassCarbohydrate,https://idir.uta.edu/sockg-ontology#Measurement,10214,direct
+https://idir.uta.edu/sockg-ontology#hasPlantFraction,has Plant Fraction,Specific plant part or fraction,Predicate,,https://idir.uta.edu/sockg-ontology#BiomassCarbohydrate,https://idir.uta.edu/sockg-ontology#PlantFraction,1367,direct
+https://idir.uta.edu/sockg-ontology#usesTreatment,uses Treatment,Treatment applied,Predicate,,https://idir.uta.edu/sockg-ontology#BiomassCarbohydrate,https://idir.uta.edu/sockg-ontology#Treatment,1367,direct
+http://purl.org/dc/terms/date,date,Date associated with an event in the lifecycle of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#BiomassEnergy,http://www.w3.org/2001/XMLSchema#date,799,direct
+https://idir.uta.edu/sockg-ontology#fromUnit,from Unit,Links measurement to experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#BiomassEnergy,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,799,direct
+https://idir.uta.edu/sockg-ontology#hasCrop,has Crop,Crop species or type,Predicate,,https://idir.uta.edu/sockg-ontology#BiomassEnergy,https://lod.nal.usda.gov/nalt/7140,799,direct
+https://idir.uta.edu/sockg-ontology#hasGrowthStage,has Growth Stage,Growth stage of plant,Predicate,,https://idir.uta.edu/sockg-ontology#BiomassEnergy,https://idir.uta.edu/sockg-ontology#GrowthStage,799,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#BiomassEnergy,https://idir.uta.edu/sockg-ontology#Measurement,1594,direct
+https://idir.uta.edu/sockg-ontology#hasPlantFraction,has Plant Fraction,Specific plant part or fraction,Predicate,,https://idir.uta.edu/sockg-ontology#BiomassEnergy,https://idir.uta.edu/sockg-ontology#PlantFraction,799,direct
+https://idir.uta.edu/sockg-ontology#usesTreatment,uses Treatment,Treatment applied,Predicate,,https://idir.uta.edu/sockg-ontology#BiomassEnergy,https://idir.uta.edu/sockg-ontology#Treatment,799,direct
+http://purl.org/dc/terms/date,date,Date associated with an event in the lifecycle of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#BiomassMineral,http://www.w3.org/2001/XMLSchema#date,6739,direct
+https://idir.uta.edu/sockg-ontology#fromUnit,from Unit,Links measurement to experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#BiomassMineral,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,6739,direct
+https://idir.uta.edu/sockg-ontology#hasCrop,has Crop,Crop species or type,Predicate,,https://idir.uta.edu/sockg-ontology#BiomassMineral,https://lod.nal.usda.gov/nalt/7140,6739,direct
+https://idir.uta.edu/sockg-ontology#hasGrowthStage,has Growth Stage,Growth stage of plant,Predicate,,https://idir.uta.edu/sockg-ontology#BiomassMineral,https://idir.uta.edu/sockg-ontology#GrowthStage,6739,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#BiomassMineral,https://idir.uta.edu/sockg-ontology#Measurement,89163,direct
+https://idir.uta.edu/sockg-ontology#hasPlantFraction,has Plant Fraction,Specific plant part or fraction,Predicate,,https://idir.uta.edu/sockg-ontology#BiomassMineral,https://idir.uta.edu/sockg-ontology#PlantFraction,6739,direct
+https://idir.uta.edu/sockg-ontology#usesTreatment,uses Treatment,Treatment applied,Predicate,,https://idir.uta.edu/sockg-ontology#BiomassMineral,https://idir.uta.edu/sockg-ontology#Treatment,6739,direct
+http://purl.org/dc/terms/bibliographicCitation,bibliographic Citation,Bibliographic citation for the resource,Predicate,,https://idir.uta.edu/sockg-ontology#BookChapter,http://www.w3.org/2001/XMLSchema#string,2,direct
+http://purl.org/dc/terms/creator,creator,Entity responsible for creating the resource,Predicate,,https://idir.uta.edu/sockg-ontology#BookChapter,http://www.w3.org/2001/XMLSchema#string,2,direct
+http://purl.org/dc/terms/isPartOf,is Part Of,Related resource in which the described resource is physically or logically included,Predicate,,https://idir.uta.edu/sockg-ontology#BookChapter,http://purl.org/ontology/bibo/Book,2,direct
+http://purl.org/dc/terms/issued,issued,Date of formal issuance of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#BookChapter,http://www.w3.org/2001/XMLSchema#date,2,direct
+http://purl.org/dc/terms/title,title,Name given to the resource,Predicate,,https://idir.uta.edu/sockg-ontology#BookChapter,http://www.w3.org/2001/XMLSchema#string,2,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#BookChapter,http://www.w3.org/2001/XMLSchema#string,2,direct
+https://idir.uta.edu/sockg-ontology#correspondingAuthor,corresponding Author,Author designated as correspondence contact,Predicate,,https://idir.uta.edu/sockg-ontology#BookChapter,http://www.w3.org/2001/XMLSchema#string,2,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#BroadleafOrGrass,http://www.w3.org/2001/XMLSchema#string,2,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#ChamberPlacement,http://www.w3.org/2001/XMLSchema#string,7,direct
+http://purl.org/dc/terms/description,description,Description of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#CoverCrop,http://www.w3.org/2001/XMLSchema#string,8,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#Cultivar,http://www.w3.org/2001/XMLSchema#string,308,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#CuttingHeight,http://www.w3.org/2001/XMLSchema#string,17,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#Equipment,http://www.w3.org/2001/XMLSchema#string,12,direct
+http://purl.org/dc/terms/identifier,identifier,Unambiguous reference to the resource,Predicate,,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,http://www.w3.org/2001/XMLSchema#string,3863,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,sfWithin (kwg),Spatial relationship indicating one geometry is within another,Predicate,,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,https://idir.uta.edu/sockg-ontology#Location,3863,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,sfWithin (kwg),Spatial relationship indicating one geometry is within another,Predicate,,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,https://idir.uta.edu/sockg-ontology#Site,3808,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,sfWithin (kwg),Spatial relationship indicating one geometry is within another,Predicate,,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,,28,direct
+https://idir.uta.edu/sockg-ontology#endDate,end Date,End date of time period or event,Predicate,,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,http://www.w3.org/2001/XMLSchema#date,1965,direct
+https://idir.uta.edu/sockg-ontology#inferred,inferred,Indicates value was inferred rather than measured,Predicate,,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,http://www.w3.org/2001/XMLSchema#boolean,3863,direct
+https://idir.uta.edu/sockg-ontology#startDate,start Date,Start date of time period or event,Predicate,,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,http://www.w3.org/2001/XMLSchema#date,3362,direct
+https://idir.uta.edu/sockg-ontology#unitHasAmendment,unit Has Amendment,Amendment applied to experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,https://idir.uta.edu/sockg-ontology#Amendment,47106,direct
+https://idir.uta.edu/sockg-ontology#unitHasGrazingManagement,unit Has Grazing Management,Grazing management in experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,https://idir.uta.edu/sockg-ontology#GrazingManagement,1951,direct
+https://idir.uta.edu/sockg-ontology#unitHasGrowthStageManagement,unit Has Growth Stage Management,Growth stage management in experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,https://idir.uta.edu/sockg-ontology#GrowthStageManagement,5148,direct
+https://idir.uta.edu/sockg-ontology#unitHasPlantingManagement,unit Has Planting Management,Planting management in experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,https://idir.uta.edu/sockg-ontology#PlantingManagement,23728,direct
+https://idir.uta.edu/sockg-ontology#unitHasResidueManagement,unit Has Residue Management,Residue management in experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,https://idir.uta.edu/sockg-ontology#ResidueManagement,3334,direct
+https://idir.uta.edu/sockg-ontology#unitHasTillageManagement,unit Has Tillage Management,Tillage management in experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,https://idir.uta.edu/sockg-ontology#TillageManagement,27449,direct
+https://idir.uta.edu/sockg-ontology#unitUrl,unit URL,URL identifying experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,http://www.w3.org/2001/XMLSchema#anyURI,23,direct
+http://purl.org/dc/terms/description,description,Description of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#FertilizerAmendment,http://www.w3.org/2001/XMLSchema#string,4,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#FundingSource,http://www.w3.org/2001/XMLSchema#string,7,direct
+http://purl.org/dc/terms/date,date,Date associated with an event in the lifecycle of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#GHGFlux,http://www.w3.org/2001/XMLSchema#date,127295,direct
+http://purl.org/dc/terms/date,date,Date associated with an event in the lifecycle of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#GHGFlux,http://www.w3.org/2001/XMLSchema#dateTime,5471,direct
+https://idir.uta.edu/sockg-ontology#fromUnit,from Unit,Links measurement to experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#GHGFlux,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,131858,direct
+https://idir.uta.edu/sockg-ontology#fromUnit,from Unit,Links measurement to experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#GHGFlux,,908,direct
+https://idir.uta.edu/sockg-ontology#hasChamberPlacement,has Chamber Placement,Location or setup of measurement chamber,Predicate,,https://idir.uta.edu/sockg-ontology#GHGFlux,https://idir.uta.edu/sockg-ontology#ChamberPlacement,127419,direct
+https://idir.uta.edu/sockg-ontology#hasCrop,has Crop,Crop species or type,Predicate,,https://idir.uta.edu/sockg-ontology#GHGFlux,https://lod.nal.usda.gov/nalt/7140,128975,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#GHGFlux,https://idir.uta.edu/sockg-ontology#Measurement,928275,direct
+https://idir.uta.edu/sockg-ontology#usesTreatment,uses Treatment,Treatment applied,Predicate,,https://idir.uta.edu/sockg-ontology#GHGFlux,https://idir.uta.edu/sockg-ontology#Treatment,132766,direct
+http://purl.org/dc/terms/date,date,Date associated with an event in the lifecycle of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#GasNutrientLoss,http://www.w3.org/2001/XMLSchema#date,2231,direct
+https://idir.uta.edu/sockg-ontology#fromUnit,from Unit,Links measurement to experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#GasNutrientLoss,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,2231,direct
+https://idir.uta.edu/sockg-ontology#hasCrop,has Crop,Crop species or type,Predicate,,https://idir.uta.edu/sockg-ontology#GasNutrientLoss,https://lod.nal.usda.gov/nalt/7140,50,direct
+https://idir.uta.edu/sockg-ontology#hasGrowthStage,has Growth Stage,Growth stage of plant,Predicate,,https://idir.uta.edu/sockg-ontology#GasNutrientLoss,https://idir.uta.edu/sockg-ontology#GrowthStage,64,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#GasNutrientLoss,https://idir.uta.edu/sockg-ontology#Measurement,4462,direct
+https://idir.uta.edu/sockg-ontology#usesModel,uses Model,Simulation model used,Predicate,,https://idir.uta.edu/sockg-ontology#GasNutrientLoss,https://idir.uta.edu/sockg-ontology#SimulationModel,56,direct
+https://idir.uta.edu/sockg-ontology#usesTreatment,uses Treatment,Treatment applied,Predicate,,https://idir.uta.edu/sockg-ontology#GasNutrientLoss,https://idir.uta.edu/sockg-ontology#Treatment,2231,direct
+https://idir.uta.edu/sockg-ontology#withStartStopInterval,with Start Stop Interval,Time interval for activity,Predicate,,https://idir.uta.edu/sockg-ontology#GasNutrientLoss,https://idir.uta.edu/sockg-ontology#StartStopInterval,64,direct
+https://idir.uta.edu/sockg-ontology#endDate,end Date,End date of time period or event,Predicate,,https://idir.uta.edu/sockg-ontology#GrazingManagement,http://www.w3.org/2001/XMLSchema#date,1951,direct
+https://idir.uta.edu/sockg-ontology#hasAnimalClass,has Animal Class,Class of animals involved,Predicate,,https://idir.uta.edu/sockg-ontology#GrazingManagement,https://idir.uta.edu/sockg-ontology#AnimalClass,1833,direct
+https://idir.uta.edu/sockg-ontology#hasAnimalSpecies,has Animal Species,Species of animals involved,Predicate,,https://idir.uta.edu/sockg-ontology#GrazingManagement,https://idir.uta.edu/sockg-ontology#AnimalSpecies,1951,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#GrazingManagement,https://idir.uta.edu/sockg-ontology#Measurement,1951,direct
+https://idir.uta.edu/sockg-ontology#hasOtherEvents,has Other Events,Other agricultural events or activities,Predicate,,https://idir.uta.edu/sockg-ontology#GrazingManagement,https://idir.uta.edu/sockg-ontology#OtherEvents,4,direct
+https://idir.uta.edu/sockg-ontology#startDate,start Date,Start date of time period or event,Predicate,,https://idir.uta.edu/sockg-ontology#GrazingManagement,http://www.w3.org/2001/XMLSchema#date,1951,direct
+http://purl.org/dc/terms/date,date,Date associated with an event in the lifecycle of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#GrazingPlants,http://www.w3.org/2001/XMLSchema#date,6996,direct
+https://idir.uta.edu/sockg-ontology#fromUnit,from Unit,Links measurement to experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#GrazingPlants,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,6996,direct
+https://idir.uta.edu/sockg-ontology#hasBroadleafOrGrass,has Broadleaf or Grass,Classification as broadleaf or grass plant,Predicate,,https://idir.uta.edu/sockg-ontology#GrazingPlants,https://idir.uta.edu/sockg-ontology#BroadleafOrGrass,6996,direct
+https://idir.uta.edu/sockg-ontology#hasGrowthStage,has Growth Stage,Growth stage of plant,Predicate,,https://idir.uta.edu/sockg-ontology#GrazingPlants,https://idir.uta.edu/sockg-ontology#GrowthStage,6684,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#GrazingPlants,https://idir.uta.edu/sockg-ontology#Measurement,15968,direct
+https://idir.uta.edu/sockg-ontology#hasSpeciesMix,has Species Mix,Mixture of plant species,Predicate,,https://idir.uta.edu/sockg-ontology#GrazingPlants,https://idir.uta.edu/sockg-ontology#SpeciesMix,6996,direct
+https://idir.uta.edu/sockg-ontology#usesTreatment,uses Treatment,Treatment applied,Predicate,,https://idir.uta.edu/sockg-ontology#GrazingPlants,https://idir.uta.edu/sockg-ontology#Treatment,6996,direct
+http://purl.org/dc/terms/description,description,Description of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#GrazingRate,http://www.w3.org/2001/XMLSchema#string,3,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#GrowthStage,http://www.w3.org/2001/XMLSchema#string,33,direct
+http://purl.org/dc/terms/date,date,Date associated with an event in the lifecycle of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#GrowthStageManagement,http://www.w3.org/2001/XMLSchema#date,5148,direct
+https://idir.uta.edu/sockg-ontology#hasCrop,has Crop,Crop species or type,Predicate,,https://idir.uta.edu/sockg-ontology#GrowthStageManagement,https://lod.nal.usda.gov/nalt/7140,5148,direct
+https://idir.uta.edu/sockg-ontology#hasGrowthStage,has Growth Stage,Growth stage of plant,Predicate,,https://idir.uta.edu/sockg-ontology#GrowthStageManagement,https://idir.uta.edu/sockg-ontology#GrowthStage,5148,direct
+http://purl.org/dc/terms/date,date,Date associated with an event in the lifecycle of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#HarvestFraction,http://www.w3.org/2001/XMLSchema#date,9470,direct
+https://idir.uta.edu/sockg-ontology#fromUnit,from Unit,Links measurement to experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#HarvestFraction,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,9110,direct
+https://idir.uta.edu/sockg-ontology#fromUnit,from Unit,Links measurement to experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#HarvestFraction,,360,direct
+https://idir.uta.edu/sockg-ontology#hasCrop,has Crop,Crop species or type,Predicate,,https://idir.uta.edu/sockg-ontology#HarvestFraction,https://lod.nal.usda.gov/nalt/7140,9470,direct
+https://idir.uta.edu/sockg-ontology#hasGrowthStage,has Growth Stage,Growth stage of plant,Predicate,,https://idir.uta.edu/sockg-ontology#HarvestFraction,https://idir.uta.edu/sockg-ontology#GrowthStage,9407,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#HarvestFraction,https://idir.uta.edu/sockg-ontology#Measurement,26973,direct
+https://idir.uta.edu/sockg-ontology#hasPlantFraction,has Plant Fraction,Specific plant part or fraction,Predicate,,https://idir.uta.edu/sockg-ontology#HarvestFraction,https://idir.uta.edu/sockg-ontology#PlantFraction,9470,direct
+https://idir.uta.edu/sockg-ontology#usesTreatment,uses Treatment,Treatment applied,Predicate,,https://idir.uta.edu/sockg-ontology#HarvestFraction,https://idir.uta.edu/sockg-ontology#Treatment,9470,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#HarvestedFraction,http://www.w3.org/2001/XMLSchema#string,12,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#Irrigation,http://www.w3.org/2001/XMLSchema#string,4,direct
+http://purl.org/dc/terms/bibliographicCitation,bibliographic Citation,Bibliographic citation for the resource,Predicate,,https://idir.uta.edu/sockg-ontology#JournalArticle,http://www.w3.org/2001/XMLSchema#string,149,direct
+http://purl.org/dc/terms/creator,creator,Entity responsible for creating the resource,Predicate,,https://idir.uta.edu/sockg-ontology#JournalArticle,http://www.w3.org/2001/XMLSchema#string,147,direct
+http://purl.org/dc/terms/description,description,Description of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#JournalArticle,http://www.w3.org/2001/XMLSchema#string,54,direct
+http://purl.org/dc/terms/identifier,identifier,Unambiguous reference to the resource,Predicate,,https://idir.uta.edu/sockg-ontology#JournalArticle,http://www.w3.org/2001/XMLSchema#anyURI,44,direct
+http://purl.org/dc/terms/identifier,identifier,Unambiguous reference to the resource,Predicate,,https://idir.uta.edu/sockg-ontology#JournalArticle,http://www.w3.org/2001/XMLSchema#string,75,direct
+http://purl.org/dc/terms/issued,issued,Date of formal issuance of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#JournalArticle,http://www.w3.org/2001/XMLSchema#date,149,direct
+http://purl.org/dc/terms/title,title,Name given to the resource,Predicate,,https://idir.uta.edu/sockg-ontology#JournalArticle,http://www.w3.org/2001/XMLSchema#string,134,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#JournalArticle,http://www.w3.org/2001/XMLSchema#string,149,direct
+https://idir.uta.edu/sockg-ontology#correspondingAuthor,corresponding Author,Author designated as correspondence contact,Predicate,,https://idir.uta.edu/sockg-ontology#JournalArticle,http://www.w3.org/2001/XMLSchema#string,127,direct
+http://purl.org/dc/terms/description,description,Description of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Location,http://www.w3.org/2001/XMLSchema#string,116,direct
+http://purl.org/dc/terms/identifier,identifier,Unambiguous reference to the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Location,http://www.w3.org/2001/XMLSchema#string,58,direct
+http://purl.org/spatialai/spatial/spatial-full#connectedTo,topological connection (spatial contact) (sawgraph),Indicates topological connection or spatial contact between entities,Predicate,,https://idir.uta.edu/sockg-ontology#Location,http://stko-kwg.geog.ucsb.edu/lod/ontology/S2Cell_Level13,1086,direct
+http://purl.org/spatialai/spatial/spatial-full#connectedTo,topological connection (spatial contact) (sawgraph),Indicates topological connection or spatial contact between entities,Predicate,,https://idir.uta.edu/sockg-ontology#Location,https://idir.uta.edu/sockg-ontology#Site,16,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains,sfContains (kwg),Spatial relationship indicating one geometry contains another,Predicate,,https://idir.uta.edu/sockg-ontology#Location,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,3863,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains,sfContains (kwg),Spatial relationship indicating one geometry contains another,Predicate,,https://idir.uta.edu/sockg-ontology#Location,https://idir.uta.edu/sockg-ontology#Site,49,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,sfWithin (kwg),Spatial relationship indicating one geometry is within another,Predicate,,https://idir.uta.edu/sockg-ontology#Location,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_0,58,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,sfWithin (kwg),Spatial relationship indicating one geometry is within another,Predicate,,https://idir.uta.edu/sockg-ontology#Location,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_1,108,direct
+http://www.opengis.net/ont/geosparql#hasGeometry,geo:hasGeometry,A spatial representation for a given Feature.,Predicate,,https://idir.uta.edu/sockg-ontology#Location,http://www.opengis.net/ont/geosparql#Geometry,41,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#Location,http://www.w3.org/2001/XMLSchema#string,58,direct
+https://idir.uta.edu/sockg-ontology#cites,cites,Reference to cited publication,Predicate,,https://idir.uta.edu/sockg-ontology#Location,http://purl.org/dc/terms/BibliographicResource,14,direct
+https://idir.uta.edu/sockg-ontology#cites,cites,Reference to cited publication,Predicate,,https://idir.uta.edu/sockg-ontology#Location,https://idir.uta.edu/sockg-ontology#Abstract,3,direct
+https://idir.uta.edu/sockg-ontology#cites,cites,Reference to cited publication,Predicate,,https://idir.uta.edu/sockg-ontology#Location,https://idir.uta.edu/sockg-ontology#BookChapter,2,direct
+https://idir.uta.edu/sockg-ontology#cites,cites,Reference to cited publication,Predicate,,https://idir.uta.edu/sockg-ontology#Location,https://idir.uta.edu/sockg-ontology#JournalArticle,149,direct
+https://idir.uta.edu/sockg-ontology#cites,cites,Reference to cited publication,Predicate,,https://idir.uta.edu/sockg-ontology#Location,https://idir.uta.edu/sockg-ontology#PopularArticle,1,direct
+https://idir.uta.edu/sockg-ontology#cites,cites,Reference to cited publication,Predicate,,https://idir.uta.edu/sockg-ontology#Location,https://idir.uta.edu/sockg-ontology#Proceedings,3,direct
+https://idir.uta.edu/sockg-ontology#cites,cites,Reference to cited publication,Predicate,,https://idir.uta.edu/sockg-ontology#Location,https://idir.uta.edu/sockg-ontology#Report,1,direct
+https://idir.uta.edu/sockg-ontology#cites,cites,Reference to cited publication,Predicate,,https://idir.uta.edu/sockg-ontology#Location,https://idir.uta.edu/sockg-ontology#Thesis,4,direct
+https://idir.uta.edu/sockg-ontology#endDate,end Date,End date of time period or event,Predicate,,https://idir.uta.edu/sockg-ontology#Location,http://www.w3.org/2001/XMLSchema#date,58,direct
+https://idir.uta.edu/sockg-ontology#fundedBy,funded By,Organization or grant providing funding,Predicate,,https://idir.uta.edu/sockg-ontology#Location,https://idir.uta.edu/sockg-ontology#FundingSource,54,direct
+https://idir.uta.edu/sockg-ontology#hasTreatment,has Treatment,Experimental treatment applied,Predicate,,https://idir.uta.edu/sockg-ontology#Location,https://idir.uta.edu/sockg-ontology#Treatment,769,direct
+https://idir.uta.edu/sockg-ontology#startDate,start Date,Start date of time period or event,Predicate,,https://idir.uta.edu/sockg-ontology#Location,http://www.w3.org/2001/XMLSchema#date,58,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#LossesOrDeposition,http://www.w3.org/2001/XMLSchema#string,2,direct
+http://qudt.org/schema/qudt/quantityValue,qudt:quantityValue,Relates an entity to its quantity value,Predicate,,https://idir.uta.edu/sockg-ontology#Measurement,http://qudt.org/schema/qudt/QuantityValue,3180012,direct
+https://idir.uta.edu/sockg-ontology#of,of,Generic relationship indicating belonging or association,Predicate,,https://idir.uta.edu/sockg-ontology#Measurement,https://idir.uta.edu/sockg-ontology#Parameter,3180012,direct
+http://purl.org/dc/terms/date,date,Date associated with an event in the lifecycle of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#NutrientEfficiency,http://www.w3.org/2001/XMLSchema#date,5159,direct
+https://idir.uta.edu/sockg-ontology#fromUnit,from Unit,Links measurement to experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#NutrientEfficiency,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,5159,direct
+https://idir.uta.edu/sockg-ontology#hasCrop,has Crop,Crop species or type,Predicate,,https://idir.uta.edu/sockg-ontology#NutrientEfficiency,https://lod.nal.usda.gov/nalt/7140,5159,direct
+https://idir.uta.edu/sockg-ontology#hasGrowthStage,has Growth Stage,Growth stage of plant,Predicate,,https://idir.uta.edu/sockg-ontology#NutrientEfficiency,https://idir.uta.edu/sockg-ontology#GrowthStage,5159,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#NutrientEfficiency,https://idir.uta.edu/sockg-ontology#Measurement,15415,direct
+https://idir.uta.edu/sockg-ontology#hasPlantFraction,has Plant Fraction,Specific plant part or fraction,Predicate,,https://idir.uta.edu/sockg-ontology#NutrientEfficiency,https://idir.uta.edu/sockg-ontology#PlantFraction,5051,direct
+https://idir.uta.edu/sockg-ontology#usesTreatment,uses Treatment,Treatment applied,Predicate,,https://idir.uta.edu/sockg-ontology#NutrientEfficiency,https://idir.uta.edu/sockg-ontology#Treatment,5159,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#OtherEvents,http://www.w3.org/2001/XMLSchema#string,2,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#Parameter,http://www.w3.org/2001/XMLSchema#string,156,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#PesticidePlacement,http://www.w3.org/2001/XMLSchema#string,5,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#PesticideTarget,http://www.w3.org/2001/XMLSchema#string,43,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#PlantFraction,http://www.w3.org/2001/XMLSchema#string,29,direct
+https://idir.uta.edu/sockg-ontology#hasCrop,has Crop,Crop species or type,Predicate,,https://idir.uta.edu/sockg-ontology#PlantingManagement,https://lod.nal.usda.gov/nalt/7140,23728,direct
+https://idir.uta.edu/sockg-ontology#hasCultivar,has Cultivar,Specific cultivar used,Predicate,,https://idir.uta.edu/sockg-ontology#PlantingManagement,https://idir.uta.edu/sockg-ontology#Cultivar,20926,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#PlantingManagement,https://idir.uta.edu/sockg-ontology#Measurement,84758,direct
+https://idir.uta.edu/sockg-ontology#startDate,start Date,Start date of time period or event,Predicate,,https://idir.uta.edu/sockg-ontology#PlantingManagement,http://www.w3.org/2001/XMLSchema#date,23728,direct
+https://idir.uta.edu/sockg-ontology#usesPlantingMethod,uses Planting Method,Planting method used,Predicate,,https://idir.uta.edu/sockg-ontology#PlantingManagement,https://idir.uta.edu/sockg-ontology#PlantingMethod,22592,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#PlantingMethod,http://www.w3.org/2001/XMLSchema#string,6,direct
+http://purl.org/dc/terms/bibliographicCitation,bibliographic Citation,Bibliographic citation for the resource,Predicate,,https://idir.uta.edu/sockg-ontology#PopularArticle,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://purl.org/dc/terms/creator,creator,Entity responsible for creating the resource,Predicate,,https://idir.uta.edu/sockg-ontology#PopularArticle,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://purl.org/dc/terms/issued,issued,Date of formal issuance of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#PopularArticle,http://www.w3.org/2001/XMLSchema#date,1,direct
+http://purl.org/dc/terms/title,title,Name given to the resource,Predicate,,https://idir.uta.edu/sockg-ontology#PopularArticle,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#PopularArticle,http://www.w3.org/2001/XMLSchema#string,1,direct
+https://idir.uta.edu/sockg-ontology#correspondingAuthor,corresponding Author,Author designated as correspondence contact,Predicate,,https://idir.uta.edu/sockg-ontology#PopularArticle,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://purl.org/dc/terms/bibliographicCitation,bibliographic Citation,Bibliographic citation for the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Proceedings,http://www.w3.org/2001/XMLSchema#string,3,direct
+http://purl.org/dc/terms/creator,creator,Entity responsible for creating the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Proceedings,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://purl.org/dc/terms/description,description,Description of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Proceedings,http://www.w3.org/2001/XMLSchema#string,2,direct
+http://purl.org/dc/terms/issued,issued,Date of formal issuance of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Proceedings,http://www.w3.org/2001/XMLSchema#date,3,direct
+http://purl.org/dc/terms/title,title,Name given to the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Proceedings,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#Proceedings,http://www.w3.org/2001/XMLSchema#string,3,direct
+https://idir.uta.edu/sockg-ontology#correspondingAuthor,corresponding Author,Author designated as correspondence contact,Predicate,,https://idir.uta.edu/sockg-ontology#Proceedings,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://purl.org/dc/terms/description,description,Description of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Project,http://www.w3.org/2001/XMLSchema#string,3,direct
+http://purl.org/dc/terms/description,description,Description of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#ProjectScenario,http://www.w3.org/2001/XMLSchema#string,19,direct
+http://purl.org/dc/terms/bibliographicCitation,bibliographic Citation,Bibliographic citation for the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Report,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://purl.org/dc/terms/creator,creator,Entity responsible for creating the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Report,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://purl.org/dc/terms/issued,issued,Date of formal issuance of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Report,http://www.w3.org/2001/XMLSchema#date,1,direct
+http://purl.org/dc/terms/title,title,Name given to the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Report,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#Report,http://www.w3.org/2001/XMLSchema#string,1,direct
+https://idir.uta.edu/sockg-ontology#correspondingAuthor,corresponding Author,Author designated as correspondence contact,Predicate,,https://idir.uta.edu/sockg-ontology#Report,http://www.w3.org/2001/XMLSchema#string,1,direct
+https://idir.uta.edu/sockg-ontology#hasCrop,has Crop,Crop species or type,Predicate,,https://idir.uta.edu/sockg-ontology#ResidueManagement,https://lod.nal.usda.gov/nalt/7140,3334,direct
+https://idir.uta.edu/sockg-ontology#hasGrowthStage,has Growth Stage,Growth stage of plant,Predicate,,https://idir.uta.edu/sockg-ontology#ResidueManagement,https://idir.uta.edu/sockg-ontology#GrowthStage,1675,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#ResidueManagement,https://idir.uta.edu/sockg-ontology#Measurement,4161,direct
+https://idir.uta.edu/sockg-ontology#startDate,start Date,Start date of time period or event,Predicate,,https://idir.uta.edu/sockg-ontology#ResidueManagement,http://www.w3.org/2001/XMLSchema#date,3334,direct
+https://idir.uta.edu/sockg-ontology#usesEquipment,uses Equipment,Equipment used,Predicate,,https://idir.uta.edu/sockg-ontology#ResidueManagement,https://idir.uta.edu/sockg-ontology#Equipment,3070,direct
+https://idir.uta.edu/sockg-ontology#withCuttingHeight,with Cutting Height,Height at which crop is cut,Predicate,,https://idir.uta.edu/sockg-ontology#ResidueManagement,https://idir.uta.edu/sockg-ontology#CuttingHeight,2954,direct
+http://purl.org/dc/terms/date,date,Date associated with an event in the lifecycle of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#ResidueMeasurement,http://www.w3.org/2001/XMLSchema#date,18460,direct
+https://idir.uta.edu/sockg-ontology#fromUnit,from Unit,Links measurement to experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#ResidueMeasurement,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,18512,direct
+https://idir.uta.edu/sockg-ontology#hasCrop,has Crop,Crop species or type,Predicate,,https://idir.uta.edu/sockg-ontology#ResidueMeasurement,https://lod.nal.usda.gov/nalt/7140,18512,direct
+https://idir.uta.edu/sockg-ontology#hasGrowthStage,has Growth Stage,Growth stage of plant,Predicate,,https://idir.uta.edu/sockg-ontology#ResidueMeasurement,https://idir.uta.edu/sockg-ontology#GrowthStage,17385,direct
+https://idir.uta.edu/sockg-ontology#hasHarvestedFraction,has Harvested Fraction,Portion of crop harvested,Predicate,,https://idir.uta.edu/sockg-ontology#ResidueMeasurement,https://idir.uta.edu/sockg-ontology#HarvestedFraction,18154,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#ResidueMeasurement,https://idir.uta.edu/sockg-ontology#Measurement,97502,direct
+https://idir.uta.edu/sockg-ontology#usesTreatment,uses Treatment,Treatment applied,Predicate,,https://idir.uta.edu/sockg-ontology#ResidueMeasurement,https://idir.uta.edu/sockg-ontology#Treatment,18512,direct
+http://purl.org/dc/terms/description,description,Description of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#ResidueRemoval,http://www.w3.org/2001/XMLSchema#string,3,direct
+http://purl.org/dc/terms/description,description,Description of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Rotation,http://www.w3.org/2001/XMLSchema#string,66,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#SimulationModel,http://www.w3.org/2001/XMLSchema#string,12,direct
+http://purl.org/dc/terms/identifier,identifier,Unambiguous reference to the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Site,http://www.w3.org/2001/XMLSchema#string,60,direct
+http://purl.org/spatialai/spatial/spatial-full#connectedTo,topological connection (spatial contact) (sawgraph),Indicates topological connection or spatial contact between entities,Predicate,,https://idir.uta.edu/sockg-ontology#Site,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_2,118,direct
+http://purl.org/spatialai/spatial/spatial-full#connectedTo,topological connection (spatial contact) (sawgraph),Indicates topological connection or spatial contact between entities,Predicate,,https://idir.uta.edu/sockg-ontology#Site,https://idir.uta.edu/sockg-ontology#Location,16,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfContains,sfContains (kwg),Spatial relationship indicating one geometry contains another,Predicate,,https://idir.uta.edu/sockg-ontology#Site,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,3808,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,sfWithin (kwg),Spatial relationship indicating one geometry is within another,Predicate,,https://idir.uta.edu/sockg-ontology#Site,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_0,60,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,sfWithin (kwg),Spatial relationship indicating one geometry is within another,Predicate,,https://idir.uta.edu/sockg-ontology#Site,http://stko-kwg.geog.ucsb.edu/lod/ontology/AdministrativeRegion_1,118,direct
+http://stko-kwg.geog.ucsb.edu/lod/ontology/sfWithin,sfWithin (kwg),Spatial relationship indicating one geometry is within another,Predicate,,https://idir.uta.edu/sockg-ontology#Site,https://idir.uta.edu/sockg-ontology#Location,49,direct
+https://schema.org/postalCode,postal Code,Postal or ZIP code,Predicate,,https://idir.uta.edu/sockg-ontology#Site,http://www.w3.org/2001/XMLSchema#string,59,direct
+http://purl.org/dc/terms/date,date,Date associated with an event in the lifecycle of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#SoilBiologicalSample,http://www.w3.org/2001/XMLSchema#date,18273,direct
+https://idir.uta.edu/sockg-ontology#fromUnit,from Unit,Links measurement to experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#SoilBiologicalSample,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,18273,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#SoilBiologicalSample,https://idir.uta.edu/sockg-ontology#Measurement,41656,direct
+https://idir.uta.edu/sockg-ontology#lowerDepth,lower Depth,Lower boundary depth of soil sample,Predicate,,https://idir.uta.edu/sockg-ontology#SoilBiologicalSample,http://qudt.org/schema/qudt/QuantityValue,18273,direct
+https://idir.uta.edu/sockg-ontology#upperDepth,upper Depth,Upper boundary depth of soil sample,Predicate,,https://idir.uta.edu/sockg-ontology#SoilBiologicalSample,http://qudt.org/schema/qudt/QuantityValue,18273,direct
+https://idir.uta.edu/sockg-ontology#usesTreatment,uses Treatment,Treatment applied,Predicate,,https://idir.uta.edu/sockg-ontology#SoilBiologicalSample,https://idir.uta.edu/sockg-ontology#Treatment,18273,direct
+http://purl.org/dc/terms/date,date,Date associated with an event in the lifecycle of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#SoilChemicalSample,http://www.w3.org/2001/XMLSchema#date,54269,direct
+https://idir.uta.edu/sockg-ontology#fromUnit,from Unit,Links measurement to experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#SoilChemicalSample,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,54269,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#SoilChemicalSample,https://idir.uta.edu/sockg-ontology#Measurement,248481,direct
+https://idir.uta.edu/sockg-ontology#lowerDepth,lower Depth,Lower boundary depth of soil sample,Predicate,,https://idir.uta.edu/sockg-ontology#SoilChemicalSample,http://qudt.org/schema/qudt/QuantityValue,54269,direct
+https://idir.uta.edu/sockg-ontology#upperDepth,upper Depth,Upper boundary depth of soil sample,Predicate,,https://idir.uta.edu/sockg-ontology#SoilChemicalSample,http://qudt.org/schema/qudt/QuantityValue,54269,direct
+https://idir.uta.edu/sockg-ontology#usesModel,uses Model,Simulation model used,Predicate,,https://idir.uta.edu/sockg-ontology#SoilChemicalSample,https://idir.uta.edu/sockg-ontology#SimulationModel,6,direct
+https://idir.uta.edu/sockg-ontology#usesTreatment,uses Treatment,Treatment applied,Predicate,,https://idir.uta.edu/sockg-ontology#SoilChemicalSample,https://idir.uta.edu/sockg-ontology#Treatment,54269,direct
+http://purl.org/dc/terms/date,date,Date associated with an event in the lifecycle of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#SoilCover,http://www.w3.org/2001/XMLSchema#date,1034,direct
+https://idir.uta.edu/sockg-ontology#fromUnit,from Unit,Links measurement to experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#SoilCover,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,1034,direct
+https://idir.uta.edu/sockg-ontology#hasCrop,has Crop,Crop species or type,Predicate,,https://idir.uta.edu/sockg-ontology#SoilCover,https://lod.nal.usda.gov/nalt/7140,1034,direct
+https://idir.uta.edu/sockg-ontology#hasTiming,has Timing,Temporal schedule or timing,Predicate,,https://idir.uta.edu/sockg-ontology#SoilCover,https://idir.uta.edu/sockg-ontology#Timing,1034,direct
+https://idir.uta.edu/sockg-ontology#usesTreatment,uses Treatment,Treatment applied,Predicate,,https://idir.uta.edu/sockg-ontology#SoilCover,https://idir.uta.edu/sockg-ontology#Treatment,1034,direct
+http://purl.org/dc/terms/date,date,Date associated with an event in the lifecycle of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#SoilPhysicalSample,http://www.w3.org/2001/XMLSchema#date,28237,direct
+https://idir.uta.edu/sockg-ontology#fromUnit,from Unit,Links measurement to experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#SoilPhysicalSample,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,28237,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#SoilPhysicalSample,https://idir.uta.edu/sockg-ontology#Measurement,101745,direct
+https://idir.uta.edu/sockg-ontology#lowerDepth,lower Depth,Lower boundary depth of soil sample,Predicate,,https://idir.uta.edu/sockg-ontology#SoilPhysicalSample,http://qudt.org/schema/qudt/QuantityValue,28237,direct
+https://idir.uta.edu/sockg-ontology#upperDepth,upper Depth,Upper boundary depth of soil sample,Predicate,,https://idir.uta.edu/sockg-ontology#SoilPhysicalSample,http://qudt.org/schema/qudt/QuantityValue,28237,direct
+https://idir.uta.edu/sockg-ontology#usesModel,uses Model,Simulation model used,Predicate,,https://idir.uta.edu/sockg-ontology#SoilPhysicalSample,https://idir.uta.edu/sockg-ontology#SimulationModel,36,direct
+https://idir.uta.edu/sockg-ontology#usesTreatment,uses Treatment,Treatment applied,Predicate,,https://idir.uta.edu/sockg-ontology#SoilPhysicalSample,https://idir.uta.edu/sockg-ontology#Treatment,28237,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#SpeciesMix,http://www.w3.org/2001/XMLSchema#string,7,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#StartStopInterval,http://www.w3.org/2001/XMLSchema#string,3,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#SurfaceOrLeaching,http://www.w3.org/2001/XMLSchema#string,2,direct
+http://purl.org/dc/terms/bibliographicCitation,bibliographic Citation,Bibliographic citation for the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Thesis,http://www.w3.org/2001/XMLSchema#string,4,direct
+http://purl.org/dc/terms/creator,creator,Entity responsible for creating the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Thesis,http://www.w3.org/2001/XMLSchema#string,4,direct
+http://purl.org/dc/terms/description,description,Description of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Thesis,http://www.w3.org/2001/XMLSchema#string,4,direct
+http://purl.org/dc/terms/issued,issued,Date of formal issuance of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Thesis,http://www.w3.org/2001/XMLSchema#date,4,direct
+http://purl.org/dc/terms/title,title,Name given to the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Thesis,http://www.w3.org/2001/XMLSchema#string,4,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#Thesis,http://www.w3.org/2001/XMLSchema#string,4,direct
+https://idir.uta.edu/sockg-ontology#correspondingAuthor,corresponding Author,Author designated as correspondence contact,Predicate,,https://idir.uta.edu/sockg-ontology#Thesis,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://purl.org/dc/terms/description,description,Description of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Tillage,http://www.w3.org/2001/XMLSchema#string,8,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#TillageEvent,http://www.w3.org/2001/XMLSchema#string,18,direct
+https://idir.uta.edu/sockg-ontology#hasCrop,has Crop,Crop species or type,Predicate,,https://idir.uta.edu/sockg-ontology#TillageManagement,https://lod.nal.usda.gov/nalt/7140,27432,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#TillageManagement,https://idir.uta.edu/sockg-ontology#Measurement,27022,direct
+https://idir.uta.edu/sockg-ontology#hasTillageEvent,has Tillage Event,Specific tillage event,Predicate,,https://idir.uta.edu/sockg-ontology#TillageManagement,https://idir.uta.edu/sockg-ontology#TillageEvent,27450,direct
+https://idir.uta.edu/sockg-ontology#startDate,start Date,Start date of time period or event,Predicate,,https://idir.uta.edu/sockg-ontology#TillageManagement,http://www.w3.org/2001/XMLSchema#date,27450,direct
+https://idir.uta.edu/sockg-ontology#usesTillageMethod,uses Tillage Method,Tillage method used,Predicate,,https://idir.uta.edu/sockg-ontology#TillageManagement,https://idir.uta.edu/sockg-ontology#TillageMethod,24709,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://idir.uta.edu/sockg-ontology#TillageMethod,http://www.w3.org/2001/XMLSchema#string,64,direct
+http://purl.org/dc/terms/description,description,Description of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Timing,http://www.w3.org/2001/XMLSchema#string,7,direct
+http://purl.org/dc/terms/description,description,Description of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Treatment,http://www.w3.org/2001/XMLSchema#string,774,direct
+http://purl.org/dc/terms/identifier,identifier,Unambiguous reference to the resource,Predicate,,https://idir.uta.edu/sockg-ontology#Treatment,http://www.w3.org/2001/XMLSchema#string,769,direct
+https://idir.uta.edu/sockg-ontology#fromProject,from Project,Links data to originating research project,Predicate,,https://idir.uta.edu/sockg-ontology#Treatment,https://idir.uta.edu/sockg-ontology#Project,935,direct
+https://idir.uta.edu/sockg-ontology#hasAnimalSpecies,has Animal Species,Species of animals involved,Predicate,,https://idir.uta.edu/sockg-ontology#Treatment,https://idir.uta.edu/sockg-ontology#AnimalSpecies,3,direct
+https://idir.uta.edu/sockg-ontology#hasGrazingRate,has Grazing Rate,Rate of grazing activity,Predicate,,https://idir.uta.edu/sockg-ontology#Treatment,https://idir.uta.edu/sockg-ontology#GrazingRate,20,direct
+https://idir.uta.edu/sockg-ontology#hasProjectScenario,has Project Scenario,Scenario within research project,Predicate,,https://idir.uta.edu/sockg-ontology#Treatment,https://idir.uta.edu/sockg-ontology#ProjectScenario,826,direct
+https://idir.uta.edu/sockg-ontology#hasRotation,has Rotation,Crop rotation sequence,Predicate,,https://idir.uta.edu/sockg-ontology#Treatment,https://idir.uta.edu/sockg-ontology#Rotation,761,direct
+https://idir.uta.edu/sockg-ontology#hasTillage,has Tillage,Tillage practice applied,Predicate,,https://idir.uta.edu/sockg-ontology#Treatment,https://idir.uta.edu/sockg-ontology#Tillage,711,direct
+https://idir.uta.edu/sockg-ontology#irrigation,irrigation,Irrigation applied to crops,Predicate,,https://idir.uta.edu/sockg-ontology#Treatment,http://www.w3.org/2001/XMLSchema#boolean,774,direct
+https://idir.uta.edu/sockg-ontology#organicManagement,organic Management,Indicates organic management practices,Predicate,,https://idir.uta.edu/sockg-ontology#Treatment,http://www.w3.org/2001/XMLSchema#boolean,769,direct
+https://idir.uta.edu/sockg-ontology#startDate,start Date,Start date of time period or event,Predicate,,https://idir.uta.edu/sockg-ontology#Treatment,http://www.w3.org/2001/XMLSchema#date,769,direct
+https://idir.uta.edu/sockg-ontology#tileDrainage,tile Drainage,Tile drainage system present,Predicate,,https://idir.uta.edu/sockg-ontology#Treatment,http://www.w3.org/2001/XMLSchema#boolean,438,direct
+https://idir.uta.edu/sockg-ontology#treatmentHasAmendment,treatment Has Amendment,Amendment included in treatment,Predicate,,https://idir.uta.edu/sockg-ontology#Treatment,https://idir.uta.edu/sockg-ontology#Amendment,47106,direct
+https://idir.uta.edu/sockg-ontology#treatmentHasGrazingManagement,treatment Has Grazing Management,Grazing management in treatment,Predicate,,https://idir.uta.edu/sockg-ontology#Treatment,https://idir.uta.edu/sockg-ontology#GrazingManagement,1945,direct
+https://idir.uta.edu/sockg-ontology#treatmentHasGrowthStageManagement,treatment Has Growth Stage Management,Growth stage management in treatment,Predicate,,https://idir.uta.edu/sockg-ontology#Treatment,https://idir.uta.edu/sockg-ontology#GrowthStageManagement,5148,direct
+https://idir.uta.edu/sockg-ontology#treatmentHasPlantingManagement,treatment Has Planting Management,Planting management in treatment,Predicate,,https://idir.uta.edu/sockg-ontology#Treatment,https://idir.uta.edu/sockg-ontology#PlantingManagement,23616,direct
+https://idir.uta.edu/sockg-ontology#treatmentHasResidueManagement,treatment Has Residue Management,Residue management in treatment,Predicate,,https://idir.uta.edu/sockg-ontology#Treatment,https://idir.uta.edu/sockg-ontology#ResidueManagement,3334,direct
+https://idir.uta.edu/sockg-ontology#treatmentHasTillageManagement,treatment Has Tillage Management,Tillage management in treatment,Predicate,,https://idir.uta.edu/sockg-ontology#Treatment,https://idir.uta.edu/sockg-ontology#TillageManagement,27450,direct
+https://idir.uta.edu/sockg-ontology#usesCoverCrop,uses Cover Crop,Cover crop used,Predicate,,https://idir.uta.edu/sockg-ontology#Treatment,https://idir.uta.edu/sockg-ontology#CoverCrop,194,direct
+https://idir.uta.edu/sockg-ontology#usesFertilizerAmendment,uses Fertilizer Amendment,Fertilizer amendment used,Predicate,,https://idir.uta.edu/sockg-ontology#Treatment,https://idir.uta.edu/sockg-ontology#FertilizerAmendment,653,direct
+https://idir.uta.edu/sockg-ontology#usesResidueRemoval,uses Residue Removal,Residue removal method used,Predicate,,https://idir.uta.edu/sockg-ontology#Treatment,https://idir.uta.edu/sockg-ontology#ResidueRemoval,769,direct
+http://purl.org/dc/terms/date,date,Date associated with an event in the lifecycle of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#WaterQualityArea,http://www.w3.org/2001/XMLSchema#date,681,direct
+https://idir.uta.edu/sockg-ontology#fromUnit,from Unit,Links measurement to experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#WaterQualityArea,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,681,direct
+https://idir.uta.edu/sockg-ontology#hasLossesOrDeposition,has Losses or Deposition,Type of nutrient loss or deposition,Predicate,,https://idir.uta.edu/sockg-ontology#WaterQualityArea,https://idir.uta.edu/sockg-ontology#LossesOrDeposition,132,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#WaterQualityArea,https://idir.uta.edu/sockg-ontology#Measurement,5316,direct
+https://idir.uta.edu/sockg-ontology#hasSurfaceOrLeaching,has Surface or Leaching,Type of surface or leaching process,Predicate,,https://idir.uta.edu/sockg-ontology#WaterQualityArea,https://idir.uta.edu/sockg-ontology#SurfaceOrLeaching,681,direct
+https://idir.uta.edu/sockg-ontology#usesTreatment,uses Treatment,Treatment applied,Predicate,,https://idir.uta.edu/sockg-ontology#WaterQualityArea,https://idir.uta.edu/sockg-ontology#Treatment,681,direct
+http://purl.org/dc/terms/date,date,Date associated with an event in the lifecycle of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#WaterQualityConcentration,http://www.w3.org/2001/XMLSchema#date,2305,direct
+https://idir.uta.edu/sockg-ontology#fromUnit,from Unit,Links measurement to experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#WaterQualityConcentration,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,2305,direct
+https://idir.uta.edu/sockg-ontology#hasCrop,has Crop,Crop species or type,Predicate,,https://idir.uta.edu/sockg-ontology#WaterQualityConcentration,https://lod.nal.usda.gov/nalt/7140,1106,direct
+https://idir.uta.edu/sockg-ontology#hasGrowthStage,has Growth Stage,Growth stage of plant,Predicate,,https://idir.uta.edu/sockg-ontology#WaterQualityConcentration,https://idir.uta.edu/sockg-ontology#GrowthStage,1624,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#WaterQualityConcentration,https://idir.uta.edu/sockg-ontology#Measurement,9639,direct
+https://idir.uta.edu/sockg-ontology#hasSurfaceOrLeaching,has Surface or Leaching,Type of surface or leaching process,Predicate,,https://idir.uta.edu/sockg-ontology#WaterQualityConcentration,https://idir.uta.edu/sockg-ontology#SurfaceOrLeaching,2305,direct
+https://idir.uta.edu/sockg-ontology#usesModel,uses Model,Simulation model used,Predicate,,https://idir.uta.edu/sockg-ontology#WaterQualityConcentration,https://idir.uta.edu/sockg-ontology#SimulationModel,811,direct
+https://idir.uta.edu/sockg-ontology#usesTreatment,uses Treatment,Treatment applied,Predicate,,https://idir.uta.edu/sockg-ontology#WaterQualityConcentration,https://idir.uta.edu/sockg-ontology#Treatment,2305,direct
+https://idir.uta.edu/sockg-ontology#withStartStopInterval,with Start Stop Interval,Time interval for activity,Predicate,,https://idir.uta.edu/sockg-ontology#WaterQualityConcentration,https://idir.uta.edu/sockg-ontology#StartStopInterval,1624,direct
+http://purl.org/dc/terms/date,date,Date associated with an event in the lifecycle of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#WeatherObservation,http://www.w3.org/2001/XMLSchema#date,148679,direct
+https://idir.uta.edu/sockg-ontology#badValueFlag,bad Value Flag,Flag indicating potentially erroneous data value,Predicate,,https://idir.uta.edu/sockg-ontology#WeatherObservation,http://www.w3.org/2001/XMLSchema#boolean,149774,direct
+https://idir.uta.edu/sockg-ontology#fromUnit,from Unit,Links measurement to experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#WeatherObservation,,149774,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#WeatherObservation,https://idir.uta.edu/sockg-ontology#Measurement,1340538,direct
+https://idir.uta.edu/sockg-ontology#usesTreatment,uses Treatment,Treatment applied,Predicate,,https://idir.uta.edu/sockg-ontology#WeatherObservation,,149774,direct
+https://idir.uta.edu/sockg-ontology#weatherAt,weather At,Weather observation at location,Predicate,,https://idir.uta.edu/sockg-ontology#WeatherObservation,https://idir.uta.edu/sockg-ontology#Location,149774,direct
+http://purl.org/dc/terms/date,date,Date associated with an event in the lifecycle of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#WindErosionArea,http://www.w3.org/2001/XMLSchema#date,34,direct
+https://idir.uta.edu/sockg-ontology#fromUnit,from Unit,Links measurement to experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#WindErosionArea,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,34,direct
+https://idir.uta.edu/sockg-ontology#hasGrowthStage,has Growth Stage,Growth stage of plant,Predicate,,https://idir.uta.edu/sockg-ontology#WindErosionArea,https://idir.uta.edu/sockg-ontology#GrowthStage,34,direct
+https://idir.uta.edu/sockg-ontology#hasLossesOrDeposition,has Losses or Deposition,Type of nutrient loss or deposition,Predicate,,https://idir.uta.edu/sockg-ontology#WindErosionArea,https://idir.uta.edu/sockg-ontology#LossesOrDeposition,17,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#WindErosionArea,https://idir.uta.edu/sockg-ontology#Measurement,34,direct
+https://idir.uta.edu/sockg-ontology#usesModel,uses Model,Simulation model used,Predicate,,https://idir.uta.edu/sockg-ontology#WindErosionArea,https://idir.uta.edu/sockg-ontology#SimulationModel,14,direct
+https://idir.uta.edu/sockg-ontology#usesTreatment,uses Treatment,Treatment applied,Predicate,,https://idir.uta.edu/sockg-ontology#WindErosionArea,https://idir.uta.edu/sockg-ontology#Treatment,34,direct
+https://idir.uta.edu/sockg-ontology#withStartStopInterval,with Start Stop Interval,Time interval for activity,Predicate,,https://idir.uta.edu/sockg-ontology#WindErosionArea,https://idir.uta.edu/sockg-ontology#StartStopInterval,34,direct
+http://purl.org/dc/terms/date,date,Date associated with an event in the lifecycle of the resource,Predicate,,https://idir.uta.edu/sockg-ontology#YieldNutrientUptake,http://www.w3.org/2001/XMLSchema#date,704,direct
+https://idir.uta.edu/sockg-ontology#fromUnit,from Unit,Links measurement to experimental unit,Predicate,,https://idir.uta.edu/sockg-ontology#YieldNutrientUptake,https://idir.uta.edu/sockg-ontology#ExperimentalUnit,704,direct
+https://idir.uta.edu/sockg-ontology#hasCrop,has Crop,Crop species or type,Predicate,,https://idir.uta.edu/sockg-ontology#YieldNutrientUptake,https://lod.nal.usda.gov/nalt/7140,704,direct
+https://idir.uta.edu/sockg-ontology#hasGrowthStage,has Growth Stage,Growth stage of plant,Predicate,,https://idir.uta.edu/sockg-ontology#YieldNutrientUptake,https://idir.uta.edu/sockg-ontology#GrowthStage,704,direct
+https://idir.uta.edu/sockg-ontology#hasMeasurement,has Measurement,Links entity to measurement data,Predicate,,https://idir.uta.edu/sockg-ontology#YieldNutrientUptake,https://idir.uta.edu/sockg-ontology#Measurement,2252,direct
+https://idir.uta.edu/sockg-ontology#hasPlantFraction,has Plant Fraction,Specific plant part or fraction,Predicate,,https://idir.uta.edu/sockg-ontology#YieldNutrientUptake,https://idir.uta.edu/sockg-ontology#PlantFraction,704,direct
+https://idir.uta.edu/sockg-ontology#usesTreatment,uses Treatment,Treatment applied,Predicate,,https://idir.uta.edu/sockg-ontology#YieldNutrientUptake,https://idir.uta.edu/sockg-ontology#Treatment,674,direct
+https://idir.uta.edu/sockg-ontology#usesTreatment,uses Treatment,Treatment applied,Predicate,,https://idir.uta.edu/sockg-ontology#YieldNutrientUptake,,30,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://lod.nal.usda.gov/nalt/7140,http://www.w3.org/2001/XMLSchema#string,49,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://schema.org/Occupation,http://www.w3.org/2001/XMLSchema#string,19,direct
+http://www.w3.org/2000/01/rdf-schema#label,label,Human-readable name,Predicate,,https://schema.org/Organization,http://www.w3.org/2001/XMLSchema#string,28,direct
+http://purl.org/dc/terms/description,description,Description of the resource,Predicate,,https://schema.org/Person,http://www.w3.org/2001/XMLSchema#string,158,direct
+https://schema.org/additionalName,additional Name,Additional name or middle name,Predicate,,https://schema.org/Person,https://schema.org/Text,100,direct
+https://schema.org/affiliation,affiliation,Organizational affiliation,Predicate,,https://schema.org/Person,https://schema.org/Organization,147,direct
+https://schema.org/email,email,Email address,Predicate,,https://schema.org/Person,https://schema.org/Text,143,direct
+https://schema.org/familyName,family Name,Family name or surname,Predicate,,https://schema.org/Person,https://schema.org/Text,158,direct
+https://schema.org/givenName,given Name,Given name or first name,Predicate,,https://schema.org/Person,https://schema.org/Text,158,direct
+https://schema.org/hasOccupation,has Occupation,Occupation or profession,Predicate,,https://schema.org/Person,https://schema.org/Occupation,153,direct
+https://schema.org/honorificSuffix,honorific Suffix,"Honorific suffix (e.g., Jr., Sr., Ph.D.)",Predicate,,https://schema.org/Person,https://schema.org/Text,58,direct
+https://schema.org/isPrimaryContact,is Primary Contact,Indicates primary contact person,Predicate,,https://schema.org/Person,http://www.w3.org/2001/XMLSchema#boolean,140,direct
+https://schema.org/role,role,Role or function performed,Predicate,,https://schema.org/Person,http://www.w3.org/2001/XMLSchema#string,151,direct
+https://schema.org/telephone,telephone,Telephone number,Predicate,,https://schema.org/Person,https://schema.org/Text,136,direct
+https://schema.org/workLocation,work Location,Location where work is performed,Predicate,,https://schema.org/Person,https://idir.uta.edu/sockg-ontology#Location,158,direct
+http://purl.org/spatialai/spatial/spatial-full#spatiallyRelatedTo,topological connection (spatial contact) (sawgraph),Declared in the schema but used in no triple or class axiom.,Predicate,,http://www.opengis.net/ont/geosparql#SpatialObject,http://www.opengis.net/ont/geosparql#SpatialObject,0,declared
+http://stko-kwg.geog.ucsb.edu/lod/ontology/spatialRelation,spatial relation (kwg),Declared in the schema but used in no triple or class axiom.,Predicate,,,,0,declared
+https://idir.uta.edu/sockg-ontology#hasStandardDeviation,hasStandardDeviation,Declared in the schema but used in no triple or class axiom.,Predicate,,http://qudt.org/schema/qudt/QuantityValue,http://qudt.org/schema/qudt/QuantityValue,0,declared

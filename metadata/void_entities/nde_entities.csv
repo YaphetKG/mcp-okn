@@ -1,0 +1,52 @@
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples,Pattern
+http://schema.org/DataCatalog,DataCatalog,A collection of datasets.,Class,,,,8,
+http://schema.org/Dataset,Dataset,A body of structured information describing some topic(s) of interest.,Class,,,,256367,
+http://schema.org/DefinedTerm,DefinedTerm,"A word, name, acronym, phrase, etc. with a formal definition.",Class,,,,8554,
+http://schema.org/MonetaryGrant,MonetaryGrant,A monetary grant.,Class,,,,55862,
+http://schema.org/Organization,Organization,"An organization such as a school, NGO, corporation, club, etc.",Class,,,,436,
+http://schema.org/Person,Person,"A person (alive, dead, undead, or fictional).",Class,,,,270285,
+http://www.w3.org/2000/01/rdf-schema#Class,Class,The class of classes.,Class,,,,9,
+http://schema.org/archivedAt,archivedAt,Indicates a page or other link involved in archival of a CreativeWork.,Predicate,,http://schema.org/DataCatalog,http://www.w3.org/2001/XMLSchema#string,257145,direct
+http://schema.org/name,name,The name of the item.,Predicate,,http://schema.org/DataCatalog,http://www.w3.org/2001/XMLSchema#string,8,direct
+http://schema.org/url,url,URL of the item.,Predicate,,http://schema.org/DataCatalog,http://www.w3.org/2001/XMLSchema#string,99,direct
+http://schema.org/versionDate,versionDate,The release date of a product or product model.,Predicate,,http://schema.org/DataCatalog,http://www.w3.org/2001/XMLSchema#date,9,direct
+http://schema.org/versionDate,versionDate,The release date of a product or product model.,Predicate,,http://schema.org/DataCatalog,http://www.w3.org/2001/XMLSchema#dateTime,71,direct
+http://schema.org/abstract,abstract,An abstract is a short description that summarizes a CreativeWork.,Predicate,,http://schema.org/Dataset,http://www.w3.org/2001/XMLSchema#string,1320,direct
+http://schema.org/author,author,The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag.,Predicate,,http://schema.org/Dataset,http://schema.org/Person,1016292,direct
+http://schema.org/author,author,The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag.,Predicate,,http://schema.org/Dataset,http://www.w3.org/2001/XMLSchema#string,15352,direct
+http://schema.org/date,date,The date on which the CreativeWork was created or the item became available for distribution.,Predicate,,http://schema.org/Dataset,http://www.w3.org/2001/XMLSchema#date,256314,direct
+http://schema.org/dateCreated,dateCreated,The date on which the CreativeWork was created or the item became available for distribution.,Predicate,,http://schema.org/Dataset,http://www.w3.org/2001/XMLSchema#date,8451,direct
+http://schema.org/dateModified,dateModified,The date on which the CreativeWork was most recently modified or when the item's entry was modified within a DataFeed.,Predicate,,http://schema.org/Dataset,http://www.w3.org/2001/XMLSchema#date,254395,direct
+http://schema.org/dateModified,dateModified,The date on which the CreativeWork was most recently modified or when the item's entry was modified within a DataFeed.,Predicate,,http://schema.org/Dataset,http://www.w3.org/2001/XMLSchema#dateTime,1320,direct
+http://schema.org/datePublished,datePublished,Date of first publication or broadcast.,Predicate,,http://schema.org/Dataset,http://www.w3.org/2001/XMLSchema#date,254994,direct
+http://schema.org/description,description,A description of the item.,Predicate,,http://schema.org/Dataset,http://www.w3.org/2001/XMLSchema#string,254630,direct
+http://schema.org/funding,funding,A Grant that directly or indirectly provide funding or sponsorship for this item.,Predicate,,http://schema.org/Dataset,http://schema.org/MonetaryGrant,844672,direct
+http://schema.org/healthCondition,healthCondition,"Specifying the health condition(s) of a patient, medical study, or other target audience.",Predicate,,http://schema.org/Dataset,http://schema.org/DefinedTerm,250611,direct
+http://schema.org/identifier,identifier,"The identifier property represents any kind of identifier for any kind of Thing, such as ISBNs, GTIN codes, UUIDs etc.",Predicate,,http://schema.org/Dataset,http://www.w3.org/2001/XMLSchema#string,259035,direct
+http://schema.org/includedInDataCatalog,includedInDataCatalog,A data catalog which contains this dataset.,Predicate,,http://schema.org/Dataset,http://schema.org/DataCatalog,257145,direct
+http://schema.org/infectiousAgent,infectiousAgent,"The actual infectious agent, such as a specific bacterium.",Predicate,,http://schema.org/Dataset,http://schema.org/DefinedTerm,34080,direct
+http://schema.org/name,name,The name of the item.,Predicate,,http://schema.org/Dataset,http://www.w3.org/2001/XMLSchema#string,256367,direct
+http://schema.org/sameAs,sameAs,URL of a reference Web page that unambiguously indicates the item's identity.,Predicate,,http://schema.org/Dataset,http://www.w3.org/2001/XMLSchema#string,9761,direct
+http://schema.org/sameAs,sameAs,URL of a reference Web page that unambiguously indicates the item's identity.,Predicate,,http://schema.org/Dataset,,9741,direct
+http://schema.org/species,species,The species of the organism.,Predicate,,http://schema.org/Dataset,http://schema.org/DefinedTerm,264209,direct
+http://schema.org/url,url,URL of the item.,Predicate,,http://schema.org/Dataset,http://www.w3.org/2001/XMLSchema#string,256367,direct
+http://www.w3.org/2002/07/owl#sameAs,sameAs,The property that determines that two given individuals are equal.,Predicate,,http://schema.org/Dataset,,9741,direct
+http://schema.org/name,name,The name of the item.,Predicate,,http://schema.org/DefinedTerm,http://www.w3.org/2001/XMLSchema#string,8566,direct
+http://schema.org/endDate,endDate,The end date and time of the item (in ISO 8601 date format).,Predicate,,http://schema.org/MonetaryGrant,http://www.w3.org/2001/XMLSchema#date,54158,direct
+http://schema.org/funder,funder,A person or organization that supports (sponsors) something through some kind of financial contribution.,Predicate,,http://schema.org/MonetaryGrant,http://schema.org/Organization,57153,direct
+http://schema.org/identifier,identifier,"The identifier property represents any kind of identifier for any kind of Thing, such as ISBNs, GTIN codes, UUIDs etc.",Predicate,,http://schema.org/MonetaryGrant,http://www.w3.org/2001/XMLSchema#string,55862,direct
+http://schema.org/name,name,The name of the item.,Predicate,,http://schema.org/MonetaryGrant,http://www.w3.org/2001/XMLSchema#string,55860,direct
+http://schema.org/startDate,startDate,The start date and time of the item (in ISO 8601 date format).,Predicate,,http://schema.org/MonetaryGrant,http://www.w3.org/2001/XMLSchema#date,54344,direct
+http://schema.org/url,url,URL of the item.,Predicate,,http://schema.org/MonetaryGrant,http://www.w3.org/2001/XMLSchema#string,55860,direct
+http://schema.org/alternateName,alternateName,An alias for the item.,Predicate,,http://schema.org/Organization,http://www.w3.org/2001/XMLSchema#string,140,direct
+http://schema.org/identifier,identifier,"The identifier property represents any kind of identifier for any kind of Thing, such as ISBNs, GTIN codes, UUIDs etc.",Predicate,,http://schema.org/Organization,http://www.w3.org/2001/XMLSchema#string,38,direct
+http://schema.org/name,name,The name of the item.,Predicate,,http://schema.org/Organization,http://www.w3.org/2001/XMLSchema#string,451,direct
+http://schema.org/parentOrganization,parentOrganization,"The larger organization that this organization is a subOrganization of, if any.",Predicate,,http://schema.org/Organization,http://www.w3.org/2001/XMLSchema#string,33,direct
+http://schema.org/affiliation,affiliation,"An organization that this person is affiliated with. For example, a school/university, a club, or a team.",Predicate,,http://schema.org/Person,http://schema.org/Organization,665,direct
+http://schema.org/familyName,familyName,"Family name. In the U.S., the last name of a Person.",Predicate,,http://schema.org/Person,http://www.w3.org/2001/XMLSchema#string,21,direct
+http://schema.org/givenName,givenName,"Given name. In the U.S., the first name of a Person.",Predicate,,http://schema.org/Person,http://www.w3.org/2001/XMLSchema#string,21,direct
+http://schema.org/identifier,identifier,"The identifier property represents any kind of identifier for any kind of Thing, such as ISBNs, GTIN codes, UUIDs etc.",Predicate,,http://schema.org/Person,http://www.w3.org/2001/XMLSchema#string,4,direct
+http://schema.org/name,name,The name of the item.,Predicate,,http://schema.org/Person,http://www.w3.org/2001/XMLSchema#string,273769,direct
+http://schema.org/url,url,URL of the item.,Predicate,,http://schema.org/Person,http://www.w3.org/2001/XMLSchema#string,1,direct
+http://www.w3.org/2000/01/rdf-schema#range,range,A range of the subject property.,Predicate,,,,22,direct
+http://www.w3.org/2000/01/rdf-schema#domain,domain,A domain of the subject property.,Predicate,,,,24,direct

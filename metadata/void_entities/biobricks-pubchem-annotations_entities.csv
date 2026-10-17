@@ -1,0 +1,7 @@
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples,Pattern
+http://www.w3.org/ns/oa#Annotation,Annotation,A connection between a target resource (like a chemical compound) and content that annotates it (like textual information or data),Class,,,,10718093,
+http://purl.org/dc/elements/1.1/subject,Subject,The chemical compound or substance that the annotation is about,Predicate,,http://www.w3.org/ns/oa#Annotation,,17550399,direct
+http://www.w3.org/ns/oa#hasBody,Has Body,Links an annotation to the content that describes or comments on the target,Predicate,,http://www.w3.org/ns/oa#Annotation,,10718093,direct
+http://www.w3.org/ns/oa#hasTarget,Has Target,"Links an annotation to the resource being annotated (e.g., a chemical compound)",Predicate,,http://www.w3.org/ns/oa#Annotation,,17550399,direct
+http://purl.org/dc/elements/1.1/format,Format,The file format or media type of the content,Predicate,,,,10718093,direct
+http://www.w3.org/1999/02/22-rdf-syntax-ns#value,Value,The actual text or data content of an annotation,Predicate,,,,20170535,direct

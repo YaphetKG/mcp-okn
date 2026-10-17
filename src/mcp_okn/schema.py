@@ -5,6 +5,10 @@ properties, node properties) published in the ``sbl-sdsc/mcp-proto-okn`` repo.
 When no curated metadata exists we fall back to probing the federation endpoint
 for the distinct classes and predicates used in the KG's named graph.
 
+Set ``MCP_OKN_ENTITY_METADATA_BASE`` to a URL or directory of ``<kg>_entities.csv``
+files (e.g. the VoID-built ``metadata/void_entities``) to read those INSTEAD: the
+curated files are then never read, and a KG the override lacks is probed live.
+
 The shortnames are the same ones used as federation named graphs
 (``https://purl.org/okn/frink/kg/{shortname}``), so the curated CSVs port over
 directly from the proto-okn server.
@@ -14,9 +18,12 @@ from __future__ import annotations
 
 import asyncio
 import csv
+import os
 import re
 from io import StringIO
+from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit
 
 import httpx
 
@@ -30,6 +37,18 @@ from .sparql import SparqlError, named_graph, run_sparql
 ENTITY_METADATA_BASE = (
     "https://raw.githubusercontent.com/sbl-sdsc/mcp-proto-okn/main/metadata/entities"
 )
+
+#: Optional override: a URL or local directory of ``<kg>_entities.csv`` files (e.g.
+#: ``metadata/void_entities``, built by ``scripts/build_void_schema.py``). When set it
+#: replaces :data:`ENTITY_METADATA_BASE` entirely — no curated fallback; a KG the
+#: override lacks is probed live. The builder already counts a stale-VoID KG from the
+#: served graph, so every override file describes the release being served.
+ENTITY_METADATA_OVERRIDE = os.environ.get("MCP_OKN_ENTITY_METADATA_BASE", "").strip()
+
+_RDF_STATEMENT = "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
+
+#: Source/target pairs listed per predicate besides the top one.
+MAX_EXTRA_PAIRS = 3
 
 #: Provenance / dataset-summary vocabularies (VOID and friends) that some upstream
 #: ``*_entities.csv`` files now embed as schema rows. These describe the dataset
@@ -111,6 +130,130 @@ ASK {{ GRAPH <https://purl.org/okn/frink/kg/{shortname}> {{
 #: CSV rebuilt for that release (upstream 36162dc) lists them; all 26 of its rows
 #: are populated. Chemicals are also typed properly now (``obo:CHEBI_23367``, 44
 #: nodes) instead of as ``sio:SIO_010043`` proteins.
+SPOKE_OKN_GUIDANCE = """\
+LOCATION KIND IS ON A MALFORMED PREDICATE (verified live 2026-10-16). Every
+spoke-okn location (113,882 nodes under .../spoke-okn/location/) is typed
+rdf:type <https://schema.org/AdministrativeArea>; WHAT KIND of place it is sits
+only on the bare RDF namespace used as a predicate,
+<http://www.w3.org/1999/02/22-rdf-syntax-ns#> (no local name - a mangled
+rdf:type). Its values:
+  https://schema.org/City                         58,441
+  http://www.wikidata.org/entity/Q37447            42,724  (postal code / ZIP)
+  .../spoke-okn/node/SubDivision                    5,402
+  http://www.wikidata.org/entity/Q5284423           3,816  (division)
+  http://www.wikidata.org/entity/Q28575             3,196  (county)
+  https://schema.org/Country                          251
+  https://schema.org/State                             52
+So "which counties / states / cities" filters on that predicate; rdf:type alone
+cannot tell a county from a ZIP code. Locations also carry rdfs:label and
+spoke-okn schema properties state_fips, state_name, county_fips, city_fips.
+
+THE schema.org KINDS ARE https. City, State and Country are stored as
+https://schema.org/..., and this server rewrites a bracketed
+<https://schema.org/...> IRI to http before sending it, so
+`?loc <http://www.w3.org/1999/02/22-rdf-syntax-ns#> <https://schema.org/State>`
+silently returns 0 rows. Build the IRI instead -
+BIND(IRI(CONCAT("https://schema.org/", "State")) AS ?kind) - or compare
+STR(?kind). The same applies to schema:AdministrativeArea in rdf:type. The
+Wikidata kinds (http://www.wikidata.org/entity/...) are unaffected.\
+"""
+
+#: Companion snippet: counties of one state, via the malformed kind predicate.
+#: Verified 2026-10-16: California returns 58 rows.
+SPOKE_OKN_SNIPPET = """\
+# spoke-okn counties in a state. The kind is on the bare rdf: namespace
+# predicate, not rdf:type; Wikidata Q28575 = county. For City / State /
+# Country use BIND(IRI(CONCAT("https://schema.org/", "State")) AS ?kind) and
+# ?loc <http://www.w3.org/1999/02/22-rdf-syntax-ns#> ?kind (https, see notes).
+SELECT ?county ?name ?state_fips ?county_fips WHERE {
+  GRAPH <https://purl.org/okn/frink/kg/spoke-okn> {
+    ?county <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+              <http://www.wikidata.org/entity/Q28575> ;
+            <https://purl.org/okn/frink/kg/spoke-okn/schema/state_name> "California" ;
+            <http://www.w3.org/2000/01/rdf-schema#label> ?name ;
+            <https://purl.org/okn/frink/kg/spoke-okn/schema/state_fips> ?state_fips ;
+            <https://purl.org/okn/frink/kg/spoke-okn/schema/county_fips> ?county_fips .
+  }
+}
+ORDER BY ?county_fips\
+"""
+
+PROKN_NEGATED_PREDICATES = (
+    "https://w3id.org/biolink/vocab/actively_involved_in",
+    "https://w3id.org/biolink/vocab/catalyzes",
+    "http://purl.uniprot.org/core/partOf",
+    "https://w3id.org/biolink/vocab/part_of",
+    "https://w3id.org/biolink/vocab/colocalizes_with",
+    "https://w3id.org/biolink/vocab/contributes_to",
+    "https://w3id.org/biolink/vocab/acts_upstream_of_or_within",
+    "https://w3id.org/biolink/vocab/active_in",
+    "https://w3id.org/biolink/vocab/acts_upstream_of_or_within_negative_effect",
+)
+
+PROKN_GUIDANCE = """\
+NEGATED GO ANNOTATIONS ARE ALSO STORED AS POSITIVE TRIPLES (verified live
+2026-10-16). prokn holds 1,370 GO annotations with GO's NOT qualifier (e.g.
+uniprot:P61106 is NOT partOf GO:0005929, ECO_IDA, UniProt). Each is a reified
+rdf:Statement additionally typed
+<https://www.w3.org/2002/07/owl#NegativePropertyAssertion> - AND each is also
+asserted as a plain triple `?protein <pred> ?go`, indistinguishable from a
+positive annotation. Affected predicates (negated / all direct triples):
+  biolink:actively_involved_in       570 / 121,057
+  biolink:catalyzes                  535 /  90,713
+  uniprot core:partOf                212 /  77,072
+  biolink:part_of                     19 /  14,571
+  biolink:colocalizes_with            12 /     858
+  biolink:contributes_to              12 /     933
+  biolink:acts_upstream_of_or_within   6 /   2,433
+  biolink:active_in                    3 /   5,196
+  biolink:acts_upstream_of_or_within_negative_effect 1 / 11
+For these, do NOT use the plain triple when correctness matters (GO enrichment,
+"is protein X in compartment Y"): it returns the NOT annotations as positive.
+Use the statement pattern and drop negated statements:
+  FILTER NOT EXISTS { ?st rdf:type <https://www.w3.org/2002/07/owl#NegativePropertyAssertion> }
+This overrides the pattern_guidance advice to prefer the direct triple, for
+these predicates in prokn only. To LIST the negated annotations, use FILTER
+EXISTS instead.
+
+THE OWL IRIs ARE https. prokn writes OWL's namespace as https://www.w3.org/2002/07/owl#
+(wrong scheme): NegativePropertyAssertion (1,370 statements), Class (1,436
+nodes, mostly Bridge2AI cell-image crops .../ProKN/rdf/CellMedioid_...) and
+annotatedProperty. The standard http form (owl:Class, PREFIX owl:
+<http://www.w3.org/2002/07/owl#>) matches NOTHING here - write the https IRI
+in full.\
+"""
+
+#: Companion snippet: a protein's GO annotations without the NOT ones.
+#: Verified 2026-10-16: P61106 returns 232 rows and leaves out its NOT partOf
+#: GO:0005929, which the plain partOf triples include.
+PROKN_SNIPPET = """\
+# prokn GO annotations of one protein, EXCLUDING GO NOT-qualified (negated)
+# annotations, which are also present as plain ?protein <pred> ?go triples.
+SELECT ?pred ?go WHERE {
+  GRAPH <https://purl.org/okn/frink/kg/prokn> {
+    ?st <http://www.w3.org/1999/02/22-rdf-syntax-ns#subject> <http://purl.uniprot.org/uniprot/P61106> ;
+        <http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate> ?pred ;
+        <http://www.w3.org/1999/02/22-rdf-syntax-ns#object> ?go .
+    FILTER NOT EXISTS {
+      ?st <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
+          <https://www.w3.org/2002/07/owl#NegativePropertyAssertion>
+    }
+  }
+}\
+"""
+
+#: Per-KG replacements for the one-line edge_properties ``usage`` note, where the
+#: generic "use the direct triple" advice would give wrong answers.
+_EDGE_USAGE_OVERRIDES: dict[str, dict[str, str]] = {
+    "prokn": dict.fromkeys(
+        PROKN_NEGATED_PREDICATES,
+        "The direct triple ALSO holds GO NOT (negated) annotations: to exclude "
+        "them use this template with FILTER NOT EXISTS { ?stmt rdf:type "
+        "<https://www.w3.org/2002/07/owl#NegativePropertyAssertion> } (see "
+        "usage_notes).",
+    ),
+}
+
 NCIPIDKG_GUIDANCE = """\
 IDENTIFIER AND JOIN NOTES (the curated schema matches the deployed graph as of
 2026-10-13; these are the things it still does not tell you).
@@ -484,6 +627,16 @@ _KG_USAGE_NOTES: dict[str, dict[str, str]] = {
             predicate="http://medicaldevice.com/ontology/hasDeviceIdentifier",
         ),
     },
+    "prokn": {
+        "title": "Negated GO annotation notes",
+        "guidance": PROKN_GUIDANCE,
+        "query_snippet": PROKN_SNIPPET,
+    },
+    "spoke-okn": {
+        "title": "Location-kind notes",
+        "guidance": SPOKE_OKN_GUIDANCE,
+        "query_snippet": SPOKE_OKN_SNIPPET,
+    },
     "ncipidkg": {
         "guidance": NCIPIDKG_GUIDANCE,
         "query_snippet": NCIPIDKG_SNIPPET,
@@ -491,8 +644,16 @@ _KG_USAGE_NOTES: dict[str, dict[str, str]] = {
 }
 
 
+#: Usage notes that describe a curated entity file, not the graph: they are wrong
+#: when the schema comes from :data:`ENTITY_METADATA_OVERRIDE`, which is built from
+#: the served graph itself (medical-device-kg's deployment-lag census).
+_CURATED_FILE_NOTES = frozenset({"medical-device-kg"})
+
+
 def usage_notes(shortname: str) -> dict[str, str] | None:
     """Return curated usage notes for a KG, or None if it has none."""
+    if ENTITY_METADATA_OVERRIDE and shortname in _CURATED_FILE_NOTES:
+        return None
     return _KG_USAGE_NOTES.get(shortname)
 
 
@@ -515,66 +676,189 @@ _NODE_CLASS_STYLE = "fill:#BBDEFB,stroke:#1565C0,color:#000"
 _EDGE_CLASS_STYLE = "fill:#FFE0B2,stroke:#E65100,color:#000"
 
 # Process-lifetime cache of parsed entity metadata, keyed by shortname.
-_metadata_cache: dict[str, dict[str, dict[str, str]]] = {}
+_metadata_cache: dict[str, dict[str, dict[str, Any]]] = {}
+
+
+def parse_entity_metadata(content: str) -> dict[str, dict[str, Any]]:
+    """Parse an ``*_entities.csv`` into ``{uri: {label, description, type, …}}``.
+
+    Reads both layouts. The curated proto-okn files have one row per URI and types
+    Class / Predicate / EdgeProperty / NodeProperty. The VoID-built files add a
+    ``Triples`` column and repeat a predicate once per (source, target) pair; those
+    rows are collected into ``pairs``. The primary pair (``source_class`` /
+    ``target_class``) is the largest when counts exist; otherwise it is the LAST row,
+    as the previous last-row-wins read chose, and the others follow in file order.
+    Curated files repeat URIs too (one row per domain/range, e.g. 47 in
+    climatemodelskg); that read kept only one of them.
+
+    One URI can also carry several kinds: scales' ``jxdm#Arrest`` is a Class and a
+    Predicate, wildlifekn's ``date`` an EdgeProperty and a NodeProperty. The first
+    kind seen is the entry; the others ride along in its ``also`` list, so neither
+    is lost (the old read kept only the last row, dropping the Class and erasing
+    ``date``'s edge parent).
+
+    A row with ``EdgePropertyOf`` is an edge property when its Type says so or when
+    it sits on a reified statement (SourceClass ``rdf:Statement`` or empty) — the
+    VoID files, and several curated ones (pankgraph, ncipidkg, prokn), type those
+    Predicate and name the parent by IRI. oard-kg's rows name a result-node class
+    instead: they are plain properties of that node, with no ``rdf:predicate`` for
+    a reification template to match, so they stay predicates. Parents accumulate
+    semicolon-separated and deduplicated.
+    """
+    by_uri: dict[str, dict[str, dict[str, Any]]] = {}
+    for row in csv.DictReader(StringIO(content)):
+        uri = (row.get("URI") or "").strip()
+        if not uri or _is_provenance_uri(uri):
+            continue
+        edge_property_of = (row.get("EdgePropertyOf") or "").strip()
+        source = (row.get("SourceClass") or "").strip()
+        target = (row.get("TargetClass") or "").strip()
+        row_type = (row.get("Type") or "").strip()
+        if edge_property_of and source not in ("", _RDF_STATEMENT):
+            if row_type.lower() != "edgeproperty":
+                edge_property_of = ""
+        elif edge_property_of:
+            row_type = "EdgeProperty"
+        raw_triples = (row.get("Triples") or "").strip()
+        triples = int(raw_triples) if raw_triples.isdigit() else None
+        label = (row.get("Label") or "").strip()
+        description = (row.get("Description") or "").strip()
+        patterns = [p for p in (row.get("Pattern") or "").strip().split(";") if p]
+
+        kinds = by_uri.setdefault(uri, {})
+        entry = kinds.get(row_type.lower())
+        if entry is None:
+            entry = kinds[row_type.lower()] = {
+                "label": label,
+                "description": description,
+                "type": row_type,
+                "edge_property_of": "",
+                "source_class": source,
+                "target_class": target,
+                "pairs": [],
+                "patterns": [],
+            }
+        elif not edge_property_of:
+            # Last row wins, as before; a repeated edge-property row only adds a
+            # parent (its per-relationship description is not the property's own).
+            entry["label"] = label or entry["label"]
+            entry["description"] = description or entry["description"]
+        if edge_property_of:
+            # A single edge-property URI can belong to several relationships
+            # (e.g. adj_p_value on both EXPRESSION and ABUNDANCE). Accumulate
+            # the parents semicolon-separated so the join below finds them all.
+            parents = [p for p in entry["edge_property_of"].split(";") if p]
+            if edge_property_of not in parents:
+                parents.append(edge_property_of)
+            entry["edge_property_of"] = ";".join(parents)
+        if source or target or triples is not None:
+            entry["pairs"].append((source, target, triples))
+        entry["patterns"] += [p for p in patterns if p not in entry["patterns"]]
+
+    metadata: dict[str, dict[str, Any]] = {}
+    for uri, kinds in by_uri.items():
+        entries = list(kinds.values())
+        for entry in entries:
+            _set_primary_pair(entry)
+        metadata[uri] = entries[0]
+        if len(entries) > 1:
+            entries[0]["also"] = entries[1:]
+    return metadata
+
+
+#: Canonical order of ``Pattern`` values (see ``void_schema.PATTERNS``).
+_PATTERN_ORDER = ("direct", "reified", "axiom", "declared")
+
+
+def _set_primary_pair(entry: dict[str, Any]) -> None:
+    """Order ``pairs`` primary-first and copy the primary into source/target.
+
+    Also joins the entry's ``Pattern`` values across its rows (``direct;reified``).
+    """
+    found = entry.pop("patterns", [])
+    entry["pattern"] = ";".join(
+        [p for p in _PATTERN_ORDER if p in found]
+        + [p for p in found if p not in _PATTERN_ORDER]
+    )
+    pairs = entry["pairs"]
+    if not pairs:
+        entry["triples"] = None
+        return
+    counts = [n for _s, _t, n in pairs]
+    if None in counts:
+        entry["triples"] = None
+        pairs.insert(0, pairs.pop())
+    else:
+        entry["triples"] = sum(c or 0 for c in counts)
+        pairs.sort(key=lambda p: -(p[2] or 0))
+    entry["source_class"], entry["target_class"] = pairs[0][0], pairs[0][1]
+
+
+async def _read_csv(base: str, shortname: str, client: httpx.AsyncClient) -> str | None:
+    """One ``<kg>_entities.csv`` from a URL base or a local directory."""
+    name = f"{shortname}_entities.csv"
+    if not base.startswith(("http://", "https://")):
+        path = Path(base) / name
+        return path.read_text() if path.exists() else None
+    try:
+        resp = await client.get(f"{base}/{name}")
+    except httpx.HTTPError:
+        return None
+    return resp.text if resp.status_code == 200 else None
+
+
+#: The base each cached KG's metadata was loaded from.
+_metadata_source: dict[str, str] = {}
+
+
+def metadata_source(shortname: str) -> str | None:
+    """Where :func:`fetch_entity_metadata` loaded a KG's metadata from, if anywhere."""
+    return _metadata_source.get(shortname)
 
 
 async def fetch_entity_metadata(
     shortname: str,
     client: httpx.AsyncClient | None = None,
     refresh: bool = False,
-) -> dict[str, dict[str, str]]:
-    """Fetch and parse the curated entity metadata CSV for a KG (cached).
+    override: str | None = None,
+) -> dict[str, dict[str, Any]]:
+    """Fetch and parse the entity metadata CSV for a KG (cached).
 
-    Returns a dict mapping each URI to ``{label, description, type,
-    edge_property_of, source_class, target_class}``. Returns an empty dict when
-    no curated CSV exists for the KG (the caller then falls back to probing).
+    Reads :data:`ENTITY_METADATA_OVERRIDE` (or ``override``) when set, else the
+    curated proto-okn file — never both. Returns an empty dict when the source lacks
+    the KG (the caller then falls back to probing). See
+    :func:`parse_entity_metadata`.
     """
     if shortname in _metadata_cache and not refresh:
         return _metadata_cache[shortname]
 
-    url = f"{ENTITY_METADATA_BASE}/{shortname}_entities.csv"
+    override = ENTITY_METADATA_OVERRIDE if override is None else override
     owns = client is None
     if client is None:
         client = httpx.AsyncClient(timeout=30.0)
+    content, used = None, None
     try:
-        resp = await client.get(url)
-        if resp.status_code != 200:
-            _metadata_cache[shortname] = {}
-            return {}
-        content = resp.text
-    except httpx.HTTPError:
-        _metadata_cache[shortname] = {}
-        return {}
+        for base in [override or ENTITY_METADATA_BASE]:
+            content = await _read_csv(base, shortname, client)
+            if content is not None:
+                used = base
+                break
     finally:
         if owns:
             await client.aclose()
 
-    metadata: dict[str, dict[str, str]] = {}
-    for row in csv.DictReader(StringIO(content)):
-        uri = (row.get("URI") or "").strip()
-        if not uri or _is_provenance_uri(uri):
-            continue
-        edge_property_of = (row.get("EdgePropertyOf") or "").strip()
-        if uri in metadata and edge_property_of:
-            # A single edge-property URI can belong to several relationships
-            # (e.g. adj_p_value on both EXPRESSION and ABUNDANCE). Accumulate
-            # the parents semicolon-separated so the join below finds them all.
-            existing = metadata[uri].get("edge_property_of", "")
-            metadata[uri]["edge_property_of"] = (
-                f"{existing};{edge_property_of}" if existing else edge_property_of
-            )
-        else:
-            metadata[uri] = {
-                "label": (row.get("Label") or "").strip(),
-                "description": (row.get("Description") or "").strip(),
-                "type": (row.get("Type") or "").strip(),
-                "edge_property_of": edge_property_of,
-                "source_class": (row.get("SourceClass") or "").strip(),
-                "target_class": (row.get("TargetClass") or "").strip(),
-            }
-
+    metadata = parse_entity_metadata(content) if content is not None else {}
     _metadata_cache[shortname] = metadata
+    if used:
+        _metadata_source[shortname] = used
+    else:
+        _metadata_source.pop(shortname, None)
     return metadata
+
+
+def _class_word(cls: str) -> str:
+    """A class's local name when it is an IRI, else the label as given."""
+    return _local_name(cls) if cls.startswith(("http://", "https://")) else cls
 
 
 def _generate_query_template(
@@ -583,6 +867,7 @@ def _generate_query_template(
     source_class: str,
     target_class: str,
     properties: list[dict[str, Any]],
+    relationship_uri: str = "",
 ) -> str:
     """Generate a SPARQL template for a reified relationship with edge properties.
 
@@ -592,11 +877,18 @@ def _generate_query_template(
     and variables come from the property URI's local name, not its display
     label, which may be prose ("Activity Sources").
     """
-    source_var = _sparql_var(source_class) or "source"
-    target_var = _sparql_var(target_class) or "target"
+    # VoID-built files give classes as IRIs; name the variable after the local
+    # name (?disease), not the whole IRI (?httpsw3idorgbiolinkvocabdisease).
+    source_var = _sparql_var(_class_word(source_class)) or "source"
+    target_var = _sparql_var(_class_word(target_class)) or "target"
     if source_var == target_var:
         source_var, target_var = f"{source_var}_1", f"{target_var}_2"
     schema_ns = _SCHEMA_NS.format(shortname=shortname)
+    rel_pred = (
+        f"<{relationship_uri}>"
+        if relationship_uri and not relationship_uri.startswith(schema_ns)
+        else f"schema:{relationship_label}"
+    )
 
     prop_selects: list[str] = []
     prop_patterns: list[str] = []
@@ -621,7 +913,7 @@ def _generate_query_template(
         "WHERE {\n"
         f"  GRAPH <{named_graph(shortname)}> {{\n"
         f"    ?stmt rdf:subject ?{source_var} ;\n"
-        f"          rdf:predicate schema:{relationship_label} ;\n"
+        f"          rdf:predicate {rel_pred} ;\n"
         f"          rdf:object ?{target_var} .\n"
         "    # Edge properties are sparse: keep OPTIONAL except on ones you filter by.\n"
         f"{chr(10).join(prop_patterns)}\n"
@@ -630,21 +922,165 @@ def _generate_query_template(
     )
 
 
+#: What each ``Pattern`` value means for the query, shown once per pattern present.
+#: Plain ``direct`` needs no note. Each is scoped to its own predicates: guidance is
+#: an instruction to the model, so it must not read as a rule for the whole KG.
+PATTERN_GUIDANCE = {
+    "direct;reified": (
+        "Stored twice, one-to-one: as a direct triple `?s <p> ?o` AND as an "
+        "rdf:Statement (rdf:subject / rdf:predicate / rdf:object). Use the direct "
+        "triple to traverse or test the link; use the relationship's "
+        "edge_properties query_template only to read or filter its edge "
+        "properties, which exist only on the statement."
+    ),
+    "reified": (
+        "Stored ONLY as rdf:Statements: `?s <p> ?o` returns nothing. Use the "
+        "relationship's edge_properties query_template."
+    ),
+    "axiom": (
+        "Never asserted as a triple: `?s <p> ?o` returns nothing. These appear only "
+        "as owl:onProperty of OWL restrictions inside class definitions. Read one "
+        "with query_template (substitute the predicate); each row is a class-level "
+        "statement (every <subject> has some <filler> via <p>), not an instance link."
+    ),
+    "direct;axiom": (
+        "Asserted as triples AND used in OWL class definitions: `?s <p> ?o` returns "
+        "the asserted links; the axiom query_template returns the class-level "
+        "restrictions."
+    ),
+    "declared": (
+        "Declared in the schema but used in no triple or class axiom: any query on "
+        "these returns nothing."
+    ),
+}
+
+
+#: The one-line form of PATTERN_GUIDANCE shown on each edge_properties entry.
+_EDGE_USAGE = {
+    "direct;reified": (
+        "Also a direct triple: use `?s <{uri}> ?o` unless you need edge properties."
+    ),
+    "reified": "Only reified: `?s <{uri}> ?o` returns nothing; use this template.",
+}
+
+
+def _axiom_query_template(shortname: str, predicate: str) -> str:
+    """Read the OWL restrictions on one predicate: one row per restriction.
+
+    Two shapes cover 8,153 of 8,163 restrictions on the 28 axiom-only predicates of
+    bio101, phaseskg, sawgraph, hydrologykg and fiokg (2026-10-16): the restriction
+    sits in a named class's own definition (``rdfs:subClassOf`` or, OBO-style,
+    ``owl:equivalentClass``, through nested ``owl:intersectionOf`` lists), or it is
+    nested in another restriction's filler, where the named classes beside it in
+    that inner intersection are its subject (bio101: Process ⊑ ∃has-participant.
+    (NADH ⊓ ∃has-oxidized-form.NAD-Plus)). Fillers are usually intersections, so
+    their named members (and ``unionOf`` alternatives) are unpacked; literal
+    ``owl:hasValue`` fillers (bio101's ``"*green"``) are kept, and cardinalities go
+    in ``?constraints`` (a plain ``owl:maxCardinality 1`` has no filler at all).
+    ``GROUP_CONCAT`` takes ``STR()``: QLever silently drops IRI values from it.
+    """
+    return (
+        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+        "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n\n"
+        "# One row per restriction: the named classes it describes, its filler(s)\n"
+        '# (named classes or literal values) and any cardinality, each " | "-joined.\n'
+        'SELECT ?r (GROUP_CONCAT(DISTINCT STR(?subject); SEPARATOR=" | ") AS ?subjects)\n'
+        '       (GROUP_CONCAT(DISTINCT STR(?filler); SEPARATOR=" | ") AS ?fillers)\n'
+        '       (GROUP_CONCAT(DISTINCT ?card; SEPARATOR=" | ") AS ?constraints)\n'
+        "WHERE {\n"
+        f"  GRAPH <{named_graph(shortname)}> {{\n"
+        f"    ?r owl:onProperty <{predicate}> .\n"
+        "    { # in a named class's own definition\n"
+        "      ?subject (rdfs:subClassOf|owl:equivalentClass)/"
+        "(owl:intersectionOf/rdf:rest*/rdf:first)* ?r .\n"
+        "    } UNION { # nested in another restriction's filler\n"
+        "      ?outer owl:someValuesFrom ?inner .\n"
+        "      ?inner owl:intersectionOf/rdf:rest*/rdf:first ?r , ?subject .\n"
+        "    }\n"
+        "    FILTER(isIRI(?subject))\n"
+        "    OPTIONAL {\n"
+        "      ?r owl:someValuesFrom|owl:allValuesFrom|owl:onClass|owl:hasValue"
+        "|owl:onDataRange ?f .\n"
+        "      ?f ((owl:intersectionOf|owl:unionOf)/rdf:rest*/rdf:first)* ?filler .\n"
+        "      FILTER(!isBlank(?filler))\n"
+        "    }\n"
+        "    OPTIONAL {\n"
+        "      ?r ?cp ?n .\n"
+        "      FILTER(?cp IN (owl:cardinality, owl:minCardinality, owl:maxCardinality,\n"
+        "                     owl:qualifiedCardinality, owl:minQualifiedCardinality,\n"
+        "                     owl:maxQualifiedCardinality))\n"
+        '      BIND(CONCAT(STRAFTER(STR(?cp), "#"), " ", STR(?n)) AS ?card)\n'
+        "    }\n"
+        "  }\n"
+        "}\n"
+        "GROUP BY ?r"
+    )
+
+
+def _pattern_guidance(
+    shortname: str,
+    predicates: list[dict[str, Any]],
+    collapsed: list[str],
+) -> dict[str, Any]:
+    """``{pattern: {guidance, count, …}}`` for each non-``direct`` pattern present."""
+    by_pattern: dict[str, list[str]] = {}
+    for p in predicates:
+        if p["pattern"] and p["pattern"] != "direct":
+            by_pattern.setdefault(p["pattern"], []).append(p["uri"])
+    for uri in collapsed:
+        by_pattern.setdefault("declared", []).append(uri)
+    out: dict[str, Any] = {}
+    for pattern, uris in by_pattern.items():
+        entry: dict[str, Any] = {
+            "guidance": PATTERN_GUIDANCE.get(pattern, ""),
+            "count": len(uris),
+        }
+        if pattern == "reified" or (pattern == "declared" and collapsed):
+            entry["predicates"] = uris
+        if "axiom" in pattern:
+            entry["query_template"] = _axiom_query_template(shortname, uris[0])
+            if usage_notes(shortname):
+                entry["guidance"] += " See usage_notes for this KG's own rules."
+        if pattern == "declared" and collapsed:
+            entry["guidance"] += " Left out of the predicates table (compact view)."
+        out[pattern] = entry
+    return out
+
+
 def _sparql_var(name: str) -> str:
     """Lowercase-safe SPARQL variable name: keep [A-Za-z0-9_], drop the rest."""
     return re.sub(r"[^A-Za-z0-9_]", "", name.replace(" ", "_")).lower()
 
 
+def _pair_summary(pairs: list[tuple[str, str, int | None]]) -> str:
+    """The pairs after the top one, by local name: ``A → B (12); … (+N more)``."""
+    rest = pairs[1:]
+    parts = [
+        f"{_local_name(s) or '?'} → {_local_name(t) or '?'}"
+        + (f" ({n:,})" if n is not None else "")
+        for s, t, n in rest[:MAX_EXTRA_PAIRS]
+    ]
+    if len(rest) > MAX_EXTRA_PAIRS:
+        parts.append(f"+{len(rest) - MAX_EXTRA_PAIRS} more")
+    return "; ".join(parts)
+
+
 def _build_schema_from_metadata(
-    shortname: str, entity_metadata: dict[str, dict[str, str]], compact: bool
+    shortname: str, entity_metadata: dict[str, dict[str, Any]], compact: bool
 ) -> dict[str, Any]:
     """Build the schema response from curated entity metadata."""
-    classes: list[dict[str, str]] = []
+    classes: list[dict[str, Any]] = []
     predicates: list[dict[str, Any]] = []
     edge_properties_dict: dict[str, list[dict[str, str]]] = {}
     node_properties: list[dict[str, str]] = []
 
-    for uri, meta in entity_metadata.items():
+    entries = [
+        (uri, m)
+        for uri, meta in entity_metadata.items()
+        for m in (meta, *meta.get("also", ()))
+    ]
+    for uri, meta in entries:
         entity_type = (meta.get("type") or "").lower()
         if entity_type == "class":
             classes.append(
@@ -653,6 +1089,7 @@ def _build_schema_from_metadata(
                     "label": meta.get("label", ""),
                     "description": meta.get("description", ""),
                     "type": meta.get("type", ""),
+                    "instances": meta.get("triples"),
                 }
             )
         elif entity_type == "predicate":
@@ -667,6 +1104,9 @@ def _build_schema_from_metadata(
                     "source_class": meta.get("source_class", ""),
                     "target_class": meta.get("target_class", ""),
                     "has_edge_properties": False,
+                    "pattern": meta.get("pattern", ""),
+                    "triples": meta.get("triples"),
+                    "other_pairs": _pair_summary(meta.get("pairs") or []),
                 }
             )
         elif entity_type == "edgeproperty":
@@ -691,18 +1131,22 @@ def _build_schema_from_metadata(
                 }
             )
 
-    # Flag predicates that carry edge properties (match on short name).
-    for pred in predicates:
-        if pred["short_name"] in edge_properties_dict:
-            pred["has_edge_properties"] = True
-
+    # Edge-property parents are short names (curated files) or IRIs (VoID files).
     edge_properties_output: dict[str, Any] = {}
-    for relationship_label, props in edge_properties_dict.items():
+    for parent, props in edge_properties_dict.items():
         rel = next(
-            (p for p in predicates if p["short_name"] == relationship_label), None
+            (p for p in predicates if parent in (p["short_name"], p["uri"])), None
         )
         if rel is None:
             continue
+        rel["has_edge_properties"] = True
+        relationship_label = _local_name(parent) if parent == rel["uri"] else parent
+        taken = edge_properties_output.get(relationship_label)
+        if taken is not None and taken["uri"] != rel["uri"]:
+            # Same local name, another namespace (prokn: biolink.github.io and
+            # w3id.org catalyzes): keep both rather than overwrite one.
+            host = urlsplit(rel["uri"]).netloc or "other"
+            relationship_label = f"{relationship_label} ({host})"
         edge_properties_output[relationship_label] = {
             "uri": rel["uri"],
             "label": relationship_label,
@@ -716,39 +1160,57 @@ def _build_schema_from_metadata(
                 rel["source_class"],
                 rel["target_class"],
                 props,
+                relationship_uri=rel["uri"],
             ),
         }
+        if rel["pattern"]:
+            # One line beside the template it qualifies; the full text is once in
+            # pattern_guidance (repeating it cost prokn 29 KB over 68 edges).
+            entry = edge_properties_output[relationship_label]
+            entry["pattern"] = rel["pattern"]
+            if rel["pattern"] in _EDGE_USAGE:
+                entry["usage"] = _EDGE_USAGE[rel["pattern"]].format(uri=rel["uri"])
+            override = _EDGE_USAGE_OVERRIDES.get(shortname, {}).get(rel["uri"])
+            if override:
+                entry["usage"] = override
+
+    # Pattern (how a predicate is stored: direct / reified / axiom / declared), counts
+    # and extra source/target pairs exist only in the VoID-built files; the
+    # columns appear only then, so curated-file output is unchanged.
+    # Compact view: declared-only predicates hold no data, so list them once in
+    # pattern_guidance instead of as table rows (79 in bio101, 67 in phaseskg).
+    collapsed = [p["uri"] for p in predicates if compact and p["pattern"] == "declared"]
+    if collapsed:
+        predicates = [p for p in predicates if p["pattern"] != "declared"]
+
+    class_cols = ["uri", "label", "description", "type"]
+    if any(c["instances"] is not None for c in classes):
+        class_cols.append("instances")
+    pred_cols = [
+        "uri",
+        "label",
+        "description",
+        "type",
+        "source_class",
+        "target_class",
+        "has_edge_properties",
+    ]
+    if any(p["pattern"] for p in predicates):
+        pred_cols.append("pattern")
+    if any(p["triples"] is not None for p in predicates):
+        pred_cols.append("triples")
+    if any(p["other_pairs"] for p in predicates):
+        pred_cols.append("other_pairs")
 
     result: dict[str, Any] = {
         "classes": {
-            "columns": ["uri", "label", "description", "type"],
-            "data": [
-                [c["uri"], c["label"], c["description"], c["type"]] for c in classes
-            ],
+            "columns": class_cols,
+            "data": [[c[k] for k in class_cols] for c in classes],
             "count": len(classes),
         },
         "predicates": {
-            "columns": [
-                "uri",
-                "label",
-                "description",
-                "type",
-                "source_class",
-                "target_class",
-                "has_edge_properties",
-            ],
-            "data": [
-                [
-                    p["uri"],
-                    p["label"],
-                    p["description"],
-                    p["type"],
-                    p["source_class"],
-                    p["target_class"],
-                    p["has_edge_properties"],
-                ]
-                for p in predicates
-            ],
+            "columns": pred_cols,
+            "data": [[p[k] for k in pred_cols] for p in predicates],
             "count": len(predicates),
         },
         "edge_properties": edge_properties_output,
@@ -761,6 +1223,10 @@ def _build_schema_from_metadata(
             "count": len(node_properties),
         },
     }
+
+    guidance = _pattern_guidance(shortname, predicates, collapsed)
+    if guidance:
+        result["pattern_guidance"] = guidance
 
     if not compact and edge_properties_output:
         result = {
@@ -911,7 +1377,12 @@ async def get_schema(shortname: str, compact: bool = True) -> dict[str, Any]:
     else:
         schema = await _probe_schema(shortname)
 
-    return {"shortname": shortname, "schema": schema}
+    result: dict[str, Any] = {"shortname": shortname, "schema": schema}
+    source = metadata_source(shortname)
+    if ENTITY_METADATA_OVERRIDE and source:
+        # Testing aid: which entity files answered.
+        result["metadata_source"] = source
+    return result
 
 
 # ── Mermaid class-diagram generation ─────────────────────────────────────────
@@ -927,6 +1398,10 @@ def _mermaid_id(name: str) -> str:
     if name.startswith(("http://", "https://")):
         name = _local_name(name)
     ident = re.sub(r"\W+", "_", name or "").strip("_")
+    # Mermaid 12 turns `style <id>` into a CSS class selector, which may not start
+    # with a digit (prokn's SNOMED class http://snomed.info/id/276239002).
+    if ident[:1].isdigit():
+        ident = f"n_{ident}"
     return ident or "Node"
 
 
@@ -946,10 +1421,14 @@ def _member_type(description: str) -> str:
 
 
 def _clean_edge_label(label: str) -> str:
-    """Strip characters that would break a Mermaid relationship label."""
-    return re.sub(
-        r"\s+", " ", (label or "").replace("|", " ").replace("\n", " ")
-    ).strip()
+    """Strip characters that would break a Mermaid relationship label.
+
+    A colon ends the label in Mermaid 12 (``geo:hasGeometry`` failed geoconnex,
+    hydrologykg, nikg, sockg and spatialkg), so it becomes the entity ``#58;``,
+    which Mermaid draws as ``:``.
+    """
+    text = (label or "").replace("|", " ").replace("\n", " ").replace(":", "#58;")
+    return re.sub(r"\s+", " ", text).strip()
 
 
 def _col(table: dict[str, Any], name: str) -> int | None:
@@ -1051,10 +1530,152 @@ async def infer_edge_labels(
     return edges
 
 
+#: Vocabularies whose classes describe how a schema is encoded (owl:Class,
+#: owl:Restriction, owl:ObjectProperty, …), not what it is about.
+_META_NAMESPACES = tuple(
+    scheme + ns
+    for ns in (
+        "www.w3.org/2002/07/owl#",
+        "www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "www.w3.org/2000/01/rdf-schema#",
+    )
+    # prokn types 1,436 nodes https://www.w3.org/2002/07/owl#Class (wrong scheme).
+    for scheme in ("http://", "https://")
+)
+
+#: Above this many node classes a diagram keeps only the most-connected ones:
+#: bio101 rendered 246 classes in one 36,000 px row.
+MAX_DIAGRAM_CLASSES = 60
+#: …and at most this many arrows between them: sawgraph's 60 most-connected classes
+#: still had 1,741 arrows (overlapping FoodOn material types), which Mermaid 12
+#: could not lay out in three minutes.
+MAX_DIAGRAM_ARROWS = 100
+#: Labels shown on one merged arrow; the rest become "+N more" (hydrologykg packed
+#: a 498-character label of spatial predicates onto one arrow).
+MAX_ARROW_LABELS = 4
+#: Edge classes sharing source, target and edge properties are drawn as one box
+#: (listing their names) from this many on: spoke-genelab's three MEASURED_*
+#: relationships stay separate, biohealth's 66 Entity -> Entity ones merge.
+MIN_EDGE_GROUP = 4
+
+_ARROW = re.compile(r"^  (\S+) --> (\S+)(?: : (.*))?$")
+
+
+def _cap_classes(
+    declared: dict[str, list[str]],
+    relationships: list[str],
+    edge_class_ids: list[str],
+    limit: int,
+    max_arrows: int = MAX_DIAGRAM_ARROWS,
+) -> tuple[dict[str, list[str]], list[str], list[str]]:
+    """Keep the most-connected node classes within both limits; drop the rest.
+
+    Classes are taken in order of degree (every arrow end counts; ties keep
+    declaration order) while at most ``limit`` classes and ``max_arrows`` arrows
+    among them result. Edge classes survive only while both their endpoints do.
+    Returns ``(declared, relationships, omitted node classes)``.
+    """
+    nodes = [c for c in declared if c not in edge_class_ids]
+    if len(nodes) <= limit and len(relationships) <= max_arrows:
+        return declared, relationships, []
+    degree = dict.fromkeys(nodes, 0)
+    for line in relationships:
+        m = _ARROW.match(line)
+        if m:
+            for end in m.group(1, 2):
+                if end in degree:
+                    degree[end] += 1
+    order = {c: i for i, c in enumerate(nodes)}
+    ranked = sorted(nodes, key=lambda c: (-degree[c], order[c]))
+    # Links between node classes: a plain arrow is one, and so is a relationship
+    # drawn through an edge class (source --> edge --> target). Counting the two
+    # hops separately let prokn's 65 edge classes use up the whole budget.
+    edge_set = set(edge_class_ids)
+    ends_of: dict[str, list[str]] = {e: [] for e in edge_class_ids}
+    links: list[tuple[str, str]] = []
+    for line in relationships:
+        m = _ARROW.match(line)
+        if not m:
+            continue
+        a, b = m.group(1, 2)
+        if a in edge_set:
+            ends_of[a].append(b)
+        elif b in edge_set:
+            ends_of[b].append(a)
+        else:
+            links.append((a, b))
+    links += [(e[0], e[1]) for e in ends_of.values() if len(e) == 2]
+    keep: set[str] = set()
+    for cand in ranked:
+        if len(keep) >= limit:
+            break
+        trial = keep | {cand}
+        if keep and sum(1 for a, b in links if a in trial and b in trial) > max_arrows:
+            continue
+        keep = trial
+    ends: dict[str, set[str]] = {e: set() for e in edge_class_ids}
+    for line in relationships:
+        m = _ARROW.match(line)
+        if m:
+            a, b = m.group(1, 2)
+            if a in ends:
+                ends[a].add(b)
+            if b in ends:
+                ends[b].add(a)
+    keep |= {e for e in edge_class_ids if ends[e] and ends[e] <= keep}
+    kept_rel = []
+    for line in relationships:
+        m = _ARROW.match(line)
+        if not m or set(m.group(1, 2)) <= keep:
+            kept_rel.append(line)
+    omitted = [c for c in nodes if c not in keep]
+    return {c: m for c, m in declared.items() if c in keep}, kept_rel, omitted
+
+
+def _merge_parallel(relationships: list[str]) -> list[str]:
+    """One labelled arrow per (source, target): labels joined, first position kept.
+
+    At most :data:`MAX_ARROW_LABELS` labels are shown, then ``+N more``.
+
+    spoke-genelab's Assay reaches Anatomy by INVESTIGATED_ASiA, material_id_1 and
+    material_id_2; three parallel arrows overlap their labels when rendered.
+    Unlabelled arrows (the hops into and out of an edge class) are kept as is.
+    """
+    merged: dict[tuple[str, str], list[str]] = {}
+    order: list[tuple[str, str] | str] = []
+    for line in relationships:
+        m = _ARROW.match(line)
+        if not m or m.group(3) is None:
+            if line not in order:
+                order.append(line)
+            continue
+        key = (m.group(1), m.group(2))
+        if key not in merged:
+            merged[key] = []
+            order.append(key)
+        if m.group(3) not in merged[key]:
+            merged[key].append(m.group(3))
+
+    def joined(labels: list[str]) -> str:
+        shown = ", ".join(labels[:MAX_ARROW_LABELS])
+        extra = len(labels) - MAX_ARROW_LABELS
+        return f"{shown}, +{extra} more" if extra > 0 else shown
+
+    return [
+        item
+        if isinstance(item, str)
+        else f"  {item[0]} --> {item[1]} : " + joined(merged[item])
+        for item in order
+    ]
+
+
 def build_mermaid_diagram(
     shortname: str,
     schema: dict[str, Any],
     inferred_edges: list[tuple[str, str, str]] | None = None,
+    max_classes: int = MAX_DIAGRAM_CLASSES,
+    info: dict[str, Any] | None = None,
+    max_arrows: int = MAX_DIAGRAM_ARROWS,
 ) -> str:
     """Render a KG's schema as a Mermaid ``classDiagram`` (deterministic).
 
@@ -1066,6 +1687,12 @@ def build_mermaid_diagram(
     graph's domain/range) are drawn as labeled arrows for KGs whose curated
     metadata lacks endpoints. Predicates that remain without endpoints are listed
     as ``%%`` comments rather than guessed at.
+
+    OWL/RDF/RDFS classes (owl:Class, owl:Restriction, …) and every arrow touching
+    them are left out, as are classes that only those arrows reached (bio101's
+    ``*-Constant`` value classes). Above ``max_classes`` node classes, only the
+    most-connected are drawn; ``info`` (if given) receives the totals and the
+    omitted class names.
     """
     classes_tbl = schema.get("classes", {})
     predicates_tbl = schema.get("predicates", {})
@@ -1077,19 +1704,43 @@ def build_mermaid_diagram(
     undrawn: list[str] = []
     edge_class_ids: list[str] = []  # intermediary classes (styled distinctly)
 
-    def ensure_class(label: str) -> str:
-        cid = _mermaid_id(label)
-        declared.setdefault(cid, [])
-        return cid
-
     # Node classes (column layout: [uri, label, ...] for metadata, [uri] for probe).
     cls_cols = classes_tbl.get("columns", [])
     label_idx = cls_cols.index("label") if "label" in cls_cols else None
+    meta_ids: set[str] = set()
+    class_names = []
+    #: Class IRI -> its label, so an endpoint given as an IRI (some curated rows,
+    #: all VoID rows) lands on the same box as one given as the label.
+    iri_label: dict[str, str] = {}
     for row in classes_tbl.get("data", []):
         if not row:
             continue
         label = row[label_idx] if label_idx is not None and len(row) > label_idx else ""
-        ensure_class(label or _local_name(row[0]))
+        name = label or _local_name(row[0])
+        iri_label[str(row[0])] = name
+        if str(row[0]).startswith(_META_NAMESPACES):
+            meta_ids.add(_mermaid_id(name))
+        else:
+            class_names.append(name)
+    touched_by_meta: set[str] = set()
+
+    def ensure_class(label: str) -> str:
+        cid = _mermaid_id(iri_label.get(label, label))
+        if cid not in meta_ids:
+            declared.setdefault(cid, [])
+        return cid
+
+    def arrow(src: str, tgt: str, label: str = "") -> None:
+        s_id = _mermaid_id(iri_label.get(src, src))
+        t_id = _mermaid_id(iri_label.get(tgt, tgt))
+        if s_id in meta_ids or t_id in meta_ids:
+            touched_by_meta.update({s_id, t_id} - meta_ids)
+            return
+        ensure_class(src), ensure_class(tgt)
+        relationships.append(f"  {s_id} --> {t_id}" + (f" : {label}" if label else ""))
+
+    for name in class_names:
+        ensure_class(name)
 
     # Node properties become members of their owning class.
     np_cols = node_props_tbl.get("columns", [])
@@ -1101,7 +1752,11 @@ def build_mermaid_diagram(
             continue
         owner = row[np_class] if len(row) > np_class else ""
         name = row[np_label] if len(row) > np_label else ""
-        if not owner or not name:
+        if (
+            not owner
+            or not name
+            or _mermaid_id(iri_label.get(owner, owner)) in meta_ids
+        ):
             continue
         cid = ensure_class(owner)
         desc = row[np_desc] if np_desc is not None and len(row) > np_desc else ""
@@ -1109,19 +1764,40 @@ def build_mermaid_diagram(
         if member not in declared[cid]:
             declared[cid].append(member)
 
-    # Edge predicates with properties → intermediary classes.
-    for rel_label, info in edge_properties.items():
-        edge_id = _mermaid_id(rel_label)
+    # Edge predicates with properties → intermediary classes. Relationships that
+    # share source, target and edge properties are drawn as ONE box listing their
+    # names (biohealth: 66 Entity -> Entity relationships, each with only
+    # `source`, made a fan of 132 arrows into one box).
+    edges: list[tuple[str, list[str], str, str]] = []
+    for rel_label, edge_info in edge_properties.items():
         members = []
-        for prop in info.get("properties", []):
+        for prop in edge_info.get("properties", []):
             mtype = _member_type(prop.get("description", ""))
             member = f"{mtype} {_mermaid_id(prop.get('label', ''))}".strip()
             if member and member not in members:
                 members.append(member)
+        src, tgt = edge_info.get("source_class", ""), edge_info.get("target_class", "")
+        edges.append((rel_label, members, src, tgt))
+    groups: dict[tuple[str, str, tuple[str, ...]], list[str]] = {}
+    for rel_label, members, src, tgt in edges:
+        groups.setdefault((src, tgt, tuple(sorted(members))), []).append(rel_label)
+    drawn_groups: set[tuple[str, str, tuple[str, ...]]] = set()
+    for rel_label, members, src, tgt in edges:
+        key = (src, tgt, tuple(sorted(members)))
+        names = groups[key]
+        if len(names) >= MIN_EDGE_GROUP:
+            if key in drawn_groups:
+                continue
+            drawn_groups.add(key)
+            src_name = _mermaid_id(iri_label.get(src, src)) if src else "Any"
+            tgt_name = _mermaid_id(iri_label.get(tgt, tgt)) if tgt else "Any"
+            edge_id = f"{src_name}_to_{tgt_name}_{len(names)}_relationships"
+            members = members + [_mermaid_id(n) for n in sorted(names)]
+        else:
+            edge_id = _mermaid_id(rel_label)
         declared[edge_id] = members
         if edge_id not in edge_class_ids:
             edge_class_ids.append(edge_id)
-        src, tgt = info.get("source_class", ""), info.get("target_class", "")
         if src:
             relationships.append(f"  {ensure_class(src)} --> {edge_id}")
         if tgt:
@@ -1131,9 +1807,7 @@ def build_mermaid_diagram(
     # endpoints). Their predicate labels are excluded from the "undrawn" list.
     inferred_labels: set[str] = set()
     for src, pred, tgt in inferred_edges or []:
-        relationships.append(
-            f"  {ensure_class(src)} --> {ensure_class(tgt)} : {_clean_edge_label(pred)}"
-        )
+        arrow(src, tgt, _clean_edge_label(pred))
         inferred_labels.add(pred)
 
     # Plain predicates (no edge properties) with source/target → labeled arrows.
@@ -1151,16 +1825,45 @@ def build_mermaid_diagram(
             continue
         if p_has is not None and len(row) > p_has and row[p_has]:
             continue  # already drawn as an intermediary class
+        if str(row[0]).startswith(_META_NAMESPACES):
+            # owl:sameAs, rdfs:subClassOf, …: identity and modelling links, not
+            # domain relationships. sawgraph's sameAs between multi-typed samples
+            # tied every FoodOn material class to every other. Classes only these
+            # reached are dropped below, like those only OWL constructs reached.
+            for end in (p_src, p_tgt):
+                name = row[end] if end is not None and len(row) > end else ""
+                if name:
+                    touched_by_meta.add(_mermaid_id(iri_label.get(name, name)))
+            continue
         label = row[p_label] if p_label is not None and len(row) > p_label else ""
         label = label or _local_name(row[0])
         src = row[p_src] if p_src is not None and len(row) > p_src else ""
         tgt = row[p_tgt] if p_tgt is not None and len(row) > p_tgt else ""
         if src and tgt:
-            relationships.append(
-                f"  {ensure_class(src)} --> {ensure_class(tgt)} : {_clean_edge_label(label)}"
-            )
+            arrow(src, tgt, _clean_edge_label(label))
         elif label not in inferred_labels:
             undrawn.append(_clean_edge_label(label))
+
+    relationships = _merge_parallel(relationships)
+    in_arrows: set[str] = set()
+    for line in relationships:
+        m = _ARROW.match(line)
+        if m:
+            in_arrows.update(m.group(1, 2))
+    # Classes only OWL constructs pointed at, with nothing else to show.
+    for cid in touched_by_meta:
+        if cid in declared and not declared[cid] and cid not in in_arrows:
+            del declared[cid]
+    declared, relationships, omitted = _cap_classes(
+        declared, relationships, edge_class_ids, max_classes, max_arrows
+    )
+    if info is not None:
+        node_total = len([c for c in declared if c not in edge_class_ids]) + len(
+            omitted
+        )
+        info.update(classes_total=node_total, classes_drawn=node_total - len(omitted))
+        if omitted:
+            info["omitted_classes"] = omitted
 
     lines = ["classDiagram", "  direction TB"]
     for cid, members in declared.items():
@@ -1192,11 +1895,130 @@ def build_mermaid_diagram(
     lines += [f"  style {cid} {_EDGE_CLASS_STYLE}" for cid in edge_class_ids]
     lines += [f"  style {lid} {style}" for lid, _, style in legend]
 
+    if omitted:
+        drawn = len([c for c in declared if c not in edge_class_ids])
+        lines.append(
+            f"  %% Showing the {drawn} most-connected of "
+            f"{drawn + len(omitted)} classes; omitted:"
+        )
+        lines += [f"  %%   - {c}" for c in omitted]
     if undrawn:
         lines.append("  %% Predicates without source/target metadata (not drawn):")
         lines += [f"  %%   - {p}" for p in undrawn]
 
     return "\n".join(lines)
+
+
+_RDF_NS = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+#: Reification wiring: the edge classes already draw what these connect.
+_REIFICATION = frozenset(
+    {_RDF_NS + "subject", _RDF_NS + "predicate", _RDF_NS + "object", _RDF_NS + "type"}
+)
+_LITERAL_TYPES = ("http://www.w3.org/2001/XMLSchema#", _RDF_NS)
+
+
+def _is_void_metadata(entity_metadata: dict[str, dict[str, Any]]) -> bool:
+    """True for a VoID-built file (counts or Pattern present), not a curated one."""
+    return any(
+        m.get("pattern") or m.get("triples") is not None
+        for m in entity_metadata.values()
+    )
+
+
+def diagram_schema(
+    shortname: str, entity_metadata: dict[str, dict[str, Any]]
+) -> dict[str, Any]:
+    """A label-keyed schema for :func:`build_mermaid_diagram` from a VoID-built file.
+
+    The compact get_schema view keeps one source/target pair per predicate and
+    names endpoints by IRI, while the diagram matches classes by label. This walks
+    every pair instead: class IRIs map to their labels; a literal-typed target
+    (xsd:*, rdf:langString) makes the predicate a typed member of the source class;
+    an empty target (untyped IRIs, e.g. NCBITaxon) an ``iri`` member; reification
+    wiring and the rdf:Statement class are left out.
+    """
+    entries = [
+        (uri, m)
+        for uri, meta in entity_metadata.items()
+        for m in (meta, *meta.get("also", ()))
+    ]
+    labels = {
+        uri: m.get("label") or _local_name(uri)
+        for uri, m in entries
+        if (m.get("type") or "").lower() == "class"
+    }
+    labels.pop(_RDF_STATEMENT, None)
+
+    def name(uri: str) -> str:
+        return labels.get(uri) or _local_name(uri)
+
+    classes = [[uri, label] for uri, label in labels.items()]
+    predicates: list[list[Any]] = []
+    node_props: list[list[str]] = []
+    for uri, m in entries:
+        kind = (m.get("type") or "").lower()
+        if kind != "predicate" or uri in _REIFICATION:
+            continue
+        label = m.get("label") or _local_name(uri)
+        pairs = m.get("pairs") or [
+            (m.get("source_class", ""), m.get("target_class", ""), None)
+        ]
+        drawn = False
+        for src, tgt, _n in pairs:
+            if not src or src == _RDF_STATEMENT:
+                continue
+            if not tgt or tgt.startswith(_LITERAL_TYPES):
+                dtype = _local_name(tgt) if tgt else "iri"
+                node_props.append([uri, label, f"({dtype})", "NodeProperty", name(src)])
+            else:
+                predicates.append([uri, label, name(src), name(tgt), False])
+            drawn = True
+        if not drawn:
+            predicates.append([uri, label, "", "", False])
+
+    meta_schema = _build_schema_from_metadata(shortname, entity_metadata, compact=True)
+    edges = {}
+    for rel, info in meta_schema.get("edge_properties", {}).items():
+        props = []
+        for prop in info.get("properties", []):
+            desc = prop.get("description", "")
+            if not _member_type(desc):
+                target = entity_metadata.get(prop.get("uri", ""), {})
+                for cand in (target, *target.get("also", ())):
+                    if (cand.get("type") or "").lower() == "edgeproperty":
+                        tgt = cand.get("target_class", "")
+                        if tgt.startswith(_LITERAL_TYPES):
+                            desc = f"({_local_name(tgt)})"
+            props.append({**prop, "description": desc})
+        src, tgt = info.get("source_class", ""), info.get("target_class", "")
+        edges[rel] = {
+            **info,
+            # A literal-typed end (prokn's wasAttributedTo -> xsd:string) is a
+            # value, not a class box.
+            "source_class": "" if src.startswith(_LITERAL_TYPES) else name(src),
+            "target_class": "" if tgt.startswith(_LITERAL_TYPES) else name(tgt),
+            "properties": props,
+        }
+    edge_rel_uris = {info.get("uri") for info in edges.values()}
+    predicates = [p for p in predicates if p[0] not in edge_rel_uris]
+    return {
+        "classes": {"columns": ["uri", "label"], "data": classes},
+        "predicates": {
+            "columns": [
+                "uri",
+                "label",
+                "source_class",
+                "target_class",
+                "has_edge_properties",
+            ],
+            "data": predicates,
+        },
+        "node_properties": {
+            "columns": ["uri", "label", "description", "type", "class"],
+            "data": node_props,
+        },
+        "edge_properties": edges,
+    }
 
 
 async def visualize_schema(shortname: str) -> dict[str, Any]:
@@ -1209,6 +2031,25 @@ async def visualize_schema(shortname: str) -> dict[str, Any]:
     if "error" in result:
         return {"shortname": shortname, "error": result["error"]}
     schema = result["schema"]
+    metadata = await fetch_entity_metadata(shortname)
+    if metadata and _is_void_metadata(metadata):
+        schema = diagram_schema(shortname, metadata)
     inferred = await infer_edge_labels(shortname, schema)
-    diagram = build_mermaid_diagram(shortname, schema, inferred_edges=inferred)
-    return {"shortname": shortname, "mermaid": diagram}
+    info: dict[str, Any] = {}
+    diagram = build_mermaid_diagram(
+        shortname, schema, inferred_edges=inferred, info=info
+    )
+    result = {"shortname": shortname, "mermaid": diagram}
+    if not info.get("classes_total") and not schema.get("edge_properties"):
+        result["note"] = (
+            "No classes to draw: the schema lists none with source/target "
+            "information. Use get_schema."
+        )
+    elif info.get("omitted_classes"):
+        result["note"] = (
+            f"Large schema: drawing the {info['classes_drawn']} most-connected of "
+            f"{info['classes_total']} classes ({len(info['omitted_classes'])} omitted, "
+            "listed as comments at the end of the diagram). Use get_schema for the "
+            "full list."
+        )
+    return result

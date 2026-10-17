@@ -46,19 +46,14 @@ async def _fingerprint(
     Empty (``{}``) when the KG has no curated entity CSV — nothing to diff.
     """
     meta = await schema.fetch_entity_metadata(shortname, client=client, refresh=True)
+    # An IRI can be both a Class and a Predicate (scales' jxdm#Arrest); the loader
+    # keeps each kind, the extra ones under "also".
+    entries = [m for v in meta.values() for m in (v, *v.get("also", ()))]
     classes = sorted(
-        {
-            v["label"]
-            for v in meta.values()
-            if v.get("type") == "Class" and v.get("label")
-        }
+        {v["label"] for v in entries if v.get("type") == "Class" and v.get("label")}
     )
     predicates = sorted(
-        {
-            v["label"]
-            for v in meta.values()
-            if v.get("type") != "Class" and v.get("label")
-        }
+        {v["label"] for v in entries if v.get("type") != "Class" and v.get("label")}
     )
     return {"classes": classes, "predicates": predicates} if meta else {}
 

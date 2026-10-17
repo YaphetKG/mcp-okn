@@ -1,0 +1,4 @@
+URI,Label,Description,Type,EdgePropertyOf,SourceClass,TargetClass,Triples,Pattern
+http://purl.obolibrary.org/obo/CHEMINF_000446,Chemical Identifier,"A unique code or number that identifies a specific chemical substance, such as CAS registry numbers",Class,,,,8947,
+http://purl.org/dc/elements/1.1/source,Source,The origin or reference database for chemical information,Predicate,,http://purl.obolibrary.org/obo/CHEMINF_000446,http://www.w3.org/2001/XMLSchema#string,8947,direct
+http://www.w3.org/2000/01/rdf-schema#label,Label,A human-readable name or title for a chemical compound,Predicate,,http://purl.obolibrary.org/obo/CHEMINF_000446,http://www.w3.org/2001/XMLSchema#string,9045,direct
