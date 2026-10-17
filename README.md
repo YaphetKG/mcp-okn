@@ -98,32 +98,13 @@ now error or return zero rows (run it after a KG redeploy or recipe repair).
 
 ### Case studies
 
-Sixteen end-to-end analyses, over fourteen distinct questions, that federate many
-Proto-OKN graphs into a single evidence-backed map — five of a disease's biology
-(genes, variants, pathways/gene sets, drugs, altered-activity signatures, and
-clinical/biomarker features), one a reproduction of a published spaceflight
-experiment (whether the 2019 finding of lipid dysregulation in flown-mouse liver
-re-emerges from the federation's stored differential-expression results),
-four of environmental exposure and justice (PFAS source
-attribution, the bisphenol chemical exposome, cumulative environmental-justice
-burden across U.S. counties, and flood-mobilised contamination routed downstream
-through the stream network), one of urban scaling (how disease, mortality
-and crime scale with settlement size), one of wildlife sentinel surveillance
-(whether Florida's wild-animal record and its contaminant record overlap at all),
-one of supply-chain fragility (physical manufacturing capacity, regulated
-industrial burden, software dependency risk and community vulnerability in one
-frame), and one of research-infrastructure criticality (which Earth-observation
-instruments the climate-modelling record actually leans on, and what modelling
-would stop being able to check if one went dark) — each finding tagged with its
-source(s) and evidence kind, then ranked by cross-source agreement. Every case study ships an
-interactive HTML report, a reproducibility record preserving every verbatim
-SPARQL query, and an Excel workbook.
-
-Two of the questions are answered twice, each pair from the same prompt, so the
-runs can be read side by side: the spaceflight-liver reproduction by
-`claude-opus-5` and `GPT-6-Astra`, which reached for different augmenting graphs
-(seven against five), and instrument criticality by `claude-opus-5` and
-`gpt-5.6-sol`, against the same two graphs.
+End-to-end analyses that federate many Proto-OKN graphs to answer a single
+research question, spanning disease biology, spaceflight, environmental exposure
+and justice, and infrastructure. Each finding is tagged with its source(s) and
+ranked by cross-source agreement. Every case study is a self-contained folder under
+`docs/examples/{Name}/` with an interactive HTML report, a literature comparison, a
+reproducibility record of every verbatim SPARQL query, an Excel workbook, and the
+figures, scripts, and data that produced them.
 
 **Prerequisites for re-running a case study:**
 
@@ -148,21 +129,6 @@ runs can be read side by side: the spaceflight-liver reproduction by
 | **Supply-chain fragility** — 6 KGs | `claude-opus-5` | [HTML](https://sbl-sdsc.github.io/mcp-okn/docs/examples/Supply-Chain-Fragility/Supply-Chain-Fragility_report.html) | [md](docs/examples/Supply-Chain-Fragility/Supply-Chain-Fragility_literature_comparison.md) | [xlsx](docs/examples/Supply-Chain-Fragility/Supply-Chain-Fragility_results.xlsx) | [md](docs/examples/Supply-Chain-Fragility/Supply-Chain-Fragility_reproducibility.md) | [files](docs/examples/Supply-Chain-Fragility/) |
 | **Earth-observation instrument criticality** — 2 KGs | `claude-opus-5` | [HTML](https://sbl-sdsc.github.io/mcp-okn/docs/examples/Instrument-Criticality/Instrument-Criticality_report.html) | [md](docs/examples/Instrument-Criticality/Instrument-Criticality_literature_comparison.md) | [xlsx](docs/examples/Instrument-Criticality/Instrument-Criticality_results.xlsx) | [md](docs/examples/Instrument-Criticality/Instrument-Criticality_reproducibility.md) | [files](docs/examples/Instrument-Criticality/) |
 | **Earth-observation instrument criticality** — 2 KGs | `gpt-5.6-sol` | [HTML](https://sbl-sdsc.github.io/mcp-okn/docs/examples/Instrument-Criticality-GPT/Instrument-Criticality-GPT_report.html) | [md](docs/examples/Instrument-Criticality-GPT/Instrument-Criticality-GPT_literature_comparison.md) | [xlsx](docs/examples/Instrument-Criticality-GPT/Instrument-Criticality-GPT_results.xlsx) | [md](docs/examples/Instrument-Criticality-GPT/Instrument-Criticality-GPT_reproducibility.md) | [files](docs/examples/Instrument-Criticality-GPT/) |
-
-Each case study is a self-contained folder under `docs/examples/{Name}/` — the
-report and its deliverables sit alongside the `figures/`, `scripts/`, and `data/`
-that produced them, so every analysis is inspectable and re-runnable:
-
-```
-docs/examples/MS/
-├── MS_report.html / .md         # interactive report + Markdown source
-├── MS_literature_comparison.md  # per-finding PubMed / Paperclip check
-├── MS_reproducibility.md        # every verbatim SPARQL query
-├── MS_results.xlsx              # multi-sheet data workbook
-├── figures/                     # publication figures (PNG)
-├── scripts/                     # figure / report / analysis build code
-└── data/                        # intermediate result tables (CSV)
-```
 
 ---
 
