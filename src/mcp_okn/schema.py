@@ -1,17 +1,17 @@
 """Schema discovery for Proto-OKN knowledge graphs.
 
-For each KG we prefer a curated entity metadata CSV (classes, predicates, edge
-properties, node properties) published in the ``sbl-sdsc/mcp-proto-okn`` repo.
-When no curated metadata exists we fall back to probing the federation endpoint
-for the distinct classes and predicates used in the KG's named graph.
+Each KG's schema (classes, predicates, edge properties, node properties) comes from
+its ``<kg>_entities.csv`` in ``metadata/void_entities``, which ships with the server.
+``scripts/build_void_schema.py`` builds those files from each graph's VoID description
+in ``okn-void``, or by querying the served graph when its VoID is stale. A KG with no
+file is probed live on the federation endpoint for the distinct classes and
+predicates in its named graph.
 
 Set ``MCP_OKN_ENTITY_METADATA_BASE`` to a URL or directory of ``<kg>_entities.csv``
-files (e.g. the VoID-built ``metadata/void_entities``) to read those INSTEAD: the
-curated files are then never read, and a KG the override lacks is probed live.
+files to read those instead of the shipped files.
 
-The shortnames are the same ones used as federation named graphs
-(``https://purl.org/okn/frink/kg/{shortname}``), so the curated CSVs port over
-directly from the proto-okn server.
+The shortnames are the ones used as federation named graphs
+(``https://purl.org/okn/frink/kg/{shortname}``).
 """
 
 from __future__ import annotations
@@ -27,23 +27,40 @@ from urllib.parse import urlsplit
 
 import httpx
 
+from .bundled import metadata_dir
 from .contrasts import (
     SPOKE_GENELAB_CONTRAST_GUIDANCE,
     SPOKE_GENELAB_CONTRAST_SNIPPET,
 )
 from .sparql import SparqlError, named_graph, run_sparql
 
-#: Where the curated per-KG entity metadata CSVs live.
-ENTITY_METADATA_BASE = (
-    "https://raw.githubusercontent.com/sbl-sdsc/mcp-proto-okn/main/metadata/entities"
-)
+#: Where the per-KG ``<kg>_entities.csv`` files live: the shipped copy of
+#: ``metadata/void_entities``, built by ``scripts/build_void_schema.py``. The builder
+#: counts a stale-VoID KG from the served graph, so every file describes the release
+#: being served.
+_VOID_ENTITIES = metadata_dir("void_entities")
+ENTITY_METADATA_BASE = str(_VOID_ENTITIES) if _VOID_ENTITIES else ""
 
-#: Optional override: a URL or local directory of ``<kg>_entities.csv`` files (e.g.
-#: ``metadata/void_entities``, built by ``scripts/build_void_schema.py``). When set it
-#: replaces :data:`ENTITY_METADATA_BASE` entirely — no curated fallback; a KG the
-#: override lacks is probed live. The builder already counts a stale-VoID KG from the
-#: served graph, so every override file describes the release being served.
+#: Optional override: a URL or local directory of ``<kg>_entities.csv`` files. When
+#: set it replaces :data:`ENTITY_METADATA_BASE` entirely, and a KG the override lacks
+#: is probed live.
 ENTITY_METADATA_OVERRIDE = os.environ.get("MCP_OKN_ENTITY_METADATA_BASE", "").strip()
+
+
+def schema_file_count() -> int | None:
+    """How many ``<kg>_entities.csv`` files the schema source holds.
+
+    ``None`` when the source is a URL (it cannot be listed). A deployment that lost
+    the shipped files reports 0, and every KG's schema is then probed live, which is
+    slow and less complete; ``get_server_info`` exposes the count so
+    ``scripts/check_deployment.py`` can catch that.
+    """
+    base = ENTITY_METADATA_OVERRIDE or ENTITY_METADATA_BASE
+    if base.startswith(("http://", "https://")):
+        return None
+    folder = Path(base) if base else None
+    return len(list(folder.glob("*_entities.csv"))) if folder and folder.is_dir() else 0
+
 
 _RDF_STATEMENT = "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
 
@@ -79,33 +96,6 @@ def _is_provenance_uri(uri: str) -> bool:
     """
     return uri in _PROVENANCE_URIS or uri.startswith(_PROVENANCE_NAMESPACES)
 
-
-#: Template for KGs whose curated ``*_entities.csv`` runs AHEAD of the graph the
-#: federation actually serves. ``get_schema`` reads those CSVs live from the
-#: upstream repo, so when a KG's metadata is refreshed before (or without) a
-#: redeploy, the schema advertises predicates and classes that return 0 rows — a
-#: silent failure the client reads as "no data" rather than "not deployed yet".
-#: Counts are from a live per-predicate census; re-run
-#: ``scripts/check_payload_drift.py`` and re-census after a redeploy.
-SCHEMA_AHEAD_OF_DEPLOY_GUIDANCE = """\
-DEPLOYMENT LAG — this schema is AHEAD of the served graph. {absent} of the
-{total} predicates in {shortname}'s curated schema have ZERO triples in the
-deployed named graph (censused {checked}). Querying one returns an empty result
-that looks like missing data, not like a missing release.
-
-{detail}
-
-Before building on any predicate from this schema, confirm it is populated:
-run the ASK below (or a COUNT) for it. Treat a 0 as "not deployed yet", and
-prefer a predicate you have confirmed live.\
-"""
-
-#: Companion snippet: the cheapest live/not-live check for a single predicate.
-SCHEMA_AHEAD_OF_DEPLOY_SNIPPET = """\
-# Is this predicate actually deployed? false => in the schema, not in the graph.
-ASK {{ GRAPH <https://purl.org/okn/frink/kg/{shortname}> {{
-  ?s <{predicate}> ?o . }} }}\
-"""
 
 #: ncipidkg no longer has a deployment gap. Upstream commit 422b460 (2026-09-02)
 #: realigned ``ncipidkg_entities.csv`` with the served graph: the uninstantiated
@@ -255,7 +245,7 @@ _EDGE_USAGE_OVERRIDES: dict[str, dict[str, str]] = {
 }
 
 NCIPIDKG_GUIDANCE = """\
-IDENTIFIER AND JOIN NOTES (the curated schema matches the deployed graph as of
+IDENTIFIER AND JOIN NOTES (the schema matches the deployed graph as of
 2026-10-13; these are the things it still does not tell you).
 
 TWO UNIPROT LEGS, AND THEY ARE NOT THE SAME KIND OF THING. ncipidkg's own
@@ -595,38 +585,6 @@ _KG_USAGE_NOTES: dict[str, dict[str, str]] = {
         "guidance": SPOKE_GENELAB_CONTRAST_GUIDANCE,
         "query_snippet": SPOKE_GENELAB_CONTRAST_SNIPPET,
     },
-    "medical-device-kg": {
-        "guidance": SCHEMA_AHEAD_OF_DEPLOY_GUIDANCE.format(
-            shortname="medical-device-kg",
-            absent=152,
-            total=315,
-            checked="2026-10-13",
-            detail=(
-                "The curated schema describes a LATER release than the federation "
-                "serves. Live and queryable: 510(k) (mdo:k510Number, 175,299), PMA "
-                "(mdo:pmaNumber, 111,720), De Novo, HDE, recalls (mdo:recallNumber, "
-                "39,223), MAUDE events (mdo:eventType, 15,279), FDA establishment "
-                "registration (mdo:feiNumber, 964,478), X-ray assembler sites, MQSA "
-                "mammography facilities, 522 postmarket studies, product codes, "
-                "regulation numbers and the address block (mdo:zip / mdo:postalCode / "
-                "city / state / country — the ZIP5 join surface behind crosswalks "
-                "J7-J11). Live since v0.0.4: NAICS industry classification "
-                "(SUDOKN:hasNAICSClassifier on 10,432 manufacturers, 13 NAICS 2022 "
-                "codes on mdo:naicsCode, 1,589 product-code-to-NAICS mappings) and "
-                "9,120 geocoded mdo:Facility nodes with geo:asWKT and wgs84 lat/long. "
-                "NOT in the deployed graph, though the schema lists them: the "
-                "whole AccessGUDID / UDI block (device identifiers, brand names, "
-                "packaging, implant and sterility status), CLIA test systems and "
-                "waived analytes, GMDN terms, device materials and components, "
-                "software features, design changes, patient outcomes, safety signals "
-                "and MedSun reports."
-            ),
-        ),
-        "query_snippet": SCHEMA_AHEAD_OF_DEPLOY_SNIPPET.format(
-            shortname="medical-device-kg",
-            predicate="http://medicaldevice.com/ontology/hasDeviceIdentifier",
-        ),
-    },
     "prokn": {
         "title": "Negated GO annotation notes",
         "guidance": PROKN_GUIDANCE,
@@ -644,16 +602,8 @@ _KG_USAGE_NOTES: dict[str, dict[str, str]] = {
 }
 
 
-#: Usage notes that describe a curated entity file, not the graph: they are wrong
-#: when the schema comes from :data:`ENTITY_METADATA_OVERRIDE`, which is built from
-#: the served graph itself (medical-device-kg's deployment-lag census).
-_CURATED_FILE_NOTES = frozenset({"medical-device-kg"})
-
-
 def usage_notes(shortname: str) -> dict[str, str] | None:
     """Return curated usage notes for a KG, or None if it has none."""
-    if ENTITY_METADATA_OVERRIDE and shortname in _CURATED_FILE_NOTES:
-        return None
     return _KG_USAGE_NOTES.get(shortname)
 
 
@@ -825,7 +775,7 @@ async def fetch_entity_metadata(
     """Fetch and parse the entity metadata CSV for a KG (cached).
 
     Reads :data:`ENTITY_METADATA_OVERRIDE` (or ``override``) when set, else the
-    curated proto-okn file — never both. Returns an empty dict when the source lacks
+    shipped VoID-built file — never both. Returns an empty dict when the source lacks
     the KG (the caller then falls back to probing). See
     :func:`parse_entity_metadata`.
     """
@@ -838,7 +788,7 @@ async def fetch_entity_metadata(
         client = httpx.AsyncClient(timeout=30.0)
     content, used = None, None
     try:
-        for base in [override or ENTITY_METADATA_BASE]:
+        for base in [b for b in [override or ENTITY_METADATA_BASE] if b]:
             content = await _read_csv(base, shortname, client)
             if content is not None:
                 used = base
@@ -1069,7 +1019,7 @@ def _pair_summary(pairs: list[tuple[str, str, int | None]]) -> str:
 def _build_schema_from_metadata(
     shortname: str, entity_metadata: dict[str, dict[str, Any]], compact: bool
 ) -> dict[str, Any]:
-    """Build the schema response from curated entity metadata."""
+    """Build the schema response from a KG's entity metadata file."""
     classes: list[dict[str, Any]] = []
     predicates: list[dict[str, Any]] = []
     edge_properties_dict: dict[str, list[dict[str, str]]] = {}
@@ -1273,7 +1223,7 @@ def _should_exclude_uri(uri: str) -> bool:
 async def _probe_schema(shortname: str) -> dict[str, Any]:
     """Discover classes and predicates by probing the federation endpoint.
 
-    Used when no curated entity metadata exists for the KG. Scopes each query to
+    Used when no entity metadata file exists for the KG. Scopes each query to
     the KG's named graph via a ``GRAPH`` block.
     """
     graph = named_graph(shortname)
@@ -1353,7 +1303,7 @@ SELECT DISTINCT ?predicate WHERE {{
 async def get_schema(shortname: str, compact: bool = True) -> dict[str, Any]:
     """Return the schema (classes, predicates, edge/node properties) for a KG.
 
-    Prefers curated entity metadata; falls back to probing the federation
+    Prefers the KG's entity metadata file; falls back to probing the federation
     endpoint for distinct classes and predicates.
 
     Args:

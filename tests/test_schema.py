@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import httpx
 import pytest
 
@@ -913,11 +915,16 @@ def test_edge_classes_with_same_ends_and_properties_merge_into_one_box():
     assert "Assay --> MEASURED" in diagram  # a lone relationship keeps its own box
 
 
-def test_deployment_lag_note_only_describes_the_curated_files(monkeypatch):
-    """The lag census is about the curated file; override files come from the graph."""
-    assert "DEPLOYMENT LAG" in usage_notes("medical-device-kg")["guidance"]
-    monkeypatch.setattr(
-        schema_mod, "ENTITY_METADATA_OVERRIDE", "metadata/void_entities"
-    )
-    assert usage_notes("medical-device-kg") is None
-    assert usage_notes("prokn") is not None  # notes about the graph itself stay
+def test_schema_files_default_to_the_shipped_void_entities():
+    """No setting needed: the VoID-built files ship with the server."""
+    base = Path(schema_mod.ENTITY_METADATA_BASE)
+    assert base.name == "void_entities"
+    assert (base / "prokn_entities.csv").is_file()
+    assert "mcp-proto-okn" not in schema_mod.ENTITY_METADATA_BASE
+
+
+async def test_default_schema_reads_the_shipped_file(monkeypatch):
+    monkeypatch.setattr(schema_mod, "ENTITY_METADATA_OVERRIDE", "")
+    meta = await schema_mod.fetch_entity_metadata("prokn", refresh=True)
+    assert meta
+    assert schema_mod.metadata_source("prokn") == schema_mod.ENTITY_METADATA_BASE

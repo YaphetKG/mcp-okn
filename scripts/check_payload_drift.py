@@ -1,21 +1,24 @@
-"""Flag KGs whose upstream entity schema changed since their payload tags were curated.
+"""Flag KGs whose entity schema changed since their payload tags were curated.
 
 The per-KG payload tags in ``metadata/kg_payloads.json`` are curated partly from
-each KG's entity schema — the ``*_entities.csv`` files in the
-``sbl-sdsc/mcp-proto-okn`` repo that ``get_schema`` fetches live. Those CSVs can
-change upstream and silently invalidate tags that were derived from a class or
-predicate that later disappeared (as happened when ``biomarkerkg`` dropped its
-``Disease`` / ``Phenotypic Feature`` classes). Since the tags are the only artifact
-in this repo that leans on those CSVs — ``get_schema`` reads them live — a change is
-otherwise invisible until someone notices a wrong answer.
+each KG's entity schema — the ``*_entities.csv`` files in ``metadata/void_entities``
+that ``get_schema`` reads. Rebuilding those files after a redeploy
+(``scripts/build_void_schema.py``) can silently invalidate tags that were derived
+from a class or predicate that later disappeared (as happened when ``biomarkerkg``
+dropped its ``Disease`` / ``Phenotypic Feature`` classes), and nothing else would
+notice until someone got a wrong answer.
+
+The baseline was re-recorded on 2026-10-16, when the VoID-built files replaced the
+curated mcp-proto-okn files as the schema source. Every KG's labels changed then,
+because the two sources word labels differently; the graphs themselves did not.
 
 This check fingerprints each KG's live schema (its class + predicate labels) and
 diffs it against a committed baseline (``metadata/schema_fingerprints.json``). A
 changed fingerprint doesn't mean the tags are wrong — it means "re-review this KG's
 payload tags against its new schema, then accept the new baseline with ``--update``".
 
-Only KGs that have a curated ``*_entities.csv`` are fingerprinted; KGs whose schema
-is discovered live by SPARQL probing have no upstream-CSV drift vector of this kind.
+Only KGs that have an ``*_entities.csv`` are fingerprinted; KGs whose schema is
+discovered live by SPARQL probing have no file to drift.
 
 Usage:
     uv run python scripts/check_payload_drift.py            # report drift; exit 1 if any
@@ -43,7 +46,7 @@ async def _fingerprint(
 ) -> dict[str, list[str]]:
     """Live schema fingerprint for a KG: its sorted class and predicate labels.
 
-    Empty (``{}``) when the KG has no curated entity CSV — nothing to diff.
+    Empty (``{}``) when the KG has no entity CSV — nothing to diff.
     """
     meta = await schema.fetch_entity_metadata(shortname, client=client, refresh=True)
     # An IRI can be both a Class and a Predicate (scales' jxdm#Arrest); the loader
@@ -59,7 +62,7 @@ async def _fingerprint(
 
 
 async def compute_fingerprints() -> dict[str, dict[str, list[str]]]:
-    """Fingerprint every servable KG that exposes a curated entity CSV."""
+    """Fingerprint every servable KG that has an entity CSV."""
     names = [k["shortname"] for k in registry.load_snapshot()]
     out: dict[str, dict[str, list[str]]] = {}
     async with httpx.AsyncClient(timeout=30.0) as client:

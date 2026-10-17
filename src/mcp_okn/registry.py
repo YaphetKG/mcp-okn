@@ -16,6 +16,7 @@ from typing import Any
 import httpx
 import yaml
 
+from .bundled import metadata_dir
 from .sparql import named_graph
 
 _CONTENTS_API = (
@@ -260,3 +261,16 @@ async def fetch_kg_long_description(
     doc = await fetch_kg_doc(shortname, client=client, refresh=refresh)
     _front, body = _split_frontmatter(doc)
     return body
+
+
+def kg_summary(shortname: str) -> str | None:
+    """A KG's description from ``metadata/descriptions/<shortname>.txt``, if any.
+
+    These were copied from mcp-proto-okn, which appended them to the registry text;
+    ``describe_kg`` does the same. ``None`` for a KG with no file.
+    """
+    folder = metadata_dir("descriptions")
+    path = folder / f"{shortname}.txt" if folder else None
+    if path is None or not path.is_file():
+        return None
+    return path.read_text(encoding="utf-8").strip() or None

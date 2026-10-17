@@ -120,6 +120,17 @@ def test_compare_data_flags_stale_bundled_tables():
     assert check.compare_data(hosted, local)["mismatches"] == ["crosswalks"]
 
 
+def test_compare_data_flags_a_deployment_missing_its_schema_files():
+    local = {"crosswalks": (162, "2026-07-12"), "kg_count": 42, "schema_files": 43}
+    hosted = check.Hosted(
+        surface=_surface(SERVED),
+        crosswalks=(162, "2026-07-12"),
+        kg_count=42,
+        schema_files=0,
+    )
+    assert check.compare_data(hosted, local)["mismatches"] == ["schema_files"]
+
+
 def test_compare_data_tolerates_unavailable_tools():
     # Pointed at an arbitrary MCP server: n/a, never a mismatch.
     local = {"crosswalks": (162, "2026-07-12"), "kg_count": 42}

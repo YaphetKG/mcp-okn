@@ -1,7 +1,7 @@
 """Build a per-KG schema table from the ``okn-void`` VoID descriptions.
 
-``get_schema`` reads these tables when ``MCP_OKN_ENTITY_METADATA_BASE`` points at
-``metadata/void_entities``. Their structure — every class, predicate and
+``get_schema`` reads these tables from ``metadata/void_entities``, which ships with
+the server. Their structure — every class, predicate and
 (source class, predicate, target) edge, with exact counts — comes from the
 precomputed VoID statistics the federation publishes, or, for a KG whose VoID
 describes a different release than the one served, from the same statistics

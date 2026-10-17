@@ -14,7 +14,8 @@ registers:
 
   build      get_server_info().build vs `git rev-parse --short HEAD`
   surface    the tool names and resource URIs the server lists vs those registered here
-  data       the bundled crosswalk table (count + verified_on) and the KG count
+  data       the bundled crosswalk table (count + verified_on), the KG count, and
+             how many per-KG schema files get_schema reads
 
 Usage:
     uv run python scripts/check_deployment.py                # the hosted dev endpoint
@@ -76,6 +77,8 @@ class Hosted:
     sdk_version: str = ""
     crosswalks: tuple[int, str] | None = None
     kg_count: int | None = None
+    #: get_server_info().schema_files; None when the build predates it
+    schema_files: int | None = None
 
 
 def _digest(*parts: str) -> str:
@@ -177,6 +180,8 @@ def compare_data(hosted: Hosted, local: dict[str, Any]) -> dict[str, Any]:
         mismatches.append("crosswalks")
     if hosted.kg_count is not None and hosted.kg_count != local["kg_count"]:
         mismatches.append("kgs")
+    if hosted.schema_files is not None and hosted.schema_files != local["schema_files"]:
+        mismatches.append("schema_files")
     return {"mismatches": mismatches}
 
 
@@ -278,7 +283,7 @@ async def local_surface() -> Surface:
 
 async def local_data() -> dict[str, Any]:
     """The bundled figures, read from the package rather than over the wire."""
-    from mcp_okn import registry
+    from mcp_okn import registry, schema
     from mcp_okn.tools import joins
 
     crosswalks = await joins.list_crosswalks(include_examples=False)
@@ -288,6 +293,7 @@ async def local_data() -> dict[str, Any]:
             str(crosswalks.get("verified_on") or "?"),
         ),
         "kg_count": len(registry.load_snapshot()),
+        "schema_files": schema.schema_file_count(),
     }
 
 
@@ -355,6 +361,8 @@ async def probe(url: str, timeout: float) -> Hosted:
             if isinstance(info, dict):
                 hosted.build = str(info.get("build") or "") or None
                 hosted.service = info.get("service")
+                if isinstance(info.get("schema_files"), int):
+                    hosted.schema_files = info["schema_files"]
         if "list_crosswalks" in names:
             data = _payload(
                 await session.call_tool("list_crosswalks", {"include_examples": False})
@@ -507,6 +515,14 @@ def render(
             f"            KGs          {hosted.kg_count}  /  "
             f"{local_figures['kg_count']}{flag}"
         )
+    if hosted.schema_files is None:
+        lines.append("            schema files n/a (get_server_info predates it)")
+    else:
+        flag = "   DRIFT" if "schema_files" in data["mismatches"] else ""
+        lines.append(
+            f"            schema files {hosted.schema_files}  /  "
+            f"{local_figures['schema_files']}{flag}"
+        )
     prose = "identical" if deltas["instructions_match"] else "DIFFER"
     advisory = "" if strict else "   advisory — pass --strict to fail on this"
     lines.append(
@@ -597,6 +613,8 @@ async def main() -> int:
                         "local_crosswalks": figures["crosswalks"],
                         "hosted_kgs": hosted.kg_count,
                         "local_kgs": figures["kg_count"],
+                        "hosted_schema_files": hosted.schema_files,
+                        "local_schema_files": figures["schema_files"],
                         "mismatches": data["mismatches"],
                     },
                     "notes": worktree_notes(),
