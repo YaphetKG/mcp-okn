@@ -100,11 +100,13 @@ async def test_describe_kg_appends_the_kg_summary(monkeypatch):
     assert out.startswith("Registry prose.\n\n## Summary\n\n" + summary)
 
 
-def test_kg_summaries_ship_for_every_kg_that_had_one():
+def test_every_servable_kg_has_a_summary():
     from mcp_okn.bundled import metadata_dir
 
     folder = metadata_dir("descriptions")
     assert folder is not None
-    assert len(list(folder.glob("*.txt"))) == 40
-    # A KG with no file gets the registry text alone.
-    assert registry.kg_summary("wikidata") is None
+    shipped = {p.stem for p in folder.glob("*.txt")}
+    assert len(shipped) == 45
+    # Every servable KG has one, so describe_kg always ends with a Summary.
+    assert {k["shortname"] for k in registry.load_snapshot()} <= shipped
+    assert registry.kg_summary("not-a-kg") is None
