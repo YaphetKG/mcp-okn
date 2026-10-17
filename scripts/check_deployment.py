@@ -6,7 +6,7 @@ silently. In July 2026 it served 19 tools against 23 in the repo for 17 days;
 nothing in CI or at runtime noticed, and the gap only surfaced when a
 reproducibility record could not be generated. The reported ``version`` cannot
 expose that: it is the MCP SDK's version, not this project's, and ``__version__``
-has been 0.1.0 across the whole history.
+changes only at a release (it stayed 0.1.0 for the first 545 commits).
 
 So ask the endpoint directly. This speaks MCP over streamable HTTP, enumerates
 what the server actually exposes, and diffs it against what this working tree

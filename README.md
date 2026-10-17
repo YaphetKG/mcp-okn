@@ -433,7 +433,7 @@ rather than claiming one. This is what lets you tell a hosted server that lags t
 repo from a local one — and what distinguishes two records that name the same
 `version`.
 
-Two servers claiming `version` 0.1.0 can be months apart, so
+Two servers claiming the same `version` can be months apart, so
 `scripts/check_deployment.py` answers the question directly: it speaks MCP to a live
 endpoint, enumerates what that server actually exposes, and diffs it against this
 checkout.

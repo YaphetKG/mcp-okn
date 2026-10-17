@@ -1,7 +1,7 @@
 """The server's build identity.
 
-`__version__` has been "0.1.0" across the whole history, so it cannot tell two
-deployments apart — and the hosted server routinely lags the repo. The build id is
+`__version__` changes only at a release (it stayed "0.1.0" for the first 545 commits),
+so it cannot tell two deployments apart — and the hosted server routinely lags the repo. The build id is
 what lets a reproducibility record (and a confused caller) say WHICH code answered.
 """
 
