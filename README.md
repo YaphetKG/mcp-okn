@@ -71,92 +71,30 @@ prompts to try:
 ### Crosswalk queries & transcripts
 
 A **crosswalk** is a verified way to join two (or three) Proto-OKN knowledge
-graphs on a shared identifier — for example linking a disease in one graph to the
-genes another graph associates with it via a common MONDO or DOID id. Because the
-graphs are built by different teams on different ontologies, the value of the
-federation is in these connections: a crosswalk is an *integration opportunity*
-where a question one graph can't answer alone becomes answerable by combining two.
-This section catalogs the verified crosswalks and shows the queries that exercise
-them.
+graphs on a shared identifier. Because the graphs are built by different teams on
+different ontologies, each crosswalk is an *integration opportunity*: a question one
+graph can't answer alone becomes answerable by combining two.
 
-A visual map of the whole network — all 244 crosswalks across 39 graphs, drawn as
-direct KG-to-KG edges (edge width ∝ log of the verified join count). Each crosswalk is
-its own edge, so multiple crosswalks between the same pair of graphs fan out as parallel
-arcs. Identifier-bridged joins (e.g. `DOID↔MONDO` via `ubergraph`, `HGNC→Entrez` via
-`wikidata`) are shown as direct edges with the bridge noted in the label and the line
-styled (dashed for an `ubergraph` bridge, dotted for `wikidata`, solid for a direct join).
+The network map below shows all 244 crosswalks across 39 graphs as KG-to-KG edges
+(edge width ∝ log of the verified join count; dashed/dotted lines mark joins bridged
+through `ubergraph`/`wikidata`).
 
 > **▶ Click the image to open the interactive, zoomable network.**
 
 [![Proto-OKN crosswalk network](docs/crosswalks/crosswalk-network.png)](https://sbl-sdsc.github.io/mcp-okn/docs/crosswalks/crosswalk-network.html)
 
-Two resources, each backed by live federated SPARQL joins verified to actually
-answer the question (biomedical claims checked against PubMed / Paperclip;
-geospatial and industrial joins against their authoritative shared standard):
-
 - **[Proto-OKN Crosswalk Inventory](docs/crosswalks/proto-okn-crosswalk-inventory.md)**
-  — a single-page map of the **verified crosswalks**: the joined KGs, shared
-  key, row count, and a one-line note on what each answers. Start here to see which
-  graphs connect and on what identifier.
+  — one page listing every verified crosswalk: the joined KGs, shared key, row
+  count, and what it answers.
 - **[Cross-KG crosswalk catalog](docs/crosswalks/crosswalks_example.md)** —
-  **496 example questions** worked end-to-end, each with a full transcript (the live
-  SPARQL and its results), across 17 domains (Anatomy & Cell Type, Biology Concepts, Chemicals, Disease &
-  Phenotype, Earth Observation, Environmental Toxicology, Function & Pathways, Genes,
-  Geospatial, Hydrology, Industry & Supply Chain, Justice & Public Safety, Proteins,
-  Publications, Social Determinants & Services, Taxonomy, Variants). Every crosswalk is worked
-  twice — the inventory carries
-  **488 questions — two for every one of the 244 crosswalks** — and the catalog has a
-  transcript behind each one, plus eight questions on four extra stems (a second example on
-  the spoke-genelab×spoke-okn Entrez axis, the three-way gene dossier whose clique row
-  was retired, and two sawgraph lineage examples, T06 and T11, whose taxon-hub rows were
-  retired on 2026-10-13). All 19 crosswalks added in the 2026-09-01 upstream-metadata pass are
-  worked: the five nestkg joins (P05–P08, D39), the five medical-device-kg ZIP joins
-  (GEO35–GEO39), BiomarkerKG's four Entrez joins (G22–G25) and its UBERON join (AN09),
-  the medical-device-kg×SUDOKN company-name join (I06), and the new **Variants** domain
-  (V01–V03). The contributed securechainkg×SUDOKN product-identity join (I07) is worked too, and so are
-  the seven KB Bio 101 name bridges added 2026-10-05 (MF02–MF03, AN10–AN11, D42, C27 and the
-  new **Biology Concepts** domain, BIO01) — bio101 has no external identifiers, so each joins
-  by concept name. The six crosswalks the 2026-10-13 schema refresh exposed are
-  worked as well: wildlifekn's county joins (GEO40–GEO41), securechainkg's ZIP join (GEO42),
-  the medical-device-kg NAICS joins (I08–I09) and the scales×SUDOKN company bridge (I10).
-  That refresh also recorded four redeploys (scales, prokn, sawgraph, dreamkg). Every
-  transcript they affected — 51 in all — was re-run and regenerated against the current
-  releases the same day, and two taxon-hub pairs that no longer hold (sawgraph with
-  spoke-genelab and with the Expression Atlas) were retired. The fourteen crosswalks of
-  **glygenkg** (GlyGen, human protein glycosylation), loaded into the federation on
-  2026-10-13, are worked too: its five UniProt joins (P09–P13), three direct Ensembl joins
-  (G31–G33), four Entrez joins bridged through Babel (G34–G37), the catalog's first
-  PubMed-keyed join, with ProKN (PUB03), and a GlyTouCan join that gives 180 of its glycans
-  PubChem's mass, structure and source-organism annotations (C28). A deep dive on
-  2026-10-14 added 24 more, each worked twice: eleven direct joins that had never been
-  catalogued (ProKN, NDE and digcfdekg with RDKG on MONDO; MeSH, AOP-Wiki, SOCKG and SAWGraph
-  with Tox21 on CAS; ProKN with PubChem annotations), and thirteen that run through Babel —
-  BioHealth's UMLS concepts to five chemical graphs and to ProKN's diseases, MeSH to the
-  disease graphs and to SPOKE-OKN's organisms, and SPOKE-OKN and SAWGraph to ProKN.
+  **496 example questions**, at least two per crosswalk, each worked end-to-end as
+  live federated SPARQL with a standalone, replayable transcript.
 
-Every catalog row links to a standalone, replayable transcript — the prompt, the
-answer, and every verbatim SPARQL query with its result.
-
-These transcripts are produced by `create_chat_transcript` and can be re-run
-against the endpoint with `scripts/replay_transcript.py`.
-
-`scripts/verify_transcripts.py` audits the whole corpus for rot: it extracts every
-` ```sparql ` block from every transcript, re-runs it, and compares the row count
-against the `_N row(s)_` marker the builder recorded. A transcript is a historical
-record, but its queries are also a standing claim that the analysis reproduces —
-and a KG redeploy or a repaired crosswalk recipe can invalidate that claim
-*silently*, since the file keeps rendering and keeps being linked. Because every
-query in the corpus is a `SELECT` that returned rows when written, a query that now
-returns **zero rows** is broken by construction; that (and a query error) fails the
-run, while a changed row count is reported as drift, since KGs grow between
-releases. Filter by filename (`verify_transcripts.py proteins02`), use `--problems`
-for failures only, and `--summary` to re-read the last results without re-querying.
-It is not part of CI — it needs the live endpoint and a full pass runs ~450 queries
-— so run it after any recipe repair or KG redeploy.
-The catalog was generated by driving the model with the
-[crosswalk generation prompt](docs/crosswalks/crosswalks_prompt.md) — list every
-`list_crosswalks` recipe, write two research questions per crosswalk, run and
-verify each as live SPARQL, and validate the findings against the literature.
+The catalog was generated with the
+[crosswalk generation prompt](docs/crosswalks/crosswalks_prompt.md). Transcripts are
+produced by `create_chat_transcript`; `scripts/replay_transcript.py` re-runs one, and
+`scripts/verify_transcripts.py` re-runs every query in the corpus to flag ones that
+now error or return zero rows (run it after a KG redeploy or recipe repair).
 
 ### Case studies
 
