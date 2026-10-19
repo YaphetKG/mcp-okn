@@ -14517,6 +14517,8 @@
   "http://purl.org/spatialai/stad/v2/core/DataValue": null,
   "http://purl.org/spatialai/stad/v2/core/Datapoint": null,
   "http://purl.org/spatialai/stad/v2/core/QualityKind": null,
+  "http://purl.org/spatialai/stad/v2/core/Quantity": null,
+  "http://purl.org/spatialai/stad/v2/core/SingleData": null,
   "http://qudt.org/schema/qudt/cardinality": null,
   "http://qudt.org/schema/qudt/conversionOffset": null,
   "http://qudt.org/schema/qudt/dbpediaMatch": null,
@@ -15818,14 +15820,30 @@
   "http://purl.obolibrary.org/obo/IAO_0000600": null,
   "http://purl.org/dc/terms/decscription": null,
   "http://purl.org/dc/terms/updated": null,
-  "http://purl.org/spatialai/stad/v2/core/DataValue": null,
-  "http://purl.org/spatialai/stad/v2/core/Datapoint": null,
-  "http://purl.org/spatialai/stad/v2/core/QualityKind": null,
+  "http://purl.org/spatialai/stad/v2/core/DataValue": {
+   "description": "A value carried by a datapoint.",
+   "label": "",
+   "source": "STAD v2 core"
+  },
+  "http://purl.org/spatialai/stad/v2/core/Datapoint": {
+   "description": "An individual data item that has a quality kind and a corresponding data value.",
+   "label": "",
+   "source": "STAD v2 core"
+  },
+  "http://purl.org/spatialai/stad/v2/core/QualityKind": {
+   "description": "The kind of quality or property represented by a datapoint, distinct from the value of that quality.",
+   "label": "",
+   "source": "STAD v2 core"
+  },
   "http://purl.org/spatialai/stad/v2/core/Quantity": null,
   "http://purl.org/spatialai/stad/v2/core/SingleData": null,
   "http://purl.org/spatialai/stad/v2/core/StatisticalAggregateData": null,
   "http://purl.org/spatialai/stad/v2/core/StatisticalQuantityKind": null,
-  "http://purl.org/spatialai/stad/v2/core/hasTransformationKind": null,
+  "http://purl.org/spatialai/stad/v2/core/hasTransformationKind": {
+   "description": "Relates a statistical aggregate datapoint directly to the kind of data transformation used to produce it.",
+   "label": "",
+   "source": "STAD v2 core"
+  },
   "http://qudt.org/schema/qudt/Quantifiable": null,
   "http://qudt.org/schema/qudt/Quantity": null,
   "http://qudt.org/schema/qudt/Verifiable": null,
@@ -15864,7 +15882,6 @@
    "source": "SAWGraph spatial ontology"
   },
   "http://stko-kwg.geog.ucsb.edu/lod/ontology/administrativePartOf": null,
-  "http://stko-kwg.geog.ucsb.edu/lod/ontology/cellID": null,
   "http://stko-kwg.geog.ucsb.edu/lod/ontology/sfCrosses": null,
   "http://stko-kwg.geog.ucsb.edu/lod/ontology/sfEquals": null,
   "http://stko-kwg.geog.ucsb.edu/lod/ontology/sfOverlaps": null,
@@ -16745,9 +16762,9 @@
    "source": "SKOS"
   },
   "http://www.w3.org/ns/prov#Agent": {
-   "description": "",
+   "description": "An agent is something that bears some form of responsibility for an activity taking place, for the existence of an entity, or for another agent's activity.",
    "label": "Agent",
-   "source": ""
+   "source": "PROV-O"
   },
   "http://www.w3.org/ns/prov#wasAttributedTo": {
    "description": "Attribution is the ascribing of an entity to an agent.",
