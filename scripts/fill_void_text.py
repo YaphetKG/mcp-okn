@@ -169,8 +169,8 @@ RELEASES: dict[str, tuple[str, frozenset[str], list[str]]] = {
 #: supersede curated text: checked 2026-10-16, they agree with it except where
 #: theirs is worse — a citation instead of a definition (wqp TaxonGroup.FishNekton),
 #: typos ("regoins"), or machine labels (``hasCASRN``, ``(kwg) sfContains``).
-#: water-kg's us-sdwis-schema.ttl parses since its 2026-05-21 revision declared
-#: dcterms:, but (checked 2026-10-18) describes only PublicWaterSystem.
+#: water-kg's us-sdwis-schema.ttl parses since upstream declared dcterms: on
+#: 2026-10-16, but (checked 2026-10-19) describes only PublicWaterSystem.
 #: STAD v2 core (the lab's statistical-data ontology) names its terms ``…/core#X``;
 #: the SAWGraph graphs use ``…/core/X``, so :data:`MODULE_ALIASES` maps them.
 _SAW = "https://raw.githubusercontent.com/SAWGraph/{}/refs/heads/main/{}"
