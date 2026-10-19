@@ -169,8 +169,10 @@ RELEASES: dict[str, tuple[str, frozenset[str], list[str]]] = {
 #: supersede curated text: checked 2026-10-16, they agree with it except where
 #: theirs is worse — a citation instead of a definition (wqp TaxonGroup.FishNekton),
 #: typos ("regoins"), or machine labels (``hasCASRN``, ``(kwg) sfContains``).
-#: water-kg's us-sdwis-schema.ttl is left out: it uses an undeclared dcterms: prefix
-#: and does not parse.
+#: water-kg's us-sdwis-schema.ttl parses since its 2026-05-21 revision declared
+#: dcterms:, but (checked 2026-10-18) describes only PublicWaterSystem.
+#: STAD v2 core (the lab's statistical-data ontology) names its terms ``…/core#X``;
+#: the SAWGraph graphs use ``…/core/X``, so :data:`MODULE_ALIASES` maps them.
 _SAW = "https://raw.githubusercontent.com/SAWGraph/{}/refs/heads/main/{}"
 SAWGRAPH_MODULES: tuple[frozenset[str], list[tuple[str, list[str]]]] = (
     frozenset({"sawgraph", "fiokg", "hydrologykg", "spatialkg"}),
@@ -194,6 +196,7 @@ SAWGRAPH_MODULES: tuple[frozenset[str], list[tuple[str, list[str]]]] = (
                 for p in (
                     "ontologies/sawgraph-water-ontology.ttl",
                     "ontologies/reused-imported/hyf.ttl",
+                    "datasets/sdwis/us-sdwis-schema.ttl",
                 )
             ],
         ),
@@ -215,8 +218,14 @@ SAWGRAPH_MODULES: tuple[frozenset[str], list[tuple[str, list[str]]]] = (
             "SAWGraph DSSTox ontology V3",
             [_SAW.format("comptox-ontology", "V3/DSSToxOntology_PFAS_as_instance.ttl")],
         ),
+        ("STAD v2 core", ["https://theskailab.github.io/STAD/core/ontology.ttl"]),
     ],
 )
+
+#: Namespace the graphs use → namespace a module document defines the terms in.
+MODULE_ALIASES = {
+    "http://purl.org/spatialai/stad/v2/core/": "http://purl.org/spatialai/stad/v2/core#",
+}
 
 #: Census Bureau NAICS definitions, newest first. SUDOKN uses NAICS 2022 (16 of its
 #: codes exist only there, none only in 2017); 11 SUDOKN codes were dropped in 2017
@@ -228,8 +237,11 @@ CENSUS_NAICS = {
 }
 
 #: Vocabulary-specific description predicates: LinkML describes its own terms with
-#: linkml:description, not rdfs:comment.
-VOCAB_DESCRIPTION_PREDICATES = ("https://w3id.org/linkml/description",)
+#: linkml:description and PROV-O with prov:definition, not rdfs:comment.
+VOCAB_DESCRIPTION_PREDICATES = (
+    "https://w3id.org/linkml/description",
+    "http://www.w3.org/ns/prov#definition",
+)
 
 #: Unfilled terms sampled per namespace before asking OLS about the rest of it, so
 #: KG-local namespaces OLS does not index (SUDOKN, aura) cost three calls, not 700.
@@ -583,14 +595,16 @@ async def resolve_modules(
     todo = [u for u in uris if u not in module_cache]
     if todo:
         found: dict[str, vt.TextHit] = {}
+        alias = {_alias(u): u for u in todo if _alias(u) != u}
         for name, urls in modules:
             print(f"  {name}: {len(todo)} term(s)")
-            hits = await module_text(name, urls, todo, client)
+            hits = await module_text(name, urls, [*todo, *alias], client)
             if hits is None:
                 print(f"  {name}: unavailable, not cached")
                 todo = []  # retry everything next run rather than cache gaps
                 break
-            for u, h in hits.items():
+            for u, h in sorted(hits.items(), key=lambda kv: kv[0] in alias):
+                u = alias.get(u, u)
                 # Descriptions only: their labels for reused terms are prefixed
                 # names (qudt:Quantity, hyf:realizedCatchment), not real labels.
                 if h.description:
@@ -603,6 +617,12 @@ async def resolve_modules(
         for kg, us in needed.items()
         if kg in kgs
     }
+
+
+def _alias(uri: str) -> str:
+    """``uri`` in the namespace a module document defines it in (:data:`MODULE_ALIASES`)."""
+    ns = next((n for n in MODULE_ALIASES if uri.startswith(n)), None)
+    return uri if ns is None else MODULE_ALIASES[ns] + uri[len(ns) :]
 
 
 def _read(path: Path) -> tuple[list[str], list[dict[str, str]]]:

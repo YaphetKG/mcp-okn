@@ -2756,12 +2756,12 @@ https://w3id.org/linkml/opposite_of,opposite_of,,Predicate,,,,3,direct
 https://w3id.org/linkml/canonical_predicate,canonical_predicate,,Predicate,,,,2,direct
 https://w3id.org/linkml/translator,translator,,Predicate,,,,34,direct
 https://w3id.org/linkml/neo4j,neo4j,,Predicate,,,,133,direct
-http://www.w3.org/2001/XMLSchema#maxInclusive,maxInclusive,,Predicate,,,,2,direct
-http://www.w3.org/2001/XMLSchema#minInclusive,minInclusive,,Predicate,,,,175,direct
+http://www.w3.org/2001/XMLSchema#maxInclusive,maxInclusive,XML Schema facet: the inclusive upper bound of the value space; values must be less than or equal to it. Used as a datatype facet in an OWL datatype restriction (owl:withRestrictions).,Predicate,,,,2,direct
+http://www.w3.org/2001/XMLSchema#minInclusive,minInclusive,XML Schema facet: the inclusive lower bound of the value space; values must be greater than or equal to it. Used as a datatype facet in an OWL datatype restriction (owl:withRestrictions).,Predicate,,,,175,direct
 https://w3id.org/linkml/relationship_types,relationship_types,A list of relationship types (properties) that are used in a reachability query (source: LinkML),Predicate,,,,1,direct
 https://w3id.org/linkml/extensions,extensions,a tag/text tuple attached to an arbitrary element (source: LinkML),Predicate,,,,5,direct
 https://w3id.org/linkml/meaning,meaning,the value meaning of a permissible value (source: LinkML),Predicate,,,,2,direct
-http://www.w3.org/2001/XMLSchema#maxExclusive,maxExclusive,,Predicate,,,,12,direct
+http://www.w3.org/2001/XMLSchema#maxExclusive,maxExclusive,XML Schema facet: the exclusive upper bound of the value space; values must be strictly less than it. Used as a datatype facet in an OWL datatype restriction (owl:withRestrictions).,Predicate,,,,12,direct
 https://w3id.org/linkml/prefix_prefix,prefix_prefix,The prefix components of a prefix expansions. This is the part that appears before the colon in a CURIE. (source: LinkML),Predicate,,,,125,direct
 http://geneontology.org/foo/applies-pattern,applies-pattern,Declared in the schema but used in no triple or class axiom.,Predicate,,,,0,declared
 http://purl.obolibrary.org/obo/AISM_0000398,has maximum value,The highest value of a measurement range. Declared in the schema but used in no triple or class axiom.,Predicate,,,,0,declared

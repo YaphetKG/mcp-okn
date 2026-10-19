@@ -127,7 +127,6 @@ dreamkg,http://schema.org/serviceChannel,Predicate,,serviceChannel
 dreamkg,http://www.opengis.net/ont/geosparql#lat,Predicate,,lat
 dreamkg,http://www.opengis.net/ont/geosparql#long,Predicate,,long
 fiokg,http://www.w3.org/1999/02/22-rdf-syntax-ns#ObjectProperty,Class,,ObjectProperty
-fiokg,http://www.w3.org/ns/prov#Agent,Class,,Agent
 fiokg,http://proton.semanticweb.org/protonsys#transitiveOver,Predicate,,transitiveOver
 fiokg,http://www.w3.org/2000/01/rdf-schema#subclassOf,Predicate,,subclassOf
 fiokg,http://purl.org/dc/terms/decscription,Predicate,,decscription
@@ -146,15 +145,6 @@ fiokg,http://w3id.org/sawgraph/v1/us-wqp#sampleID,Predicate,,wqp - sample id
 fiokg,http://w3id.org/sawgraph/v1/us-wqp#siteId,Predicate,,wqp - site id
 fiokg,http://w3id.org/sawgraph/v1/us-wqp#siteName,Predicate,,wqp - site name
 fiokg,http://w3id.org/sawgraph/v1/us-wqp#srsID,Predicate,,wqp - characteristic substance registry service ID
-fiokg,http://www.w3.org/1999/02/22-rdf-syntax-ns#langRange,Predicate,,langRange
-fiokg,http://www.w3.org/2001/XMLSchema#length,Predicate,,length
-fiokg,http://www.w3.org/2001/XMLSchema#maxExclusive,Predicate,,maxExclusive
-fiokg,http://www.w3.org/2001/XMLSchema#maxInclusive,Predicate,,maxInclusive
-fiokg,http://www.w3.org/2001/XMLSchema#maxLength,Predicate,,maxLength
-fiokg,http://www.w3.org/2001/XMLSchema#minExclusive,Predicate,,minExclusive
-fiokg,http://www.w3.org/2001/XMLSchema#minInclusive,Predicate,,minInclusive
-fiokg,http://www.w3.org/2001/XMLSchema#minLength,Predicate,,minLength
-fiokg,http://www.w3.org/2001/XMLSchema#pattern,Predicate,,pattern
 fiokg,http://www.w3.org/2004/02/skos/core#description,Predicate,,description
 hydrologykg,http://www.w3.org/1999/02/22-rdf-syntax-ns#ObjectProperty,Class,,ObjectProperty
 hydrologykg,http://www.w3.org/2002/07/owl#DataProperty,Class,,DataProperty
@@ -163,27 +153,10 @@ hydrologykg,http://www.w3.org/2003/11/swrl#AtomList,Class,,AtomList
 hydrologykg,http://www.w3.org/2002/07/owl#PropertyChainAxiom,Predicate,,PropertyChainAxiom
 hydrologykg,http://www.w3.org/2002/07/owl#subPropertyOf,Predicate,,subPropertyOf
 hydrologykg,http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled,Predicate,,isRuleEnabled
-hydrologykg,http://www.w3.org/2001/XMLSchema#maxInclusive,Predicate,,maxInclusive
-hydrologykg,http://www.w3.org/2001/XMLSchema#minInclusive,Predicate,,minInclusive
 hydrologykg,http://www.w3.org/2003/11/swrl#argument1,Predicate,,argument1
 hydrologykg,http://www.w3.org/2003/11/swrl#propertyPredicate,Predicate,,propertyPredicate
-hydrologykg,http://sawgraph.spatialai.org/v1/us-sdwis#buysFrom,Predicate,,buysFrom
-hydrologykg,http://sawgraph.spatialai.org/v1/us-sdwis#hasPart,Predicate,,hasPart
-hydrologykg,http://sawgraph.spatialai.org/v1/us-sdwis#hasPermanentSource,Predicate,,hasPermanentSource
-hydrologykg,http://sawgraph.spatialai.org/v1/us-sdwis#hasSource,Predicate,,hasSource
-hydrologykg,http://sawgraph.spatialai.org/v1/us-sdwis#inCombinedSystem,Predicate,,inCombinedSystem
-hydrologykg,http://sawgraph.spatialai.org/v1/us-sdwis#partOf,Predicate,,partOf
-hydrologykg,http://sawgraph.spatialai.org/v1/us-sdwis#sellsTo,Predicate,,sellsTo
-hydrologykg,http://sawgraph.spatialai.org/v1/us-sdwis#sourceFor,Predicate,,sourceFor
 hydrologykg,http://stko-kwg.geog.ucsb.edu/lod/ontology/administrativePartOf,Predicate,,administrativePartOf
 hydrologykg,http://stko-kwg.geog.ucsb.edu/lod/ontology/sfEquals,Predicate,,sfEquals (kwg)
-hydrologykg,http://www.w3.org/1999/02/22-rdf-syntax-ns#langRange,Predicate,,langRange
-hydrologykg,http://www.w3.org/2001/XMLSchema#length,Predicate,,length
-hydrologykg,http://www.w3.org/2001/XMLSchema#maxExclusive,Predicate,,maxExclusive
-hydrologykg,http://www.w3.org/2001/XMLSchema#maxLength,Predicate,,maxLength
-hydrologykg,http://www.w3.org/2001/XMLSchema#minExclusive,Predicate,,minExclusive
-hydrologykg,http://www.w3.org/2001/XMLSchema#minLength,Predicate,,minLength
-hydrologykg,http://www.w3.org/2001/XMLSchema#pattern,Predicate,,pattern
 hydrologykg,http://www.w3.org/2004/02/skos/core#description,Predicate,,description
 hydrologykg,https://www.opengis.net/def/schema/hy_features/hyf/encompassingCatchment,Predicate,,encompassingCatchment
 hydrologykg,https://www.opengis.net/def/schema/hy_features/hyf/upstreamFlowPath,Predicate,,upstreamFlowPath
@@ -263,9 +236,6 @@ sawgraph,http://purl.obolibrary.org/obo/FOODON_03420129,Class,,cardiovascular sy
 sawgraph,http://purl.obolibrary.org/obo/FOODON_03420147,Class,,"animal carcass (skinned, defeathered or scaled, not eviscerated)"
 sawgraph,http://purl.obolibrary.org/obo/FOODON_03420238,Class,,"root, tuber or bulb"
 sawgraph,http://purl.obolibrary.org/obo/FOODON_03420239,Class,,"root, tuber or bulb, with peel"
-sawgraph,http://purl.org/spatialai/stad/v2/core/DataValue,Class,,DataValue
-sawgraph,http://purl.org/spatialai/stad/v2/core/Datapoint,Class,,stad:Datapoint
-sawgraph,http://purl.org/spatialai/stad/v2/core/QualityKind,Class,,stad:QualityKind
 sawgraph,http://purl.org/spatialai/stad/v2/core/Quantity,Class,,Quantity
 sawgraph,http://purl.org/spatialai/stad/v2/core/SingleData,Class,,SingleData
 sawgraph,http://purl.org/spatialai/stad/v2/core/StatisticalAggregateData,Class,,StatisticalAggregateData
@@ -278,7 +248,6 @@ sawgraph,http://purl.obolibrary.org/obo/IAO_0000600,Predicate,,elucidation
 sawgraph,http://purl.org/dc/terms/updated,Predicate,,updated
 sawgraph,http://www.linkedmodel.org/schema/vaem#hasGraphMetadata,Predicate,,hasGraphMetadata
 sawgraph,http://www.geneontology.org/formats/oboInOwl#default-namespace,Predicate,,default-namespace
-sawgraph,http://purl.org/spatialai/stad/v2/core/hasTransformationKind,Predicate,,hasTransformationKind
 sawgraph,http://qudt.org/schema/qudt/cardinality,Predicate,,cardinality
 sawgraph,http://qudt.org/schema/qudt/conversionOffset,Predicate,,conversion offset
 sawgraph,http://qudt.org/schema/qudt/enumeratedValue,Predicate,,enumerated value
@@ -303,15 +272,6 @@ sawgraph,http://w3id.org/DSSTox/v1/productionVolume,Predicate,,productionVolume
 sawgraph,http://w3id.org/DSSTox/v1/readilyBiodegradable,Predicate,,readilyBiodegradable
 sawgraph,http://w3id.org/DSSTox/v1/soilAdsorptionCoefficient,Predicate,,soilAdsorptionCoefficient
 sawgraph,http://w3id.org/DSSTox/v1/toxicsReleaseInventory,Predicate,,toxicsReleaseInventory
-sawgraph,http://www.w3.org/1999/02/22-rdf-syntax-ns#langRange,Predicate,,langRange
-sawgraph,http://www.w3.org/2001/XMLSchema#length,Predicate,,length
-sawgraph,http://www.w3.org/2001/XMLSchema#maxExclusive,Predicate,,maxExclusive
-sawgraph,http://www.w3.org/2001/XMLSchema#maxInclusive,Predicate,,maxInclusive
-sawgraph,http://www.w3.org/2001/XMLSchema#maxLength,Predicate,,maxLength
-sawgraph,http://www.w3.org/2001/XMLSchema#minExclusive,Predicate,,minExclusive
-sawgraph,http://www.w3.org/2001/XMLSchema#minInclusive,Predicate,,minInclusive
-sawgraph,http://www.w3.org/2001/XMLSchema#minLength,Predicate,,minLength
-sawgraph,http://www.w3.org/2001/XMLSchema#pattern,Predicate,,pattern
 securechainkg,http://asu.edu/semantics/SUDOKN/ABSProcessingCapability,Class,,ABS
 securechainkg,http://asu.edu/semantics/SUDOKN/AS9000,Class,,AS9000
 securechainkg,http://asu.edu/semantics/SUDOKN/AS9003,Class,,AS9003
@@ -585,15 +545,6 @@ sockg,http://purl.org/spatialai/spatial/spatial-full#spatiallyRelatedTo,Predicat
 sockg,http://stko-kwg.geog.ucsb.edu/lod/ontology/spatialRelation,Predicate,,spatial relation (kwg)
 sockg,https://idir.uta.edu/sockg-ontology#hasStandardDeviation,Predicate,,hasStandardDeviation
 spatialkg,http://www.w3.org/1999/02/22-rdf-syntax-ns#ObjectProperty,Class,,ObjectProperty
-spatialkg,http://www.w3.org/1999/02/22-rdf-syntax-ns#langRange,Predicate,,langRange
-spatialkg,http://www.w3.org/2001/XMLSchema#length,Predicate,,length
-spatialkg,http://www.w3.org/2001/XMLSchema#maxExclusive,Predicate,,maxExclusive
-spatialkg,http://www.w3.org/2001/XMLSchema#maxInclusive,Predicate,,maxInclusive
-spatialkg,http://www.w3.org/2001/XMLSchema#maxLength,Predicate,,maxLength
-spatialkg,http://www.w3.org/2001/XMLSchema#minExclusive,Predicate,,minExclusive
-spatialkg,http://www.w3.org/2001/XMLSchema#minInclusive,Predicate,,minInclusive
-spatialkg,http://www.w3.org/2001/XMLSchema#minLength,Predicate,,minLength
-spatialkg,http://www.w3.org/2001/XMLSchema#pattern,Predicate,,pattern
 sudokn,http://asu.edu/semantics/SUDOKN/ABSProcessingCapability,Class,,ABS
 sudokn,http://asu.edu/semantics/SUDOKN/AS9000Certificate,Class,,AS 9000
 sudokn,http://asu.edu/semantics/SUDOKN/AS9003Certificate,Class,,AS 9003
@@ -1186,9 +1137,6 @@ ubergraph,https://w3id.org/linkml/opposite_of,Predicate,,opposite_of
 ubergraph,https://w3id.org/linkml/canonical_predicate,Predicate,,canonical_predicate
 ubergraph,https://w3id.org/linkml/translator,Predicate,,translator
 ubergraph,https://w3id.org/linkml/neo4j,Predicate,,neo4j
-ubergraph,http://www.w3.org/2001/XMLSchema#maxInclusive,Predicate,,maxInclusive
-ubergraph,http://www.w3.org/2001/XMLSchema#minInclusive,Predicate,,minInclusive
-ubergraph,http://www.w3.org/2001/XMLSchema#maxExclusive,Predicate,,maxExclusive
 ubergraph,http://geneontology.org/foo/applies-pattern,Predicate,,applies-pattern
 ubergraph,http://purl.obolibrary.org/obo/BFO_0000070,Predicate,,specifically depends on at all times
 ubergraph,http://purl.obolibrary.org/obo/BSPO_0000095,Predicate,,anatomical relation
