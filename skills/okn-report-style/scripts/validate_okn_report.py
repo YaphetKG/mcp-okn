@@ -26,7 +26,8 @@ And ADDS the package-level checks that had no home: the top-level allowlist, nam
 reproducibility file, `data/` = flat CSV/TSV/JSON only, `scripts/` anti-pattern rejection, workbook sheet
 names, report section order (…Reproducibility → References last), the reproducibility header's `Skills`
 provenance line, an exact model id recorded identically in the .md / .html / record, figure
-file/reference cross-check, and a recursive scan for QA/temp/scratch junk.
+file/reference cross-check, a recursive scan for QA/temp/scratch junk, and no map tiles from OpenStreetMap's
+own server (blocked when the report is opened from disk).
 Stdlib-only (an .xlsx is a zip — sheet names are read straight from `xl/workbook.xml`), so it runs
 wherever a report is built, exactly like the sibling gates.
 """
@@ -553,6 +554,24 @@ def _check_junk(study: Path, r: _Report) -> None:
                 )
 
 
+#: OpenStreetMap's own tile server. It answers requests without an HTTP Referer with an "Access blocked"
+#: image (HTTP 200), and a report opened from disk (file://) sends none — so a map built on it renders fine
+#: once hosted but shows "Access blocked" in every tile locally. Matches the URL inside an escaped
+#: `<iframe srcdoc>` too. Use okn_figstyle.BASEMAP_TILES (Esri World Street Map) instead.
+_OSM_TILE_RE = re.compile(r"tile\.openstreetmap\.org", re.I)
+
+
+def _check_basemap(study: Path, paths: dict, r: _Report) -> None:
+    htmls = [paths["report_html"], *sorted((study / "figures").glob("*.html"))]
+    for h in htmls:
+        if h.is_file() and _OSM_TILE_RE.search(h.read_text(encoding="utf-8")):
+            r.err(
+                f"{h.relative_to(study).as_posix()} loads tiles from tile.openstreetmap.org, which shows "
+                "'Access blocked' when the report is opened from disk — rebuild the map with "
+                "okn_figstyle.BASEMAP_TILES / BASEMAP_ATTR (folium_osm_map's default)"
+            )
+
+
 def _check_parity(paths: dict, r: _Report) -> None:
     md, htmlp = paths["report_md"], paths["report_html"]
     if md.is_file() and htmlp.is_file():
@@ -594,6 +613,7 @@ def validate(study_dir: str) -> _Report:
     _check_repro_skills(paths["repro_md"], r)
     _check_model(paths, r)
     _check_junk(study, r)
+    _check_basemap(study, paths, r)
     # Content gates last (they each print their own PASS/FAIL line).
     _check_parity(paths, r)
     _check_diagrams(paths, r)

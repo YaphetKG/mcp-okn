@@ -210,9 +210,13 @@ essentials:
   blue, positive = red); sequential → single-hue ramp; colourblind-safe Okabe–Ito palette, never
   colour alone; show uncertainty (error bars / CI + sample size **n**).
 - **Number figures in document order and match the filename** (`fig1_…`); renumber + rename on reorder.
-- **Geographic data → a real OpenStreetMap-tiled map, never a bare lat/long scatter** — static via
+- **Geographic data → a real tiled street map, never a bare lat/long scatter** — static via
   `osm_basemap(...)` (reproject to Web Mercator EPSG:3857), interactive via `folium_osm_map(...)`
-  (clickable markers); keep the OSM attribution.
+  (clickable markers); keep the tile attribution. Both default to Esri World Street Map — don't
+  switch to OpenStreetMap's own tile server: it blocks Referer-less requests (a report opened from
+  disk, contextily's fetch) and draws "Access blocked" in place of every tile. Building
+  `folium.Map` yourself (e.g. a choropleth)? Pass `tiles=BASEMAP_TILES, attr=BASEMAP_ATTR` from
+  `okn_figstyle`, never `tiles="OpenStreetMap"` — `validate_okn_report.py` fails a report that does.
 - **Verify:** always `Read` the rendered PNG back before embedding — the first matplotlib layout is
   often wrong.
 
@@ -260,7 +264,7 @@ The results table has two required features:
   category / type, region or state, direction / sign, or any key flag. Each dropdown offers "all" +
   the distinct values and re-filters the table on change.
 
-For **geographic data**, embed an interactive `folium` map (Leaflet + OpenStreetMap tiles) rather than
+For **geographic data**, embed an interactive `folium` map (Leaflet + Esri street tiles) rather than
 plotting bare coordinates — inline it with `folium_map_iframe(m)` (an `<iframe srcdoc>` wrapper), NOT
 `m.get_root().render()` inlined raw: `render()` returns a whole `<!DOCTYPE><html>…</html>` document,
 and splicing that into the body gives the file a second `<html>`/`<body>` that blanks every section
@@ -320,7 +324,7 @@ front of mind:
   defer-and-re-add recipe + the `--check` fidelity gate: **`references/failure-modes.md`**.
 - **Figure problems** — legend/caption baked into the PNG, in-plot overlap, out-of-order numbering,
   bare lat/long scatter, same data split across sections → legend below, re-read the rendered PNG,
-  renumber on reorder, use an OSM basemap, consolidate. (All expanded in the reference.)
+  renumber on reorder, use a street basemap, consolidate. (All expanded in the reference.)
 
 ## Delivery gate — the blocking checklist
 

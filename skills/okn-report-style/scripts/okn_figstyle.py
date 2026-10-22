@@ -14,7 +14,8 @@ negative = blue, positive = red (diverging). Run `python okn_figstyle.py --demo`
 exercises every helper (bars + legend + donut + diverging heatmap).
 
 Geographic data: use `osm_basemap(ax, lons, lats, ...)` (static, geopandas + contextily) or
-`folium_osm_map(rows, ...)` (interactive, folium) — always plot on an OpenStreetMap-tiled basemap,
+`folium_osm_map(rows, ...)` (interactive, folium) — always plot on a tiled street basemap (Esri
+World Street Map by default; OSM's own tile server blocks report traffic, see BASEMAP_TILES),
 never a bare longitude/latitude scatter on empty axes. `python okn_figstyle.py --demo-map` shows both.
 
 All helpers keep legends OUTSIDE the axes and enforce font floors. After saving, always open the
@@ -38,6 +39,19 @@ FONT = {"tick": 8, "annot": 8, "axis": 9.5, "legend": 8.5, "title": 11.5, "capti
 UP = "#c0392b"  # up / positive signed value (red)
 DOWN = "#2471a3"  # down / negative signed value (blue) — red/blue diverging is CVD-safe
 NEUTRAL = "#7f8c8d"
+# ---- basemap ----
+# Not OpenStreetMap's own tile server: tile.openstreetmap.org now refuses requests without an HTTP
+# Referer and returns an "Access blocked" image instead (with HTTP 200, so no fetch error fires).
+# Every report path sends no Referer — a report opened from disk (file://) and contextily's Python
+# fetch alike. Esri World Street Map serves without one; it is the default for both map helpers.
+BASEMAP_TILES = (
+    "https://server.arcgisonline.com/ArcGIS/rest/services/"
+    "World_Street_Map/MapServer/tile/{z}/{y}/{x}"
+)
+BASEMAP_ATTR = (
+    "Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, "
+    "Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012"
+)
 # Categorical THEME palette: colourblind-safe (Okabe–Ito). Still pair colour with another channel
 # (labels, hatching, order) — never encode a category by colour alone.
 THEME = [
@@ -284,15 +298,17 @@ def osm_basemap(
     **plot_kw,
 ):
     """
-    Plot geographic points/polygons on an OpenStreetMap-tiled basemap (static figure).
+    Plot geographic points/polygons on a tiled street basemap (static figure).
 
     Never draw bare longitude/latitude on empty axes — without a basemap there are no coastlines,
     borders or place names, so a reader can't tell where anything is. This reprojects the data to
-    Web Mercator (EPSG:3857, what the OSM tiles use) and draws the OSM basemap under it.
+    Web Mercator (EPSG:3857, what the tiles use) and draws the basemap under it.
 
     Pass either a GeoDataFrame (`gdf=`) or matched `lons=`/`lats=` sequences (+ optional `values=`
-    to colour points). `source` defaults to contextily's OpenStreetMap.Mapnik (keep the © OSM
-    attribution it adds). Needs `pip install geopandas contextily` and network access for the tiles.
+    to colour points). `source` defaults to contextily's Esri.WorldStreetMap (keep the attribution
+    it adds). Don't pass OpenStreetMap.Mapnik: OSM's server answers contextily's Referer-less fetch
+    with an "Access blocked" tile that gets baked into the PNG (see BASEMAP_TILES). Needs
+    `pip install geopandas contextily` and network access for the tiles.
 
     Raises `ValueError` for data reaching |lat| >= 85.05, which Web Mercator cannot represent —
     see `_reject_polar_latitudes`. Global datasets that include the poles belong on an
@@ -338,7 +354,7 @@ def osm_basemap(
     else:
         g.plot(ax=ax, markersize=size, color=UP, edgecolor=edgecolor, **plot_kw)
     cx.add_basemap(
-        ax, crs=g.crs.to_string(), source=source or cx.providers.OpenStreetMap.Mapnik
+        ax, crs=g.crs.to_string(), source=source or cx.providers.Esri.WorldStreetMap
     )
     ax.set_axis_off()
     return ax
@@ -351,13 +367,14 @@ def folium_osm_map(
     popup_keys=None,
     value_key=None,
     tooltip_key=None,
-    tiles="OpenStreetMap",
+    tiles=BASEMAP_TILES,
     zoom_start=4,
     radius=6,
     color=UP,
+    attr=None,
 ):
     """
-    Build an interactive OpenStreetMap (Leaflet) map for the HTML report and return the folium.Map.
+    Build an interactive Leaflet street map for the HTML report and return the folium.Map.
 
     **Every marker is CLICKABLE**: it carries a popup listing the point's attributes, so a reader can
     click any point to see what it is. `rows` is a list of dicts with numeric `lat_key`/`lon_key`.
@@ -367,7 +384,11 @@ def folium_osm_map(
       identifiable without clicking.
     - value_key: optional numeric field that scales the marker radius.
 
-    Fits the view to the data's bounding box; keeps the © OpenStreetMap attribution and a scale bar.
+    - tiles / attr: basemap URL template + attribution; default Esri World Street Map. Don't use
+      folium's "OpenStreetMap": a report opened from disk sends no Referer, so OSM's server shows
+      an "Access blocked" tile in place of every map tile (see BASEMAP_TILES).
+
+    Fits the view to the data's bounding box; keeps the tile attribution and a scale bar.
     Embed it in the report with `folium_map_iframe(map)` — NOT `map.get_root().render()` inlined raw,
     which injects a second <html>/<body> and blanks the page from there down. Needs `pip install folium`.
     """
@@ -385,8 +406,14 @@ def folium_osm_map(
     lats = [p[0] for p in pts]
     lons = [p[1] for p in pts]
     center = (sum(lats) / len(lats), sum(lons) / len(lons))
+    if attr is None and tiles == BASEMAP_TILES:
+        attr = BASEMAP_ATTR
     m = folium.Map(
-        location=center, tiles=tiles, zoom_start=zoom_start, control_scale=True
+        location=center,
+        tiles=tiles,
+        attr=attr,
+        zoom_start=zoom_start,
+        control_scale=True,
     )
     for lat, lon, r in pts:
         keys = popup_keys or [
@@ -421,7 +448,7 @@ def folium_osm_map(
 def save_map_html(m, path):
     """Save a folium map to a standalone HTML file (to embed in a report, use folium_map_iframe(m))."""
     m.save(path)
-    print(f"[okn_figstyle] saved interactive OSM map: {path}")
+    print(f"[okn_figstyle] saved interactive map: {path}")
     return path
 
 
@@ -532,13 +559,13 @@ def _demo_map():
             size=110,
             colorbar_label="samples (n)",
         )
-        panel_title(ax, "A", "Sampling sites (OSM basemap)")
+        panel_title(ax, "A", "Sampling sites (street basemap)")
         finalize(fig, 1, "okn_figstyle_demo_map.png")
     except Exception as e:
         print(
-            f"[okn_figstyle] static OSM basemap skipped ({type(e).__name__}: {e}). "
+            f"[okn_figstyle] static basemap skipped ({type(e).__name__}: {e}). "
             f"The interactive folium map was written; for the static PNG install "
-            f"geopandas+contextily and ensure network access to the OSM tile server."
+            f"geopandas+contextily and ensure network access to the tile server."
         )
 
 

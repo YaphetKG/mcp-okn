@@ -383,7 +383,7 @@ rebuild from the `.md`.
 These come from two different domains to show the pattern is domain-neutral.
 
 > ***Figure 2. PFAS sampling sites and exceedances (sawgraph + spatialkg).*** **(A)** Sampling
-> locations on an OpenStreetMap basemap, coloured by measured concentration (µg/L); **(B)** counts
+> locations on an Esri street basemap, coloured by measured concentration (µg/L); **(B)** counts
 > by environmental medium (water / soil / sediment). Provenance: sawgraph PFAS observations joined
 > to spatialkg S2 grid cells; coordinates from the sampled features.
 
@@ -396,7 +396,7 @@ Notes that keep legends useful and standalone:
 - Name every panel letter you use.
 - Give the statistical test (if any), the foreground / background, and any multiple-testing correction.
 - State the exact KG + predicate path (provenance) so a reader can reproduce the panel.
-- For maps: name the basemap (OpenStreetMap), the coordinate source, and what each marker / colour encodes.
+- For maps: name the basemap (Esri World Street Map), the coordinate source, and what each marker / colour encodes.
 - If a symbol / letter appears in the plot, define it here.
 - **Follow every figure legend — and every table — with a short interpretation of the result** (what
   it means / the takeaway), in the body text below; never inside the legend or the PNG.

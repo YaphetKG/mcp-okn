@@ -49,13 +49,13 @@ code can't predict.
 
 ## Maps & geographic data (never a bare lat/long scatter)
 - [ ] Anything with coordinates — sampling sites, regions, county/ZIP data, or lat/long / S2 cells
-      from the spatial tools (`point_to_s2`, `spatial_bridge`) — goes on an **OpenStreetMap-tiled
+      from the spatial tools (`point_to_s2`, `spatial_bridge`) — goes on a **tiled street
       basemap**, not plotted onto empty axes. Points on blank axes carry no coastlines, borders, or
       place names, so the reader cannot tell where anything is.
 - [ ] **Static PNG:** reproject the data to **Web Mercator (EPSG:3857)** to match the tiles, plot the
       points/choropleth, then add the basemap (`geopandas` + `contextily`;
       `osm_basemap(ax, ...)` does this). Do not draw lon/lat degrees straight onto a Mercator basemap.
-- [ ] **Interactive (HTML report):** use `folium` (Leaflet + OSM tiles); `folium_osm_map(rows, ...)`
+- [ ] **Interactive (HTML report):** use `folium` (Leaflet + street tiles); `folium_osm_map(rows, ...)`
       returns the map. Inline it with `folium_map_iframe(m)` (an `<iframe srcdoc>` wrapper), don't link
       a file. NEVER splice `m.get_root().render()` in raw — it's a full `<!DOCTYPE><html>…</html>`
       document; a second `<html>`/`<body>` in the report blanks every section below it (a browser
@@ -65,8 +65,14 @@ code can't predict.
       what it is. `folium_osm_map` adds a popup built from all fields by default.
 - [ ] **Extent/zoom** fit the data's bounding box with a small margin — not the whole world, not so
       tight that markers touch the edge. Cluster or size markers by value if points overlap.
-- [ ] **Keep the OpenStreetMap attribution** (tiles are © OpenStreetMap contributors); contextily and
-      folium add it by default — don't strip it.
+- [ ] **Basemap = Esri World Street Map** (the helpers' default), NOT OpenStreetMap's own tile server
+      (`tile.openstreetmap.org`, folium's `"OpenStreetMap"`, contextily's `OpenStreetMap.Mapnik`). OSM
+      blocks requests without an HTTP Referer — a report opened from disk and contextily's Python fetch
+      both send none — and serves an "Access blocked" image (HTTP 200, so nothing errors) in place of
+      every tile. Calling `folium.Map` directly? Pass `tiles=BASEMAP_TILES, attr=BASEMAP_ATTR` from
+      `okn_figstyle` (`validate_okn_report.py` fails on OSM tile URLs). Open the map / `Read` the PNG
+      and confirm real streets and place names show.
+- [ ] **Keep the tile attribution**; contextily and `folium_osm_map` add it by default — don't strip it.
 - [ ] Legend below states the **coordinate source** (which KG/predicate supplied lat/long or the S2
       cell) and what each marker/colour encodes, same as any other figure.
 
