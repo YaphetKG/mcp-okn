@@ -51,13 +51,16 @@ from pathlib import Path
 # Single-source the injection logic: reuse expand_query_diagrams.py rather than reimplement it.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from expand_query_diagrams import (
+    _CONTENTS_RE,
     _MCP_NOTICE_RE,
     DEFAULT_MAX_CHARS,
     _map_generate,
     diagrams_missing_graph_box,
     expand,
+    expected_contents,
     queries_needing_diagrams,
     strip_mcp_notices,
+    sync_contents,
 )
 
 
@@ -124,7 +127,12 @@ def check(src: Path, text: str) -> int:
     # re-add pass strips it, but a file that already had its diagrams (so re-add was skipped) can still
     # carry it — catch that here, at the last gate before delivery.
     stale_notice = bool(_MCP_NOTICE_RE.search(text))
-    if not missing and not unfaithful and not stale_notice:
+    # The header manifest must state the counts the body actually has — a diagram re-added after the
+    # server wrote the record (or a hand edit) leaves e.g. "13 query diagrams" over 17 diagrams.
+    want = expected_contents(text)
+    have = _CONTENTS_RE.search(text)
+    stale_contents = want is not None and have.group(0) != want
+    if not missing and not unfaithful and not stale_notice and not stale_contents:
         print(
             f"[readd_query_diagrams] PASS — all {total} sparql block(s) have a faithful diagram: {src}"
         )
@@ -152,6 +160,12 @@ def check(src: Path, text: str) -> int:
             f"[readd_query_diagrams] FAIL — a stale `<!-- mcp-okn WARNING: … -->` notice is baked into "
             f"{src}\n  That caller-facing nudge must not ship in the artifact. Run "
             f"`python {Path(__file__).name} {src}` (no --check) to strip it; do NOT deliver until PASS."
+        )
+    if stale_contents:
+        print(
+            f"[readd_query_diagrams] FAIL — the header's Contents counts don't match the body: {src}\n"
+            f"  has:    {have.group(0)}\n  should: {want}\n"
+            f"  Run `python {Path(__file__).name} {src}` (no --check) to update it; do NOT deliver until PASS."
         )
     return 1
 
@@ -203,6 +217,12 @@ def main(argv: list[str] | None = None) -> int:
     if n_notices:
         dst.write_text(text)
         print(f"{dst}: stripped {n_notices} stale mcp-okn notice(s).")
+    # Likewise fix a stale Contents manifest now, for when every diagram is already present and the
+    # injection below never runs (expand() also syncs it after injecting).
+    text, synced = sync_contents(text)
+    if synced:
+        dst.write_text(text)
+        print(f"{dst}: updated the Contents counts to match the body.")
 
     if args.diagrams:
         if args.portable:

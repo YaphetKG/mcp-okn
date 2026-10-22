@@ -148,6 +148,62 @@ def strip_mcp_notices(text: str) -> tuple[str, int]:
     return cleaned.lstrip("\n") if n else cleaned, n
 
 
+# The header's `- **Contents:** 17 queries · 13 query diagrams` manifest. The server derives it from the
+# blocks it rendered, so a diagram re-added here (the server skipped or omitted it) leaves the count
+# stale — 17 diagrams in the body, "13 query diagrams" in the header. sync_contents recounts after
+# injection; check() fails on a mismatch. Same wording as transcript.py's manifest (_plural).
+_CONTENTS_RE = re.compile(r"^- \*\*Contents:\*\* .*$", re.M)
+_SCHEMA_COUNT_RE = re.compile(r"(\d+) schema diagrams?\b")
+# Where the server's counted body begins: "## SPARQL queries" (reproducibility record) or
+# "## Conversation" (chat transcript). Anything hand-inserted above it — e.g. a "Replicator
+# specification" quoting extra, unlogged queries — is not part of the manifest.
+_BODY_START_RE = re.compile(r"^## (?:Conversation|SPARQL queries)\s*$", re.M)
+
+
+def _plural(count: int, singular: str, plural: str | None = None) -> str:
+    return f"{count} {singular if count == 1 else (plural or singular + 's')}"
+
+
+def _counted_body(text: str) -> str:
+    m = _BODY_START_RE.search(text)
+    return text[m.start() :] if m else text
+
+
+def count_query_diagrams(text: str) -> int:
+    """Number of ```sparql blocks immediately followed (blank lines allowed) by a ```mermaid block —
+    the per-query diagrams. Schema diagrams follow no query, so they are not counted."""
+    return text.count("```sparql") - len(queries_needing_diagrams(text))
+
+
+def expected_contents(text: str) -> str | None:
+    """The `- **Contents:**` line the body actually supports, or None when the document has none.
+    The schema-diagram count is carried over from the existing line (it isn't re-derivable here)."""
+    m = _CONTENTS_RE.search(text)
+    if not m:
+        return None
+    s = _SCHEMA_COUNT_RE.search(m.group(0))
+    n_schema = int(s.group(1)) if s else 0
+    body = _counted_body(text)
+    n_queries = body.count("```sparql")
+    n_diagrams = count_query_diagrams(body)
+    parts = [
+        _plural(n_queries, "query", "queries") if n_queries else "",
+        _plural(n_diagrams, "query diagram") if n_diagrams else "",
+        _plural(n_schema, "schema diagram") if n_schema else "",
+    ]
+    parts = [p for p in parts if p]
+    return "- **Contents:** " + (" · ".join(parts) or "no queries or diagrams")
+
+
+def sync_contents(text: str) -> tuple[str, bool]:
+    """Rewrite a stale `- **Contents:**` manifest to match the body. Returns (text, changed)."""
+    want = expected_contents(text)
+    m = _CONTENTS_RE.search(text)
+    if want is None or m.group(0) == want:
+        return text, False
+    return text[: m.start()] + want + text[m.end() :], True
+
+
 def _library_generate(portable: bool = False):
     """Return a `sparql -> mermaid|None` callable backed by the local sparql-to-mermaid package,
     or exit with guidance if it is not importable here (a report session normally can't install it).
@@ -289,7 +345,8 @@ def expand(
     ['absent_queries'] carry a short SPARQL snippet per skip so you can log them in the transcript.
 
     Also strips any stale `<!-- mcp-okn WARNING: … -->` notice the transcript tool prepended (re-adding
-    the diagrams is what the notice asked for), so it never stays baked into the saved artifact.
+    the diagrams is what the notice asked for), so it never stays baked into the saved artifact, and
+    rewrites the header's `- **Contents:**` counts to match the diagrams now present.
     """
     text, n_notices = strip_mcp_notices(text)
     lines = text.split("\n")
@@ -340,7 +397,8 @@ def expand(
         else:
             out.append(lines[i])
             i += 1
-    return "\n".join(out), stats
+    new_text, stats["contents_synced"] = sync_contents("\n".join(out))
+    return new_text, stats
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -392,6 +450,7 @@ def main(argv: list[str] | None = None) -> int:
             if st["notices_stripped"]
             else ""
         )
+        + ("; updated the Contents counts" if st["contents_synced"] else "")
     )
     for snip, ln in st["oversized_queries"]:
         print(f"  oversized ({ln} chars, skipped): {snip}…")
