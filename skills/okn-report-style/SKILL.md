@@ -362,8 +362,8 @@ It rejects, each as a blocking error:
     record has no `Model:` value; the value is a family/product name or placeholder (`Claude`,
     `GPT-5`, `unknown`, `<model>`) rather than an exact id; or the three do not match exactly. See
     *Exact model provenance* above.
-11. **SPARQL → Mermaid** — a ```sparql block with no faithful ```mermaid diagram, or a stale warning
-   notice (via `readd_query_diagrams.check`).
+11. **SPARQL → Mermaid** — a ```sparql block with no faithful ```mermaid diagram, a stale warning
+   notice, or a header `Contents:` count that disagrees with the body (via `readd_query_diagrams.check`).
 12. **HTML/Markdown parity** — the `.html` drops sections, is much shorter than the `.md`, or is not one
     well-formed document (via `check_report_parity`).
 13. **Scratch/QA/temp junk** — `__pycache__/`, `.DS_Store`, `*.tmp`, `*~`, `*.queries.json`, `*_old*`,

@@ -112,11 +112,15 @@ user asks for **no** query diagrams at all, pass `include_query_diagrams=False` 
 re-inject what they asked to omit.
 
 **Completeness + fidelity gate — the transcript is not "delivered" until `readd_query_diagrams.py
---check <transcript.md>` prints `[readd_query_diagrams] PASS`.** It checks two things, WITHOUT modifying
+--check <transcript.md>` prints `[readd_query_diagrams] PASS`.** It checks three things, WITHOUT modifying
 and with no package needed: **(a) presence** — every ```sparql block has a ```mermaid diagram (a FAIL
 here means you generated lean and skipped the re-add); and **(b) fidelity** — every query scoped to a
 named `GRAPH` has a diagram carrying the `subgraph ["GRAPH …"]` box that `sparql_to_mermaid` always
 emits, so a boxless diagram is caught as hand-drawn / stale / from a bespoke script rather than the
-tool. This mirrors the HTML's `check_report_parity` gate; run it as the last step and treat FAIL (or
+tool; and **(c) the header's `- **Contents:**` counts** match the body — the server counts only the
+diagrams it rendered, so after a re-add the header can say "17 queries · 13 query diagrams" over 17
+diagrams. The re-add run rewrites that line itself; a FAIL here means the record was re-added with an
+older script or hand-edited — re-run `readd_query_diagrams.py <transcript.md>` to fix it. This mirrors
+the HTML's `check_report_parity` gate; run it as the last step and treat FAIL (or
 never having run it) as blocking. (The only clean way to skip it is the user asking for no diagrams —
 then there are no ```sparql-without-diagram blocks to flag anyway.)
