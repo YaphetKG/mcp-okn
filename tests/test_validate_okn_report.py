@@ -425,3 +425,26 @@ def test_junk_file_in_subdir_fails(tmp_path):
     (study / "data" / "scratch.tmp").write_text("junk")
     r = v.validate(str(study))
     assert any("scratch/QA/temp" in e for e in r.errors)
+
+
+def test_osm_tile_server_in_report_fails(tmp_path):
+    study = _build(tmp_path)
+    html_path = study / f"{TOKEN}_report.html"
+    # The map document sits HTML-escaped inside <iframe srcdoc>, as folium_map_iframe emits it.
+    srcdoc = "&lt;script&gt;L.tileLayer(&quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;)&lt;/script&gt;"
+    html_path.write_text(
+        html_path.read_text().replace(
+            "</body>", f'<iframe srcdoc="{srcdoc}"></iframe></body>'
+        )
+    )
+    r = v.validate(str(study))
+    assert any("tile.openstreetmap.org" in e for e in r.errors), r.errors
+
+
+def test_osm_tile_server_in_figure_html_fails(tmp_path):
+    study = _build(tmp_path)
+    (study / "figures" / "map.html").write_text(
+        '<script>L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png")</script>'
+    )
+    r = v.validate(str(study))
+    assert any("figures/map.html" in e for e in r.errors), r.errors

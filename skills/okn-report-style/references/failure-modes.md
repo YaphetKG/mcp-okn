@@ -6,8 +6,11 @@ transcript — have their full procedures at the end.
 
 - Legend overlapping a donut / pie or bar → move it out; regenerate; re-read the PNG.
 - Figure caption text baked into the PNG → move to the legend below.
-- Geographic points plotted as a bare lon/lat scatter on empty axes → put them on an OpenStreetMap
+- Geographic points plotted as a bare lon/lat scatter on empty axes → put them on a street
   basemap (static: `contextily`; interactive: `folium`) so the geography is legible.
+- Map tiles read "Access blocked … OpenStreetMap's volunteer-run servers" → the basemap is OSM's own
+  tile server, which rejects Referer-less requests (file:// reports, contextily). Rebuild with the
+  helpers' default Esri World Street Map (`okn_figstyle.BASEMAP_TILES`).
 - Figures out of numerical order after inserting a new one → renumber captions + files (enforced by
   `check_figure_numbering` inside the `check_report_parity` delivery gate — it FAILs on non-consecutive
   captions or filenames, so this can't ship silently).
